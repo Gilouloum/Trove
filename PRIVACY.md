@@ -18,7 +18,7 @@ Contact: **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 
 - a random install ID (generated on your computer, not linked to your name or email, and replaced every 13 months)
 - the event type (app opened or session ended) and the session length
-- the number of files, folders, Best Of photos and pinned photos in your library
+- the number of files, folders, Liked photos and pinned photos in your library
 - the Trove version and operating system (Windows or macOS)
 
 **What is never sent.** Photos, videos, thumbnails, file names, folder names, paths, locations, faces, people's names, search queries, or anything else from your library.
@@ -83,7 +83,7 @@ Contact : **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 
 - un identifiant d'installation aléatoire (généré sur votre ordinateur, non lié à votre nom ni à votre e-mail, et renouvelé tous les 13 mois)
 - le type d'événement (ouverture ou fin de session) et la durée de la session
-- le nombre de fichiers, de dossiers, de photos Best Of et de photos épinglées de votre bibliothèque
+- le nombre de fichiers, de dossiers, de coups de cœur et de photos épinglées de votre bibliothèque
 - la version de Trove et le système d'exploitation (Windows ou macOS)
 
 **Ce qui n'est jamais envoyé.** Photos, vidéos, miniatures, noms de fichiers, noms de dossiers, chemins, lieux, visages, noms de personnes, recherches, ni quoi que ce soit d'autre provenant de votre bibliothèque.

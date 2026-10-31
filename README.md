@@ -35,7 +35,7 @@ You don't have to take that on trust. Trove is open source: every line of code t
 Stop dragging thousands of files into folders. Trove reads what's already in your photos and sorts them:
 
 - **Trips.** Photos and videos are grouped into trips as you import them, ready to browse or relive on the 3D globe.
-- **People.** Everyone gets a folder, shown with a real photo of their face: their Best Of shot if there is one, otherwise a pinned photo, otherwise their best smiling, front-facing shot.
+- **People.** Everyone gets a folder, shown with a real photo of their face: their Liked shot if there is one, otherwise a pinned photo, otherwise their best smiling, front-facing shot.
 - **Cameras.** Each photo's camera is read from its metadata and sorted into its own folder. Two of the exact same camera? Camera Profiles tell them apart by filename pattern.
 - **Location.** Country, region, and city come from each photo's GPS data.
 - **Categories and custom sections.** Your own sidebar sections, with your own name, icon, and color.
@@ -171,9 +171,19 @@ Every geotagged photo and video is plotted on a real-terrain 3D globe, zoomable 
   <img src="screenshots/globe-zoom.jpg" width="49%" alt="The globe zoomed into a single trip">
 </p>
 
+## A photobook for every trip
+
+Ten shots of the same view, and you never look at any of them? Each trip gets a photobook: the photos you choose to keep.
+
+- **Duels.** Trove groups near-identical shots (taken moments apart and almost the same picture) and shows them two at a time. Click the better one, and the winner meets the next. A single shot is a quick keep or skip, and every choice can be undone. A small "Trove's pick" hint points at the shot that looks sharper or where faces look better, but you decide.
+- **A goal that fills up.** Each trip suggests a size (about 40 photos for a 400-photo trip, editable), shown as a book filling up. Going over is fine.
+- **Nothing is deleted.** In the trip, your photobook comes first, then everything else below a "Not in your photobook" line, slightly dimmed. Every photo stays where it is.
+- **Present it.** Show the book with page turns, or as a clean full-screen slideshow for the TV. Pages are laid out automatically (one to three photos each, in date order), with a cover, a map of the route, the trip in numbers, and captions you can edit. Shuffle the layout, swap photos, move pages.
+- **Export it.** Save a PDF, a single web page that works offline, or a complete folder with both plus the videos. Everything stays on your computer: there is no upload and no print service.
+
 ## More worth knowing
 
-- **Best Of.** A library-wide highlight reel: star anything, anywhere, and it shows up in one place.
+- **Liked.** A library-wide highlight reel: press L (or click the heart) on anything, anywhere, and it shows up in one place. A liked photo also goes into its trip's photobook. (Liked used to be called Best Of.)
 - **Live Photos and bursts.** Live Photos play their motion clip in one click. Bursts collapse into a single card, so you pick a favorite instead of scrolling past ten near-identical shots.
 - **Video frame grabs.** Pause any video and save the frame as a full-resolution photo, with the video's date, camera, and GPS location written into it. Any frame can also become the video's thumbnail.
 - **Safe deleting.** Removing something always asks one clear question: take it out of Trove (the file stays on your drive) or delete the file itself (to the Recycle Bin by default). Deleting from disk can be switched off entirely, and Trove keeps a running total of the space you've freed.
