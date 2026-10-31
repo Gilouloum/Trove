@@ -1020,6 +1020,10 @@ async function faceNameGroup(i, personId) {
   g.faces.forEach(f => { f.p = personId; delete f.a; delete f.added; });
   faceScheduleSave();
   await assignFilesToFolderAdditive(g.fileIds, personId); // saves and toasts
+  // XP (rewards.js): a new name is worth more than another group for someone already named.
+  const receipt = rewardsBegin();
+  rewardsAdd(receipt, rewardsClaim(receipt, 'people', personId) ? 'personNew' : 'personMore');
+  rewardsCommit(receipt, { sound: 'pop' });
   renderFacesMode();
   faceScheduleRecognize(); // more to go on for everyone who looks like them
 }

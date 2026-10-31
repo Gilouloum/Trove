@@ -53,6 +53,7 @@
       "globe.js",
       "semanticIndex.js",
       "faceIndex.js",
+      "rewards.js",
       "similarShots.js",
       "photobook.js",
       "presentation.js",

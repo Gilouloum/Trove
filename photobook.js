@@ -22,6 +22,7 @@ function isPhotobookDecided(f) { return f.kept === true || f.kept === false || !
 function setLiked(f, liked) {
   if (liked || (f.bestOf && f.kept == null)) f.kept = true;
   f.bestOf = !!liked;
+  if (liked) setTimeout(() => rewardsCheckBadges(), 0); // after the whole batch is liked
 }
 
 // The trip's photos and videos as the photobook sees them: what the trip view shows, minus the
@@ -213,8 +214,10 @@ function pbCurrentTask() {
 }
 
 function pbSnapshot(files) {
-  pb.undo.push({ files: files.map(f => ({ f, kept: f.kept })), champion: pb.champion, laterKeys: new Set(pb.laterKeys) });
+  const snap = { files: files.map(f => ({ f, kept: f.kept })), champion: pb.champion, laterKeys: new Set(pb.laterKeys) };
+  pb.undo.push(snap);
   if (pb.undo.length > 200) pb.undo.shift();
+  return snap;
 }
 function pbSetKept(f, kept) { if (kept === undefined) delete f.kept; else f.kept = kept; }
 
@@ -224,8 +227,18 @@ function pbUndo() {
   last.files.forEach(({ f, kept }) => pbSetKept(f, kept));
   pb.champion = last.champion;
   pb.laterKeys = last.laterKeys;
+  rewardsRevoke(last.reward);
   persistQuiet();
   pbRender();
+}
+
+// XP for a decision (rewards.js): each shot pays once, the first time it's looked at, and each
+// photo once more the first time it goes into a photobook.
+function pbReward(snap, kind, seen, kept) {
+  const receipt = rewardsBegin();
+  if (seen.filter(f => rewardsClaim(receipt, 'seen', f.id)).length) rewardsAdd(receipt, kind);
+  kept.forEach(f => { if (rewardsClaim(receipt, 'kept', f.id)) rewardsAdd(receipt, 'kept'); });
+  snap.reward = rewardsCommit(receipt, { sound: kind === 'single' && !kept.length ? 'tick' : 'pop' });
 }
 
 // The winner stays (or gets) in the book and meets the next shot; the loser is left out, unless
@@ -234,25 +247,28 @@ function pbPick(side) {
   const cur = pbCurrentTask();
   if (!cur?.b) return;
   const winner = side === 'a' ? cur.a : cur.b, loser = side === 'a' ? cur.b : cur.a;
-  pbSnapshot([winner, loser]);
+  const snap = pbSnapshot([winner, loser]);
   winner.kept = true;
   if (!loser.bestOf) loser.kept = false;
   pb.champion = winner.id;
+  pbReward(snap, 'duel', [cur.b], [winner]);
   pbAfterAction();
 }
 function pbKeepBoth() {
   const cur = pbCurrentTask();
   if (!cur?.b) return;
-  pbSnapshot([cur.a, cur.b]);
+  const snap = pbSnapshot([cur.a, cur.b]);
   cur.a.kept = true; cur.b.kept = true;
   pb.champion = cur.a.id;
+  pbReward(snap, 'duel', [cur.b], [cur.a, cur.b]);
   pbAfterAction();
 }
 function pbSingle(keep) {
   const cur = pbCurrentTask();
   if (!cur || cur.b) return;
-  pbSnapshot([cur.a]);
+  const snap = pbSnapshot([cur.a]);
   cur.a.kept = !!keep;
+  pbReward(snap, 'single', [cur.a], keep ? [cur.a] : []);
   pbAfterAction();
 }
 function pbLater() {
@@ -470,7 +486,16 @@ function pbRenderDone() {
       <button class="pb-btn pb-btn-primary" onclick="openPresentation('${pb.tripId}')">${t('pbPresent')}</button>
     </div>
   </div>`);
-  if (!pb.celebrated) { pb.celebrated = true; photobookConfetti(document.getElementById('bookMode')); }
+  if (pb.celebrated) return;
+  pb.celebrated = true;
+  // Every photo looked at is a finished trip: it pays once, with the big finale (rewards.js).
+  // Groups left for later still get confetti, just not the finale.
+  const host = document.getElementById('bookMode');
+  const receipt = rewardsBegin();
+  if (!pbStats().toLook && rewardsClaim(receipt, 'books', pb.tripId)) {
+    rewardsAdd(receipt, 'bookDone');
+    rewardsCommit(receipt, { finale: { host, tripName: pbStats().trip?.name || '' } });
+  } else photobookConfetti(host);
 }
 
 // Same burst as the first-run wizard's (frShowDoneConfetti), in whichever overlay is showing.

@@ -1175,6 +1175,8 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 .pb-done{margin:auto;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;max-width:460px}
 .pb-done-title{font-size:20px;font-weight:700}.pb-done-sub{font-size:13px;color:var(--text2)}
 .pb-confetti{position:fixed;z-index:320}
+.pb-confetti .fr-confetti-piece{animation-name:pb-confetti-fall;animation-duration:2.3s}
+@keyframes pb-confetti-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}85%{opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}
 .pb-groups{max-width:1100px;width:100%;margin:0 auto}
 .pb-groups-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
 .pb-group{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:10px}
@@ -1208,6 +1210,33 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 .pres-tile .pp-cell{cursor:pointer;border-radius:3px;outline:2px solid transparent;outline-offset:2px}
 .pres-tile .pp-cell:hover{outline-color:rgba(236,111,146,.6)}
 .pres-tile .pp-cell.pres-swap-sel{outline-color:#ec6f92}
+/* XP, LEVELS, BADGES (rewards.js) */
+.journey-chip{-webkit-app-region:no-drag;margin-left:auto;display:flex;align-items:center;gap:6px;padding:3px 8px 3px 5px;border-radius:999px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font:inherit;cursor:pointer;position:relative;overflow:hidden;min-width:0}
+.journey-chip:hover{border-color:var(--accent)}
+.jc-icon{font-size:15px}.jc-text{display:flex;flex-direction:column;line-height:1.1;text-align:left;min-width:0}
+.jc-rank{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.jc-level{font-size:10px;color:var(--text3)}
+.jc-bar{position:absolute;left:0;right:0;bottom:0;height:2px;background:transparent}.jc-bar span{display:block;height:100%;background:var(--accent);transition:width .6s ease}
+.sound-toggle{-webkit-app-region:no-drag;background:none;border:none;font-size:13px;cursor:pointer;padding:2px;opacity:.75}.sound-toggle:hover{opacity:1}
+.rw-float{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);z-index:400;pointer-events:none;background:var(--accent);color:#fff;font-weight:700;font-size:13px;padding:4px 12px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);animation:rw-float 1.4s ease forwards}
+@keyframes rw-float{0%{opacity:0;transform:translate(-50%,8px)}15%{opacity:1;transform:translate(-50%,0)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-26px)}}
+.rw-card{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:410;display:flex;align-items:center;gap:14px;min-width:300px;max-width:440px;padding:14px 20px 14px 16px;border-radius:14px;background:var(--bg2);color:var(--text);border:1px solid var(--border2);box-shadow:0 14px 40px rgba(0,0,0,.4);cursor:pointer;animation:rw-card-in .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes rw-card-in{from{opacity:0;transform:translate(-50%,-20px) scale(.92)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+.rw-card-icon{font-size:34px;line-height:1}
+.rw-card-kicker{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.rw-card-title{font-size:17px;font-weight:700;margin-top:1px}.rw-card-sub{font-size:12.5px;color:var(--text2);margin-top:2px}
+.rw-finale .pb-book-big{animation:rw-bow 1.4s cubic-bezier(.3,1.5,.5,1)}
+@keyframes rw-bow{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.35) rotate(-8deg)}55%{transform:scale(1.2) rotate(6deg)}100%{transform:scale(1) rotate(0)}}
+@media (prefers-reduced-motion:reduce){.rw-float,.rw-card,.rw-finale .pb-book-big{animation:none}.jc-bar span{transition:none}}
+.jr-head{display:flex;align-items:center;gap:14px}
+.jr-rank-icon{font-size:42px}.jr-rank{font-size:17px;font-weight:700}
+.jr-bar{height:8px;border-radius:4px;background:var(--bg3);margin:8px 0 6px;overflow:hidden}.jr-bar span{display:block;height:100%;background:var(--accent);border-radius:4px}
+.jr-sub{font-size:12px;color:var(--text2)}
+.jr-ways{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.jr-way{display:flex;justify-content:space-between;font-size:12.5px;color:var(--text2);padding:3px 0;border-bottom:1px dashed var(--border)}.jr-way strong{color:var(--accent)}
+.jr-badges{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.jr-badge{text-align:center;padding:8px 4px;border-radius:var(--rs);background:var(--bg3);opacity:.5;filter:grayscale(1)}
+.jr-badge.got{opacity:1;filter:none;background:var(--aglow);border:1px solid var(--accent)}
+.jr-badge-icon{font-size:22px}.jr-badge-name{font-size:11px;font-weight:600;margin-top:3px}.jr-badge-sub{font-size:10px;color:var(--text3);margin-top:2px}
 /* Find Duplicates & Edits: edits to link on top, duplicates to clear below */
 .eg-section{margin-bottom:26px}
 .eg-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
@@ -1438,6 +1467,8 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
   <div class="sidebar-header">
     <div class="logo-icon"><img src="assets/icon-256.png" alt="Trove"/></div>
     <span class="logo-text">Trove</span>
+    <button class="journey-chip" id="journeyChip" onclick="openJourney()"></button>
+    <button class="sound-toggle" id="soundToggle" onclick="toggleSounds()">🔊</button>
   </div>
   <div class="sidebar-scroll">
     <div class="sb-sec">
@@ -2162,6 +2193,15 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 </div>
 
 <!-- BACKUPS MODAL -->
+<!-- Journey: level, rank and badges (rewards.js) -->
+<div class="modal-backdrop" id="journeyModal" style="z-index:300" onclick="if(event.target===this)closeJourney()">
+  <div class="modal-box" style="width:520px">
+    <div class="modal-head"><div class="modal-title" data-i18n="rwJourneyTitle">🧭 Your journey</div></div>
+    <div class="modal-body" id="journeyBody"></div>
+    <div class="modal-foot"><button class="btn-cancel" onclick="closeJourney()" data-i18n="pbClose">Close</button></div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="backupsModal" style="z-index:300">
   <div class="modal-box" style="width:460px">
     <div class="modal-head">
@@ -2388,6 +2428,12 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
       <div class="settings-hint" style="margin:-8px 0 14px">Finds faces in your photos and groups the ones that look alike, so you can name them and file every photo of someone at once. Runs only on this computer and never files anything without you. Turning it off deletes all face data; People folders stay.</div>
 
       <label class="settings-toggle-row" style="margin-bottom:6px">
+        <input type="checkbox" id="setSounds"/>
+        <span data-i18n="rwSettingSounds">Sounds</span>
+      </label>
+      <div class="settings-hint" style="margin:-8px 0 14px" data-i18n="rwSettingSoundsHint">Soft pops and chimes when you pick photos, level up or earn a badge. Never while Trove is in the background.</div>
+
+      <label class="settings-toggle-row" style="margin-bottom:6px">
         <input type="checkbox" id="setTelemetry"/>
         <span data-i18n="settingsTelemetry">Help improve Trove</span>
       </label>
@@ -2430,6 +2476,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 <script src="media-types.js"></script>
 <script src="heicGpu.js"></script>
 <script src="globe.js"></script>
+<script src="rewards.js"></script>
 <script src="photobook.js"></script>
 <script src="presentation.js"></script>
 <script src="renderer.js"></script>

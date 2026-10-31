@@ -179,6 +179,7 @@ Ten shots of the same view, and you never look at any of them? Each trip gets a 
 - **A goal that fills up.** Each trip suggests a size (about 40 photos for a 400-photo trip, editable), shown as a book filling up. Going over is fine.
 - **Nothing is deleted.** In the trip, your photobook comes first, then everything else below a "Not in your photobook" line, slightly dimmed. Every photo stays where it is.
 - **Present it.** Show the book with page turns, or as a clean full-screen slideshow for the TV. Pages are laid out automatically (one to three photos each, in date order), with a cover, a map of the route, the trip in numbers, and captions you can edit. Shuffle the layout, swap photos, move pages.
+- **Levels and badges.** Picking shots, clearing duplicates, naming people and finishing a trip earn XP, from Tourist all the way to Legend, with badges along the way and a small celebration when a photobook is done. Soft sounds can be muted in one click. It's all stored on your computer, and there are no streaks to lose.
 - **Export it.** Save a PDF, a single web page that works offline, or a complete folder with both plus the videos. Everything stays on your computer: there is no upload and no print service.
 
 ## More worth knowing

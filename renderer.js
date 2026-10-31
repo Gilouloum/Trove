@@ -687,7 +687,63 @@ const I18N = {
   prExportSaving: { en: 'Choose where to save it…', fr: "Choisissez où l'enregistrer…", de: 'Wählen Sie den Speicherort…', es: 'Elige dónde guardarlo…', zh: '请选择保存位置…' },
   prExportDone: { en: '📖 Photobook exported', fr: '📖 Album photo exporté', de: '📖 Fotobuch exportiert', es: '📖 Fotolibro exportado', zh: '📖 相册已导出' },
   prExportDoneSkipped: { en: v => `📖 Photobook exported, ${v.n} video${v.n!==1?'s':''} could not be copied`, fr: v => v.n !== 1 ? `📖 Album photo exporté, ${v.n} vidéos n'ont pas pu être copiées` : `📖 Album photo exporté, 1 vidéo n'a pas pu être copiée`, de: v => `📖 Fotobuch exportiert, ${v.n} Video${v.n!==1?'s':''} konnte${v.n!==1?'n':''} nicht kopiert werden`, es: v => `📖 Fotolibro exportado, no se ${v.n!==1?'pudieron':'pudo'} copiar ${v.n} vídeo${v.n!==1?'s':''}`, zh: v => `📖 相册已导出,有 ${v.n} 个视频无法复制` },
-  prExportFailed: { en: 'The export could not be saved', fr: "L'export n'a pas pu être enregistré", de: 'Der Export konnte nicht gespeichert werden', es: 'No se pudo guardar la exportación', zh: '导出无法保存' }
+  prExportFailed: { en: 'The export could not be saved', fr: "L'export n'a pas pu être enregistré", de: 'Der Export konnte nicht gespeichert werden', es: 'No se pudo guardar la exportación', zh: '导出无法保存' },
+
+  // XP, levels and badges (rewards.js)
+  rwRank_tourist: { en: 'Tourist', fr: 'Touriste', de: 'Tourist', es: 'Turista', zh: '游客' },
+  rwRank_wanderer: { en: 'Wanderer', fr: 'Vagabond', de: 'Wanderer', es: 'Andariego', zh: '漫游者' },
+  rwRank_voyager: { en: 'Voyager', fr: 'Voyageur', de: 'Reisender', es: 'Viajero', zh: '旅行家' },
+  rwRank_globetrotter: { en: 'Globetrotter', fr: 'Globe-trotter', de: 'Weltenbummler', es: 'Trotamundos', zh: '环球旅行家' },
+  rwRank_legend: { en: 'Legend', fr: 'Légende', de: 'Legende', es: 'Leyenda', zh: '传奇' },
+  rwRankSub_tourist: { en: 'Every journey starts somewhere.', fr: 'Tout voyage commence quelque part.', de: 'Jede Reise beginnt irgendwo.', es: 'Todo viaje empieza en algún sitio.', zh: '每段旅程都有起点。' },
+  rwRankSub_wanderer: { en: 'You know your way around your photos now.', fr: 'Vous connaissez vos photos sur le bout des doigts.', de: 'Sie kennen sich jetzt in Ihren Fotos aus.', es: 'Ya te mueves por tus fotos como en casa.', zh: '你已经熟悉自己的照片了。' },
+  rwRankSub_voyager: { en: 'Trips sorted, memories kept. Keep going!', fr: 'Voyages triés, souvenirs gardés. Continuez !', de: 'Reisen sortiert, Erinnerungen bewahrt. Weiter so!', es: 'Viajes ordenados, recuerdos guardados. ¡Sigue así!', zh: '旅行已整理,回忆已珍藏。继续加油!' },
+  rwRankSub_globetrotter: { en: 'A library that would make any traveller jealous.', fr: 'Une bibliothèque à rendre jaloux tous les voyageurs.', de: 'Eine Bibliothek, um die Sie jeder Reisende beneidet.', es: 'Una biblioteca que daría envidia a cualquier viajero.', zh: '让每位旅行者都羡慕的照片库。' },
+  rwRankSub_legend: { en: 'The very top. Your photos have never looked better.', fr: 'Le sommet. Vos photos n\'ont jamais été aussi belles.', de: 'Ganz oben. Ihre Fotos sahen nie besser aus.', es: 'Lo más alto. Tus fotos nunca se vieron mejor.', zh: '巅峰。你的照片从未如此出色。' },
+  rwLevelN: { en: v => `Level ${v.n}`, fr: v => `Niveau ${v.n}`, de: v => `Stufe ${v.n}`, es: v => `Nivel ${v.n}`, zh: v => `第 ${v.n} 级` },
+  rwLevelUp: { en: 'Level up!', fr: 'Niveau supérieur !', de: 'Stufe aufgestiegen!', es: '¡Subes de nivel!', zh: '升级了!' },
+  rwLevelUpSub: { en: v => `Still a ${v.rank}, and getting better at it.`, fr: v => `Toujours ${v.rank}, et de mieux en mieux.`, de: v => `Immer noch ${v.rank}, und immer besser darin.`, es: v => `Sigues siendo ${v.rank}, y cada vez mejor.`, zh: v => `仍是${v.rank},而且越来越熟练了。` },
+  rwNewRank: { en: 'New rank!', fr: 'Nouveau rang !', de: 'Neuer Rang!', es: '¡Nuevo rango!', zh: '新等级!' },
+  rwBadgeUnlocked: { en: 'Badge unlocked', fr: 'Badge débloqué', de: 'Abzeichen freigeschaltet', es: 'Insignia desbloqueada', zh: '解锁徽章' },
+  rwBookDoneKicker: { en: 'Photobook finished!', fr: 'Album photo terminé !', de: 'Fotobuch fertig!', es: '¡Fotolibro terminado!', zh: '相册完成了!' },
+  rwBookDoneSub: { en: v => `+${v.xp} XP · you're level ${v.level}`, fr: v => `+${v.xp} XP · vous êtes au niveau ${v.level}`, de: v => `+${v.xp} XP · Sie sind auf Stufe ${v.level}`, es: v => `+${v.xp} XP · estás en el nivel ${v.level}`, zh: v => `+${v.xp} XP · 你现在是第 ${v.level} 级` },
+  rwChipTitle: { en: v => `${v.xp} XP · ${v.next} to the next level. Click to see your journey.`, fr: v => `${v.xp} XP · encore ${v.next} pour le niveau suivant. Cliquez pour voir votre parcours.`, de: v => `${v.xp} XP · noch ${v.next} bis zur nächsten Stufe. Klicken für Ihre Reise.`, es: v => `${v.xp} XP · faltan ${v.next} para el siguiente nivel. Haz clic para ver tu viaje.`, zh: v => `${v.xp} XP · 距下一级还差 ${v.next}。点击查看你的旅程。` },
+  rwMute: { en: 'Mute sounds', fr: 'Couper les sons', de: 'Töne aus', es: 'Silenciar sonidos', zh: '静音' },
+  rwUnmute: { en: 'Turn sounds on', fr: 'Activer les sons', de: 'Töne an', es: 'Activar sonidos', zh: '开启声音' },
+  rwJourneyTitle: { en: '🧭 Your journey', fr: '🧭 Votre parcours', de: '🧭 Ihre Reise', es: '🧭 Tu viaje', zh: '🧭 你的旅程' },
+  rwToNext: { en: v => `${v.xp} XP · ${v.next} more to level ${v.level}`, fr: v => `${v.xp} XP · encore ${v.next} pour le niveau ${v.level}`, de: v => `${v.xp} XP · noch ${v.next} bis Stufe ${v.level}`, es: v => `${v.xp} XP · faltan ${v.next} para el nivel ${v.level}`, zh: v => `${v.xp} XP · 距第 ${v.level} 级还差 ${v.next}` },
+  rwNextRank: { en: v => `${v.rank} at level ${v.level}`, fr: v => `${v.rank} au niveau ${v.level}`, de: v => `${v.rank} ab Stufe ${v.level}`, es: v => `${v.rank} en el nivel ${v.level}`, zh: v => `第 ${v.level} 级成为${v.rank}` },
+  rwWaysTitle: { en: 'How to earn XP', fr: 'Comment gagner des XP', de: 'So sammeln Sie XP', es: 'Cómo ganar XP', zh: '如何获得 XP' },
+  rwWayDuel: { en: 'Decide a duel', fr: 'Trancher un duel', de: 'Ein Duell entscheiden', es: 'Decidir un duelo', zh: '完成一次对决' },
+  rwWaySingle: { en: 'Keep or skip a single shot', fr: 'Garder ou passer une photo unique', de: 'Einzelaufnahme behalten oder überspringen', es: 'Guardar o saltar una foto única', zh: '保留或跳过单张照片' },
+  rwWayKept: { en: 'A photo goes into a photobook', fr: 'Une photo entre dans un album', de: 'Ein Foto kommt ins Fotobuch', es: 'Una foto entra en un fotolibro', zh: '照片加入相册' },
+  rwWayDup: { en: 'Clear a duplicate', fr: 'Supprimer un doublon', de: 'Ein Duplikat entfernen', es: 'Eliminar un duplicado', zh: '清除一个重复项' },
+  rwWayPerson: { en: 'Name a new person', fr: 'Nommer une nouvelle personne', de: 'Eine neue Person benennen', es: 'Poner nombre a una persona nueva', zh: '为新人物命名' },
+  rwWayBook: { en: 'Finish a trip\'s photobook', fr: 'Terminer l\'album d\'un voyage', de: 'Das Fotobuch einer Reise fertigstellen', es: 'Terminar el fotolibro de un viaje', zh: '完成一趟旅行的相册' },
+  rwBadgesTitle: { en: v => `Badges (${v.n} / ${v.total})`, fr: v => `Badges (${v.n} / ${v.total})`, de: v => `Abzeichen (${v.n} / ${v.total})`, es: v => `Insignias (${v.n} / ${v.total})`, zh: v => `徽章(${v.n} / ${v.total})` },
+  rwStats: { en: v => `${v.duels} duels decided · ${v.kept} photos kept · ${v.dups} duplicates cleared · ${v.books} photobooks finished`, fr: v => `${v.duels} duels tranchés · ${v.kept} photos gardées · ${v.dups} doublons supprimés · ${v.books} albums terminés`, de: v => `${v.duels} Duelle entschieden · ${v.kept} Fotos behalten · ${v.dups} Duplikate entfernt · ${v.books} Fotobücher fertig`, es: v => `${v.duels} duelos decididos · ${v.kept} fotos guardadas · ${v.dups} duplicados eliminados · ${v.books} fotolibros terminados`, zh: v => `完成 ${v.duels} 次对决 · 保留 ${v.kept} 张照片 · 清除 ${v.dups} 个重复项 · 完成 ${v.books} 本相册` },
+  rwSettingSounds: { en: 'Sounds', fr: 'Sons', de: 'Töne', es: 'Sonidos', zh: '声音' },
+  rwSettingSoundsHint: { en: 'Soft pops and chimes when you pick photos, level up or earn a badge. Never while Trove is in the background.', fr: 'Petits sons doux quand vous choisissez des photos, montez de niveau ou gagnez un badge. Jamais quand Trove est en arrière-plan.', de: 'Sanfte Töne beim Auswählen von Fotos, Aufsteigen oder neuen Abzeichen. Nie, wenn Trove im Hintergrund ist.', es: 'Sonidos suaves al elegir fotos, subir de nivel o ganar una insignia. Nunca con Trove en segundo plano.', zh: '挑选照片、升级或获得徽章时播放轻柔的提示音。Trove 在后台时不会播放。' },
+  rwBadge_firstPick: { en: 'First pick', fr: 'Premier choix', de: 'Erste Wahl', es: 'Primera elección', zh: '初次挑选' },
+  rwBadgeHow_firstPick: { en: 'Decide your first duel', fr: 'Tranchez votre premier duel', de: 'Entscheiden Sie Ihr erstes Duell', es: 'Decide tu primer duelo', zh: '完成第一次对决' },
+  rwBadge_sharpEye: { en: 'Sharp eye', fr: 'Œil affûté', de: 'Scharfes Auge', es: 'Buen ojo', zh: '火眼金睛' },
+  rwBadgeHow_sharpEye: { en: 'Decide 100 duels', fr: 'Tranchez 100 duels', de: 'Entscheiden Sie 100 Duelle', es: 'Decide 100 duelos', zh: '完成 100 次对决' },
+  rwBadge_picky: { en: 'Picky', fr: 'Difficile', de: 'Wählerisch', es: 'Exigente', zh: '挑剔达人' },
+  rwBadgeHow_picky: { en: 'Decide 1,000 duels', fr: 'Tranchez 1 000 duels', de: 'Entscheiden Sie 1.000 Duelle', es: 'Decide 1.000 duelos', zh: '完成 1000 次对决' },
+  rwBadge_firstBook: { en: 'First trip done', fr: 'Premier voyage terminé', de: 'Erste Reise fertig', es: 'Primer viaje terminado', zh: '首趟旅行完成' },
+  rwBadgeHow_firstBook: { en: 'Finish a trip\'s photobook', fr: 'Terminez l\'album d\'un voyage', de: 'Stellen Sie das Fotobuch einer Reise fertig', es: 'Termina el fotolibro de un viaje', zh: '完成一趟旅行的相册' },
+  rwBadge_bookshelf: { en: 'Bookshelf', fr: 'Bibliothèque', de: 'Bücherregal', es: 'Estantería', zh: '书架' },
+  rwBadgeHow_bookshelf: { en: 'Finish 5 photobooks', fr: 'Terminez 5 albums photo', de: 'Stellen Sie 5 Fotobücher fertig', es: 'Termina 5 fotolibros', zh: '完成 5 本相册' },
+  rwBadge_curator: { en: 'Curator', fr: 'Conservateur', de: 'Kurator', es: 'Comisario', zh: '策展人' },
+  rwBadgeHow_curator: { en: 'Keep 250 photos in photobooks', fr: 'Gardez 250 photos dans vos albums', de: 'Behalten Sie 250 Fotos in Fotobüchern', es: 'Guarda 250 fotos en fotolibros', zh: '在相册中保留 250 张照片' },
+  rwBadge_firstSweep: { en: 'Spring cleaning', fr: 'Grand ménage', de: 'Frühjahrsputz', es: 'Limpieza a fondo', zh: '大扫除' },
+  rwBadgeHow_firstSweep: { en: 'Clear your first duplicate', fr: 'Supprimez votre premier doublon', de: 'Entfernen Sie Ihr erstes Duplikat', es: 'Elimina tu primer duplicado', zh: '清除第一个重复项' },
+  rwBadge_cleanSweep: { en: 'Clean sweep', fr: 'Table rase', de: 'Reiner Tisch', es: 'Barrido total', zh: '一扫而空' },
+  rwBadgeHow_cleanSweep: { en: 'Clear 100 duplicates', fr: 'Supprimez 100 doublons', de: 'Entfernen Sie 100 Duplikate', es: 'Elimina 100 duplicados', zh: '清除 100 个重复项' },
+  rwBadge_familiarFaces: { en: 'Familiar faces', fr: 'Visages familiers', de: 'Bekannte Gesichter', es: 'Caras conocidas', zh: '熟悉的面孔' },
+  rwBadgeHow_familiarFaces: { en: 'Name 5 people', fr: 'Nommez 5 personnes', de: 'Benennen Sie 5 Personen', es: 'Pon nombre a 5 personas', zh: '为 5 个人命名' },
+  rwBadge_bigHeart: { en: 'Big heart', fr: 'Grand cœur', de: 'Großes Herz', es: 'Gran corazón', zh: '大爱之心' },
+  rwBadgeHow_bigHeart: { en: 'Like 50 photos', fr: 'Aimez 50 photos', de: 'Markieren Sie 50 Fotos mit Gefällt mir', es: 'Marca 50 fotos con me gusta', zh: '喜欢 50 张照片' }
 };
 
 // A folder's icon is normally an emoji string, but folder.iconImage (a data URL, set via the
@@ -2260,7 +2316,7 @@ async function init() {
   if (!appData.hiddenSidebarSections) appData.hiddenSidebarSections = [];
   dupIgnoredKeys = new Set(appData.dupIgnoredKeys);
   editedDismissedKeys = new Set(appData.editedDismissedKeys);
-  const settingsDefaults = { mapboxToken: '', useMapboxRouting: true, mapboxMonthlyCap: 8000, mapboxCallsThisMonth: 0, mapboxCallsMonthKey: '', themeMode: 'system', allowDeleteFiles: true, telemetryEnabled: false, gridCardMin: 155, sidebarWidth: 234, language: '' };
+  const settingsDefaults = { mapboxToken: '', useMapboxRouting: true, mapboxMonthlyCap: 8000, mapboxCallsThisMonth: 0, mapboxCallsMonthKey: '', themeMode: 'system', allowDeleteFiles: true, telemetryEnabled: false, gridCardMin: 155, sidebarWidth: 234, language: '', sounds: true };
   for (const k in settingsDefaults) if (appData.settings[k] === undefined) appData.settings[k] = settingsDefaults[k];
   // Telemetry used to default on (opt-out, with a one-time "OK / Turn off" notice). It's opt-in
   // now, so everyone who hasn't answered the new yes/no question - upgraders included - starts
@@ -2268,6 +2324,7 @@ async function init() {
   if (!appData.settings.telemetryAsked) appData.settings.telemetryEnabled = false;
   currentLang = resolveLanguage(appData.settings.language);
   applyI18n();
+  rewardsRenderChip();
   applyTheme();
   applyDisplaySizes();
   // v2 migration: favorites become Best Of
@@ -6498,6 +6555,7 @@ function openSettingsModal() {
   document.getElementById('setAllowDelete').checked = appData.settings.allowDeleteFiles !== false;
   document.getElementById('setTelemetry').checked = appData.settings.telemetryEnabled === true;
   document.getElementById('setFaceRecognition').checked = !!appData.settings.faceRecognition;
+  document.getElementById('setSounds').checked = appData.settings.sounds !== false;
   const mbToken = document.getElementById('setMapboxToken');
   if (mbToken) mbToken.value = appData.settings.mapboxToken || '';
   const mbUse = document.getElementById('setUseMapbox');
@@ -6519,6 +6577,8 @@ function saveSettings() {
   // it goes through its own function - which asks before deleting anything.
   const faceOn = document.getElementById('setFaceRecognition').checked;
   if (faceOn !== !!appData.settings.faceRecognition) setFaceRecognition(faceOn);
+  appData.settings.sounds = document.getElementById('setSounds').checked;
+  rewardsRenderChip();
   const mbToken = document.getElementById('setMapboxToken');
   if (mbToken) appData.settings.mapboxToken = mbToken.value.trim();
   const mbUse = document.getElementById('setUseMapbox');
@@ -8263,6 +8323,7 @@ async function confirmDupGroupDelete() {
     ? `🗑 Deleted ${res.deleted.length} file${res.deleted.length !== 1 ? 's' : ''} - ${freed} freed`
     : `🗑 ${res.deleted.length} file${res.deleted.length !== 1 ? 's' : ''} moved to Recycle Bin (${freed}) - empty it to free the space`, 5000);
   toastDeleteFailures(res);
+  if (res.deleted.length) rewardsGain('dup', res.deleted.length);
   // Nothing went: the group is still exactly as it was, so leave it open to try again.
   if (!res.deleted.length) { renderDupCompare(document.getElementById('dupBody')); return; }
   dupGroups = dupGroups.filter(g => g.id !== group.id);
@@ -8391,6 +8452,7 @@ async function confirmBurstDelete() {
     ? `🎞 Deleted ${res.deleted.length} photos - ${freed} freed`
     : `🎞 ${res.deleted.length} photos moved to Recycle Bin (${freed}) - empty it to free the space`, 5000);
   toastDeleteFailures(res);
+  if (res.deleted.length) rewardsGain('dup', res.deleted.length); // near-identical frames are duplicates too
 }
 
 // ── MEDIA POPUP ───────────────────────────────────────────────────────────────
@@ -17796,7 +17858,7 @@ document.addEventListener('keydown', e=>{
     closeSortMenu();
     closeAssignModal();closeNewFolderModal();closePhotoPopup();closeEditModal();closeCoverPicker();
     cancelDeleteConfirm();closeBurstReview();
-    closeSettingsModal();closeBackupsModal();closeMissingFilesModal();
+    closeSettingsModal();closeBackupsModal();closeMissingFilesModal();closeJourney();
     closeVersionModal();closeVersionPickModal();
     hideCtxMenu();hideFolderCtxMenu();
     if(selectedIds.size)clearSelection();
