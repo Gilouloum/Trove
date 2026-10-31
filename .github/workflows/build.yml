@@ -1,0 +1,100 @@
+name: Build Desktop Apps
+
+on:
+  push:
+    branches: [main]
+    # Docs, screenshots and the AEO files live in this repo too - editing them shouldn't
+    # rebuild the app and push an "update" to every install.
+    paths-ignore:
+      - '**.md'
+      - 'screenshots/**'
+      - 'llms.txt'
+      - 'structured-data.json'
+      - 'LICENSE'
+  workflow_dispatch: {}
+
+# write: the publish steps below update this repo's own "latest-build" release.
+permissions:
+  contents: write
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      # electron-updater compares semver between the running app and the published feed, so a
+      # static package.json version would mean it never sees an "update" - run_number always
+      # increases and is identical across build-mac/build-win within one workflow run.
+      # 1.1.x, not 1.0.x: builds used to come from the old private repo, whose run_number got
+      # to 30 (1.0.30). This repo's run_number restarts at 1, and 1.0.1 would look older than
+      # what's already installed, so updates would never reach existing users.
+      - name: Set build version
+        run: npm version "1.1.${{ github.run_number }}" --no-git-tag-version --allow-same-version
+      # Regenerates assets/vendor and assets/models locally instead of committing ~190MB of
+      # binary/model files to the repo - vendor-clip-model needs network access to pull the
+      # quantized CLIP weights from the HuggingFace Hub, which this runner has.
+      - run: npm run vendor:cesium
+      - run: npm run vendor:transformers
+      - run: npm run vendor:clip-model
+      - run: npm run vendor:sam-model   # PhotoMod Auto select (SlimSAM)
+      - run: npm run vendor:face-api    # People face recognition models, copied from node_modules
+      # No Apple Developer certificate, so this can't be signed/notarized for real. Note that
+      # electron-builder does NOT fall back to a free ad-hoc signature when it finds no cert -
+      # it skips signing entirely - and a completely unsigned arm64 build can't run on Apple
+      # Silicon at all (the kernel kills it, which macOS reports as "the app is damaged").
+      # scripts/adhoc-sign-mac.js (wired up as electron-builder's afterPack hook) applies that
+      # ad-hoc signature itself, and fails the build loudly if it can't, so an unrunnable Mac
+      # build can never be published again. Users still strip quarantine once - see README.md.
+      # --publish never: still generates latest-mac.yml (electron-updater's feed file) since
+      # package.json has a publish config, but the actual upload happens in the step below.
+      - name: Build (ad-hoc signed - no Apple Developer certificate)
+        run: npm run build -- --mac --publish never
+      # Publishes straight from this job (to this repo's own releases, with the default
+      # GITHUB_TOKEN) instead of going through actions/upload-artifact and a separate collector
+      # job. Actions artifact storage is a small quota shared across the account, and filling it
+      # blocks every workflow until GitHub's next 6-12h usage recalculation. Release assets
+      # aren't subject to that quota at all. build-win (needs: build-mac below) runs after this
+      # job finishes so the two builds never race to create/update the same "latest-build" release.
+      - name: Publish/update release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest-build
+          name: "Trove: latest test build"
+          prerelease: true
+          files: |
+            dist/*.dmg
+            dist/*.zip
+            dist/latest-mac.yml
+            dist/*.blockmap
+
+  build-win:
+    needs: build-mac
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - name: Set build version
+        run: npm version "1.1.${{ github.run_number }}" --no-git-tag-version --allow-same-version
+      - run: npm run vendor:cesium
+      - run: npm run vendor:transformers
+      - run: npm run vendor:clip-model
+      - run: npm run vendor:sam-model   # PhotoMod Auto select (SlimSAM)
+      - run: npm run vendor:face-api    # People face recognition models, copied from node_modules
+      - run: npm run build -- --win --publish never
+      - name: Publish/update release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest-build
+          name: "Trove: latest test build"
+          prerelease: true
+          files: |
+            dist/*.exe
+            dist/latest.yml
+            dist/*.blockmap

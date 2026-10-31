@@ -1,0 +1,83 @@
+{
+  "name": "trove",
+  "version": "1.0.0",
+  "description": "A local-first photo and video organizer that never uploads, copies, or moves your files",
+  "main": "main.js",
+  "author": "Yannis Morin",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gilouloum/Trove-releases.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "vendor:cesium": "node scripts/vendor-cesium.js",
+    "vendor:transformers": "node scripts/vendor-transformers.js",
+    "vendor:clip-model": "node scripts/vendor-clip-model.js",
+    "vendor:sam-model": "node scripts/vendor-sam-model.js",
+    "vendor:face-api": "node scripts/vendor-face-api.js"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "@huggingface/transformers": "^4.2.0",
+    "@vladmandic/face-api": "^1.7.15",
+    "cesium": "^1.144.0",
+    "electron": "^36.3.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.trove.app",
+    "productName": "Trove",
+    "afterPack": "./scripts/adhoc-sign-mac.js",
+    "publish": {
+      "provider": "github",
+      "owner": "Gilouloum",
+      "repo": "Trove-releases"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "media-types.js",
+      "renderer.js",
+      "viewer360.js",
+      "preload.js",
+      "globe.js",
+      "semanticIndex.js",
+      "faceIndex.js",
+      "index.html",
+      "package.json",
+      "telemetry-config.js",
+      "worker/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Trove",
+      "artifactName": "Trove-Setup.${ext}",
+      "deleteAppDataOnUninstall": false
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.photography",
+      "artifactName": "Trove-${arch}.${ext}"
+    }
+  }
+}

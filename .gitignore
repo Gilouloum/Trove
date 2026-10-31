@@ -1,0 +1,8 @@
+node_modules/
+dist/
+data/
+assets/vendor/
+assets/models/
+# Only the clouds layer is used by the globe (see EARTH_TEXTURES in globe.js)
+assets/earth/*
+!assets/earth/earth_clouds_2048.png

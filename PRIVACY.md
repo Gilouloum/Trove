@@ -1,10 +1,10 @@
 # Trove Privacy Policy
 
-*Last updated: 2 October 2026* · [Version française plus bas](#politique-de-confidentialité-de-trove)
+*Last updated: 31 October 2026* · [Version française plus bas](#politique-de-confidentialité-de-trove)
 
 Trove runs on your computer. Your photos, videos, file names, folders, faces, people's names and edits never leave it. There are no accounts, no ads and no cookies, and nothing is ever sold.
 
-A few features do talk to outside services. This page lists every one of them, what they receive, and how to turn them off.
+A few features do talk to outside services. This page lists every one of them, what they receive, and how to turn them off. Trove is open source, so you can check each of them in [its code](README.md#open-source).
 
 ## Who is responsible
 
@@ -25,13 +25,13 @@ Contact: **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 
 **Why.** To know how many people use Trove and roughly how, so I can decide what to fix and build next. It is used only for these statistics: never for advertising, never combined with other data, never shared or sold.
 
-**Legal basis.** Legitimate interest (Article 6(1)(f) GDPR) in measuring the app's audience. The install ID stored on your computer is covered by the exemption for audience measurement in Article 82 of the French Data Protection Act, as set out by the CNIL. This is why the ping is on by default but can be turned off at any time.
+**Legal basis.** Your consent (Article 6(1)(a) GDPR, and Article 82 of the French Data Protection Act for the install ID stored on your computer). The ping is off unless you say yes, and you can withdraw your consent at any time.
 
 **Where it is stored.** In Google Firebase (Cloud Firestore), with Google acting as a processor on my behalf. Google may process data outside the European Union. Those transfers are covered by the EU-US Data Privacy Framework and Google's Standard Contractual Clauses. Like any internet request, the message reveals your IP address to Google when it is sent. Trove does not record it.
 
 **How long.** Each event is deleted 25 months after it is sent.
 
-**Your choice.** Trove tells you about this on first launch, and nothing is sent until you have seen that notice. You can turn it off there, or at any time in **Settings → Help improve Trove**. Once it is off, nothing more is sent.
+**Your choice.** Trove asks you once, on first launch, whether to share these statistics, and nothing is sent unless you say yes. You can change your answer at any time in **Settings → Help improve Trove**. Once it is off, nothing more is sent.
 
 ## 2. Place names for your photos (OpenStreetMap)
 
@@ -65,11 +65,11 @@ If this policy changes, the new version will be published here with a new date a
 
 # Politique de confidentialité de Trove
 
-*Dernière mise à jour : 2 octobre 2026*
+*Dernière mise à jour : 31 octobre 2026*
 
 Trove fonctionne sur votre ordinateur. Vos photos, vidéos, noms de fichiers, dossiers, visages, noms de personnes et retouches n'en sortent jamais. Il n'y a ni compte, ni publicité, ni cookie, et rien n'est jamais vendu.
 
-Certaines fonctions communiquent toutefois avec des services extérieurs. Cette page les liste toutes, indique ce qu'ils reçoivent et comment les désactiver.
+Certaines fonctions communiquent toutefois avec des services extérieurs. Cette page les liste toutes, indique ce qu'ils reçoivent et comment les désactiver. Trove est open source : vous pouvez vérifier chacune d'elles dans [son code](README.md#open-source).
 
 ## Responsable du traitement
 
@@ -90,13 +90,13 @@ Contact : **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 
 **Pourquoi.** Pour savoir combien de personnes utilisent Trove et, en gros, comment, afin de décider quoi corriger et développer ensuite. Ces données servent uniquement à ces statistiques : jamais à la publicité, jamais croisées avec d'autres données, jamais partagées ni vendues.
 
-**Base légale.** L'intérêt légitime (article 6.1.f du RGPD) à mesurer l'audience de l'application. L'identifiant stocké sur votre ordinateur relève de l'exemption de consentement prévue pour la mesure d'audience par l'article 82 de la loi Informatique et Libertés, telle que précisée par la CNIL. C'est pourquoi ce signal est activé par défaut mais désactivable à tout moment.
+**Base légale.** Votre consentement (article 6.1.a du RGPD, et article 82 de la loi Informatique et Libertés pour l'identifiant stocké sur votre ordinateur). Ce signal est désactivé sauf si vous l'acceptez, et vous pouvez retirer votre consentement à tout moment.
 
 **Où sont stockées les données.** Chez Google Firebase (Cloud Firestore), Google agissant en tant que sous-traitant pour mon compte. Google peut traiter les données hors de l'Union européenne. Ces transferts sont encadrés par le Data Privacy Framework UE-États-Unis et les clauses contractuelles types de Google. Comme toute requête sur Internet, l'envoi révèle votre adresse IP à Google. Trove ne l'enregistre pas.
 
 **Durée de conservation.** Chaque événement est supprimé 25 mois après son envoi.
 
-**Votre choix.** Trove vous en informe au premier lancement, et rien n'est envoyé avant que vous ayez vu cet avis. Vous pouvez le désactiver à ce moment-là, ou à tout moment dans **Paramètres → Aider à améliorer Trove**. Une fois désactivé, plus rien n'est envoyé.
+**Votre choix.** Trove vous demande une fois, au premier lancement, si vous souhaitez partager ces statistiques, et rien n'est envoyé si vous ne l'acceptez pas. Vous pouvez changer d'avis à tout moment dans **Paramètres → Aider à améliorer Trove**. Une fois désactivé, plus rien n'est envoyé.
 
 ## 2. Noms de lieux pour vos photos (OpenStreetMap)
 

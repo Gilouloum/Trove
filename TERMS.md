@@ -1,12 +1,12 @@
 # Trove Terms of Use
 
-*Last updated: 2 October 2026* · [Version française plus bas](#conditions-dutilisation-de-trove)
+*Last updated: 31 October 2026* · [Version française plus bas](#conditions-dutilisation-de-trove)
 
-Trove is free software made by Yannis Morin, an individual developer based in France. By installing or using it, you agree to these terms.
+Trove is free, open-source software made by Yannis Morin, an individual developer based in France. By installing or using it, you agree to these terms.
 
 ## Using Trove
 
-You may install and use Trove, free of charge, on any computer you own or are allowed to use, for personal or professional purposes. Trove's source code is not public. Except where the law expressly allows it, you may not sell Trove, redistribute modified copies, or reverse engineer it.
+You may install and use Trove, free of charge, on any computer you own or are allowed to use, for personal or professional purposes. Trove is open source: its source code is published under the [GNU General Public License, version 3 or later](LICENSE), which lets you read, change, and redistribute it under that license's conditions. Where these terms and the GPL differ about the code itself, the GPL applies.
 
 ## Your files
 
@@ -30,13 +30,13 @@ Contact: **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 
 # Conditions d'utilisation de Trove
 
-*Dernière mise à jour : 2 octobre 2026*
+*Dernière mise à jour : 31 octobre 2026*
 
-Trove est un logiciel gratuit développé par Yannis Morin, développeur indépendant basé en France. En l'installant ou en l'utilisant, vous acceptez ces conditions.
+Trove est un logiciel libre et gratuit développé par Yannis Morin, développeur indépendant basé en France. En l'installant ou en l'utilisant, vous acceptez ces conditions.
 
 ## Utilisation de Trove
 
-Vous pouvez installer et utiliser Trove gratuitement sur tout ordinateur que vous possédez ou êtes autorisé à utiliser, à des fins personnelles ou professionnelles. Le code source de Trove n'est pas public. Sauf lorsque la loi l'autorise expressément, vous ne pouvez pas vendre Trove, en redistribuer des copies modifiées, ni le décompiler.
+Vous pouvez installer et utiliser Trove gratuitement sur tout ordinateur que vous possédez ou êtes autorisé à utiliser, à des fins personnelles ou professionnelles. Trove est open source : son code source est publié sous la [licence publique générale GNU, version 3 ou ultérieure](LICENSE), qui vous permet de le lire, le modifier et le redistribuer selon les conditions de cette licence. Lorsque ces conditions et la GPL diffèrent au sujet du code lui-même, la GPL s'applique.
 
 ## Vos fichiers
 

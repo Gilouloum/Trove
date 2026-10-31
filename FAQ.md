@@ -73,3 +73,7 @@ Windows 10 and 11 on any recent PC, and macOS on Apple Silicon (M1, M2, M3, or M
 ### Does Trove have facial recognition?
 
 Yes, and it's off until you turn it on. Face recognition runs entirely on your computer: faces are found and compared on your own machine, and no photo, face, or name is ever sent anywhere. It learns who's who from the People folders you already have, so the only people it asks you about are the ones it doesn't know yet. Turning it off deletes all the face data it stored.
+
+### Is Trove open source?
+
+Yes. Trove is open source under the GPL-3.0 license, and its full source code is in this repository. Anyone can check exactly what it does with their photos (nothing leaves the computer), build it themselves, or contribute.

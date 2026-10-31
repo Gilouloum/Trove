@@ -2,7 +2,7 @@
 
 Your photos and videos, finally organized. Not a single one of them ever leaves your computer.
 
-Trove is a free, local-first photo organizer and editor for Windows and macOS. It never uploads, copies, or moves your files: it organizes links back to them, exactly where they already live on your drive. No cloud, no subscription, no account. Everything smart it does, from searching photos by what's in them to recognizing the people in them, runs on your own computer.
+Trove is a free, open-source, local-first photo organizer and editor for Windows and macOS. It never uploads, copies, or moves your files: it organizes links back to them, exactly where they already live on your drive. No cloud, no subscription, no account. Everything smart it does, from searching photos by what's in them to recognizing the people in them, runs on your own computer.
 
 If you've been searching for how to sort a huge, messy photo library, how to find duplicate photos, how to find your old edited shots again, or how to remove an object from a photo without uploading it anywhere, this page covers what Trove does and how. Short answers are in the [FAQ](FAQ.md).
 
@@ -16,7 +16,7 @@ If you've been searching for how to sort a huge, messy photo library, how to fin
   </a>
 </p>
 
-<p align="center"><sub>Windows (any recent PC) · macOS (Apple Silicon, M1/M2/M3/M4)</sub></p>
+<p align="center"><sub>Windows (any recent PC) · macOS (Apple Silicon, M1/M2/M3/M4) · Open source, <a href="LICENSE">GPL-3.0</a></sub></p>
 
 ---
 
@@ -27,6 +27,8 @@ If you've been searching for how to sort a huge, messy photo library, how to fin
 ## Why a local, zero-copy photo organizer
 
 Most photo apps want your library uploaded somewhere, or imported into a catalog they control. Trove doesn't. It's zero-copy: it never duplicates or moves a single file. Every card you see is a pointer to the real file, sitting where it already was, on any drive: internal, external SSD, or NAS. Nothing is sent anywhere, and nothing changes unless you change it.
+
+You don't have to take that on trust. Trove is open source: every line of code that touches the network is right here in this repo, and the [privacy policy](PRIVACY.md) lists each one.
 
 ## Your library, organized for you
 
@@ -195,6 +197,7 @@ The short version: other apps want your library uploaded, or imported into a cat
 | On-device AI content search | Yes, fully offline | Yes, but in the cloud | Yes | Yes, but cloud-based |
 | Layer editor with object removal | Yes, built in, offline | Object removal only, no layers | Object removal only, no layers | Object removal; layers need Photoshop |
 | Account required | No | Yes | Yes | Yes |
+| Open source | Yes (GPL-3.0) | No | No | No |
 
 ## How Trove compares to digiKam and XnView MP
 
@@ -212,6 +215,7 @@ digiKam and XnView MP are the free, local alternatives people usually find for W
 | Shows RAW files | Yes | Yes | Yes |
 | RAW development, IPTC/XMP editing | No, not the point of the app | Yes | Limited |
 | Learning curve | Minutes | Hours | Low to moderate |
+| Open source | Yes (GPL-3.0) | Yes (GPL) | No, freeware |
 
 If digiKam looks powerful but overwhelming, or XnView feels like a file browser rather than something that organizes your library, that gap is what Trove is for.
 
@@ -222,6 +226,8 @@ If digiKam looks powerful but overwhelming, or XnView feels like a file browser 
 **What's the best way to store and organize my photos?** Keep your original files where they already are, and layer organization on top instead of importing everything into a new managed library. That's Trove's zero-copy design: it links to your files rather than duplicating or moving them.
 
 **Does Trove have face recognition? Is it private?** Yes, and it's opt-in. Faces are found and compared entirely on your computer, nothing is uploaded, and turning it off deletes all the face data. It learns from the People folders you already have, so it only asks about faces it doesn't know.
+
+**Is Trove open source?** Yes, under the GPL-3.0 license. The full source code is in this repository, so anyone can check that Trove does what it says with their photos, build it themselves, or contribute.
 
 **How do I sort thousands of unsorted photos?** Use Guided Sort: it clears a backlog one cluster at a time, by trip, date, person, camera, or location, instead of one photo at a time.
 
@@ -237,6 +243,18 @@ The full list, including duplicate detection, cloud-free storage, and platform s
 
 ---
 
+## Open source
+
+Trove's full source code is in this repository, under the [GPL-3.0](LICENSE) license. You can read it, build it yourself, change it, and share your changes, as long as they stay open source too.
+
+- **Found a bug or have an idea?** [Open an issue](https://github.com/Gilouloum/Trove-releases/issues). Screenshots and your OS version help a lot.
+- **Want to run it from source or contribute?** [CONTRIBUTING.md](CONTRIBUTING.md) covers setup and where everything lives in the code.
+- **Like it?** A star on this repo helps other people find Trove.
+
+Trove is built by one developer in France, in the open. Third-party libraries and models it uses are credited in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+---
+
 ## Installing
 
 **Windows:** run the downloaded `.exe`. Windows will show a blue "Windows protected your PC" screen. That's only because the installer isn't signed with a paid certificate yet, not a sign of a problem. Click **More info → Run anyway**, then follow the installer.
@@ -247,8 +265,8 @@ Trove checks for updates automatically after that. No need to come back here for
 
 ---
 
-<sub>This repo only contains the built app. Trove's source code is closed. If you're looking for the app itself, the buttons above are all you need.</sub>
+<sub>This repo holds Trove's source code and its releases. If you just want the app, the download buttons at the top are all you need.</sub>
 
-<sub>[Privacy policy](PRIVACY.md) · [Terms of use](TERMS.md)</sub>
+<sub>[Privacy policy](PRIVACY.md) · [Terms of use](TERMS.md) · [License](LICENSE) · [Contributing](CONTRIBUTING.md)</sub>
 
-<sub>**Topics:** photo organizer, photo manager, photo library organizer, duplicate photo finder, photo sorting software, local photo storage, offline photo organizer, no-cloud photo app, private face recognition, on-device face recognition, photo organizer for Windows, photo organizer for Mac, photo viewer, RAW photo viewer, HEIC viewer for Windows, photo editor with layers, remove objects from photos, 360 photo viewer, find edited photos, AI photo search. See also: [llms.txt](llms.txt), [FAQ.md](FAQ.md).</sub>
+<sub>**Topics:** open source photo organizer, photo organizer, photo manager, photo library organizer, duplicate photo finder, photo sorting software, local photo storage, offline photo organizer, no-cloud photo app, private face recognition, on-device face recognition, photo organizer for Windows, photo organizer for Mac, photo viewer, RAW photo viewer, HEIC viewer for Windows, photo editor with layers, remove objects from photos, 360 photo viewer, find edited photos, AI photo search. See also: [llms.txt](llms.txt), [FAQ.md](FAQ.md).</sub>
