@@ -31,10 +31,7 @@ Trove itself is licensed under the [GPL-3.0](LICENSE). It is built on, and ships
 
 ## Images and map data
 
-<!-- TODO before publishing: confirm where assets/earth/earth_clouds_2048.png came from. Same name and
-     size as the cloud texture three.js used to ship in examples/textures/planets (MIT), but the pixels
-     differ, so it may have been edited or come from somewhere else. -->
-- `assets/earth/earth_clouds_2048.png`, the globe's cloud layer, is adapted from the [three.js](https://github.com/mrdoob/three.js) example textures (MIT).
+- `assets/earth/earth_clouds_2048.png`, the globe's cloud layer, is adapted from the [three.js](https://github.com/mrdoob/three.js) example textures (MIT): the same cloud map, recolored to plain white so only its transparency shapes the clouds.
 - Satellite imagery, place labels, and elevation on the globe are streamed at runtime from [Esri ArcGIS](https://www.esri.com) services and are subject to Esri's terms. They are not part of this repository.
 - Place names come from [OpenStreetMap](https://www.openstreetmap.org/copyright) via its Nominatim service, © OpenStreetMap contributors, available under the Open Database License.
 
