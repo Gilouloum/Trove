@@ -577,7 +577,12 @@ const I18N = {
   themeAuto: { en: '🖥️ Theme: Auto', fr: '🖥️ Thème : Auto', de: '🖥️ Design: Automatisch', es: '🖥️ Tema: Automático', zh: '🖥️ 主题:自动' },
   themeLight: { en: '☀️ Theme: Light', fr: '☀️ Thème : Clair', de: '☀️ Design: Hell', es: '☀️ Tema: Claro', zh: '☀️ 主题:浅色' },
   themeDark: { en: '🌙 Theme: Dark', fr: '🌙 Thème : Sombre', de: '🌙 Design: Dunkel', es: '🌙 Tema: Oscuro', zh: '🌙 主题:深色' },
-  themeToggleTitle: { en: "Click to switch between matching your computer's setting, Light, and Dark", fr: "Cliquez pour basculer entre le réglage de votre ordinateur, Clair et Sombre", de: 'Klicken Sie, um zwischen der Einstellung Ihres Computers, Hell und Dunkel zu wechseln', es: 'Haz clic para alternar entre la configuración de tu ordenador, Claro y Oscuro', zh: '点击可在跟随系统设置、浅色和深色之间切换' }
+  themeToggleTitle: { en: "Click to switch between matching your computer's setting, Light, and Dark", fr: "Cliquez pour basculer entre le réglage de votre ordinateur, Clair et Sombre", de: 'Klicken Sie, um zwischen der Einstellung Ihres Computers, Hell und Dunkel zu wechseln', es: 'Haz clic para alternar entre la configuración de tu ordenador, Claro y Oscuro', zh: '点击可在跟随系统设置、浅色和深色之间切换' },
+
+  // Photo preview: dragging the file out
+  popupZoomHint: { en: '🔍 Scroll to zoom · Drag the photo out to another app · Zoomed in, drag to pan', fr: "🔍 Molette pour zoomer · Glissez la photo vers une autre application · En zoom, glissez pour vous déplacer", de: '🔍 Scrollen zum Zoomen · Foto in eine andere App ziehen · Gezoomt: ziehen zum Verschieben', es: '🔍 Rueda para hacer zoom · Arrastra la foto a otra aplicación · Con zoom, arrastra para moverte', zh: '🔍 滚动缩放 · 将照片拖到其他应用 · 放大后拖动可平移' },
+  popupDragFile: { en: 'Drag file', fr: 'Glisser le fichier', de: 'Datei ziehen', es: 'Arrastrar archivo', zh: '拖出文件' },
+  popupDragTitle: { en: 'Drag this file into another app, an email or a folder, without closing the preview. You can also drag the photo itself.', fr: "Faites glisser ce fichier vers une autre application, un e-mail ou un dossier, sans fermer l'aperçu. Vous pouvez aussi faire glisser la photo elle-même.", de: 'Ziehen Sie diese Datei in eine andere App, eine E-Mail oder einen Ordner, ohne die Vorschau zu schließen. Sie können auch das Foto selbst ziehen.', es: 'Arrastra este archivo a otra aplicación, un correo o una carpeta sin cerrar la vista previa. También puedes arrastrar la propia foto.', zh: '无需关闭预览,即可将此文件拖到其他应用、邮件或文件夹中。也可以直接拖动照片本身。' }
 };
 
 // A folder's icon is normally an emoji string, but folder.iconImage (a data URL, set via the
@@ -8695,9 +8700,27 @@ function popupMaybeLoadHires() {
   });
 }
 
+// Dragging the file out of the preview, so it can go into an editor, an email or Explorer without
+// closing the preview first. It's the same OS drag a grid card hands over once it leaves the
+// window (handFileDragToOs): the real file, never a copy. A press only turns into a drag once the
+// mouse has moved a few pixels, so a click or a double-click to zoom still work as before.
+const POPUP_FILE_DRAG_PX = 6;
+let popupFileDragStart = null; // { x, y, file } between the press and the drag starting
+function popupWatchFileDrag(e) {
+  const file = popupClusterFiles[popupClusterIndex];
+  if (!file || file._missing || e.button !== 0) return false;
+  popupFileDragStart = { x: e.clientX, y: e.clientY, file };
+  e.preventDefault();
+  return true;
+}
+// The side panel's handle: works for every file, zoomed in or not, videos and 360 included.
+function popupDragHandleDown(e) { popupWatchFileDrag(e); }
+
 function popupOnMouseDown(e) {
   const file = popupClusterFiles[popupClusterIndex];
   if (file && (isVid(file.ext) || is360File(file))) return; // don't hijack clicks on the native video controls
+  // Unzoomed, pressing on the photo itself starts a file drag; zoomed in, a drag pans instead.
+  if (popupZoom <= 1 && e.target.id === 'photoPopupImg' && popupWatchFileDrag(e)) return;
   if (popupZoom <= 1 || (e.button !== 0 && e.button !== 1)) return; // left- or middle-drag pans
   popupDragging = true;
   popupDragStart = { x: e.clientX, y: e.clientY, panX: popupPanX, panY: popupPanY };
@@ -8706,6 +8729,14 @@ function popupOnMouseDown(e) {
 }
 
 function popupOnMouseMove(e) {
+  const start = popupFileDragStart;
+  if (start) {
+    if (!(e.buttons & 1)) { popupFileDragStart = null; return; } // released outside the window
+    if (Math.hypot(e.clientX - start.x, e.clientY - start.y) < POPUP_FILE_DRAG_PX) return;
+    popupFileDragStart = null;
+    window.api.startFileDrag([start.file.path], start.file.id);
+    return;
+  }
   if (!popupDragging) return;
   popupPanX = popupDragStart.panX + (e.clientX - popupDragStart.x);
   popupPanY = popupDragStart.panY + (e.clientY - popupDragStart.y);
@@ -8713,6 +8744,7 @@ function popupOnMouseMove(e) {
 }
 
 function popupOnMouseUp() {
+  popupFileDragStart = null;
   if (!popupDragging) return;
   popupDragging = false;
   document.getElementById('photoImgWrap')?.classList.remove('panning');
