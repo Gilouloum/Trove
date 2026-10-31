@@ -20,7 +20,7 @@ If you've been searching for how to sort a huge, messy photo library, how to fin
 
 ---
 
-![Trove's library grid, every photo and video in one timeline](screenshots/library-grid.png)
+![Trove's library grid, every photo and video in one timeline](screenshots/library-grid.jpg)
 
 ---
 
@@ -40,13 +40,13 @@ Stop dragging thousands of files into folders. Trove reads what's already in you
 - **Location.** Country, region, and city come from each photo's GPS data.
 - **Categories and custom sections.** Your own sidebar sections, with your own name, icon, and color.
 
-![The sidebar with Trips, People (each shown with a face photo), Categories, Cameras, and Location](screenshots/sidebar.png)
+![The sidebar with Trips, People (each shown with a face photo), Categories, Cameras, and Location](screenshots/sidebar.jpg)
 
 ## One Sort button for all the cleanup
 
 Everything that tidies your library lives behind the **Sort** button at the top: Guided Sort, Find new people, Find Duplicates, and Find Edited. An orange badge shows how much is waiting in each (up to 9+), so you can see at a glance where there's cleanup left to do.
 
-![The Sort menu open, listing Guided Sort, Find new people, Find Duplicates, and Find Edited with their counts](screenshots/sort-menu.png)
+![The Sort menu open, listing Guided Sort, Find new people, Find Duplicates, and Find Edited with their counts](screenshots/sort-menu.jpg)
 
 ## Face recognition that never leaves your computer
 
@@ -56,20 +56,20 @@ It learns from what you've already done. If you have a People folder for someone
 
 **Find new people** scans the whole library. While it works, the screen fills up with every face it has found so far, new ones popping in as they're discovered, with a progress bar and the time left. The scan keeps going at full speed when you switch to another app, so you don't have to watch it.
 
-![Find new people scanning: a wall of faces filling the screen, with the progress bar and time left](screenshots/find-new-people.png)
+![Find new people scanning: a wall of faces filling the screen, with the progress bar and time left](screenshots/find-new-people.jpg)
 
 Once it's done, you see everyone it recognized, grouped by person, and you check the suggestions with one click per face (or confirm a whole person at once):
 
 <p align="center">
-  <img src="screenshots/people-recognised.png" width="49%" alt="Everyone Trove recognized, each person with all the photos they appear in">
-  <img src="screenshots/people-check.png" width="49%" alt="Checking the photos suggested for one person">
+  <img src="screenshots/people-recognised.jpg" width="49%" alt="Everyone Trove recognized, each person with all the photos they appear in">
+  <img src="screenshots/people-check.jpg" width="49%" alt="Checking the photos suggested for one person">
 </p>
 
 ## See where every photo belongs
 
 Open any photo or video and small bubbles along the bottom show every folder it's in: the trip, the people, the camera. Each person's bubble uses their face from that exact photo, and one click takes you to that folder.
 
-![A photo open in the preview, with folder bubbles along the bottom showing the trip and each person's face](screenshots/preview-bubbles.png)
+![A photo open in the preview, with folder bubbles along the bottom showing the trip and each person's face](screenshots/preview-bubbles.jpg)
 
 ## Works with almost every photo and video format
 
@@ -82,37 +82,37 @@ Point Trove at a folder and nothing gets left behind. It recognizes around 70 fo
 
 RAW files show the full-size preview the camera saved inside them, and web formats like WebP, AVIF, and GIF are decoded by Trove itself. Videos the built-in player can't handle (older AVI, WMV, or MPG files, for example) still get a thumbnail and open in your default video player with one click.
 
-![The library sorted by type, with RAW photos, photos, and videos in their own groups](screenshots/formats-by-type.png)
+![The library sorted by type, with RAW photos, photos, and videos in their own groups](screenshots/formats-by-type.jpg)
 
 ## Search your photos by what's in them
 
 Type what you remember, not what the file is called. Search "mountain lake" or "dog on a hike" and Trove finds it even if the file is named `IMG_4021.heic`, using an on-device AI model (CLIP) that understands what's in a photo. It runs entirely on your computer: no photo or search is ever sent anywhere. Results found by content carry a 🧠 badge, so you know why they showed up.
 
-![Searching "mountain lake" finds matching photos by what's in them, not by filename](screenshots/smart-search.png)
+![Searching "mountain lake" finds matching photos by what's in them, not by filename](screenshots/smart-search.jpg)
 
 ## Guided Sort: clear a backlog without sorting photo by photo
 
 Thousands of unsorted photos? Guided Sort walks your "To Sort" pile one cluster at a time (grouped by trip, date, person, camera, or location) and asks one question per cluster instead of one per photo.
 
-![Guided Sort showing one cluster of photos and a single question to answer](screenshots/guided-sort.png)
+![Guided Sort showing one cluster of photos and a single question to answer](screenshots/guided-sort.jpg)
 
 ## Find duplicate photos
 
 Find Duplicates scans your whole library for visual duplicates, not just identical files. It compares a structural fingerprint and color profile of every photo (and duration, for videos), so it catches near-identical shots even after a resize, a re-save, or a rename. Nothing is deleted automatically: each group is shown side by side, with the better copy pre-selected based on GPS, camera info, and date.
 
-![Two near-identical photos side by side, the recommended one pre-selected to keep](screenshots/find-duplicates.png)
+![Two near-identical photos side by side, the recommended one pre-selected to keep](screenshots/find-duplicates.jpg)
 
 ## Find edited photos and link them to their originals
 
 Edited a photo and ended up with two copies, one edited and one untouched? Find Edited pairs them up. Pairs Trove is certain about, like iPhone edits (`IMG_E1234` next to `IMG_1234`) or DJI app exports next to the drone's original, go into a batch at the top that you can confirm with one button. Everything else is only suggested when the visual match is at least 98%, for you to check one by one.
 
-![Find Edited: a batch of certain pairs with a Confirm all button, then visual matches to check](screenshots/find-edited.png)
+![Find Edited: a batch of certain pairs with a Confirm all button, then visual matches to check](screenshots/find-edited.jpg)
 
 Linked pairs stay connected. An edited photo shows an "Original" badge, and the compare view puts both side by side, with a delete button under each, so you can drop the one you don't need right there.
 
 <p align="center">
-  <img src="screenshots/edited-linked.png" width="49%" alt="An edited photo showing its Original badge, linking it back to the untouched shot">
-  <img src="screenshots/compare-original-edited.png" width="49%" alt="The original and the edited version side by side, with a delete button under each">
+  <img src="screenshots/edited-linked.jpg" width="49%" alt="An edited photo showing its Original badge, linking it back to the untouched shot">
+  <img src="screenshots/compare-original-edited.jpg" width="49%" alt="The original and the edited version side by side, with a delete button under each">
 </p>
 
 ## Quick edits from your library
@@ -126,7 +126,7 @@ Right-click any photo and choose Edit Photo for fast, non-destructive adjustment
 
 Your original file is never overwritten. Edits are kept separately and can be exported as a new copy whenever you want.
 
-![Edit Photo open on a landscape, with the color sliders and tone curve](screenshots/photo-editor.png)
+![Edit Photo open on a landscape, with the color sliders and tone curve](screenshots/photo-editor.jpg)
 
 ## PhotoMod: a full photo editor, built in
 
@@ -139,36 +139,36 @@ For anything beyond a quick fix, open PhotoMod from the bottom of the sidebar. I
 
 Start from a photo in your library or a blank canvas. PhotoMod never saves on its own: when you press Save, the result is added to your library as a new version, linked to the original and saved at the same quality as the original photo.
 
-![PhotoMod with a photo, a placed photo layer, and a text layer, with the tools and Layers panel](screenshots/photomod.png)
+![PhotoMod with a photo, a placed photo layer, and a text layer, with the tools and Layers panel](screenshots/photomod.jpg)
 
 ### Smart eraser
 
 Paint over something you want gone (a stranger in the background, a sign, a bin) and let go. It's filled in with real texture copied from around it, so water keeps rippling and sand stays sand. The fill goes on its own layer, so the original is never touched.
 
 <p align="center">
-  <img src="screenshots/smart-eraser-before.png" width="49%" alt="A stranger on the jetty painted over with the smart eraser">
-  <img src="screenshots/smart-eraser-after.png" width="49%" alt="The same photo with the stranger gone and the jetty and water filled in">
+  <img src="screenshots/smart-eraser-before.jpg" width="49%" alt="A stranger on the jetty painted over with the smart eraser">
+  <img src="screenshots/smart-eraser-after.jpg" width="49%" alt="The same photo with the stranger gone and the jetty and water filled in">
 </p>
 
 ### Auto select
 
 Click an object and it's selected, outline and all. An on-device AI model recognizes whole objects, however many colors they have. A Color mode selects similar colors instead, like a magic wand. Shift+click adds, Alt+click takes away.
 
-![One click on a person selects them, with the outline around them and the Auto select panel](screenshots/auto-select.png)
+![One click on a person selects them, with the outline around them and the Auto select panel](screenshots/auto-select.jpg)
 
 ## 360 photos and videos
 
 Insta360 photos and videos open in an interactive 360 viewer: drag to look around, scroll to zoom. Videos recorded with the camera's gyro data get an angle lock that keeps the horizon level and the shake out. Any view can be saved as a regular photo.
 
-![An Insta360 video open in the 360 viewer](screenshots/viewer-360.png)
+![An Insta360 video open in the 360 viewer](screenshots/viewer-360.jpg)
 
 ## Relive your trips on a 3D globe
 
 Every geotagged photo and video is plotted on a real-terrain 3D globe, zoomable down to street level. "Relive Trip" opens on an overview of the whole trip, then steps through it day by day.
 
 <p align="center">
-  <img src="screenshots/globe-overview.png" width="49%" alt="The globe with trips around the world">
-  <img src="screenshots/globe-zoom.png" width="49%" alt="The globe zoomed into a single trip">
+  <img src="screenshots/globe-overview.jpg" width="49%" alt="The globe with trips around the world">
+  <img src="screenshots/globe-zoom.jpg" width="49%" alt="The globe zoomed into a single trip">
 </p>
 
 ## More worth knowing
