@@ -12,7 +12,7 @@
   --border:#d6dee3;--border2:#c5d0d6;
   --text:#212a30;--text2:#5c6870;--text3:#69747b;
   --accent:#3d6f8f;--accent2:#2f5f7d;--aglow:rgba(61,111,143,.12);
-  --gold:#b8720b;--green:#1f8a5a;--red:#c94a3a;--cyan:#0f8fa8;
+  --gold:#b8720b;--green:#1f8a5a;--red:#c94a3a;--cyan:#0f8fa8;--heart:#d23f6b;
   /* semantic status colors - use these (not --gold/--green/--red directly) for
      anything communicating success/warning/danger/info, so meaning stays consistent */
   --info:#2f6fd6;--info-bg:rgba(47,111,214,.15);
@@ -34,7 +34,7 @@
     --border:#3a3631;--border2:#4a453d;
     --text:#ece7df;--text2:#a39c8e;--text3:#8a8377;
     --accent:#d1974a;--accent2:#e0ac66;--aglow:rgba(209,151,74,.16);
-    --gold:#d3a153;--green:#5fb98a;--red:#e0897a;--cyan:#4fc1d9;
+    --gold:#d3a153;--green:#5fb98a;--red:#e0897a;--cyan:#4fc1d9;--heart:#ec6f92;
     --info:#6fa8e8;--info-bg:rgba(111,168,232,.18);
     --success:var(--green);--success-bg:rgba(95,185,138,.18);
     --warning:var(--gold);--warning-bg:rgba(211,161,83,.18);
@@ -46,7 +46,7 @@
   --border:#3a3631;--border2:#4a453d;
   --text:#ece7df;--text2:#a39c8e;--text3:#8a8377;
   --accent:#d1974a;--accent2:#e0ac66;--aglow:rgba(209,151,74,.16);
-  --gold:#d3a153;--green:#5fb98a;--red:#e0897a;--cyan:#4fc1d9;
+  --gold:#d3a153;--green:#5fb98a;--red:#e0897a;--cyan:#4fc1d9;--heart:#ec6f92;
   --info:#6fa8e8;--info-bg:rgba(111,168,232,.18);
   --success:var(--green);--success-bg:rgba(95,185,138,.18);
   --warning:var(--gold);--warning-bg:rgba(211,161,83,.18);
@@ -239,7 +239,7 @@ body.folder-dragging .si{cursor:grabbing}
 .video-badge{position:absolute;bottom:5px;left:5px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:#fff;font-size:9px;padding:2px 5px;border-radius:3px;font-family:'DM Mono',monospace}
 .file-card-body{padding:9px 9px 8px}
 .file-card-star{position:absolute;top:6px;right:6px;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:color .12s,transform .12s;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);border:none;border-radius:4px;padding:2px 4px;line-height:1;z-index:2}
-.file-card-star:hover{transform:scale(1.2)}.file-card-star.starred{color:var(--warning)}
+.file-card-star:hover{transform:scale(1.2)}.file-card-star.starred{color:var(--heart)}
 .file-card-name{font-size:11.5px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;cursor:text}
 .file-card-name:hover{text-decoration:underline dotted;text-underline-offset:2px}
 .file-card-meta{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace}
@@ -278,7 +278,7 @@ body.folder-dragging .si{cursor:grabbing}
 .file-row-date{font-size:10.5px;color:var(--text3);font-family:'DM Mono',monospace;flex-shrink:0;width:76px;text-align:right}
 .file-row-size{font-size:10.5px;color:var(--text3);font-family:'DM Mono',monospace;flex-shrink:0;width:60px;text-align:right}
 .file-row-star{font-size:13px;color:var(--text3);cursor:pointer;background:none;border:none;padding:2px 4px;transition:color .12s;flex-shrink:0}
-.file-row-star.starred{color:var(--gold)}
+.file-row-star.starred{color:var(--heart)}
 
 /* TIMELINE VIEW */
 .tl-month-section{margin-bottom:4px}
@@ -297,7 +297,7 @@ body.folder-dragging .si{cursor:grabbing}
 .tl-thumb .tl-emoji{font-size:26px}
 .tl-thumb-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .tl-vid-badge{position:absolute;bottom:3px;left:3px;background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:1px 4px;border-radius:3px}
-.tl-fav-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--gold);border-radius:50%;border:1px solid rgba(0,0,0,.3)}
+.tl-fav-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;background:var(--heart);border-radius:50%;border:1px solid rgba(0,0,0,.3)}
 .tl-live-badge{position:absolute;bottom:3px;right:3px;background:rgba(0,0,0,.55);color:#fff;font-size:9px;font-weight:600;padding:1px 4px;border-radius:3px;cursor:pointer;z-index:2}
 
 /* TO SORT */
@@ -585,12 +585,12 @@ textarea.text-input{resize:vertical}
 .pl-link-btn:hover{border-color:var(--accent);color:var(--text2)}
 
 /* BEST OF SIDEBAR ITEM */
-.si-bestof{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15)}
-.si-bestof:hover{background:rgba(245,158,11,.12)}
-.si-bestof.active{background:rgba(245,158,11,.16)}
-.si-bestof .si-name{color:var(--gold);font-weight:600}
-.si-bestof.active .si-name{color:var(--gold)}
-.si-bestof.active .si-count{background:rgba(245,158,11,.18);color:var(--gold)}
+.si-bestof{background:rgba(210,63,107,.06);border:1px solid rgba(210,63,107,.15)}
+.si-bestof:hover{background:rgba(210,63,107,.12)}
+.si-bestof.active{background:rgba(210,63,107,.16)}
+.si-bestof .si-name{color:var(--heart);font-weight:600}
+.si-bestof.active .si-name{color:var(--heart)}
+.si-bestof.active .si-count{background:rgba(210,63,107,.18);color:var(--heart)}
 
 /* DRAGGABLE SIDEBAR SECTIONS */
 .sb-sec-header{display:flex;align-items:center;gap:6px;cursor:grab;color:var(--text);transition:color .12s}
@@ -641,7 +641,7 @@ textarea.text-input{resize:vertical}
 .fcv2-overlay{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;background:linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,.35) 65%,transparent)}
 .fcv2-name{font-size:13.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .fcv2-meta{font-size:10.5px;color:rgba(255,255,255,.75);margin-top:2px;font-family:'DM Mono',monospace}
-.fcv2-badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:var(--gold);font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:10px;z-index:2}
+.fcv2-badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:var(--heart);font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:10px;z-index:2}
 .area-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;flex-wrap:wrap}
 
 /* INLINE RENAME */
@@ -1128,6 +1128,86 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 /* DUPLICATE DETECTION */
 #dupMode{position:absolute;inset:0;z-index:60;background:var(--bg);display:none;flex-direction:column}
 #dupMode.open{display:flex}
+/* TRIP PHOTOBOOK (photobook.js) */
+.ctx-key{margin-left:auto;font-size:10.5px;color:var(--text3);border:1px solid var(--border2);border-radius:4px;padding:0 5px;font-family:'DM Mono',monospace}
+.pb-book{position:relative;display:inline-block;flex-shrink:0;width:20px;height:25px;border:2px solid var(--heart);border-radius:2px 5px 5px 2px;overflow:hidden;vertical-align:middle}
+.pb-book::before{content:'';position:absolute;left:3px;top:0;bottom:0;width:2px;background:var(--heart);opacity:.5;z-index:1}
+.pb-book-fill{position:absolute;left:0;right:0;bottom:0;height:calc(var(--fill) * 100%);background:var(--heart);opacity:.8;transition:height .5s cubic-bezier(.3,1.4,.5,1)}
+.pb-book-big{width:64px;height:80px;border-width:4px;border-radius:4px 12px 12px 4px}.pb-book-big::before{left:9px;width:4px}
+.pb-book-full{box-shadow:0 0 0 3px rgba(210,63,107,.18)}
+@media (prefers-reduced-motion:reduce){.pb-book-fill{transition:none}}
+.pb-banner{display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:14px;border-radius:var(--r);background:rgba(210,63,107,.06);border:1px solid rgba(210,63,107,.2);font-size:12.5px;color:var(--text2);flex-wrap:wrap}
+.pb-banner-text{display:flex;flex-direction:column;gap:2px;flex:1;min-width:220px}.pb-banner-text strong{color:var(--text);font-size:13px}
+.pb-btn{padding:7px 14px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--bg2);color:var(--text);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .12s,transform .08s}
+.pb-btn:hover{background:var(--bg3)}.pb-btn:active{transform:scale(.97)}
+.pb-btn-primary{background:var(--heart);border-color:var(--heart);color:#fff}.pb-btn-primary:hover{background:var(--heart);filter:brightness(1.08)}
+.pb-link{background:none;border:none;color:var(--text3);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}.pb-link:hover{color:var(--text)}
+.book-divider{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin:18px 0 6px;font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.book-divider::before,.book-divider::after{content:'';flex:1;height:1px;background:var(--border2)}.book-divider::before{flex:0 0 18px}
+.book-divider-count{font-weight:500;background:var(--bg3);border-radius:8px;padding:1px 7px;letter-spacing:0}
+.file-card.not-in-book,.file-row.not-in-book{opacity:.55;transition:opacity .15s}
+.file-card.not-in-book:hover,.file-row.not-in-book:hover,.file-card.not-in-book.selected,.file-row.not-in-book.selected{opacity:1}
+#bookMode,#presMode{position:fixed;inset:0;z-index:300;background:var(--bg);display:none;flex-direction:column}
+#bookMode.open,#presMode.open{display:flex}
+#presMode{z-index:310;background:#24211d;color:#ece7df}
+.pb-body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;padding:16px 22px}
+.pb-goal{display:flex;align-items:center;gap:8px;background:none;border:1px solid transparent;border-radius:var(--rs);padding:3px 8px;color:var(--text);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.pb-goal:hover{border-color:var(--border2)}
+.pb-goal-input{width:64px;font:inherit;padding:2px 4px;border:1px solid var(--border2);border-radius:4px;background:var(--bg2);color:var(--text)}
+.pb-embed{font-size:12px;color:var(--text3)}
+.pb-tabs{display:inline-flex;background:var(--bg3);border-radius:var(--rs);padding:2px;gap:2px}
+.pb-tab{background:none;border:none;border-radius:4px;padding:5px 11px;font:inherit;font-size:12px;color:var(--text2);cursor:pointer}
+.pb-tab.active{background:var(--bg2);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.pb-hint{text-align:center;font-size:13px;color:var(--text2);margin-bottom:12px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.pb-progress{color:var(--text3);font-family:'DM Mono',monospace;font-size:12px}
+.pb-duel{flex:1;min-height:0;display:flex;align-items:stretch;justify-content:center;gap:18px}
+.pb-card{position:relative;flex:1;max-width:48%;display:flex;flex-direction:column;gap:6px;cursor:pointer;border-radius:var(--r);padding:8px;border:2px solid transparent;transition:border-color .12s,background .12s,transform .1s}
+.pb-card:hover{border-color:var(--heart);background:rgba(210,63,107,.05)}.pb-card:active{transform:scale(.99)}
+.pb-single .pb-card{max-width:70%;cursor:default}.pb-single .pb-card:hover{border-color:transparent;background:none}
+.pb-media{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.pb-media img,.pb-media video{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+.pb-card-meta{text-align:center;font-size:12px;color:var(--text3)}.pb-liked{color:var(--heart)}
+.pb-vs{align-self:center;font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.1em}
+.pb-pick{position:absolute;top:16px;left:16px;background:rgba(0,0,0,.6);color:#fff;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:10px;backdrop-filter:blur(4px);cursor:help}
+.pb-actions{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.pb-actions-quiet{margin-top:6px}
+.pb-wait{margin:auto;color:var(--text2);font-size:13px;text-align:center}
+.pb-done{margin:auto;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;max-width:460px}
+.pb-done-title{font-size:20px;font-weight:700}.pb-done-sub{font-size:13px;color:var(--text2)}
+.pb-confetti{position:fixed;z-index:320}
+.pb-groups{max-width:1100px;width:100%;margin:0 auto}
+.pb-groups-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.pb-group{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:10px}
+.pb-group-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--text2);margin-bottom:8px}
+.pb-group-strip{display:flex;flex-wrap:wrap;gap:6px}
+.pb-thumb{position:relative;flex:0 0 auto;width:96px;height:72px;border-radius:5px;background:var(--bg3) center/cover no-repeat}
+.pb-thumb.out{opacity:.4}.pb-thumb-in{position:absolute;right:4px;bottom:3px;font-size:13px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.fr-first-duel{display:flex;flex-direction:column;align-items:center;gap:10px;margin:6px 0 4px;padding:14px 18px;border-radius:var(--r);background:rgba(210,63,107,.07);border:1px solid rgba(210,63,107,.25);max-width:440px}
+.fr-first-duel-text{font-size:13px;color:var(--text2);text-align:center}
+/* PHOTOBOOK PRESENTATION (presentation.js; the pages' own styles live there) */
+.pres-top{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.08);transition:opacity .3s}
+.pres-top .sort-title{color:#ece7df}
+.pres-top .globe-close{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#ece7df}
+.pres-top .globe-close:hover{background:rgba(255,255,255,.16)}
+.pres-top .pb-tabs{background:rgba(255,255,255,.08)}.pres-top .pb-tab{color:#cfc7ba}.pres-top .pb-tab.active{background:rgba(255,255,255,.18);color:#fff}
+#presMode.pres-idle .pres-top{opacity:0}#presMode.pres-idle{cursor:none}
+.pres-count{font-size:12px;font-family:'DM Mono',monospace;color:#cfc7ba;min-width:54px;text-align:center}
+.pres-root{position:relative;flex:1;min-height:0;overflow:hidden}
+.pres-root .pb-wait{color:#cfc7ba;position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.pres-export-wrap{position:relative}
+.pres-export-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);width:320px;z-index:5;background:var(--bg2);color:var(--text);border:1px solid var(--border2);border-radius:var(--r);box-shadow:0 12px 32px rgba(0,0,0,.4);padding:6px}
+.pres-export-menu.open{display:block}
+.pres-export-menu button{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:none;border:none;border-radius:var(--rs);padding:8px 10px;font:inherit;color:var(--text);cursor:pointer}
+.pres-export-menu button:hover{background:var(--bg3)}.pres-export-menu button span{font-size:11.5px;color:var(--text3)}
+.pres-export-note{font-size:11px;color:var(--text3);padding:6px 10px 4px;border-top:1px solid var(--border);margin-top:4px}
+.pres-arrange{position:absolute;inset:0;overflow:auto;padding:16px 22px}
+.pres-arrange .pb-hint{color:#cfc7ba}
+.pres-arrange-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.pres-tile{display:flex;flex-direction:column;gap:6px}
+.pres-tile-bar{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#cfc7ba}
+.pres-tile .pp-cell{cursor:pointer;border-radius:3px;outline:2px solid transparent;outline-offset:2px}
+.pres-tile .pp-cell:hover{outline-color:rgba(236,111,146,.6)}
+.pres-tile .pp-cell.pres-swap-sel{outline-color:#ec6f92}
 /* Find Duplicates & Edits: edits to link on top, duplicates to clear below */
 .eg-section{margin-bottom:26px}
 .eg-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
@@ -1361,8 +1441,8 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
   </div>
   <div class="sidebar-scroll">
     <div class="sb-sec">
-      <div class="si si-bestof" data-folder="best-of" onclick="selectFolder('best-of',this)" title="Your curated highlight reel - different from Pin in Folder, which just keeps a file at the top of its folder">
-        <span class="si-name">⭐ Best Of</span>
+      <div class="si si-bestof" data-folder="best-of" onclick="selectFolder('best-of',this)" data-i18n-title="lkSidebarTitle" title="Photos you love, from anywhere in your library">
+        <span class="si-name">❤️ <span data-i18n="lkLiked">Liked</span></span>
         <span class="si-count" id="count-bestof">0</span>
       </div>
     </div>
@@ -1426,7 +1506,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
   <div class="sel-bar" id="selBar">
     <span id="selCount">0 selected</span>
     <button class="sel-bar-btn" onclick="bulkReveal()" title="Opens Explorer with all selected files highlighted, ready to drag/move together">📂 Reveal</button>
-    <button class="sel-bar-btn" onclick="bulkBestOf()">⭐ Best Of</button>
+    <button class="sel-bar-btn" onclick="bulkBestOf()" data-i18n-title="lkShortcutTitle" title="Like or unlike (L)">❤️ <span data-i18n="lkLike">Like</span></button>
     <button class="sel-bar-btn" onclick="bulkAssignFolders()">📁 Folders</button>
     <button class="sel-bar-btn danger" onclick="bulkDelete(event)" title="Remove from Trove, or delete from your computer (Ctrl+click: delete permanently, no confirmation)">🗑 Remove…</button>
     <button class="sel-bar-btn" id="markSortedBtn" style="display:none" onclick="bulkMarkSorted()">✓ Sorted</button>
@@ -1440,7 +1520,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
       <div id="moreFiltersMenu">
         <button class="chip" data-chip="photos" onclick="toggleChip('photos')">🖼 Photos</button>
         <button class="chip" data-chip="videos" onclick="toggleChip('videos')">🎬 Videos</button>
-        <button class="chip" data-chip="bestOf" onclick="toggleChip('bestOf')" title="Best Of: your curated highlight reel">⭐ Best Of</button>
+        <button class="chip" data-chip="bestOf" onclick="toggleChip('bestOf')" data-i18n-title="lkSidebarTitle" title="Photos you love, from anywhere in your library">❤️ <span data-i18n="lkLiked">Liked</span></button>
         <button class="chip" data-chip="pinned" onclick="toggleChip('pinned')" title="Pin in Folder: keep it at the top of this folder only">📌 Pinned only</button>
         <button class="chip" data-chip="edited" onclick="toggleChip('edited')" title="Photos edited in Trove's own editor">✏️ Edited</button>
         <select id="chipYear" class="chip chip-select" onchange="onChipYear()"><option value="">Any year</option></select>
@@ -1559,6 +1639,18 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
       <button class="globe-close" onclick="closeDupMode()">✕ Close</button>
     </div>
     <div class="dup-body" id="dupBody"></div>
+  </div>
+
+  <!-- Trip photobook: duels between similar shots, and the groups Trove found (photobook.js) -->
+  <div id="bookMode">
+    <div class="sort-topbar" id="bookModeTop"></div>
+    <div class="pb-body" id="bookModeBody"></div>
+  </div>
+
+  <!-- Photobook presentation: book look, slideshow, arrange, export (presentation.js) -->
+  <div id="presMode">
+    <div class="sort-topbar pres-top" id="presTop"></div>
+    <div class="pres-root" id="presRoot"></div>
   </div>
 
   <!-- People: naming the groups of similar faces face recognition found (faceIndex.js) -->
@@ -1885,7 +1977,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
       </div>
       <div class="photo-actions">
         <button class="btn-save" onclick="openPopupFile()">Open File</button>
-        <button class="btn-cancel" id="popupBestOfBtn" onclick="togglePopupBestOf()">☆ Add to Best Of</button>
+        <button class="btn-cancel" id="popupBestOfBtn" onclick="togglePopupBestOf()">♡ Like</button>
         <button class="btn-cancel" onclick="revealPopupFile()">Reveal</button>
         <button class="btn-cancel" onclick="editPopupFile()">Edit Props</button>
         <button class="btn-cancel" id="popupEditPhotoBtn" onclick="editPopupPhoto()">✏️ Edit Photo</button>
@@ -1901,8 +1993,9 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 
 <!-- FILE CONTEXT MENU -->
 <div id="ctxMenu">
-  <div class="ctx-item" onclick="ctxToggleBestOf()"><span class="ctx-icon" id="ctxBestIcon">☆</span> <span id="ctxBestLabel">Add to Best Of</span></div>
-  <div class="ctx-item" onclick="ctxTogglePin()" title="Keeps this file at the top of THIS folder only - different from Best Of, which is a library-wide highlight reel"><span class="ctx-icon" id="ctxPinIcon">📌</span> <span id="ctxPinLabel">Pin in Folder</span></div>
+  <div class="ctx-item" onclick="ctxToggleBestOf()"><span class="ctx-icon" id="ctxBestIcon">♡</span> <span id="ctxBestLabel">Like</span><span class="ctx-key">L</span></div>
+  <div class="ctx-item" id="ctxBookItem" onclick="ctxTogglePhotobook()" style="display:none"><span class="ctx-icon">📖</span> <span id="ctxBookLabel">Add to photobook</span></div>
+  <div class="ctx-item" onclick="ctxTogglePin()" title="Keeps this file at the top of THIS folder only - different from Liked, which is a library-wide highlight reel"><span class="ctx-icon" id="ctxPinIcon">📌</span> <span id="ctxPinLabel">Pin in Folder</span></div>
   <div class="ctx-sep"></div>
   <div class="ctx-item" onclick="ctxMoveToFolder()"><span class="ctx-icon">📁</span> Move to Folder…</div>
   <div class="ctx-item" id="ctxRenameItem" onclick="ctxRename()"><span class="ctx-icon">📝</span> Rename</div>
@@ -2337,6 +2430,8 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 <script src="media-types.js"></script>
 <script src="heicGpu.js"></script>
 <script src="globe.js"></script>
+<script src="photobook.js"></script>
+<script src="presentation.js"></script>
 <script src="renderer.js"></script>
 <script src="viewer360.js"></script>
 <script src="semanticIndex.js"></script>

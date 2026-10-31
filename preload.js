@@ -59,6 +59,8 @@ contextBridge.exposeInMainWorld('api', {
   searchSimilarToFiles: (fileIds, limit) => ipcRenderer.invoke('search-similar-to-files', fileIds, limit),
   suggestGroups: (fileIds) => ipcRenderer.invoke('suggest-groups', fileIds),
   smartMatchSuggest: (fileIds) => ipcRenderer.invoke('smart-match-suggest', fileIds),
+  groupSimilarShots: (items, strictness) => ipcRenderer.invoke('group-similar-shots', items, strictness),
+  exportPhotobook: (kind, title, docs, videos) => ipcRenderer.invoke('export-photobook', kind, title, docs, videos),
   getPathForFile: (file) => { try { return webUtils.getPathForFile(file); } catch(e) { return file.path || ''; } },
   startFileDrag: (paths, fileId) => ipcRenderer.send('start-file-drag', { paths, fileId }),
   readClipboardImage: () => ipcRenderer.invoke('read-clipboard-image'),

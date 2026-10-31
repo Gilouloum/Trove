@@ -489,11 +489,11 @@ const I18N = {
     zh: '搜索功能能根据照片实际内容查找,而不仅仅是文件名——试着在搜索框中输入类似"生日蛋糕"这样的词试试。'
   },
   frTipBestOf: {
-    en: '⭐ Add your favorites to <strong>Best Of</strong> (right-click any photo) to build a highlight reel separate from the full library.',
-    fr: '⭐ Ajoutez vos favoris à <strong>Meilleures photos</strong> (clic droit sur n\'importe quelle photo) pour créer une sélection à part de la bibliothèque complète.',
-    de: '⭐ Fügen Sie Ihre Favoriten zu <strong>Bestenliste</strong> hinzu (Rechtsklick auf ein beliebiges Foto), um eine Highlight-Auswahl getrennt von der vollständigen Bibliothek zu erstellen.',
-    es: '⭐ Añade tus favoritas a <strong>Lo mejor</strong> (clic derecho en cualquier foto) para crear una selección destacada aparte de la biblioteca completa.',
-    zh: '⭐ 将喜欢的照片添加到<strong>精选</strong>(在任意照片上右键点击),即可建立一个独立于完整照片库的精彩集锦。'
+    en: '❤️ Press <strong>L</strong> (or click the heart) on a photo you love to add it to <strong>Liked</strong>, a highlight reel separate from the full library. A liked photo also goes into its trip\'s photobook.',
+    fr: '❤️ Appuyez sur <strong>L</strong> (ou cliquez sur le cœur) sur une photo que vous adorez pour l\'ajouter à <strong>Coups de cœur</strong>, une sélection à part de la bibliothèque complète. Une photo aimée entre aussi dans l\'album photo de son voyage.',
+    de: '❤️ Drücken Sie <strong>L</strong> (oder klicken Sie auf das Herz) bei einem Foto, das Sie lieben, um es zu <strong>Gefällt mir</strong> hinzuzufügen, einer Highlight-Auswahl getrennt von der vollständigen Bibliothek. Ein Foto mit Herz kommt auch ins Fotobuch seiner Reise.',
+    es: '❤️ Pulsa <strong>L</strong> (o haz clic en el corazón) en una foto que te encante para añadirla a <strong>Me gusta</strong>, una selección destacada aparte de la biblioteca completa. Una foto que te gusta también entra en el fotolibro de su viaje.',
+    zh: '❤️ 在喜欢的照片上按 <strong>L</strong>(或点击爱心),即可添加到<strong>喜欢</strong>,一个独立于完整照片库的精彩集锦。喜欢的照片也会自动加入所属旅行的相册。'
   },
   frTipTagMore: {
     en: "The more you tag now - people, categories, trips - the easier everything is to find later. It doesn't have to be all at once.",
@@ -577,7 +577,117 @@ const I18N = {
   themeAuto: { en: '🖥️ Theme: Auto', fr: '🖥️ Thème : Auto', de: '🖥️ Design: Automatisch', es: '🖥️ Tema: Automático', zh: '🖥️ 主题:自动' },
   themeLight: { en: '☀️ Theme: Light', fr: '☀️ Thème : Clair', de: '☀️ Design: Hell', es: '☀️ Tema: Claro', zh: '☀️ 主题:浅色' },
   themeDark: { en: '🌙 Theme: Dark', fr: '🌙 Thème : Sombre', de: '🌙 Design: Dunkel', es: '🌙 Tema: Oscuro', zh: '🌙 主题:深色' },
-  themeToggleTitle: { en: "Click to switch between matching your computer's setting, Light, and Dark", fr: "Cliquez pour basculer entre le réglage de votre ordinateur, Clair et Sombre", de: 'Klicken Sie, um zwischen der Einstellung Ihres Computers, Hell und Dunkel zu wechseln', es: 'Haz clic para alternar entre la configuración de tu ordenador, Claro y Oscuro', zh: '点击可在跟随系统设置、浅色和深色之间切换' }
+  themeToggleTitle: { en: "Click to switch between matching your computer's setting, Light, and Dark", fr: "Cliquez pour basculer entre le réglage de votre ordinateur, Clair et Sombre", de: 'Klicken Sie, um zwischen der Einstellung Ihres Computers, Hell und Dunkel zu wechseln', es: 'Haz clic para alternar entre la configuración de tu ordenador, Claro y Oscuro', zh: '点击可在跟随系统设置、浅色和深色之间切换' },
+
+  // Liked (formerly Best Of - the file field is still bestOf)
+  lkLiked: { en: 'Liked', fr: 'Coups de cœur', de: 'Gefällt mir', es: 'Me gusta', zh: '喜欢' },
+  lkLike: { en: 'Like', fr: "J'aime", de: 'Gefällt mir', es: 'Me gusta', zh: '喜欢' },
+  lkUnlike: { en: 'Unlike', fr: "Je n'aime plus", de: 'Gefällt mir nicht mehr', es: 'Ya no me gusta', zh: '取消喜欢' },
+  lkShortcutTitle: { en: 'Like or unlike (L)', fr: "Aimer ou ne plus aimer (L)", de: 'Gefällt mir an/aus (L)', es: 'Me gusta / ya no me gusta (L)', zh: '喜欢 / 取消喜欢 (L)' },
+  lkSidebarTitle: { en: 'Photos you love, from anywhere in your library', fr: 'Les photos que vous adorez, de toute votre bibliothèque', de: 'Fotos, die Sie lieben, aus Ihrer ganzen Bibliothek', es: 'Las fotos que te encantan, de toda tu biblioteca', zh: '你喜爱的照片,来自整个照片库' },
+  lkLikedOne: { en: '❤️ Liked', fr: '❤️ Ajoutée aux coups de cœur', de: '❤️ Gefällt mir', es: '❤️ Te gusta', zh: '❤️ 已喜欢' },
+  lkUnlikedOne: { en: '♡ Unliked', fr: '♡ Retirée des coups de cœur', de: '♡ Gefällt mir entfernt', es: '♡ Ya no te gusta', zh: '♡ 已取消喜欢' },
+  lkLikedN: { en: v => `❤️ Liked ${v.n}`, fr: v => `❤️ ${v.n} ajoutée${v.n!==1?'s':''} aux coups de cœur`, de: v => `❤️ ${v.n} mit Gefällt mir markiert`, es: v => `❤️ ${v.n} marcada${v.n!==1?'s':''} con me gusta`, zh: v => `❤️ 已喜欢 ${v.n} 项` },
+  lkUnlikedN: { en: v => `♡ Unliked ${v.n}`, fr: v => `♡ ${v.n} retirée${v.n!==1?'s':''} des coups de cœur`, de: v => `♡ Gefällt mir bei ${v.n} entfernt`, es: v => `♡ ${v.n} sin me gusta`, zh: v => `♡ 已取消喜欢 ${v.n} 项` },
+  lkEmpty: { en: 'Nothing liked yet', fr: 'Aucun coup de cœur pour le moment', de: 'Noch nichts mit Gefällt mir markiert', es: 'Todavía no te gusta nada', zh: '还没有喜欢的照片' },
+  lkEmptyFiltered: { en: 'No liked photos match these filters', fr: 'Aucun coup de cœur ne correspond à ces filtres', de: 'Keine Fotos mit Gefällt mir passen zu diesen Filtern', es: 'Ninguna foto que te gusta coincide con estos filtros', zh: '没有符合这些筛选条件的喜欢照片' },
+  lkEmptySub: { en: 'Press L or click the heart on any photo you love', fr: "Appuyez sur L ou cliquez sur le cœur d'une photo que vous adorez", de: 'Drücken Sie L oder klicken Sie auf das Herz eines Fotos, das Sie lieben', es: 'Pulsa L o haz clic en el corazón de una foto que te encante', zh: '在喜爱的照片上按 L 或点击爱心' },
+  lkNothingToExport: { en: '⚠️ No liked files to export', fr: '⚠️ Aucun coup de cœur à exporter', de: '⚠️ Keine Dateien mit Gefällt mir zum Exportieren', es: '⚠️ No hay archivos que te gusten para exportar', zh: '⚠️ 没有可导出的喜欢文件' },
+
+  // Trip photobook (photobook.js)
+  pbBannerStartTitle: { en: 'Make a photobook of this trip', fr: 'Faites un album photo de ce voyage', de: 'Machen Sie ein Fotobuch dieser Reise', es: 'Haz un fotolibro de este viaje', zh: '为这趟旅行制作相册' },
+  pbBannerStartBody: { en: v => `Keep your best ~${v.goal} of ${v.n}. Similar shots go head to head, you just tap the better one.`, fr: v => `Gardez vos ~${v.goal} meilleures sur ${v.n}. Les photos similaires s'affrontent, il suffit de toucher la meilleure.`, de: v => `Behalten Sie Ihre besten ~${v.goal} von ${v.n}. Ähnliche Aufnahmen treten gegeneinander an, Sie tippen einfach die bessere an.`, es: v => `Quédate con tus ~${v.goal} mejores de ${v.n}. Las fotos parecidas se enfrentan y tú solo tocas la mejor.`, zh: v => `从 ${v.n} 张中留下最好的约 ${v.goal} 张。相似的照片两两对决,你只需点选更好的那张。` },
+  pbBannerCount: { en: v => `Photobook: ${v.kept} / ${v.goal}`, fr: v => `Album photo : ${v.kept} / ${v.goal}`, de: v => `Fotobuch: ${v.kept} / ${v.goal}`, es: v => `Fotolibro: ${v.kept} / ${v.goal}`, zh: v => `相册:${v.kept} / ${v.goal}` },
+  pbBannerToLook: { en: v => `${v.n} photo${v.n!==1?'s':''} still to look at`, fr: v => `${v.n} photo${v.n!==1?'s':''} encore à regarder`, de: v => `noch ${v.n} Foto${v.n!==1?'s':''} anzusehen`, es: v => `${v.n} foto${v.n!==1?'s':''} por mirar`, zh: v => `还有 ${v.n} 张待查看` },
+  pbBannerAllSeen: { en: 'Every photo has been looked at. Nothing left out was deleted, it is just further down.', fr: "Toutes les photos ont été vues. Rien n'a été supprimé, le reste est simplement plus bas.", de: 'Alle Fotos wurden angesehen. Nichts wurde gelöscht, der Rest steht nur weiter unten.', es: 'Has visto todas las fotos. No se ha borrado nada, el resto solo está más abajo.', zh: '所有照片都已看过。没有删除任何照片,其余的只是排在下面。' },
+  pbStartPicking: { en: '⚔️ Start picking', fr: '⚔️ Commencer le tri', de: '⚔️ Auswahl starten', es: '⚔️ Empezar a elegir', zh: '⚔️ 开始挑选' },
+  pbKeepPicking: { en: '⚔️ Keep picking', fr: '⚔️ Continuer le tri', de: '⚔️ Weiter auswählen', es: '⚔️ Seguir eligiendo', zh: '⚔️ 继续挑选' },
+  pbSeeGroups: { en: 'Similar shots', fr: 'Photos similaires', de: 'Ähnliche Aufnahmen', es: 'Fotos parecidas', zh: '相似照片' },
+  pbPresent: { en: '▶ Present', fr: '▶ Présenter', de: '▶ Vorführen', es: '▶ Presentar', zh: '▶ 展示' },
+  pbNotInBook: { en: 'Not in your photobook', fr: 'Pas dans votre album photo', de: 'Nicht in Ihrem Fotobuch', es: 'Fuera de tu fotolibro', zh: '不在相册中' },
+  pbCtxAdd: { en: 'Add to photobook', fr: "Ajouter à l'album photo", de: 'Zum Fotobuch hinzufügen', es: 'Añadir al fotolibro', zh: '加入相册' },
+  pbCtxRemove: { en: 'Take out of photobook', fr: "Retirer de l'album photo", de: 'Aus dem Fotobuch nehmen', es: 'Quitar del fotolibro', zh: '移出相册' },
+  pbAddedN: { en: v => `📖 ${v.n} added to the photobook`, fr: v => `📖 ${v.n} ajoutée${v.n!==1?'s':''} à l'album photo`, de: v => `📖 ${v.n} zum Fotobuch hinzugefügt`, es: v => `📖 ${v.n} añadida${v.n!==1?'s':''} al fotolibro`, zh: v => `📖 已将 ${v.n} 张加入相册` },
+  pbRemovedN: { en: v => `📖 ${v.n} taken out of the photobook (still in the trip)`, fr: v => `📖 ${v.n} retirée${v.n!==1?'s':''} de l'album photo (toujours dans le voyage)`, de: v => `📖 ${v.n} aus dem Fotobuch genommen (noch in der Reise)`, es: v => `📖 ${v.n} fuera del fotolibro (sigue en el viaje)`, zh: v => `📖 已将 ${v.n} 张移出相册(仍在旅行中)` },
+  pbNoMedia: { en: 'This trip has no photos yet', fr: "Ce voyage n'a pas encore de photos", de: 'Diese Reise hat noch keine Fotos', es: 'Este viaje aún no tiene fotos', zh: '这趟旅行还没有照片' },
+  pbFinding: { en: 'Finding similar shots…', fr: 'Recherche des photos similaires…', de: 'Ähnliche Aufnahmen werden gesucht…', es: 'Buscando fotos parecidas…', zh: '正在查找相似照片…' },
+  pbAnalyzing: { en: v => `Looking at photos ${v.done} / ${v.total}`, fr: v => `Analyse des photos ${v.done} / ${v.total}`, de: v => `Fotos werden angesehen ${v.done} / ${v.total}`, es: v => `Mirando fotos ${v.done} / ${v.total}`, zh: v => `正在查看照片 ${v.done} / ${v.total}` },
+  pbWaiting: { en: v => `Getting the next photos ready… ${v.done} / ${v.total}`, fr: v => `Préparation des photos suivantes… ${v.done} / ${v.total}`, de: v => `Die nächsten Fotos werden vorbereitet… ${v.done} / ${v.total}`, es: v => `Preparando las siguientes fotos… ${v.done} / ${v.total}`, zh: v => `正在准备接下来的照片… ${v.done} / ${v.total}` },
+  pbGoalCount: { en: v => `${v.kept} / ${v.goal} photos`, fr: v => `${v.kept} / ${v.goal} photos`, de: v => `${v.kept} / ${v.goal} Fotos`, es: v => `${v.kept} / ${v.goal} fotos`, zh: v => `${v.kept} / ${v.goal} 张` },
+  pbGoalEditTitle: { en: 'Your goal for this book. Click to change it, going over is fine.', fr: "Votre objectif pour cet album. Cliquez pour le changer, le dépasser n'est pas grave.", de: 'Ihr Ziel für dieses Buch. Klicken zum Ändern, mehr ist auch in Ordnung.', es: 'Tu objetivo para este libro. Haz clic para cambiarlo, pasarse no pasa nada.', zh: '这本相册的目标。点击修改,超出也没关系。' },
+  pbTabPick: { en: 'Pick', fr: 'Trier', de: 'Auswählen', es: 'Elegir', zh: '挑选' },
+  pbTabGroups: { en: 'Similar shots', fr: 'Photos similaires', de: 'Ähnliche Aufnahmen', es: 'Fotos parecidas', zh: '相似照片' },
+  pbUndo: { en: 'Undo', fr: 'Annuler', de: 'Rückgängig', es: 'Deshacer', zh: '撤销' },
+  pbUndoTitle: { en: 'Undo the last pick (Backspace or Ctrl+Z)', fr: 'Annuler le dernier choix (Retour arrière ou Ctrl+Z)', de: 'Letzte Wahl rückgängig machen (Rücktaste oder Strg+Z)', es: 'Deshacer la última elección (Retroceso o Ctrl+Z)', zh: '撤销上一次选择(退格键或 Ctrl+Z)' },
+  pbClose: { en: 'Close', fr: 'Fermer', de: 'Schließen', es: 'Cerrar', zh: '关闭' },
+  pbDuelHint: { en: 'Which one is better? Click it, or use the arrow keys.', fr: 'Laquelle est la meilleure ? Cliquez dessus, ou utilisez les flèches.', de: 'Welches ist besser? Klicken Sie darauf oder nutzen Sie die Pfeiltasten.', es: '¿Cuál es mejor? Haz clic en ella o usa las flechas.', zh: '哪张更好?点击它,或使用方向键。' },
+  pbSingleHint: { en: 'Keep this one for the photobook?', fr: "Garder celle-ci pour l'album photo ?", de: 'Dieses Foto ins Fotobuch nehmen?', es: '¿Guardar esta para el fotolibro?', zh: '把这张留在相册里吗?' },
+  pbGroupProgress: { en: v => `Similar shots ${v.n} of ${v.total}`, fr: v => `Photos similaires ${v.n} sur ${v.total}`, de: v => `Ähnliche Aufnahmen ${v.n} von ${v.total}`, es: v => `Fotos parecidas ${v.n} de ${v.total}`, zh: v => `相似照片 第 ${v.n} / ${v.total} 张` },
+  pbSingleShot: { en: 'A single shot', fr: 'Une photo unique', de: 'Eine einzelne Aufnahme', es: 'Una foto única', zh: '单张照片' },
+  pbVs: { en: 'VS', fr: 'VS', de: 'VS', es: 'VS', zh: 'VS' },
+  pbLeftBetter: { en: 'Left one', fr: 'Celle de gauche', de: 'Das linke', es: 'La de la izquierda', zh: '左边这张' },
+  pbRightBetter: { en: 'Right one', fr: 'Celle de droite', de: 'Das rechte', es: 'La de la derecha', zh: '右边这张' },
+  pbKeepBoth: { en: 'Keep both', fr: 'Garder les deux', de: 'Beide behalten', es: 'Quedarme con las dos', zh: '两张都留' },
+  pbKeepBothTitle: { en: 'Both go in the photobook (arrow down)', fr: "Les deux vont dans l'album photo (flèche bas)", de: 'Beide kommen ins Fotobuch (Pfeil nach unten)', es: 'Las dos van al fotolibro (flecha abajo)', zh: '两张都放进相册(下方向键)' },
+  pbLater: { en: 'Decide later', fr: 'Décider plus tard', de: 'Später entscheiden', es: 'Decidir más tarde', zh: '稍后决定' },
+  pbSkip: { en: 'Skip', fr: 'Passer', de: 'Überspringen', es: 'Saltar', zh: '跳过' },
+  pbKeep: { en: 'Keep', fr: 'Garder', de: 'Behalten', es: 'Guardar', zh: '保留' },
+  pbTrovesPick: { en: "Trove's pick", fr: 'Le choix de Trove', de: 'Troves Wahl', es: 'La elección de Trove', zh: 'Trove 推荐' },
+  pbPickWhySharper: { en: 'This one looks a little sharper. Just a hint, you decide.', fr: "Celle-ci semble un peu plus nette. Ce n'est qu'une suggestion, c'est vous qui décidez.", de: 'Dieses wirkt etwas schärfer. Nur ein Hinweis, Sie entscheiden.', es: 'Esta parece un poco más nítida. Solo es una pista, tú decides.', zh: '这张看起来稍微清晰一点。只是建议,由你决定。' },
+  pbPickWhyFaces: { en: 'Faces look a little better here (eyes open, facing the camera). Just a hint, you decide.', fr: "Les visages semblent un peu mieux ici (yeux ouverts, face à l'objectif). Ce n'est qu'une suggestion, c'est vous qui décidez.", de: 'Die Gesichter wirken hier etwas besser (Augen offen, zur Kamera gewandt). Nur ein Hinweis, Sie entscheiden.', es: 'Las caras se ven un poco mejor aquí (ojos abiertos, mirando a la cámara). Solo es una pista, tú decides.', zh: '这张的人脸看起来稍好一些(睁眼、面向镜头)。只是建议,由你决定。' },
+  pbDoneTitle: { en: 'Your photobook is ready!', fr: 'Votre album photo est prêt !', de: 'Ihr Fotobuch ist fertig!', es: '¡Tu fotolibro está listo!', zh: '你的相册完成了!' },
+  pbDoneBody: { en: v => `${v.kept} photos kept out of ${v.n}. The rest stay in the trip, just further down. Nothing was deleted.`, fr: v => `${v.kept} photos gardées sur ${v.n}. Les autres restent dans le voyage, simplement plus bas. Rien n'a été supprimé.`, de: v => `${v.kept} von ${v.n} Fotos behalten. Der Rest bleibt in der Reise, nur weiter unten. Nichts wurde gelöscht.`, es: v => `${v.kept} fotos guardadas de ${v.n}. El resto sigue en el viaje, solo más abajo. No se ha borrado nada.`, zh: v => `从 ${v.n} 张中留下了 ${v.kept} 张。其余的仍在旅行中,只是排在下面。没有删除任何照片。` },
+  pbDoneLater: { en: v => `${v.n} group${v.n!==1?'s':''} left for later.`, fr: v => `${v.n} groupe${v.n!==1?'s':''} laissé${v.n!==1?'s':''} pour plus tard.`, de: v => `${v.n} Gruppe${v.n!==1?'n':''} für später aufgehoben.`, es: v => `${v.n} grupo${v.n!==1?'s':''} para más tarde.`, zh: v => `还有 ${v.n} 组留待稍后。` },
+  pbDoneBackToLater: { en: 'Back to the ones I left', fr: "Revenir à celles que j'ai laissées", de: 'Zurück zu den übersprungenen', es: 'Volver a las que dejé', zh: '回到留待稍后的照片' },
+  pbBackToTrip: { en: 'Back to the trip', fr: 'Retour au voyage', de: 'Zurück zur Reise', es: 'Volver al viaje', zh: '返回旅行' },
+  pbGroupsTitle: { en: v => `${v.n} group${v.n!==1?'s':''} of similar shots`, fr: v => `${v.n} groupe${v.n!==1?'s':''} de photos similaires`, de: v => `${v.n} Gruppe${v.n!==1?'n':''} ähnlicher Aufnahmen`, es: v => `${v.n} grupo${v.n!==1?'s':''} de fotos parecidas`, zh: v => `${v.n} 组相似照片` },
+  pbGroupsSub: { en: v => `${v.inGroups} photos in groups, ${v.singles} single shots. Shots group together when taken close in time and nearly identical.`, fr: v => `${v.inGroups} photos dans des groupes, ${v.singles} photos uniques. Les photos sont groupées quand elles sont prises à peu d'intervalle et presque identiques.`, de: v => `${v.inGroups} Fotos in Gruppen, ${v.singles} Einzelaufnahmen. Aufnahmen werden gruppiert, wenn sie kurz nacheinander entstanden und fast gleich sind.`, es: v => `${v.inGroups} fotos en grupos, ${v.singles} fotos únicas. Se agrupan cuando se hicieron casi a la vez y son casi idénticas.`, zh: v => `${v.inGroups} 张在组中,${v.singles} 张单独照片。拍摄时间接近且几乎相同的照片会被分为一组。` },
+  pbGroupMeta: { en: v => `${v.n} shots over ${v.span}`, fr: v => `${v.n} photos en ${v.span}`, de: v => `${v.n} Aufnahmen in ${v.span}`, es: v => `${v.n} fotos en ${v.span}`, zh: v => `${v.span} 内拍了 ${v.n} 张` },
+  pbSeconds: { en: v => `${v.n}s`, fr: v => `${v.n} s`, de: v => `${v.n} s`, es: v => `${v.n} s`, zh: v => `${v.n} 秒` },
+  pbMinutes: { en: v => `${v.n} min`, fr: v => `${v.n} min`, de: v => `${v.n} Min.`, es: v => `${v.n} min`, zh: v => `${v.n} 分钟` },
+  pbPickThisGroup: { en: 'Pick in this group', fr: 'Trier ce groupe', de: 'In dieser Gruppe auswählen', es: 'Elegir en este grupo', zh: '挑选这一组' },
+  pbPickAgain: { en: 'Pick again', fr: 'Trier à nouveau', de: 'Neu auswählen', es: 'Volver a elegir', zh: '重新挑选' },
+  pbNoGroups: { en: 'No near-identical shots found in this trip.', fr: 'Aucune photo presque identique dans ce voyage.', de: 'Keine fast gleichen Aufnahmen in dieser Reise gefunden.', es: 'No hay fotos casi idénticas en este viaje.', zh: '这趟旅行中没有找到几乎相同的照片。' },
+  pbStrictnessTitle: { en: 'How alike shots must be to be grouped', fr: 'À quel point les photos doivent se ressembler pour être groupées', de: 'Wie ähnlich Aufnahmen sein müssen, um gruppiert zu werden', es: 'Cuánto deben parecerse las fotos para agruparse', zh: '照片需要多相似才会被分为一组' },
+  pbLooser: { en: 'Looser', fr: 'Plus large', de: 'Lockerer', es: 'Más amplio', zh: '宽松' },
+  pbNormal: { en: 'Normal', fr: 'Normal', de: 'Normal', es: 'Normal', zh: '标准' },
+  pbTighter: { en: 'Tighter', fr: 'Plus strict', de: 'Strenger', es: 'Más estricto', zh: '严格' },
+  frFirstDuelBody: { en: v => `Got ten shots of the same view? Let's pick the best ones from <strong>${v.name}</strong>, two at a time.`, fr: v => `Dix photos de la même vue ? Choisissons les meilleures de <strong>${v.name}</strong>, deux par deux.`, de: v => `Zehn Fotos vom selben Motiv? Wählen wir die besten aus <strong>${v.name}</strong>, immer zwei auf einmal.`, es: v => `¿Diez fotos de la misma vista? Elijamos las mejores de <strong>${v.name}</strong>, de dos en dos.`, zh: v => `同一个景拍了十张?我们两两对比,从 <strong>${v.name}</strong> 中挑出最好的。` },
+  frFirstDuelBtn: { en: '⚔️ Pick my best shots', fr: '⚔️ Choisir mes meilleures photos', de: '⚔️ Meine besten Fotos auswählen', es: '⚔️ Elegir mis mejores fotos', zh: '⚔️ 挑选我的最佳照片' },
+
+  // Photobook presentation (presentation.js)
+  prEmpty: { en: '📖 Keep a few photos in the photobook first', fr: "📖 Gardez d'abord quelques photos dans l'album photo", de: '📖 Nehmen Sie zuerst ein paar Fotos ins Fotobuch', es: '📖 Primero guarda algunas fotos en el fotolibro', zh: '📖 请先在相册中保留几张照片' },
+  prPreparing: { en: 'Laying out your photobook…', fr: 'Mise en page de votre album photo…', de: 'Ihr Fotobuch wird gestaltet…', es: 'Maquetando tu fotolibro…', zh: '正在排版你的相册…' },
+  prLookBook: { en: '📖 Book', fr: '📖 Livre', de: '📖 Buch', es: '📖 Libro', zh: '📖 书本' },
+  prLookSlides: { en: '🖥 Slideshow', fr: '🖥 Diaporama', de: '🖥 Diashow', es: '🖥 Diapositivas', zh: '🖥 幻灯片' },
+  prArrange: { en: '✋ Arrange', fr: '✋ Arranger', de: '✋ Anordnen', es: '✋ Ordenar', zh: '✋ 调整' },
+  prArrangeHint: { en: 'Click a photo, then another, to swap them. ◀ ▶ move a whole page.', fr: 'Cliquez sur une photo puis une autre pour les échanger. ◀ ▶ déplacent une page entière.', de: 'Klicken Sie ein Foto und dann ein anderes an, um sie zu tauschen. ◀ ▶ verschieben eine ganze Seite.', es: 'Haz clic en una foto y luego en otra para intercambiarlas. ◀ ▶ mueven una página entera.', zh: '先点一张照片,再点另一张即可互换。◀ ▶ 移动整页。' },
+  prShuffle: { en: 'Shuffle', fr: 'Mélanger', de: 'Mischen', es: 'Barajar', zh: '换个排版' },
+  prShuffleTitle: { en: 'Try a different layout (photos stay in date order)', fr: "Essayer une autre mise en page (les photos restent dans l'ordre des dates)", de: 'Ein anderes Layout ausprobieren (Fotos bleiben in Datumsreihenfolge)', es: 'Probar otra maquetación (las fotos siguen en orden de fecha)', zh: '换一种排版(照片仍按日期排序)' },
+  prFullscreen: { en: 'Full screen', fr: 'Plein écran', de: 'Vollbild', es: 'Pantalla completa', zh: '全屏' },
+  prEditHint: { en: 'Click to edit', fr: 'Cliquez pour modifier', de: 'Zum Bearbeiten klicken', es: 'Haz clic para editar', zh: '点击编辑' },
+  prPageN: { en: v => `Page ${v.n}`, fr: v => `Page ${v.n}`, de: v => `Seite ${v.n}`, es: v => `Página ${v.n}`, zh: v => `第 ${v.n} 页` },
+  prMapTitle: { en: 'Where we went', fr: 'Où nous sommes allés', de: 'Wo wir waren', es: 'Dónde estuvimos', zh: '我们去过的地方' },
+  prStatsTitle: { en: 'The trip in numbers', fr: 'Le voyage en chiffres', de: 'Die Reise in Zahlen', es: 'El viaje en cifras', zh: '旅行数据' },
+  prStatDays: { en: v => v.n === 1 ? 'day' : 'days', fr: v => v.n === 1 ? 'jour' : 'jours', de: v => v.n === 1 ? 'Tag' : 'Tage', es: v => v.n === 1 ? 'día' : 'días', zh: () => '天' },
+  prStatPlaces: { en: v => v.n === 1 ? 'place' : 'places', fr: v => v.n === 1 ? 'lieu' : 'lieux', de: v => v.n === 1 ? 'Ort' : 'Orte', es: v => v.n === 1 ? 'lugar' : 'lugares', zh: () => '个地点' },
+  prStatTaken: { en: () => 'photos and videos taken', fr: () => 'photos et vidéos prises', de: () => 'Fotos und Videos aufgenommen', es: () => 'fotos y vídeos tomados', zh: () => '张照片和视频' },
+  prStatKept: { en: () => 'kept for this book', fr: () => 'gardées pour cet album', de: () => 'für dieses Buch behalten', es: () => 'guardados para este libro', zh: () => '张收入本相册' },
+  prTheEnd: { en: 'The end', fr: 'Fin', de: 'Ende', es: 'Fin', zh: '完' },
+  prExport: { en: 'Export', fr: 'Exporter', de: 'Exportieren', es: 'Exportar', zh: '导出' },
+  prExportPdf: { en: 'PDF', fr: 'PDF', de: 'PDF', es: 'PDF', zh: 'PDF' },
+  prExportPdfSub: { en: 'To keep, share or print yourself', fr: 'Pour garder, partager ou imprimer vous-même', de: 'Zum Behalten, Teilen oder selbst Drucken', es: 'Para guardar, compartir o imprimir tú mismo', zh: '用于保存、分享或自行打印' },
+  prExportHtml: { en: 'Web page', fr: 'Page web', de: 'Webseite', es: 'Página web', zh: '网页' },
+  prExportHtmlSub: { en: 'One file that opens in any browser, offline', fr: "Un seul fichier qui s'ouvre dans n'importe quel navigateur, hors ligne", de: 'Eine Datei, die in jedem Browser offline öffnet', es: 'Un solo archivo que se abre en cualquier navegador, sin conexión', zh: '单个文件,可在任意浏览器离线打开' },
+  prExportComplete: { en: 'Complete export', fr: 'Export complet', de: 'Vollständiger Export', es: 'Exportación completa', zh: '完整导出' },
+  prExportCompleteSub: { en: 'A folder with the web page, the PDF and the videos', fr: 'Un dossier avec la page web, le PDF et les vidéos', de: 'Ein Ordner mit Webseite, PDF und den Videos', es: 'Una carpeta con la página web, el PDF y los vídeos', zh: '一个包含网页、PDF 和视频的文件夹' },
+  prExportVideoNote: { en: 'Videos play in the web page of the complete export. In a PDF they show as a still that links to the video, but many PDF readers block those links, and a PDF on its own only links to the videos on this computer.', fr: "Les vidéos se lisent dans la page web de l'export complet. Dans un PDF, elles apparaissent comme une image liée à la vidéo, mais beaucoup de lecteurs PDF bloquent ces liens, et un PDF seul ne pointe que vers les vidéos de cet ordinateur.", de: 'Videos laufen in der Webseite des vollständigen Exports. Im PDF erscheinen sie als Standbild mit Link zum Video, aber viele PDF-Reader blockieren solche Links, und ein einzelnes PDF verweist nur auf die Videos auf diesem Computer.', es: 'Los vídeos se reproducen en la página web de la exportación completa. En un PDF aparecen como una imagen enlazada al vídeo, pero muchos lectores de PDF bloquean esos enlaces, y un PDF suelto solo enlaza a los vídeos de este ordenador.', zh: '视频可在完整导出的网页中播放。在 PDF 中,视频显示为链接到视频的静态画面,但许多 PDF 阅读器会阻止这类链接,而且单独的 PDF 只能链接到这台电脑上的视频。' },
+  prVideoInComplete: { en: '▶ Video in the complete export', fr: "▶ Vidéo dans l'export complet", de: '▶ Video im vollständigen Export', es: '▶ Vídeo en la exportación completa', zh: '▶ 视频见完整导出' },
+  prExportPreparing: { en: v => `Preparing photos ${v.done} / ${v.total}…`, fr: v => `Préparation des photos ${v.done} / ${v.total}…`, de: v => `Fotos werden vorbereitet ${v.done} / ${v.total}…`, es: v => `Preparando fotos ${v.done} / ${v.total}…`, zh: v => `正在准备照片 ${v.done} / ${v.total}…` },
+  prExportSaving: { en: 'Choose where to save it…', fr: "Choisissez où l'enregistrer…", de: 'Wählen Sie den Speicherort…', es: 'Elige dónde guardarlo…', zh: '请选择保存位置…' },
+  prExportDone: { en: '📖 Photobook exported', fr: '📖 Album photo exporté', de: '📖 Fotobuch exportiert', es: '📖 Fotolibro exportado', zh: '📖 相册已导出' },
+  prExportDoneSkipped: { en: v => `📖 Photobook exported, ${v.n} video${v.n!==1?'s':''} could not be copied`, fr: v => v.n !== 1 ? `📖 Album photo exporté, ${v.n} vidéos n'ont pas pu être copiées` : `📖 Album photo exporté, 1 vidéo n'a pas pu être copiée`, de: v => `📖 Fotobuch exportiert, ${v.n} Video${v.n!==1?'s':''} konnte${v.n!==1?'n':''} nicht kopiert werden`, es: v => `📖 Fotolibro exportado, no se ${v.n!==1?'pudieron':'pudo'} copiar ${v.n} vídeo${v.n!==1?'s':''}`, zh: v => `📖 相册已导出,有 ${v.n} 个视频无法复制` },
+  prExportFailed: { en: 'The export could not be saved', fr: "L'export n'a pas pu être enregistré", de: 'Der Export konnte nicht gespeichert werden', es: 'No se pudo guardar la exportación', zh: '导出无法保存' }
 };
 
 // A folder's icon is normally an emoji string, but folder.iconImage (a data URL, set via the
@@ -1390,6 +1500,7 @@ function renderTravelSidebar() { renderSidebar(); } // kept for geocodeFiles cal
 const BURST_GAP_MS = 2000;  // max gap between consecutive shots to stay in the same burst
 const BURST_MIN_SIZE = 3;   // fewer than this isn't worth collapsing into a group
 let burstCoverMap = new Map(); // coverId -> { count, memberIds } - refreshed by getVisibleFiles() each render
+let photobookView = null; // { tripId, outCount } while a trip with a started photobook is showing (photobook.js) - refreshed by getVisibleFiles() the same way
 let currentViewImages = []; // photos AND videos in the currently rendered view, for double-click "browse all" popup nav - refreshed by renderFilesInner() each render
 
 function burstFilenameNumber(name) {
@@ -2643,7 +2754,7 @@ function selectFolder(folderId, el) {
   if (target) target.classList.add('active');
 
   let title = 'Photo Library';
-  if (folderId === 'best-of') title = '⭐ Best Of';
+  if (folderId === 'best-of') title = `❤️ ${t('lkLiked')}`;
   else if (folderId === 'all') title = 'All Files';
   else if (folderId === 'timeline') title = 'Photo Library';
   else if (folderId === 'to-sort') title = 'To Sort';
@@ -2936,11 +3047,18 @@ function computeVisibleFiles() {
     tripNameOf = f => f.folders?.map(id => m.get(id)).find(Boolean) || '~'; // '~' sorts last
   }
 
+  // A trip whose photobook has been started shows its photobook first, then everything else
+  // below a divider (see photobook.js). Grid and List only: the month timeline stays in order.
+  photobookView = null;
+  const bookTrip = !q && !inTimelineView && currentView !== 'timeline' && typeof photobookTripOfView === 'function' ? photobookTripOfView() : null;
+  if (bookTrip && files.some(isInPhotobook)) photobookView = { tripId: bookTrip.id, outCount: files.filter(f => !isInPhotobook(f)).length };
+
   // Collapse burst sequences to one card - skipped for search (don't hide a
-  // specifically-searched-for frame) and Best Of (an explicitly starred frame
-  // should never disappear behind a collapse).
+  // specifically-searched-for frame) and Liked (an explicitly liked frame
+  // should never disappear behind a collapse). A photobook frame is kept out of
+  // the collapse for the same reason.
   if (!q && !inBestOfView) {
-    const { coverMap, memberToCover } = computeBurstGroups(files);
+    const { coverMap, memberToCover } = computeBurstGroups(photobookView ? files.filter(f => !isInPhotobook(f)) : files);
     burstCoverMap = coverMap;
     files = files.filter(f => { const cov = memberToCover.get(f.id); return !cov || cov === f.id; });
   } else {
@@ -2962,6 +3080,7 @@ function computeVisibleFiles() {
         ? (a.fileDate||0) - (b.fileDate||0)
         : (b.fileDate||0) - (a.fileDate||0);
     }
+    if (photobookView && isInPhotobook(a) !== isInPhotobook(b)) return isInPhotobook(a) ? -1 : 1;
     // Pinned floats to the top of its folder - the one feature actually meant to override
     // the chosen sort, outside Best Of's and Photo Library's own views above.
     if (!!a.pinned !== !!b.pinned && !inTimelineView) return a.pinned ? -1 : 1;
@@ -3058,9 +3177,9 @@ function renderFilesInner(area, renderedCount = 0) {
     area.innerHTML = '<div id="lasso"></div>';
     if (!files.length) {
       area.innerHTML += `<div class="empty-state">
-        <div class="empty-icon">⭐</div>
-        <div class="empty-title">No Best Of picks${(bestOfFilters.type!=='all'||bestOfFilters.tripId||bestOfFilters.cameraFolder||bestOfFilters.year)?' match these filters':' yet'}</div>
-        <div class="empty-sub">Right-click any file → “⭐ Add to Best Of” to build your highlight reel</div></div>`;
+        <div class="empty-icon">❤️</div>
+        <div class="empty-title">${(bestOfFilters.type!=='all'||bestOfFilters.tripId||bestOfFilters.cameraFolder||bestOfFilters.year) ? t('lkEmptyFiltered') : t('lkEmpty')}</div>
+        <div class="empty-sub">${t('lkEmptySub')}</div></div>`;
       return;
     }
     if (currentView === 'list') renderList(files, area, renderedCount); else renderGrid(files, area, renderedCount);
@@ -3071,6 +3190,7 @@ function renderFilesInner(area, renderedCount = 0) {
   const children = getDirectChildren(currentFolder);
   if (children.length > 0) {
     area.innerHTML = '<div id="lasso"></div>';
+    appendTripBookBanner(area);
     const head = document.createElement('div');
     head.className = 'area-head';
     head.innerHTML = `<span class="subf-section-label" style="margin:0">📁 ${children.length} folder${children.length!==1?'s':''}</span>
@@ -3112,6 +3232,7 @@ function renderFilesInner(area, renderedCount = 0) {
   }
 
   area.innerHTML = '<div id="lasso"></div>';
+  appendTripBookBanner(area);
 
   if (currentFolder === 'to-sort') {
     const banner = document.createElement('div');
@@ -3177,7 +3298,7 @@ function renderFolderCardGrid(folders, area) {
     card.dataset.folderCard = f.id;
     card.innerHTML = `
       <div class="fcv2-cover" style="background:linear-gradient(135deg,${f.color||'#3d6f8f'}33,var(--bg3))"><span class="fcv2-fallback">${esc(folderEmoji(f))}</span></div>
-      ${bestCount ? `<div class="fcv2-badge">⭐ ${bestCount}</div>` : ''}
+      ${bestCount ? `<div class="fcv2-badge">❤ ${bestCount}</div>` : ''}
       <div class="fcv2-overlay">
         <div class="fcv2-name">${esc(folderEmojiPrefix(f))}<span class="fcv2-name-text">${esc(f.name)}</span></div>
         <div class="fcv2-meta">${range ? esc(range)+' · ' : ''}${folderFiles.length} file${folderFiles.length!==1?'s':''}</div>
@@ -3241,7 +3362,7 @@ function onBestOfFilterChange() {
 // deliberately copies files instead of just linking to them.
 async function exportBestOfAlbum() {
   const files = getVisibleFiles();
-  if (!files.length) { toast('⚠️ No Best Of files to export'); return; }
+  if (!files.length) { toast(t('lkNothingToExport')); return; }
   const trips = getTripLikeFolders();
   const payload = files.map(f => {
     const trip = trips.find(t => f.folders?.includes(t.id));
@@ -3249,8 +3370,8 @@ async function exportBestOfAlbum() {
     return { path: f.path, name: f.name, isVideo: isVid(f.ext), caption };
   });
   const title = bestOfFilters.tripId
-    ? (trips.find(t => t.id === bestOfFilters.tripId)?.name || 'Best Of')
-    : 'Best Of';
+    ? (trips.find(trip => trip.id === bestOfFilters.tripId)?.name || t('lkLiked'))
+    : t('lkLiked');
   toast(`⬇ Exporting ${payload.length} file${payload.length !== 1 ? 's' : ''}…`);
   const res = await window.api.exportBestOfAlbum(payload, title);
   if (!res?.success) { toast('Export cancelled'); return; }
@@ -3459,7 +3580,7 @@ function renderGrid(files, area, minCount = 0) {
 function populateGridCard(card, file) {
   const searchOn = !!getSearchQuery();
   const isSel = selectedIds.has(file.id);
-  card.className = 'file-card' + (file._missing?' file-missing':'') + (isSel?' selected':'');
+  card.className = 'file-card' + (file._missing?' file-missing':'') + (isSel?' selected':'') + (photobookView && !isInPhotobook(file)?' not-in-book':'');
   const thumbContainer = `<div class="file-card-thumb${(isMedia(file.ext)&&!file._missing)?' thumb-loading':''}" data-thumb-for="${file.id}" id="th-${file.id}">
       <span class="thumb-icon${file._missing?' thumb-icon-missing':''}" title="${file._missing?'File not found on disk':''}">${file._missing?'🚫':getEmoji(file.ext)}</span>
       ${isVid(file.ext)?'<div class="video-badge">▶ VIDEO</div>':''}
@@ -3468,7 +3589,7 @@ function populateGridCard(card, file) {
     <div class="sel-check">✓</div>
     ${file._missing?'<div class="missing-badge">Missing</div>':''}
     ${burstCoverMap.has(file.id)?`<div class="burst-badge" title="Burst of ${burstCoverMap.get(file.id).count} - click to pick a favorite" onclick="event.stopPropagation();openBurstReview('${file.id}')">🎞 ${burstCoverMap.get(file.id).count}</div>`:''}
-    <button class="file-card-star ${file.bestOf?'starred':''}" title="${file.bestOf?'Remove from Best Of':'Add to Best Of'}" onclick="toggleBestOf(event,'${file.id}')">${file.bestOf?'⭐':'☆'}</button>
+    <button class="file-card-star ${file.bestOf?'starred':''}" title="${esc(file.bestOf?t('lkUnlike'):t('lkLike'))} (L)" onclick="toggleBestOf(event,'${file.id}')">${file.bestOf?'❤️':'♡'}</button>
     ${file.edits?'<div class="edited-badge" title="Edited">✏️</div>':''}
     ${searchOn&&semanticOnlyIds.has(file.id)?'<div class="semantic-badge" title="Matched by visual content, not filename/tags">🧠</div>':''}
     ${file.versionParentId?`<div class="version-badge" title="Has a linked original - click to view versions" onclick="event.stopPropagation();openVersionModal('${file.id}')">🌿</div>`:''}
@@ -3529,6 +3650,7 @@ function selectFilesOfType(key, additive) {
 
 function appendGridCards(fileSlice, container) {
   for (const file of fileSlice) {
+    maybeAppendBookDivider(file, container);
     maybeAppendTypeHeader(file, container);
     const card = document.createElement('div');
     card.dataset.fileId = file.id;
@@ -3565,7 +3687,7 @@ function renderList(files, area, minCount = 0) {
 function populateListRow(row, file) {
   const searchOn = !!getSearchQuery();
   const isSel = selectedIds.has(file.id);
-  row.className = 'file-row' + (file._missing?' file-missing':'') + (isSel?' selected':'');
+  row.className = 'file-row' + (file._missing?' file-missing':'') + (isSel?' selected':'') + (photobookView && !isInPhotobook(file)?' not-in-book':'');
   row.innerHTML = `
     <div class="file-row-thumb${(isMedia(file.ext)&&!file._missing)?' thumb-loading':''}" data-thumb-for="${file.id}" id="th-${file.id}"><span class="${file._missing?'thumb-icon-missing':''}" title="${file._missing?'File not found on disk':''}">${file._missing?'🚫':getEmoji(file.ext)}</span></div>
     <div class="file-row-info">
@@ -3575,7 +3697,7 @@ function populateListRow(row, file) {
     </div>
     <div class="file-row-date">${fmtDate(file.fileDate||file.addedAt)}</div>
     <div class="file-row-size">${fmtSize(file.size)}</div>
-    <button class="file-row-star ${file.bestOf?'starred':''}" title="${file.bestOf?'Remove from Best Of':'Add to Best Of'}" onclick="toggleBestOf(event,'${file.id}')">${file.bestOf?'⭐':'☆'}</button>
+    <button class="file-row-star ${file.bestOf?'starred':''}" title="${esc(file.bestOf?t('lkUnlike'):t('lkLike'))} (L)" onclick="toggleBestOf(event,'${file.id}')">${file.bestOf?'❤️':'♡'}</button>
     ${file.pinned?'<span class="file-row-pin pinned" style="pointer-events:none" title="Pinned">📌</span>':''}`;
   if (isMedia(file.ext)) {
     const thumbEl = row.querySelector('[data-thumb-for]');
@@ -3585,6 +3707,7 @@ function populateListRow(row, file) {
 
 function appendListRows(fileSlice, container) {
   for (const file of fileSlice) {
+    maybeAppendBookDivider(file, container);
     maybeAppendTypeHeader(file, container);
     const row = document.createElement('div');
     row.dataset.fileId = file.id;
@@ -3891,8 +4014,11 @@ function showCtxMenu(e, fileId) {
   if (!selectedIds.has(fileId)) { clearSelection(); selectedIds.add(fileId); updateSelectionUI(); }
   const file = appData.files.find(f => f.id === fileId);
   const best = file?.bestOf;
-  document.getElementById('ctxBestIcon').textContent = best ? '⭐' : '☆';
-  document.getElementById('ctxBestLabel').textContent = best ? 'Remove from Best Of' : 'Add to Best Of';
+  document.getElementById('ctxBestIcon').textContent = best ? '❤️' : '♡';
+  document.getElementById('ctxBestLabel').textContent = best ? t('lkUnlike') : t('lkLike');
+  const inTrip = file && photobookTripOf(file);
+  document.getElementById('ctxBookItem').style.display = inTrip ? '' : 'none';
+  if (inTrip) document.getElementById('ctxBookLabel').textContent = isInPhotobook(file) ? t('pbCtxRemove') : t('pbCtxAdd');
   const showLoc = file?.gps ? '' : 'none';
   document.getElementById('ctxClearLoc').style.display = showLoc;
   document.getElementById('ctxLocSep').style.display = showLoc;
@@ -3932,9 +4058,15 @@ async function ctxToggleBestOf() {
   const ids = selectedIds.size > 0 ? [...selectedIds] : [ctxFileId];
   const file = appData.files.find(f=>f.id===ids[0]);
   const newVal = !file?.bestOf;
-  ids.forEach(id => { const f=appData.files.find(f=>f.id===id); if(f) f.bestOf=newVal; });
+  ids.forEach(id => { const f=appData.files.find(f=>f.id===id); if(f) setLiked(f, newVal); });
   await saveData();
-  toast(newVal ? `⭐ Added ${ids.length} to Best Of` : `☆ Removed ${ids.length} from Best Of`);
+  toast(newVal ? t('lkLikedN', { n: ids.length }) : t('lkUnlikedN', { n: ids.length }));
+}
+function ctxTogglePhotobook() {
+  hideCtxMenu();
+  const ids = selectedIds.size > 0 ? [...selectedIds] : [ctxFileId];
+  const file = appData.files.find(f=>f.id===ids[0]);
+  if (file) setPhotobookMembership(ids, !isInPhotobook(file));
 }
 function ctxMoveToFolder() { hideCtxMenu(); if (selectedIds.size > 1) bulkAssignFolders(); else if (ctxFileId) showAssignModal(new Event('click'), ctxFileId); }
 function ctxEdit() { hideCtxMenu(); if (ctxFileId) showEditModal(ctxFileId); }
@@ -4205,9 +4337,9 @@ async function bulkBestOf() {
   const ids = [...selectedIds];
   const first = appData.files.find(f=>f.id===ids[0]);
   const newVal = !first?.bestOf;
-  ids.forEach(id => { const f=appData.files.find(f=>f.id===id); if(f) f.bestOf=newVal; });
+  ids.forEach(id => { const f=appData.files.find(f=>f.id===id); if(f) setLiked(f, newVal); });
   await saveData();
-  toast(newVal ? `⭐ Added ${ids.length} to Best Of` : `☆ Removed ${ids.length} from Best Of`);
+  toast(newVal ? t('lkLikedN', { n: ids.length }) : t('lkUnlikedN', { n: ids.length }));
 }
 
 function bulkAssignFolders() {
@@ -4517,9 +4649,9 @@ async function toggleBestOf(e, id) {
   e.stopPropagation();
   const f = appData.files.find(f=>f.id===id);
   if (!f) return;
-  f.bestOf = !f.bestOf;
+  setLiked(f, !f.bestOf);
   await saveData();
-  toast(f.bestOf ? '⭐ Added to Best Of' : '☆ Removed from Best Of');
+  toast(f.bestOf ? t('lkLikedOne') : t('lkUnlikedOne'));
 }
 
 async function ctxTogglePin() {
@@ -4573,7 +4705,7 @@ function buildAssignBody() {
     : (appData.files.find(f=>f.id===modalFileId)?.bestOf || false);
   const favRow = document.createElement('div');
   favRow.className = 'fc-fav-row';
-  favRow.innerHTML = `<input type="checkbox" id="fc-favorites" ${bestChecked?'checked':''}/><label class="fc-fav-label" for="fc-favorites">⭐ Best Of</label>`;
+  favRow.innerHTML = `<input type="checkbox" id="fc-favorites" ${bestChecked?'checked':''}/><label class="fc-fav-label" for="fc-favorites">❤️ ${esc(t('lkLiked'))}</label>`;
   body.appendChild(favRow);
   const camRoot = appData.folders.find(f=>f.name==='Cameras'&&!f.parentId);
   const vacRoot = appData.folders.find(f=>f.id==='vacations-root');
@@ -4641,7 +4773,7 @@ async function saveAssignments() {
   for (const id of targets) {
     const file = appData.files.find(f=>f.id===id);
     if (!file) continue;
-    if (favCb) file.bestOf = favCb.checked;
+    if (favCb && !!file.bestOf !== favCb.checked) setLiked(file, favCb.checked);
     if (!file.folders) file.folders = [];
     const camRoot = appData.folders.find(f=>f.name==='Cameras'&&!f.parentId);
     const vacRoot = appData.folders.find(f=>f.id==='vacations-root');
@@ -8759,17 +8891,18 @@ function resumePopupReturn() {
 async function togglePopupBestOf() {
   const file = appData.files.find(f => f.id === popupFileId);
   if (!file) return;
-  file.bestOf = !file.bestOf;
+  setLiked(file, !file.bestOf);
   await saveData();
   updatePopupBestOfBtn(file);
-  toast(file.bestOf ? '⭐ Added to Best Of' : '☆ Removed from Best Of');
+  toast(file.bestOf ? t('lkLikedOne') : t('lkUnlikedOne'));
 }
 
 function updatePopupBestOfBtn(file) {
   const btn = document.getElementById('popupBestOfBtn');
   if (!btn) return;
-  btn.textContent = file.bestOf ? '⭐ Best Of' : '☆ Add to Best Of';
-  btn.style.color = file.bestOf ? 'var(--gold)' : '';
+  btn.textContent = file.bestOf ? `❤️ ${t('lkLiked')}` : `♡ ${t('lkLike')}`;
+  btn.title = t('lkShortcutTitle');
+  btn.style.color = file.bestOf ? 'var(--heart)' : '';
 }
 
 // Deletes the currently-viewed popup photo from the actual hard drive (reusing the
@@ -11275,14 +11408,21 @@ function frRenderDoneStep() {
     : `<li>${t('frTipToSort')}</li>
        <li>${t('frTipTagMore')}</li>
        <li>${t('frTipColors')}</li>`;
+  // The quickest win on offer: a first photobook duel on the biggest trip just added.
+  const duelTripId = frTripsThisSession.length ? photobookBestTrip(frTripsThisSession.map(trip => trip.id)) : null;
+  const duelTrip = duelTripId && appData.folders.find(f => f.id === duelTripId);
   document.getElementById('frBody').innerHTML = `
     <div class="fr-hero">
       <div class="fr-hero-icon">🎉</div>
       <div class="gs-intro" style="max-width:440px"><strong>${t('frDoneTitle')}</strong><br>${t('frDoneBody', { n: files.length, tripPhrase, peoplePhrase, unlockPhrase })}</div>
+      ${duelTrip ? `<div class="fr-first-duel">
+        <div class="fr-first-duel-text">${t('frFirstDuelBody', { name: esc(duelTrip.name) })}</div>
+        <button class="fr-choice-btn fr-choice-primary fr-cta" onclick="frStartFirstDuel('${duelTrip.id}')">${t('frFirstDuelBtn')}</button>
+      </div>` : ''}
       <div class="fr-choice-row">
         <button class="fr-choice-btn" onclick="frAddAnotherTrip()">${t('frAddAnotherTrip')}</button>
         <button class="fr-choice-btn" onclick="frFinish(true)">${frTripsThisSession.length ? t('frViewTrip') : t('frBrowseLibrary')}</button>
-        <button class="fr-choice-btn fr-choice-primary fr-cta" onclick="frGoToSort()">${t('frFinishToSort')}</button>
+        <button class="fr-choice-btn${duelTrip ? '' : ' fr-choice-primary fr-cta'}" onclick="frGoToSort()">${t('frFinishToSort')}</button>
       </div>
       <div class="fr-tips">
         <div class="fr-tips-title">${t('frTipsTitle')}</div>
@@ -11317,6 +11457,11 @@ function frShowDoneConfetti() {
 async function frGoTo(fnName) {
   await frFinish(false);
   if (typeof window[fnName] === 'function') window[fnName]();
+}
+async function frStartFirstDuel(tripId) {
+  await frFinish(false);
+  selectFolder(tripId);
+  openPhotobook(tripId);
 }
 async function frGoToSort() {
   await frFinish(false);
@@ -17503,6 +17648,10 @@ function editPopupPhoto() {
 
 // ── KEYBOARD / CLICK-OUT ──────────────────────────────────────────────────────
 document.addEventListener('keydown', e=>{
+  // The photobook's presentation sits over its duels (photobook.js, presentation.js), and both
+  // cover the whole window, so they take the keyboard first.
+  if(pres){ presHandleKey(e); return; }
+  if(pb){ pbHandleKey(e); return; }
   // The 360 player takes every key while it's showing, unless a dialog (Remove, Edit Props...)
   // is open over the preview.
   if(v360.open && !document.querySelector('.modal-backdrop.open')){ v360HandleKey(e); return; }
@@ -17657,6 +17806,12 @@ document.addEventListener('keydown', e=>{
      && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) && !e.target.isContentEditable){
     const f = appData.files.find(x => x.id === popupFileId);
     if (f && isVid(f.ext)) { e.preventDefault(); grabPopupVideoFrame(); }
+  }
+  // L likes (or unlikes) what the popup is showing, or else the selected files.
+  if((e.key==='l'||e.key==='L') && !e.ctrlKey && !e.metaKey && !e.altKey
+     && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) && !e.target.isContentEditable){
+    if(document.getElementById('photoPopup').classList.contains('open')){ e.preventDefault(); togglePopupBestOf(); }
+    else if(selectedIds.size){ e.preventDefault(); bulkBestOf(); }
   }
   // R rotates what the popup is showing (see rotatePopupFile).
   if(document.getElementById('photoPopup').classList.contains('open') && (e.key==='r'||e.key==='R') && !e.ctrlKey && !e.metaKey
