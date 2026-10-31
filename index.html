@@ -109,6 +109,11 @@ body.win-chrome #titlebarDrag{display:block;background:var(--bg)}
 .si{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:var(--rs);cursor:pointer;transition:background .12s;position:relative}
 .si:hover{background:var(--bg3)}.si.active{background:var(--aglow)}
 .si.si-drop-target{background:var(--aglow);outline:2px dashed var(--accent);outline-offset:-2px}
+/* The thumbnail that follows the cursor while cards are dragged onto a folder (beginFileDrag) */
+.file-drag-ghost{position:fixed;left:0;top:0;z-index:10000;pointer-events:none;width:64px;height:64px;border-radius:10px;overflow:hidden;border:2px solid var(--accent);background:var(--bg2);box-shadow:0 8px 24px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:28px;opacity:.92}
+.file-drag-ghost img{width:100%;height:100%;object-fit:cover}
+.file-drag-ghost b{position:absolute;bottom:3px;right:3px;background:var(--accent);color:#fff;font-size:11px;line-height:1;padding:3px 6px;border-radius:9px}
+body.file-dragging,body.file-dragging *{cursor:grabbing!important;user-select:none}
 .si.active .si-name{color:var(--accent2)}.si.active .si-count{background:var(--aglow);color:var(--accent2)}
 .si-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .si-name{font-size:var(--fs-3);font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -183,6 +188,9 @@ body.folder-dragging .si{cursor:grabbing}
 
 /* FILE AREA */
 #fileArea{flex:1;overflow-y:auto;padding:16px 16px 84px;position:relative} /* bottom room so the floating .sel-bar never covers the last row */
+/* While the grid scrolls, tiles ignore the cursor: no hover zoom/lift on whatever slides under
+   it (see setupDisplayZoom). Instant on and off, so nothing animates mid-scroll either. */
+#fileArea.is-scrolling .tl-thumb,#fileArea.is-scrolling .file-card,#fileArea.is-scrolling .folder-cardv2{pointer-events:none;transition:none}
 #fileArea::-webkit-scrollbar{width:5px}
 #fileArea::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
@@ -222,6 +230,12 @@ body.folder-dragging .si{cursor:grabbing}
    underneath stays visible so a stalled/failed load still shows something useful. */
 @keyframes thumbShimmer{0%{background-position:-120% 0}100%{background-position:120% 0}}
 .thumb-loading{background-image:linear-gradient(90deg,transparent 0%,var(--bg4) 50%,transparent 100%);background-size:200% 100%;animation:thumbShimmer 1.3s ease-in-out infinite}
+/* Plus a spinner around the emoji on photo cards, faded in late so a quick load never shows it
+   and a slow one (a big TIFF, a HEIC decoded in software) clearly reads as "working on it". */
+@keyframes thumbSpin{to{transform:rotate(360deg)}}
+@keyframes thumbSpinIn{to{opacity:1}}
+.file-card-thumb.thumb-loading::after{content:'';position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2.5px solid var(--bg4);border-top-color:var(--accent);opacity:0;pointer-events:none;animation:thumbSpin .8s linear infinite,thumbSpinIn .25s ease .4s forwards}
+@media (prefers-reduced-motion:reduce){.file-card-thumb.thumb-loading::after{animation:thumbSpinIn .25s ease .4s forwards}}
 .video-badge{position:absolute;bottom:5px;left:5px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:#fff;font-size:9px;padding:2px 5px;border-radius:3px;font-family:'DM Mono',monospace}
 .file-card-body{padding:9px 9px 8px}
 .file-card-star{position:absolute;top:6px;right:6px;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:color .12s,transform .12s;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);border:none;border-radius:4px;padding:2px 4px;line-height:1;z-index:2}
@@ -526,6 +540,9 @@ textarea.text-input{resize:vertical}
 .photo-img-wrap{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000;position:relative;cursor:zoom-in}
 .photo-img-wrap.zoomed{cursor:grab}
 .photo-img-wrap.panning{cursor:grabbing}
+.photo-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;visibility:hidden;opacity:0;transition:opacity .2s,visibility .2s}
+.photo-loading.show{visibility:visible;opacity:1}
+.photo-loading .v360-spinner{box-shadow:0 0 0 10px rgba(0,0,0,.4)}
 .photo-zoom-hint{position:absolute;bottom:8px;right:10px;font-size:10.5px;color:rgba(255,255,255,.6);background:rgba(0,0,0,.4);padding:3px 8px;border-radius:20px;pointer-events:none}
 .photo-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;user-select:none;-webkit-user-drag:none}
 .photo-img-wrap.video-mode{cursor:default}
@@ -1111,7 +1128,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 /* DUPLICATE DETECTION */
 #dupMode{position:absolute;inset:0;z-index:60;background:var(--bg);display:none;flex-direction:column}
 #dupMode.open{display:flex}
-/* Find Edited: the certain batch on top, visual matches below */
+/* Find Duplicates & Edits: edits to link on top, duplicates to clear below */
 .eg-section{margin-bottom:26px}
 .eg-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
 .eg-section-title{font-size:15px;font-weight:600;color:var(--text)}
@@ -1180,8 +1197,6 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 .faces-optin ul{text-align:left;margin:16px auto 22px;padding-left:20px}
 .faces-optin li{margin:6px 0}
 .faces-optin-icon .pe-icon{width:44px;height:44px;color:var(--accent2)}
-#editedScanMode{position:absolute;inset:0;z-index:60;background:var(--bg);display:none;flex-direction:column}
-#editedScanMode.open{display:flex}
 #versionPickMode{position:absolute;inset:0;z-index:70;background:var(--bg);display:none;flex-direction:column}
 #versionPickMode.open{display:flex}
 .vp-search{flex:0 1 320px;width:auto}
@@ -1222,7 +1237,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 .dup-panel-path{font-size:10.5px;color:var(--text3);word-break:break-all;margin-top:6px}
 .dup-compare-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text2);flex-shrink:0}
 /* Original-vs-Edited compare reuses the same dup-panel/dup-compare-row markup as the
-   full-page Find Duplicates/Find Edited screens, but .modal-box/.modal-body's generic
+   full-page Find Duplicates & Edits screen, but .modal-box/.modal-body's generic
    small-dialog sizing (420px max-height) left it cramped and forced to scroll. This
    scopes the modal itself up to the same kind of size those full-page views get, so
    the two panels actually fit side by side at full height instead of needing a scroll. */
@@ -1370,6 +1385,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
     </button>
   </div>
   <div class="sidebar-footer">
+    <div class="sf-tagline" title="Total size of the files in your library. Trove links to them where they are, so this space is on your drives, not inside Trove."><svg class="sf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><span id="librarySizeTagline">-</span></div>
     <div class="sf-tagline sf-tagline-btn" onclick="openBackupsModal()" title="View and restore backups">
       <svg class="sf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="lastSavedBtn">Last saved -</span><span class="sf-dot">·</span><span title="Total disk space freed by deleting files through Trove - Duplicate Detection, Burst Review, and manual deletes"><svg class="sf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 13 8 5h8l2.5 8"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 16.5h.01M11 16.5h.01"/></svg><span id="spaceSavedTagline">Nothing freed yet</span></span>
     </div>
@@ -1412,7 +1428,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
     <button class="sel-bar-btn" onclick="bulkReveal()" title="Opens Explorer with all selected files highlighted, ready to drag/move together">📂 Reveal</button>
     <button class="sel-bar-btn" onclick="bulkBestOf()">⭐ Best Of</button>
     <button class="sel-bar-btn" onclick="bulkAssignFolders()">📁 Folders</button>
-    <button class="sel-bar-btn danger" onclick="bulkDelete()" title="Remove from Trove, or delete from your computer">🗑 Remove…</button>
+    <button class="sel-bar-btn danger" onclick="bulkDelete(event)" title="Remove from Trove, or delete from your computer (Ctrl+click: delete permanently, no confirmation)">🗑 Remove…</button>
     <button class="sel-bar-btn" id="markSortedBtn" style="display:none" onclick="bulkMarkSorted()">✓ Sorted</button>
     <button class="sel-bar-btn" style="background:var(--bg4);color:var(--text2);margin-left:auto" onclick="clearSelection()">✕ Deselect</button>
   </div>
@@ -1535,10 +1551,10 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
     <button class="tmp-relive" onclick="reliveTripClick()">🔄 Relive Trip</button>
   </div>
 
-  <!-- Duplicate Detection -->
+  <!-- Duplicates & Edits: copies to delete and edits to link, one screen (renderDupMode in renderer.js) -->
   <div id="dupMode">
     <div class="sort-topbar">
-      <span class="sort-title">Duplicate Detection</span>
+      <span class="sort-title">Duplicates &amp; Edits</span>
       <span class="sort-progress" id="dupProgress"></span>
       <button class="globe-close" onclick="closeDupMode()">✕ Close</button>
     </div>
@@ -1553,16 +1569,6 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
       <button class="globe-close" onclick="closeFacesMode()">Close</button>
     </div>
     <div class="dup-body" id="facesBody"></div>
-  </div>
-
-  <!-- Edited Photo Detection -->
-  <div id="editedScanMode">
-    <div class="sort-topbar">
-      <span class="sort-title">Edited Photo &amp; Video Detection</span>
-      <span class="sort-progress" id="editedProgress"></span>
-      <button class="globe-close" onclick="closeEditedScanMode()">✕ Close</button>
-    </div>
-    <div class="dup-body" id="editedBody"></div>
   </div>
 
   <!-- First-Run Wizard: fires once on a fresh install, and any time from the "Getting Started" sidebar button -->
@@ -1823,6 +1829,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
         <div>This video format can't be previewed in-app.</div>
         <button class="empty-btn" onclick="openPopupFile()">▶ Open in default player</button>
       </div>
+      <div class="photo-loading" id="photoPopupLoading" role="status" aria-label="Loading photo"><div class="v360-spinner"></div></div>
       <div class="photo-speed-badge" id="photoSpeedBadge">2× ▶▶</div>
       <!-- 360 player: lives inside the preview's picture area, so a 360 file gets the same side
            panel, buttons and Prev/Next as any other photo or video (see renderPopupFile). -->
@@ -1885,7 +1892,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
         <button class="btn-cancel" id="popupRotateBtn" onclick="rotatePopupFile()" title="Rotate 90° clockwise - only how Trove shows it, the file itself isn't changed (R)">↻ Rotate</button>
         <button class="btn-cancel" id="popupGrabBtn" style="display:none" onclick="grabPopupVideoFrame()" title="Save the current frame as a full-resolution photo, dated to this exact moment (G)">📸 Grab frame</button>
         <button class="btn-cancel" id="popupThumbBtn" style="display:none" onclick="togglePopupThumbMenu(event)" title="Change this video's thumbnail in the library: use the frame on screen, or import an image (the video file isn't changed)">🖼 Thumbnail ▾</button>
-        <button class="btn-save" style="background:var(--danger)" onclick="deletePopupFile()">🗑 Remove…</button>
+        <button class="btn-save" style="background:var(--danger)" onclick="deletePopupFile(event)" title="Remove from Trove, or delete from your computer (Ctrl+click: delete permanently, no confirmation)">🗑 Remove…</button>
       </div>
       <div class="photo-linkage" id="photoLinkage" style="display:none"></div>
     </div>
@@ -1913,7 +1920,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
   <div class="ctx-item" onclick="ctxReveal()"><span class="ctx-icon">📂</span> Open in Explorer</div>
   <div class="ctx-item" onclick="ctxCopyPath()"><span class="ctx-icon">📋</span> Copy Path</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item danger" onclick="ctxRemove()"><span class="ctx-icon">🗑</span> Remove or Delete…</div>
+  <div class="ctx-item danger" onclick="ctxRemove(event)" title="Ctrl+click: delete permanently, no confirmation"><span class="ctx-icon">🗑</span> Remove or Delete…</div>
 </div>
 
 <!-- VIDEO THUMBNAIL MENU - one menu for both ways to set a video's thumbnail, opened from the
@@ -2237,11 +2244,12 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
   <div class="modal-box" style="width:420px">
     <div class="modal-head">
       <div class="modal-title">Close without saving?</div>
-      <div class="modal-sub">PhotoMod doesn't save as you go - your layers, masks and adjustments are only kept if you press Save (or Export them to a new file). Close now and this work is gone.</div>
+      <div class="modal-sub" id="pmDiscardText">PhotoMod doesn't save as you go - your layers, masks and adjustments are only kept if you press Save (or Export them to a new file). Close now and this work is gone.</div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="pmAnswerDiscard(false)">Keep editing</button>
-      <button class="btn-save" style="background:#ef4444;border-color:#ef4444" onclick="pmAnswerDiscard(true)">Discard</button>
+      <button class="btn-save" style="background:#ef4444;border-color:#ef4444" onclick="pmAnswerDiscard('discard')">Discard</button>
+      <button class="btn-save" id="pmDiscardSaveBtn" style="display:none" onclick="pmAnswerDiscard('save')">Save changes</button>
     </div>
   </div>
 </div>
@@ -2327,6 +2335,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
      in renderer.js. globe.js itself only touches the Cesium global inside buildGlobe(), never
      at parse time, so it's safe to load before Cesium is present. -->
 <script src="media-types.js"></script>
+<script src="heicGpu.js"></script>
 <script src="globe.js"></script>
 <script src="renderer.js"></script>
 <script src="viewer360.js"></script>

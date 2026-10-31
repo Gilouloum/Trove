@@ -4,7 +4,7 @@
 //
 // Recognising a format doesn't depend on Chromium being able to decode it: thumbnails and
 // previews come from the OS (Windows' shell thumbnailer, macOS Quick Look), then from the JPEG
-// preview a RAW file carries inside it, then from Chromium itself (see get-thumb in main.js
+// preview a RAW file carries inside it or libheif for a HEIC, then from Chromium itself (see get-thumb in main.js
 // and ensureRendererThumb in renderer.js). A video Chromium can't play still gets its
 // thumbnail and an "Open in default player" button.
 (function (root) {

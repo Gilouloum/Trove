@@ -19,7 +19,8 @@
     "vendor:face-api": "node scripts/vendor-face-api.js"
   },
   "dependencies": {
-    "electron-updater": "^6.3.9"
+    "electron-updater": "^6.3.9",
+    "heic-decode": "^2.1.0"
   },
   "devDependencies": {
     "@huggingface/transformers": "^4.2.0",
@@ -43,6 +44,8 @@
     "files": [
       "main.js",
       "media-types.js",
+      "heif-layout.js",
+      "heicGpu.js",
       "renderer.js",
       "viewer360.js",
       "preload.js",

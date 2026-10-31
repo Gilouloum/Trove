@@ -72,6 +72,7 @@ let peMode = 'simple'; // 'simple' | 'pro'
 const peIsPro = () => peMode === 'pro';
 let peFileId = null;
 let peDirty = false; // true once any slider has moved since opening - gates the final saveData() on close
+let peRotationAtOpen = 0; // file.rotation when the editor opened: its 90° turns set it live, so Discard puts it back
 let peGl = null, peProgram = null, peTexture = null, peUniforms = null;
 let peAdjustments = null; // live-edited copy; only written into appData.files on commit
 let peBypass = false; // true while "hold to compare" is held down
@@ -179,7 +180,8 @@ function fmtSize(b) {
   if (b<1024) return b+' B';
   if (b<1048576) return (b/1024).toFixed(1)+' KB';
   if (b<1073741824) return (b/1048576).toFixed(1)+' MB';
-  return (b/1073741824).toFixed(2)+' GB';
+  if (b<1099511627776) return (b/1073741824).toFixed(2)+' GB';
+  return (b/1099511627776).toFixed(2)+' TB';
 }
 function fmtDuration(sec) {
   if (sec == null || !isFinite(sec)) return 'Unknown length';
@@ -477,8 +479,7 @@ const I18N = {
   frBrowseLibrary: { en: 'Browse your library', fr: 'Parcourir votre bibliothèque', de: 'Ihre Bibliothek durchsuchen', es: 'Explorar tu biblioteca', zh: '浏览你的照片库' },
   frFinishToSort: { en: '📥 Finish in To Sort →', fr: '📥 Terminer dans "À trier" →', de: '📥 In "Zu sortieren" abschließen →', es: '📥 Terminar en "Por ordenar" →', zh: '📥 前往"待整理"完成 →' },
   frTipsTitle: { en: '💡 A few things worth knowing', fr: '💡 Quelques infos utiles à connaître', de: '💡 Ein paar nützliche Dinge', es: '💡 Algunas cosas útiles que saber', zh: '💡 一些值得了解的小提示' },
-  frTipFindEdited: { en: '✏️ Find Edited', fr: '✏️ Trouver les modifiées', de: '✏️ Bearbeitete finden', es: '✏️ Buscar editadas', zh: '✏️ 查找已编辑' },
-  frTipFindDuplicates: { en: '🔁 Find Duplicates', fr: '🔁 Trouver les doublons', de: '🔁 Duplikate finden', es: '🔁 Buscar duplicados', zh: '🔁 查找重复项' },
+  frTipFindDuplicates: { en: '🔁 Find Duplicates & Edits', fr: '🔁 Trouver doublons et retouches', de: '🔁 Duplikate & Bearbeitungen finden', es: '🔁 Buscar duplicados y ediciones', zh: '🔁 查找重复和编辑版本' },
   frTipExploreGlobe: { en: '🌍 Explore the Globe', fr: '🌍 Explorer le Globe', de: '🌍 Globus entdecken', es: '🌍 Explorar el Globo', zh: '🌍 探索地球视图' },
   frTipSearch: {
     en: 'Search finds photos by what\'s actually in them, not just the filename, try typing something like "birthday cake" in the search bar.',
@@ -767,9 +768,20 @@ async function ctxRotate() {
 // All subsequent opens: instant disk cache read.
 const THUMB_CACHE_MAX = 500;
 const thumbCacheOrder = []; // insertion order for LRU eviction
+// file.id -> Promise of the load in progress. A grid re-rendered mid-load (saveData redraws
+// #fileArea) asks again for the same thumbnails; without this the second ask raced the first,
+// found rendererThumb already tried, and left those cards empty even though the first ask
+// went on to succeed - every thumbnail made by the renderer (HEIC without a built-in preview,
+// WebP, AVIF, some videos) could lose it.
+const thumbInflight = new Map();
 
-async function getThumb(file) {
-  if (thumbCache[file.id]) return thumbCache[file.id];
+function getThumb(file) {
+  if (thumbCache[file.id]) return Promise.resolve(thumbCache[file.id]);
+  if (!thumbInflight.has(file.id)) thumbInflight.set(file.id, loadThumb(file).finally(() => thumbInflight.delete(file.id)));
+  return thumbInflight.get(file.id);
+}
+
+async function loadThumb(file) {
   const b64 = await window.api.getThumb(file.id, file.path).catch(() => null);
   const raw = b64 ? `data:image/jpeg;base64,${b64}` : await rendererThumb(file);
   if (!raw) return null;
@@ -786,6 +798,8 @@ async function getThumb(file) {
 // frame out of any video it can play. main.js caches the result like an OS thumbnail, so this
 // runs once per file, and at most two at a time - a grid full of them would otherwise open
 // dozens of <video> elements at once.
+// A HEIC lands here only when it has no small preview built in (iPhone-edited IMG_E photos):
+// the GPU decodes it (heicGpuImage), else main does it in software.
 const RENDERER_THUMB_MAX = 480;
 const rendererThumbTried = new Set();
 let rendererThumbActive = 0;
@@ -793,11 +807,18 @@ const rendererThumbQueue = [];
 async function rendererThumb(file) {
   const ext = (file.ext || '').toLowerCase();
   if (file._missing || rendererThumbTried.has(file.id)) return null;
-  if (!TroveMedia.BROWSER_IMAGE.has(ext) && !isVid(ext)) return null;
+  const heic = TroveMedia.HEIF.has(ext) && !TroveMedia.BROWSER_IMAGE.has(ext);
+  if (!TroveMedia.BROWSER_IMAGE.has(ext) && !isVid(ext) && !heic) return null;
   rendererThumbTried.add(file.id);
   if (rendererThumbActive >= 2) await new Promise(res => rendererThumbQueue.push(res));
   rendererThumbActive++;
   try {
+    if (heic) {
+      const b64 = await fetchPreviewBase64(file, RENDERER_THUMB_MAX);
+      if (!b64) return null;
+      window.api.cacheThumb(file.id, b64).catch(() => {});
+      return `data:image/jpeg;base64,${b64}`;
+    }
     const src = pathToFileUrl(file.path);
     const canvas = isVid(ext) ? await thumbFromVideo(src) : await thumbFromImage(src);
     if (!canvas) return null;
@@ -884,6 +905,7 @@ function customThumbCanvas(src, sw, sh, rot) {
 // Drops every cached copy of a file's thumbnail and reloads the ones on screen right now.
 function refreshFileThumbs(file) {
   delete thumbCache[file.id];
+  thumbInflight.delete(file.id); // a load started before the change would bring back the old look
   const i = thumbCacheOrder.indexOf(file.id);
   if (i !== -1) thumbCacheOrder.splice(i, 1);
   if (typeof forgetGlobeTile === 'function') forgetGlobeTile(file.id);
@@ -1002,16 +1024,54 @@ function thumbMenuReset() {
 }
 
 // Sharper preview for the full-size popup only - kept separate + much smaller-cached than
-// thumbCache since these are ~5-15x the bytes. Skipped for edited photos: their small edited-look
-// thumb (from getThumb) must win so the popup never shows unedited pixels as the "current" look.
+// thumbCache since these are ~5-15x the bytes. An edited photo gets the full-size render of its
+// edits instead (see getPreviewImage), so the popup never shows unedited pixels as the "current" look.
 const previewCache = {};
 const PREVIEW_CACHE_MAX = 12;
 const previewCacheOrder = [];
+const PREVIEW_MAX_DIM = 1800; // same as main.js's default
 
+// HEIC with no OS codec to lean on: the graphics card first (heicGpu.js, ~0.1s for a 12MP
+// iPhone photo), and only then main, whose last resort is libheif in software (~0.75s).
+// { base64, width, height } or null for anything else, or when the GPU can't.
+async function heicGpuImage(file, maxDim, quality) {
+  const ext = (file.ext || '').toLowerCase();
+  if (!window.HeicGpu || !TroveMedia.HEIF.has(ext) || TroveMedia.BROWSER_IMAGE.has(ext)) return null;
+  const r = await HeicGpu.decode(file.path, maxDim, quality);
+  if (!r) return null;
+  return { base64: arrayBufferToBase64(await r.blob.arrayBuffer()), width: r.width, height: r.height };
+}
+async function fetchPreviewBase64(file, maxDim) {
+  const gpu = await heicGpuImage(file, maxDim, 0.88).catch(() => null);
+  return gpu ? gpu.base64 : window.api.getPreviewImage(file.path, maxDim).catch(() => null);
+}
+
+// The editor's version of the same: the GPU for a HEIC, otherwise main's get-editable-image.
+const EDIT_MAX_DIM = 4096; // same as main.js
+async function loadEditableImage(file) {
+  const gpu = await heicGpuImage(file, EDIT_MAX_DIM, 0.92).catch(() => null);
+  if (gpu) return { base64: gpu.base64, mime: 'image/jpeg', downsampled: true, width: gpu.width, height: gpu.height };
+  return window.api.getEditableImage(file.id, file.path);
+}
+
+// Main says so the first time it has to decode a whole HEIC in software (no OS codec, and the
+// GPU path above couldn't), so a photo that takes a second to open doesn't look broken. Only
+// on Windows: a Mac decodes HEIC itself, so it practically never gets here.
+window.api.onHeicSlow?.(() => {
+  if (window.api.platform !== 'win32') return;
+  toast('ℹ️ This PC has no HEIC decoder, so Trove decodes iPhone photos itself and they take a moment to open. Installing "HEVC Video Extensions" from the Microsoft Store makes them faster.', 10000);
+});
+
+// An edited photo's look is what the editor saved on its way out (peSaveEditedThumbnail), at up
+// to 4000px - it serves the zoomed-in view as well. Never the original file: that would show
+// the photo without its edits. A photo edited before those were saved only has its 480px edited
+// thumb, until it's next saved in the editor.
 async function getPreviewImage(file) {
   if (previewCache[file.id]) return previewCache[file.id];
-  const b64 = await window.api.getPreviewImage(file.path).catch(() => null);
-  if (!b64) return null;
+  const b64 = file.edits
+    ? await window.api.getEditedPreview(file.id).catch(() => null)
+    : await fetchPreviewBase64(file, PREVIEW_MAX_DIM);
+  if (!b64) return file.edits ? getThumb(file) : null;
   const raw = `data:image/jpeg;base64,${b64}`;
   previewCache[file.id] = file.rotation ? await rotateDataUrl(raw, file.rotation) : raw;
   previewCacheOrder.push(file.id);
@@ -1030,8 +1090,9 @@ const hiresCacheOrder = [];
 const HIRES_MAX_DIM = 4000;
 
 async function getHiresPreview(file) {
+  if (file.edits) return getPreviewImage(file); // already full size, see getPreviewImage
   if (hiresCache[file.id]) return hiresCache[file.id];
-  const b64 = await window.api.getPreviewImage(file.path, HIRES_MAX_DIM).catch(() => null);
+  const b64 = await fetchPreviewBase64(file, HIRES_MAX_DIM);
   if (!b64) return null;
   const raw = `data:image/jpeg;base64,${b64}`;
   hiresCache[file.id] = file.rotation ? await rotateDataUrl(raw, file.rotation) : raw;
@@ -1105,26 +1166,101 @@ function setupEvictionObserver(populateFn) {
 }
 function observeEviction(el) { if (evictionObserver) evictionObserver.observe(el); }
 
+// ── CAMERA NAMES ─────────────────────────────────────────────────────────────
+// Camera folders are tied to files by name (file.cameraFolder), so two spellings of one camera
+// used to become two cameras - "Intsa360" next to "Insta360", from one swapped pair of letters
+// typed in Guided Sort. Two names are the same camera when they differ only by capitals,
+// spaces/dashes/underscores, or two neighbouring letters swapped. Deliberately no looser:
+// "GoPro 8" and "GoPro 9", or "Canon R" and "Canon M", are different cameras one character apart.
+// The names import detection gives (detectCamera* in main.js) - the spelling that wins a merge.
+const OFFICIAL_CAMERA_NAMES = ['Canon', 'DJI', 'DJI Mavic', 'DJI Mini', 'DJI Osmo', 'DJI Osmo 4', 'Fujifilm', 'GoPro', 'Insta360', 'Nikon', 'Panasonic', 'Samsung', 'Sony', 'iPhone'];
+function cameraNameKey(name) { return (name || '').toLowerCase().replace(/[\s_-]+/g, ''); }
+function sameCameraName(a, b) {
+  const x = cameraNameKey(a), y = cameraNameKey(b);
+  if (x === y) return true;
+  if (x.length !== y.length || x.length < 5) return false;
+  const diff = [];
+  for (let i = 0; i < x.length && diff.length <= 2; i++) if (x[i] !== y[i]) diff.push(i);
+  const [i, j] = diff;
+  return diff.length === 2 && j === i + 1 && x[i] === y[j] && x[j] === y[i] && /[a-z]/.test(x[i] + x[j]);
+}
+function getCameraRoot() { return appData.folders.find(f => f.name === 'Cameras' && !f.parentId); }
+function getCameraFolders() { const root = getCameraRoot(); return root ? appData.folders.filter(f => f.parentId === root.id) : []; }
+// The existing camera folder a name means - an exact match first, then a same-camera spelling.
+function findCameraFolder(name) {
+  const cams = getCameraFolders();
+  return cams.find(f => f.name === name) || cams.find(f => sameCameraName(f.name, name)) || null;
+}
+// What a typed camera name should be stored as: an existing camera's own spelling when it's that
+// camera, otherwise the name as typed.
+function resolveCameraName(name) { return findCameraFolder(name)?.name || name; }
+
+// Folds one camera folder into another: its files' links and camera labels move over, any
+// subfolders and a learned profile come along, and the folder itself goes. Every other folder a
+// file is in is left alone.
+function mergeCameraFolder(fromId, intoId) {
+  const from = appData.folders.find(f => f.id === fromId), into = appData.folders.find(f => f.id === intoId);
+  if (!from || !into || from === into) return;
+  for (const file of appData.files) {
+    if (file.folders?.includes(fromId)) file.folders = [...new Set(file.folders.map(id => id === fromId ? intoId : id))];
+    if (file.cameraFolder === from.name) file.cameraFolder = into.name;
+    if (file.cameraMake === from.name) file.cameraMake = into.name;
+  }
+  appData.folders.forEach(f => { if (f.parentId === fromId) f.parentId = intoId; });
+  if (from.cameraProfile && !into.cameraProfile) into.cameraProfile = from.cameraProfile;
+  appData.folders = appData.folders.filter(f => f.id !== fromId);
+  if (currentFolder === fromId) currentFolder = intoId;
+}
+// Startup/import repair: any camera folders that are one camera under two spellings become one,
+// keeping the official spelling if one of them has it, otherwise whichever holds more files.
+function mergeSameCameraFolders() {
+  let changed = false;
+  for (let merged = true; merged;) {
+    merged = false;
+    const cams = getCameraFolders();
+    outer: for (let a = 0; a < cams.length; a++) {
+      for (let b = a + 1; b < cams.length; b++) {
+        if (!sameCameraName(cams[a].name, cams[b].name)) continue;
+        const count = f => appData.files.filter(x => x.folders?.includes(f.id)).length;
+        const official = f => OFFICIAL_CAMERA_NAMES.includes(f.name);
+        const keep = official(cams[a]) !== official(cams[b]) ? (official(cams[a]) ? cams[a] : cams[b])
+          : count(cams[a]) >= count(cams[b]) ? cams[a] : cams[b];
+        mergeCameraFolder((keep === cams[a] ? cams[b] : cams[a]).id, keep.id);
+        changed = merged = true;
+        break outer;
+      }
+    }
+  }
+  return changed;
+}
+
 // ── CAMERA AUTO-FOLDERS ──────────────────────────────────────────────────────
 async function autoCreateCameraFolders(files) {
   let changed = false;
-  let camRoot = appData.folders.find(f => f.name === 'Cameras' && !f.parentId);
+  let camRoot = getCameraRoot();
   if (!camRoot) {
     camRoot = { id: 'cam-root', name: 'Cameras', icon: '📸', color: '#3d6f8f', parentId: null };
     appData.folders.push(camRoot);
     changed = true;
   }
-  const brands = new Set(files.map(f => f.cameraFolder).filter(Boolean));
-  for (const brand of brands) {
-    if (!appData.folders.find(f => f.name === brand && f.parentId === camRoot.id)) {
-      appData.folders.push({ id:'cam-'+brand.replace(/\s+/g,'-').toLowerCase()+'-'+Date.now().toString(36), name:brand, color:'#3d6f8f', parentId:camRoot.id });
-      changed = true;
-    }
-  }
+  if (mergeSameCameraFolders()) changed = true;
   for (const file of files) {
     if (!file.cameraFolder) continue;
-    const folder = appData.folders.find(f => f.name === file.cameraFolder && f.parentId === camRoot.id);
-    if (folder && (!file.folders || !file.folders.includes(folder.id))) {
+    // A same-camera spelling joins the existing camera, label and all.
+    const existing = findCameraFolder(file.cameraFolder);
+    if (existing && existing.name !== file.cameraFolder) {
+      if (file.cameraMake === file.cameraFolder) file.cameraMake = existing.name;
+      file.cameraFolder = existing.name;
+      changed = true;
+    }
+    let folder = existing;
+    if (!folder) {
+      const brand = file.cameraFolder;
+      folder = { id:'cam-'+brand.replace(/\s+/g,'-').toLowerCase()+'-'+Date.now().toString(36), name:brand, color:'#3d6f8f', parentId:camRoot.id };
+      appData.folders.push(folder);
+      changed = true;
+    }
+    if (!file.folders || !file.folders.includes(folder.id)) {
       if (!file.folders) file.folders = [];
       file.folders.push(folder.id);
       changed = true;
@@ -2144,8 +2280,11 @@ async function init() {
   if (appData.settings.telemetryAsked) sendTelemetryPing('app_open');
   else showTelemetryNotice();
   // Flush any pending debounced save before the window closes
-  window.addEventListener('beforeunload', () => {
+  window.addEventListener('beforeunload', (e) => {
     if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; window.api.saveData(appData); }
+    // Unsaved edits in either photo editor: hold the close so main can ask first
+    // (will-prevent-unload in main.js), since neither editor saves as you go.
+    if (peOpen && peDirty) { e.preventDefault(); e.returnValue = false; return; }
     sendTelemetryPing('session_end');
   });
   // v9: the video metadata reader only looked at the first 5 MB, but phones write location/date/
@@ -2370,7 +2509,9 @@ function buildFolderFileCounts() {
 function renderSidebar() {
   document.getElementById('count-bestof').textContent = appData.files.filter(f => f.bestOf).length;
   document.getElementById('count-timeline').textContent = appData.files.filter(f => isMedia(f.ext)).length;
-  const toSortCount = appData.files.filter(f => f.toSort).length;
+  // Same rule as computeVisibleFiles(): a Live Photo's .mov companion is hidden behind its still
+  const fileIds = new Set(appData.files.map(f => f.id));
+  const toSortCount = appData.files.filter(f => f.toSort && !(f.isLivePhotoVideo && fileIds.has(f.livePhotoStillId))).length;
   const tsBadge = document.getElementById('count-tosort');
   if (tsBadge) { tsBadge.textContent = toSortCount; tsBadge.className = 'si-count' + (toSortCount > 0 ? ' count-warn' : ''); }
   editedFileCount = appData.files.filter(f => f.edits || f.versionParentId).length;
@@ -2379,6 +2520,14 @@ function renderSidebar() {
   renderSidebarSections();
 
   document.querySelectorAll('#sidebar .si').forEach(el => el.classList.toggle('active', el.dataset.folder === currentFolder));
+
+  const libEl = document.getElementById('librarySizeTagline');
+  if (libEl) {
+    // Missing files are left out - they're no longer on disk, so they don't count toward what Trove holds.
+    let n = 0, bytes = 0;
+    for (const f of appData.files) { if (f._missing) continue; n++; bytes += f.size || 0; }
+    libEl.textContent = `${n.toLocaleString()} file${n === 1 ? '' : 's'} · ${bytes ? fmtSize(bytes) : '0 GB'} in Trove`;
+  }
 
   const savedEl = document.getElementById('spaceSavedTagline');
   if (savedEl) {
@@ -2458,6 +2607,33 @@ function toggleFolderOpen(e, id) {
 }
 
 function selectFolder(folderId, el) {
+  // Picking a folder means "take me there", so whatever is covering the file area closes first.
+  // The editor can have unsaved work, so it goes through its own discard prompt - and if the
+  // user backs out of that, so does the navigation. Its "reopen the viewer on close" hand-back
+  // is dropped too, or the viewer would pop up over the folder just opened.
+  if (peOpen) {
+    const ret = popupReturn;
+    popupReturn = null;
+    closePhotoEditor().then(() => {
+      if (peOpen) { popupReturn = ret; return; }
+      selectFolder(folderId, el);
+    });
+    return;
+  }
+  if (gsOpen) exitGuidedSort();
+  if (document.getElementById('dupMode').classList.contains('open')) closeDupMode();
+  if (document.getElementById('facesMode').classList.contains('open')) closeFacesMode();
+  if (document.getElementById('photoPopup').classList.contains('open')) closePhotoPopup();
+  // Search ignores folder scope (see computeVisibleFiles), so leaving it in place would keep
+  // showing the same results under the new folder's title.
+  if (getSearchQuery()) {
+    clearTimeout(searchTimer); searchTimer = null;
+    document.getElementById('searchInput').value = '';
+    semanticSearchToken++;
+    semanticResults = { query: '', ids: [] };
+    semanticResultGen++;
+    updateSearchClearBtn();
+  }
   if (globeOpen) toggleGlobe(); // navigating away from the globe via the sidebar always closes it
   currentFolder = folderId;
   showAllFilesHere = false;
@@ -2923,7 +3099,7 @@ function renderFilesInner(area, renderedCount = 0) {
       area.innerHTML = `<div id="lasso"></div><div class="empty-state">
         <div class="empty-icon">✏️</div>
         <div class="empty-title">No edited files yet</div>
-        <div class="empty-sub">Files you edit in Trove's own editor, or link as an edited version via Find Edited, show up here automatically.</div>
+        <div class="empty-sub">Files you edit in Trove's own editor, or link as an edited version via Sort → Find duplicates &amp; edits, show up here automatically.</div>
       </div>`;
       return;
     }
@@ -3879,10 +4055,10 @@ async function clearFileLocation(id) {
   toast(siblings.length ? `📍 Location cleared for all ${siblings.length + 1} photos in the burst` : '📍 Location cleared');
 }
 
-function ctxRemove() {
+function ctxRemove(e) {
   hideCtxMenu();
   const ids = selectedIds.size > 0 ? [...selectedIds] : [ctxFileId];
-  openRemoveOrDelete(ids.filter(Boolean));
+  openRemoveOrDelete(ids.filter(Boolean), null, e);
 }
 
 // ── FOLDER CONTEXT MENU ──────────────────────────────────────────────────────
@@ -4092,11 +4268,20 @@ let rdFileIds = [];      // ids this dialog is acting on
 let rdMode = 'remove';   // 'remove' | 'delete'
 let rdOnDone = null;
 
-function openRemoveOrDelete(fileIds, onDone) {
+// Ctrl+click (Cmd+click on Mac) on any Remove button is the power-user escape hatch: skip this
+// dialog and permanently delete straight away, no Recycle Bin. Still honours the Settings switch -
+// with deletion turned off it just falls through to the normal dialog.
+function openRemoveOrDelete(fileIds, onDone, e) {
   const files = (fileIds || []).map(id => appData.files.find(f => f.id === id)).filter(Boolean);
   if (!files.length) return;
   rdFileIds = files.map(f => f.id);
   rdOnDone = onDone || null;
+  if ((e?.ctrlKey || e?.metaKey) && canDeleteFiles()) {
+    rdMode = 'delete';
+    document.getElementById('rdPermanent').checked = true;
+    rdConfirm();
+    return;
+  }
   rdMode = 'remove';
   const n = files.length;
   const plural = n !== 1;
@@ -4106,8 +4291,17 @@ function openRemoveOrDelete(fileIds, onDone) {
   document.getElementById('rdRemoveDesc').textContent = plural
     ? `Takes these ${n} shortcuts out of your library. The real files stay exactly where they are on your computer, untouched.`
     : 'Takes the shortcut out of your library. The real file stays exactly where it is on your computer, untouched.';
+  // One lens of a split Insta360 recording going without its partner - see isInsta360LensPair.
+  const ids = new Set(rdFileIds);
+  const halfLens = files.filter(f => {
+    const partner = typeof v360PairPath === 'function' && v360PairPath(f.path || '');
+    return partner && appData.files.some(o => o.path === partner && !ids.has(o.id));
+  });
+  const lensWarn = halfLens.length
+    ? `<br><span style="color:var(--gold)">⚠️ ${halfLens.length === 1 ? `"${esc(halfLens[0].name)}" is` : `${halfLens.length} of these are`} one lens of a 360 video. The _00_ and _10_ files are the front and back halves of the same recording, not copies: without both it can't be viewed in 360.</span>`
+    : '';
   document.getElementById('rdDeleteDesc').innerHTML = canDeleteFiles()
-    ? `Erases <strong style="color:var(--red)">${n} real file${plural ? 's' : ''}</strong> (${fmtSize(bytes)}) from your hard drive. This is the one you can't take back from inside Trove.`
+    ? `Erases <strong style="color:var(--red)">${n} real file${plural ? 's' : ''}</strong> (${fmtSize(bytes)}) from your hard drive. This is the one you can't take back from inside Trove.${lensWarn}`
     : 'Turned off in Settings → "Allow deleting files from disk".';
   document.getElementById('rdChoiceDelete').disabled = !canDeleteFiles();
   document.getElementById('rdChoiceDelete').style.opacity = canDeleteFiles() ? '' : '.5';
@@ -4152,31 +4346,51 @@ async function rdConfirm() {
   const permanent = document.getElementById('rdPermanent').checked;
   const btn = document.getElementById('rdConfirmBtn');
   btn.disabled = true; btn.textContent = 'Deleting…';
-  // Windows refuses to delete or trash a video the <video> element still has open for
-  // playback, so drop the handle before asking main to remove it.
-  if (files.some(f => f.id === popupFileId && isVid(f.ext))) {
-    const vid = document.getElementById('photoPopupVideo');
-    vid.pause(); vid.removeAttribute('src'); vid.load();
-    if (v360.open) v360Teardown();
-  }
+  const media = releaseMediaForDelete();
   const res = await window.api.deleteFiles(files.map(f => f.path), permanent).catch(() => null);
   btn.disabled = false;
-  if (!res) { toast('⚠️ Deletion failed'); rdRefresh(); return; }
+  if (!res) { toast('⚠️ Deletion failed'); resumeMediaAfterDelete(media); rdRefresh(); return; }
   const deletedSet = new Set(res.deleted);
   window.api.deleteEmbeddings(files.filter(f => deletedSet.has(f.path)).map(f => f.id)).catch(() => {});
   appData.files = appData.files.filter(f => !deletedSet.has(f.path));
   recordSpaceFreed(res.bytes);
   syncPopupClusterAfterRemoval();
+  resumeMediaAfterDelete(media);
   clearSelection();
   closeRemoveOrDelete();
   await saveData();
   const freed = fmtSize(res.bytes);
-  toast(permanent
+  if (res.deleted.length) toast(permanent
     ? `🗑 Deleted ${res.deleted.length} file${res.deleted.length !== 1 ? 's' : ''} - ${freed} freed`
     : `🗑 ${res.deleted.length} file${res.deleted.length !== 1 ? 's' : ''} moved to Recycle Bin (${freed}) - empty it to free the space`, 5000);
-  if (res.failed.length) toast(`⚠️ ${res.failed.length} file${res.failed.length !== 1 ? 's' : ''} could not be deleted`, 5000);
+  toastDeleteFailures(res);
   if (onDone) onDone();
 }
+// Windows won't delete or recycle a file something still has open, and Trove's own players are
+// the usual culprit: the preview's <video>, and the 360 player - which holds BOTH lens files of
+// a split Insta360 recording open while showing either one, so deleting the lens you weren't
+// looking at used to fail. Every disk delete lets go of all of them first, whatever is being
+// deleted; resumeMediaAfterDelete puts the preview back if it's still showing a file that stayed.
+function releaseMediaForDelete() {
+  const vid = document.getElementById('photoPopupVideo');
+  const was = { fileId: popupFileId, playing: !!vid.getAttribute('src') || v360.open };
+  vid.pause(); vid.removeAttribute('src'); vid.load();
+  if (v360.open) v360Teardown();
+  return was;
+}
+function resumeMediaAfterDelete(was) {
+  if (!was?.playing || !document.getElementById('photoPopup').classList.contains('open')) return;
+  // A different file on show means syncPopupClusterAfterRemoval already moved on and rendered it.
+  if (popupFileId === was.fileId && appData.files.some(f => f.id === popupFileId)) renderPopupFile();
+}
+function toastDeleteFailures(res) {
+  if (!res.failed.length) return;
+  const n = res.failed.length;
+  toast(res.inUse
+    ? `⚠️ ${n} file${n !== 1 ? 's' : ''} could not be deleted - still open in another program (an editor, Insta360 Studio, a player?). Close it and try again.`
+    : `⚠️ ${n} file${n !== 1 ? 's' : ''} could not be deleted`, 7000);
+}
+
 // Keeps the photo viewer honest when the file it was showing (or one of its burst siblings)
 // just left the library - step to the next one, or close if nothing's left.
 function syncPopupClusterAfterRemoval() {
@@ -4203,10 +4417,10 @@ async function removeFilesFromLibrary(ids) {
   });
 }
 
-function bulkDelete() {
+function bulkDelete(e) {
   const ids = [...selectedIds];
   if (!ids.length) return;
-  openRemoveOrDelete(ids);
+  openRemoveOrDelete(ids, null, e);
 }
 
 // ── DUMP / AUTO-SORT ─────────────────────────────────────────────────────────
@@ -4461,22 +4675,97 @@ async function saveAssignments() {
 // works this way; a genuinely new, never-imported file dropped there falls through untouched to
 // the normal import flow in setupDragDrop() instead of being silently swallowed here). Known
 // caveat (see electron/electron#7118): on Windows, a startDrag-initiated session doesn't always
-// deliver a drop back into the same window, so dropping a card onto a sidebar folder may stop
-// working as a shortcut - "Move to Folder…" / "Assign to Folders" (right-click) always still work.
+// deliver a drop back into the same window - which is why a drag inside the window never goes
+// native at all (see beginFileDrag below). Only leaving the window hands it to the OS.
 const FILE_DRAG_MIME = 'application/x-filelinker-fileids';
 
 function handleFileDragStart(e, fileId) {
   const ids = (selectedIds.has(fileId) && selectedIds.size > 1) ? [...selectedIds] : [fileId];
   const paths = ids.map(id => appData.files.find(f => f.id === id)?.path).filter(Boolean);
   if (!paths.length) return;
-  e.preventDefault();
+  e.preventDefault(); // no HTML5 drag - see beginFileDrag
+  beginFileDrag(ids, paths, fileId, e);
+}
+
+// Dragging cards onto a sidebar folder, done by hand rather than through native drag and drop:
+// a native drag started with startDrag (what lets a card be dropped into another app) often
+// never delivers its drop back into Trove's own window on Windows, so dropping onto a folder
+// silently did nothing. Inside the window a small thumbnail follows the cursor, the folder under
+// it lights up and letting go adds the files to it (assignFilesToFolderAdditive - every other
+// folder they're in stays). The moment the cursor leaves the window, the drag is handed to the
+// OS as before, still holding the mouse button, so dropping into an editor or Explorer works.
+let fileDrag = null; // { ids, paths, ghost, target }
+
+function beginFileDrag(ids, paths, fileId, e) {
+  endFileDrag();
+  const file = appData.files.find(f => f.id === fileId);
+  const src = document.querySelector(`[data-thumb-for="${CSS.escape(fileId)}"] img`)?.src;
+  const ghost = document.createElement('div');
+  ghost.className = 'file-drag-ghost';
+  ghost.innerHTML = (src ? `<img src="${src}" alt=""/>` : `<span>${getEmoji(file?.ext || '')}</span>`)
+    + (ids.length > 1 ? `<b>${ids.length}</b>` : '');
+  document.body.appendChild(ghost);
+  document.body.classList.add('file-dragging');
+  fileDrag = { ids, paths, ghost, target: null };
+  moveFileDrag(e.clientX, e.clientY);
+  document.addEventListener('mousemove', onFileDragMove, true);
+  document.addEventListener('mouseup', onFileDragUp, true);
+  document.addEventListener('keydown', onFileDragKey, true);
+  document.documentElement.addEventListener('mouseleave', handFileDragToOs);
+  window.addEventListener('blur', endFileDrag);
+}
+function moveFileDrag(x, y) {
+  if (!fileDrag) return;
+  fileDrag.ghost.style.transform = `translate(${x + 14}px, ${y + 14}px)`;
+  const target = document.elementFromPoint(x, y)?.closest('[data-drop-folder]') || null;
+  if (target === fileDrag.target) return;
+  fileDrag.target?.classList.remove('si-drop-target');
+  target?.classList.add('si-drop-target');
+  fileDrag.target = target;
+}
+function onFileDragMove(e) {
+  if (!fileDrag) return;
+  if (!(e.buttons & 1)) { endFileDrag(); return; } // the button came up somewhere we didn't hear about
+  const out = e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth - 1 || e.clientY >= window.innerHeight - 1;
+  if (out) { handFileDragToOs(); return; }
+  moveFileDrag(e.clientX, e.clientY);
+}
+function onFileDragUp(e) {
+  if (!fileDrag) return;
+  const { ids, target } = fileDrag;
+  endFileDrag();
+  if (!target) return;
+  e.preventDefault(); e.stopPropagation();
+  // Dragging a selection onto a folder files all of it - after which it's deselected.
+  assignFilesToFolderAdditive(ids, target.dataset.dropFolder).then(() => { if (ids.some(id => selectedIds.has(id))) clearSelection(); });
+}
+function onFileDragKey(e) {
+  if (fileDrag && e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); endFileDrag(); }
+}
+function handFileDragToOs() {
+  if (!fileDrag) return;
+  const { ids, paths } = fileDrag;
+  endFileDrag();
   window.api.startFileDrag(paths, ids.length === 1 ? ids[0] : null);
+}
+function endFileDrag() {
+  if (!fileDrag) return;
+  fileDrag.target?.classList.remove('si-drop-target');
+  fileDrag.ghost.remove();
+  fileDrag = null;
+  document.body.classList.remove('file-dragging');
+  document.removeEventListener('mousemove', onFileDragMove, true);
+  document.removeEventListener('mouseup', onFileDragUp, true);
+  document.removeEventListener('keydown', onFileDragKey, true);
+  document.documentElement.removeEventListener('mouseleave', handFileDragToOs);
+  window.removeEventListener('blur', endFileDrag);
 }
 
 // Shared by every sidebar row that represents a real, assignable folder (My Folders tree,
 // Camera folders, Trip folders) - not attached to country/region rows, which are derived
 // from GPS metadata rather than real folder membership and have nothing to assign into.
 function attachFolderDropTarget(item, folderId) {
+  item.dataset.dropFolder = folderId; // what an in-window card drag looks for - see beginFileDrag
   item.addEventListener('dragover', e => {
     if (!e.dataTransfer.types.includes(FILE_DRAG_MIME) && !e.dataTransfer.types.includes('Files')) return;
     e.preventDefault(); e.stopPropagation();
@@ -4564,7 +4853,8 @@ async function saveEditProperties() {
   const files = [...targetIds].map(id => appData.files.find(f => f.id === id)).filter(Boolean);
   if (!files.length) { closeEditModal(); return; }
 
-  const camera = document.getElementById('epCamera').value.trim();
+  const typedCamera = document.getElementById('epCamera').value.trim();
+  const camera = typedCamera && resolveCameraName(typedCamera); // "insta 360" files under the existing Insta360
 
   const dateVal = document.getElementById('epDate').value;
   const ts = dateVal ? new Date(dateVal).getTime() : NaN;
@@ -4728,7 +5018,25 @@ async function createFolder() {
   if (editingFolderId) {
     // Editing existing folder (rename / recolor)
     const folder = appData.folders.find(f => f.id === editingFolderId);
+    // A camera folder is tied to its files by name, so renaming one renames their camera too -
+    // and renaming it to a camera that already exists makes them one camera.
+    const camRoot = getCameraRoot();
+    const isCamera = folder && camRoot && folder.parentId === camRoot.id;
+    const sameAs = isCamera && getCameraFolders().find(f => f !== folder && sameCameraName(f.name, name));
+    if (sameAs) {
+      mergeCameraFolder(folder.id, sameAs.id);
+      await saveData(); closeNewFolderModal();
+      if (currentFolder === sameAs.id) selectFolder(sameAs.id);
+      toast(`📷 Merged into "${sameAs.name}" - it was the same camera`);
+      return;
+    }
     if (folder) {
+      if (isCamera && folder.name !== name) {
+        appData.files.forEach(f => {
+          if (f.cameraFolder === folder.name) f.cameraFolder = name;
+          if (f.cameraMake === folder.name) f.cameraMake = name;
+        });
+      }
       folder.name = name; folder.color = selectedColor;
       if (noEmoji) delete folder.icon; else folder.icon = icon;
       if (nfmIconImage) folder.iconImage = nfmIconImage; else delete folder.iconImage;
@@ -4974,7 +5282,7 @@ function renderAfterChange() {
 // library entries (a photo card AND a full video card) for what the user experiences as one
 // photo. Matching on exact base filename + a HEIC/JPG-vs-.mov pair is Apple's own Live Photo
 // export convention (Photos.app, AirDrop, Image Capture, Finder all preserve it), and is a far
-// stronger signal than the date/GPS/visual-hash heuristics scanForEditedPhotos needs for actual
+// stronger signal than the date/GPS/visual-hash heuristics computeEditedPairs needs for actual
 // edits - so this doesn't reuse that machinery, a Live Photo's video isn't "an edited version"
 // of its still.
 // Runs from saveData() (the one funnel nearly every mutation already goes through - see
@@ -5024,8 +5332,21 @@ function linkLivePhotoPairs() {
   return changed;
 }
 
+// A linked Live Photo .mov is hidden from every grid, so it can never be selected or walked
+// through Guided Sort on its own - its toSort has to follow its still's, or it lingers in the
+// To Sort count forever after the still was marked sorted.
+function syncLivePhotoToSort() {
+  const byId = new Map(appData.files.map(f => [f.id, f]));
+  for (const f of appData.files) {
+    if (!f.isLivePhotoVideo) continue;
+    const still = byId.get(f.livePhotoStillId);
+    if (still && !!f.toSort !== !!still.toSort) f.toSort = !!still.toSort;
+  }
+}
+
 async function saveData() {
   linkLivePhotoPairs();
+  syncLivePhotoToSort();
   dataGen++; // invalidates getVisibleFiles()'s cache - see computeVisibleFiles() above
   persistToDisk();
   renderAfterChange();
@@ -6214,6 +6535,15 @@ function wheelZoomStep(e) { return clamp(Math.round(Math.abs(e.deltaY) * 0.3), [
 
 function setupDisplayZoom() {
   const fileArea = document.getElementById('fileArea');
+  // Hover effects are off while the grid scrolls (index.html, #fileArea.is-scrolling). The cursor
+  // stays put while tiles slide under it, so every tile it crossed zoomed in and back out on the
+  // way past - a fast scroll made them look loose from the page. Back on once scrolling settles.
+  let scrollIdle = null;
+  fileArea?.addEventListener('scroll', () => {
+    fileArea.classList.add('is-scrolling');
+    clearTimeout(scrollIdle);
+    scrollIdle = setTimeout(() => fileArea.classList.remove('is-scrolling'), 150);
+  }, { passive: true });
   fileArea?.addEventListener('wheel', (e) => {
     if (!e.ctrlKey || currentView === 'list') return; // list view has no card grid to resize
     e.preventDefault();
@@ -6648,9 +6978,55 @@ const DUP_POPCOUNT = new Uint8Array(256);
 for (let i = 0; i < 256; i++) { let c = 0, v = i; while (v) { c += v & 1; v >>= 1; } DUP_POPCOUNT[i] = c; }
 const DUP_HASH_THRESHOLD = 8;    // out of 64 bits (~12%) - how different the structure hash may be and still count as a match
 const DUP_COLOR_THRESHOLD = 60;  // out of a max 48*255 - how different the 4x4 average-color grid may be
+// Looser visual bar for two files that also share the moment and the place they were shot -
+// covers copies that were resized, re-compressed or converted to another color profile hard
+// enough to miss the strict bar, while still needing to look like the same picture.
+const DUP_SAME_SHOT_HASH_THRESHOLD = 14;
+const DUP_SAME_SHOT_COLOR_THRESHOLD = 180;
+const DUP_SAME_MOMENT_MS = 2000;   // EXIF dates are whole seconds; 2s absorbs rounding between copies
+const DUP_SAME_PLACE_KM = 0.1;
+const DUP_FAR_APART_KM = 1;
 
 function dupHammingDist(a, b) { let d = 0; for (let i = 0; i < 8; i++) d += DUP_POPCOUNT[a[i] ^ b[i]]; return d; }
 function dupColorDist(a, b) { let d = 0; for (let i = 0; i < a.length; i++) d += Math.abs(a[i] - b[i]); return d; }
+
+// GPS written by the camera, not typed in through Edit Properties - only that is evidence.
+function dupCameraGps(f) { return f.gps && !f.gpsManual ? f.gps : null; }
+// Same camera naming with a different shot counter (IMG_1234 / IMG_1235) is two shots, however
+// alike - which matters for bursts, all fired within the same second and place.
+function dupDifferentShotCounter(a, b) {
+  const ma = a.name.replace(/\.[^.]+$/, '').match(/^(\D*)(\d+)$/), mb = b.name.replace(/\.[^.]+$/, '').match(/^(\D*)(\d+)$/);
+  return !!(ma && mb && ma[1].toUpperCase() === mb[1].toUpperCase() && parseInt(ma[2], 10) !== parseInt(mb[2], 10));
+}
+// Insta360's higher-res modes record each lens to its own file - VID_..._00_004.insv (front) and
+// VID_..._10_004.insv (back). Same moment, same length, similar thumbnail, but two halves of one
+// 360 video: deleting either leaves the other unviewable as 360. Never copies, never edits.
+function isInsta360LensPair(nameA, nameB) {
+  const lens = /_(00|10)_(\d+\.insv)$/i;
+  if (nameA === nameB || !lens.test(nameA) || !lens.test(nameB)) return false;
+  return nameA.replace(lens, '_X_$2').toUpperCase() === nameB.replace(lens, '_X_$2').toUpperCase();
+}
+// Whether two files are copies of each other. The picture decides; date and GPS weigh in:
+//  - camera GPS more than 1 km apart rules a match out - a copy keeps the coordinates or drops them
+//  - the same second AND the same spot let a looser visual match through
+// A different date never counts against a match: fileDate falls back to the file's modified time
+// when there's no EXIF date, and an editor's re-save rewrites it, so copies often disagree on it.
+function dupIsMatch(a, b, fpA, fpB, durA, durB) {
+  if (isVid(a.ext) !== isVid(b.ext)) return false; // never group a photo with a video
+  if (isInsta360LensPair(a.name, b.name)) return false;
+  // A single extracted frame is much weaker evidence for "same video" than it is for
+  // "same photo" (the OS thumbnailer's frame pick isn't pinned to a timestamp), so once
+  // both durations are known, require them to actually line up too before calling it a dup.
+  if (isVid(a.ext) && durationsMatch(durA, durB) === false) return false;
+  const gpsA = dupCameraGps(a), gpsB = dupCameraGps(b);
+  const km = gpsA && gpsB ? haversineKm(gpsA, gpsB) : null;
+  if (km != null && km > DUP_FAR_APART_KM) return false;
+  const hd = dupHammingDist(fpA.hash, fpB.hash), cd = dupColorDist(fpA.color, fpB.color);
+  if (hd <= DUP_HASH_THRESHOLD && cd <= DUP_COLOR_THRESHOLD) return true;
+  const sameShot = km != null && km <= DUP_SAME_PLACE_KM && a.fileDate && b.fileDate
+    && Math.abs(a.fileDate - b.fileDate) <= DUP_SAME_MOMENT_MS && !dupDifferentShotCounter(a, b);
+  return sameShot && hd <= DUP_SAME_SHOT_HASH_THRESHOLD && cd <= DUP_SAME_SHOT_COLOR_THRESHOLD;
+}
 
 function dupUnionFind(n) {
   const parent = Array.from({ length: n }, (_, i) => i);
@@ -6971,41 +7347,15 @@ function editedPairScoreVideo(a, b, durA, durB) {
   return hasSignal ? score : null;
 }
 
-let editedScanPhase = 'idle'; // 'scanning' | 'results' | 'compare'
-let editedPairs = [];
-let editedOpenPairId = null;
-let editedScanToken = 0;
 // "Not a match - ignore" dismissals, persisted (appData.editedDismissedKeys) so a rescan - or
 // reopening the app - doesn't keep resurfacing a pair the user already reviewed and rejected.
 // Rebuilt from appData in init()/restoreBackup(); kept as a Set here purely for fast lookup.
 let editedDismissedKeys = new Set();
 
-function enterEditedScan() {
-  editedOpenPairId = null;
-  document.getElementById('editedScanMode').classList.add('open');
-  scanForEditedPhotos();
-}
-function closeEditedScanMode() {
-  editedScanToken++; // stale scan callbacks bail out as soon as they check this
-  document.getElementById('editedScanMode').classList.remove('open');
-}
-
-async function scanForEditedPhotos() {
-  const token = ++editedScanToken;
-  editedScanPhase = 'scanning';
-  renderEditedScanMode();
-  const pairs = await computeEditedPairs({
-    isStale: () => token !== editedScanToken,
-    onProgress: (done, total) => { const prog = document.getElementById('editedProgress'); if (prog) prog.textContent = `Comparing photos & videos… ${done} / ${total}`; },
-  });
-  if (!pairs) return;
-  editedPairs = pairs;
-  editedScanPhase = 'results';
-  renderEditedScanMode();
-  saveMatchCache();
-}
-// The matching behind Find Edited, with no screen attached - see computeDuplicateGroups for why
-// it's separate and what opts means. Returns null if it went stale.
+// The edit half of Find Duplicates & Edits, with no screen attached - see computeDuplicateGroups
+// for why it's separate and what opts means. It catches pairs the duplicate matcher's stricter
+// colour bar lets through (a heavy grade, an export to another format), and its results are
+// merged into the same groups by computeMatchGroups. Returns null if it went stale.
 async function computeEditedPairs(opts = {}) {
   // Already-linked children are settled; everything else (including files that are
   // already someone's original) stays eligible so a second edit can still be found.
@@ -7104,119 +7454,6 @@ async function computeEditedPairs(opts = {}) {
   return pairs.filter(p => !editedDismissedKeys.has(versionPairKey(p.original.id, p.edited.id)));
 }
 
-function renderEditedScanMode() {
-  if (editedScanPhase === 'results') { sortCounts.edited = editedPairs.length; updateSortButton(); }
-  const body = document.getElementById('editedBody');
-  const progress = document.getElementById('editedProgress');
-  if (editedScanPhase === 'scanning') {
-    if (progress && !progress.textContent) progress.textContent = 'Scanning…';
-    body.innerHTML = `<div class="empty-state"><div class="dup-spinner"></div><div class="empty-title">Looking for edited photos &amp; videos…</div><div class="empty-sub">Checking filenames, then date, location and visual similarity (duration, for videos) across your library.</div></div>`;
-    return;
-  }
-  if (editedScanPhase === 'compare') { if (progress) progress.textContent = ''; renderEditedCompare(body); return; }
-  if (progress) progress.textContent = editedPairs.length ? `${editedPairs.length} likely pair${editedPairs.length !== 1 ? 's' : ''} found` : '';
-  renderEditedResults(body);
-}
-
-function renderEditedResults(body) {
-  if (!editedPairs.length) {
-    body.innerHTML = `<div class="empty-state"><div class="empty-icon">🌿</div><div class="empty-title">No likely edits found</div><div class="empty-sub">Trove checks filenames (like the iPhone IMG_1234 / IMG_E1234 pattern), then date, location and visual similarity for photos, or duration for videos. You can always link one manually from its photo view.</div><button class="empty-btn" onclick="scanForEditedPhotos()">↺ Scan again</button></div>`;
-    return;
-  }
-  // The certain ones first, all confirmable in one go: their names say which is the edit.
-  // Then the visual matches, which are worth a look each.
-  const sure = editedPairs.filter(p => p.method === 'filename');
-  const visual = editedPairs.filter(p => p.method !== 'filename');
-  body.innerHTML = (sure.length ? `
-    <div class="eg-section">
-      <div class="eg-section-head">
-        <div><div class="eg-section-title">100% sure · named as edits</div>
-        <div class="eg-section-sub">The file names say which is the edit: iPhone and GoPro E photos, the DJI Fly app's optimized exports, stabilized videos, the same shot saved in another format, and "-edited" copies.</div></div>
-        <button class="btn-save" onclick="editedConfirmAllSure()">Confirm all ${sure.length}</button>
-      </div>
-      <div class="dup-groups">${sure.map(editedPairCardHtml).join('')}</div>
-    </div>` : '') + (visual.length ? `
-    <div class="eg-section">
-      <div class="eg-section-head"><div><div class="eg-section-title">Visual matches · ${EDITED_MIN_CONFIDENCE}%+ sure</div>
-      <div class="eg-section-sub">The same picture taken at the same time and place, with no name to confirm it. Open each to check.</div></div></div>
-      <div class="dup-groups">${visual.map(editedPairCardHtml).join('')}</div>
-    </div>` : '');
-  editedPairs.forEach(p => { const el = document.getElementById('egth-' + p.id); if (el) observeThumb(el); });
-}
-
-function editedPairCardHtml(p) {
-  return `<div class="dup-group-card" onclick="openEditedCompare('${p.id}')">
-    <div class="dup-group-thumb thumb-loading" data-thumb-for="${p.edited.id}" id="egth-${p.id}"><span class="thumb-icon">${getEmoji(p.edited.ext)}</span></div>
-    <div class="dup-group-count eg-tag">${p.method === 'filename' ? '100% · name' : `${p.confidence}% · visual`}</div>
-  </div>`;
-}
-
-// Links every name-certain pair at once. Each keeps its own original; nothing is deleted, and
-// any one can still be unlinked from its photo view.
-async function editedConfirmAllSure() {
-  const sure = editedPairs.filter(p => p.method === 'filename');
-  if (!sure.length) return;
-  for (const p of sure) {
-    p.edited.versionParentId = p.original.id;
-    syncEditedMetadataFromOriginal(p.original, p.edited);
-  }
-  editedPairs = editedPairs.filter(p => p.method !== 'filename');
-  await saveData();
-  toast(`🌿 Linked ${sure.length} edited version${sure.length === 1 ? '' : 's'} to ${sure.length === 1 ? 'its original' : 'their originals'}`, 4000);
-  renderEditedScanMode();
-}
-
-function openEditedCompare(pairId) { editedOpenPairId = pairId; editedScanPhase = 'compare'; renderEditedScanMode(); }
-function editedBackToResults() { editedOpenPairId = null; editedScanPhase = 'results'; renderEditedScanMode(); }
-
-// After resolving (confirm/dismiss/override) the pair at `resolvedIndex` in the list it
-// used to live at, jumps straight into whichever pair now sits in that slot - same index
-// as "next" since the resolved one has already been spliced out - so reviewing a whole
-// batch is just repeated confirm/dismiss clicks instead of a trip back to the grid each time.
-function editedAdvance(resolvedIndex) {
-  if (!editedPairs.length) { editedBackToResults(); return; }
-  const nextIndex = Math.min(resolvedIndex, editedPairs.length - 1);
-  openEditedCompare(editedPairs[nextIndex].id);
-}
-
-async function editedDismissPair() {
-  const idx = editedPairs.findIndex(x => x.id === editedOpenPairId);
-  const p = editedPairs[idx];
-  if (p) {
-    editedDismissedKeys.add(versionPairKey(p.original.id, p.edited.id));
-    appData.editedDismissedKeys = [...editedDismissedKeys];
-    await saveData();
-  }
-  editedPairs = editedPairs.filter(x => x.id !== editedOpenPairId);
-  editedAdvance(idx);
-}
-
-function editedSwapPair() {
-  const p = editedPairs.find(x => x.id === editedOpenPairId);
-  if (!p) return;
-  const tmp = p.original; p.original = p.edited; p.edited = tmp;
-  renderEditedScanMode();
-}
-
-async function editedConfirmPair() {
-  const idx = editedPairs.findIndex(x => x.id === editedOpenPairId);
-  const p = editedPairs[idx];
-  if (!p) return;
-  p.edited.versionParentId = p.original.id;
-  syncEditedMetadataFromOriginal(p.original, p.edited);
-  await saveData();
-  editedPairs = editedPairs.filter(x => x.id !== p.id);
-  toast(`🌿 Linked "${p.edited.name}" to "${p.original.name}"`);
-  editedAdvance(idx);
-}
-
-// Lets the user override a wrong auto-suggestion by hand-picking the real original -
-// vpConfirm() (below) both makes the link and clears this pair out of the queue.
-function editedChooseDifferentOriginal() {
-  const p = editedPairs.find(x => x.id === editedOpenPairId);
-  if (p) openVersionPickModal(p.edited.id);
-}
-
 function editedPanelHtml(f, roleLabel, otherId, footerHtml) {
   return `<div class="dup-panel">
     <div class="dup-panel-badge">${roleLabel === 'Original' ? '📷' : '✏️'} ${roleLabel}</div>
@@ -7237,53 +7474,16 @@ function editedPanelHtml(f, roleLabel, otherId, footerHtml) {
 
 // Double-clicking a panel opens the same full-size, zoomable popup used everywhere
 // else in the app (see dupOpenFull), browsing just this original/edited pair rather
-// than the whole library. When called from the Version Compare modal (versionCompareModal,
-// z-index 500) this popup is the very card that modal floats on top of (photoPopup,
+// than the whole library. It's called from the Version Compare modal (versionCompareModal,
+// z-index 500), and this popup is the very card that modal floats on top of (photoPopup,
 // z-index 400, lower). Just updating its content wouldn't be visible with the modal
-// still covering it, so close the modal first. Harmless no-op from Find Edited's own
-// full-page compare, which shares this same panel markup but has no such modal.
+// still covering it, so close the modal first.
 function editedPanelOpenFull(fileId, otherId) {
   const a = appData.files.find(f => f.id === fileId);
   const b = appData.files.find(f => f.id === otherId);
   if (!a) return;
   closeVersionCompareModal();
   openMediaPopup({ files: b ? [a, b] : [a], index: 0 });
-}
-
-function renderEditedCompare(body) {
-  const p = editedPairs.find(x => x.id === editedOpenPairId);
-  if (!p) { editedBackToResults(); return; }
-  const isVideoPair = isVid(p.edited.ext);
-  const methodHint = p.method === 'filename' ? 'Matched by filename.' : (isVideoPair ? 'Matched by duration, date and location.' : 'Matched by date, location and visual similarity.');
-  body.innerHTML = `
-   <div class="dup-compare">
-    <div class="dup-compare-head">
-      <button class="btn-cancel" onclick="editedBackToResults()">← Back</button>
-      <div class="dup-compare-hint">${methodHint} Confirm which one is the original.</div>
-      <button class="btn-cancel" onclick="editedDismissPair()">Not a match - ignore</button>
-    </div>
-    <div class="dup-compare-row">
-      ${editedPanelHtml(p.original, 'Original', p.edited.id)}
-      <div style="display:flex;align-items:center;justify-content:center;padding:0 4px">
-        <button class="btn-cancel" onclick="editedSwapPair()" title="Swap which one is the original">⇄</button>
-      </div>
-      ${editedPanelHtml(p.edited, 'Edited', p.original.id)}
-    </div>
-    <div class="dup-compare-foot">
-      <span>"${esc(p.edited.name)}" will be linked as an edited version of "${esc(p.original.name)}" - only the edited one shows in your library afterward, and it'll take over the original's date, location and camera info.</span>
-      <div style="display:flex;gap:8px;flex-shrink:0">
-        <button class="btn-cancel" onclick="editedChooseDifferentOriginal()">🔍 Wrong match - choose original</button>
-        <button class="btn-save" onclick="editedConfirmPair()">🌿 Confirm Link</button>
-      </div>
-    </div>
-   </div>`;
-  [p.original, p.edited].forEach(f => {
-    getPreviewImage(f).then(url => {
-      if (!url || editedOpenPairId !== p.id) return;
-      const img = document.getElementById('edImg-' + f.id);
-      if (img) img.src = url;
-    });
-  });
 }
 
 // ── MANUAL LINK PICKER (full library browser, ranked + pixel-suggested) ────────
@@ -7352,7 +7552,7 @@ function openVersionPickModal(targetFileId) {
   vpCandidates = vpRankCandidates(target);
   vpVisualToken++; // invalidate any still-running scoring pass from a previous open
   document.getElementById('photoPopup').classList.remove('open');
-  vpReturnTo = ['versionModal', 'editedScanMode'].filter(id => document.getElementById(id).classList.contains('open'));
+  vpReturnTo = ['versionModal'].filter(id => document.getElementById(id).classList.contains('open'));
   vpReturnTo.forEach(id => document.getElementById(id).classList.remove('open'));
   document.getElementById('vpModalSub').textContent = `Pick what "${target.name}" is an edited version of - once linked, its date, location and camera info take over here too.`;
   document.getElementById('vpSearchInput').value = '';
@@ -7456,13 +7656,6 @@ async function vpConfirm(fileId) {
   toast(`🌿 Linked "${target.name}" to "${parent.name}"`);
   if (popupClusterFiles[popupClusterIndex]?.id === target.id) renderPopupFile(); // full refresh, not just the linkage chips - date/location/camera may have just changed too
   if (versionModalFileId) renderVersionModal();
-  const resolvedIdx = editedPairs.findIndex(p => p.edited.id === target.id);
-  if (resolvedIdx !== -1) {
-    const wasOpenPair = editedPairs[resolvedIdx].id === editedOpenPairId;
-    editedPairs = editedPairs.filter(p => p.edited.id !== target.id);
-    if (wasOpenPair) editedAdvance(resolvedIdx);
-    else renderEditedScanMode();
-  }
 }
 
 // ── VERSION HISTORY (branches of a linked original/edit) ────────────────────────
@@ -7530,9 +7723,9 @@ async function scanForDuplicates() {
   const token = ++dupScanToken;
   dupPhase = 'scanning';
   renderDupMode();
-  const groups = await computeDuplicateGroups({
+  const groups = await computeMatchGroups({
     isStale: () => token !== dupScanToken,
-    onProgress: (done, total) => { const prog = document.getElementById('dupProgress'); if (prog) prog.textContent = `Scanning ${done} / ${total}…`; },
+    onProgress: (done, total, label) => { const prog = document.getElementById('dupProgress'); if (prog) prog.textContent = `${label} ${done} / ${total}…`; },
   });
   if (!groups) return;
   dupGroups = groups;
@@ -7540,8 +7733,73 @@ async function scanForDuplicates() {
   renderDupMode();
   saveMatchCache();
 }
-// The matching itself, with no screen attached - the Find Duplicates screen and the Sort menu's
-// count both run exactly this, so the number on the menu is what the screen will show.
+// Duplicates and edits come from two different matchers, but they're one question for the user -
+// "these are the same picture: which do I keep, and how?" - so they share one screen and one list.
+// The duplicate matcher runs first and caches every fingerprint, so the edit matcher after it is
+// mostly comparisons. An edit pair that touches a duplicate group joins it (one card per picture,
+// never two); one that doesn't becomes a group of its own - those are the heavier edits and
+// format exports the duplicate matcher's colour bar can't see. The Sort menu's count runs exactly
+// this too, so its number is what the screen will show.
+async function computeMatchGroups(opts = {}) {
+  const stage = label => opts.onProgress && ((done, total) => opts.onProgress(done, total, label));
+  const dups = await computeDuplicateGroups({ ...opts, onProgress: stage('Scanning') });
+  if (!dups) return null;
+  const pairs = await computeEditedPairs({ ...opts, onProgress: stage('Checking for edits') });
+  if (!pairs) return null;
+  return mergeMatchGroups(dups, pairs);
+}
+function mergeMatchGroups(dups, pairs) {
+  const byId = new Map(), parent = new Map();
+  const find = id => { while (parent.get(id) !== id) id = parent.get(id); return id; };
+  const add = f => { if (!parent.has(f.id)) { parent.set(f.id, f.id); byId.set(f.id, f); } };
+  const join = (a, b) => { const ra = find(a.id), rb = find(b.id); if (ra !== rb) parent.set(ra, rb); };
+  for (const g of dups) { g.files.forEach(add); g.files.forEach(f => join(g.files[0], f)); }
+  for (const p of pairs) { add(p.original); add(p.edited); join(p.original, p.edited); }
+  const sets = new Map();
+  for (const id of parent.keys()) {
+    const root = find(id);
+    if (!sets.has(root)) sets.set(root, []);
+    sets.get(root).push(byId.get(id));
+  }
+  // A visual "edit" that the duplicate matcher's strict bar also caught is just a copy: an edit
+  // changes colour and light, which that bar doesn't let through. Only the name-matched ones
+  // and the ones the duplicate matcher missed say "this is an edit".
+  const dupOf = new Map();
+  dups.forEach((g, i) => g.files.forEach(f => dupOf.set(f.id, i)));
+  const isEdit = p => p.method === 'filename' || !dupOf.has(p.original.id) || dupOf.get(p.original.id) !== dupOf.get(p.edited.id);
+  const groups = [...sets.values()].map(files => {
+    const ids = new Set(files.map(f => f.id));
+    const g = dupBuildGroup(files);
+    g.pairs = pairs.filter(p => ids.has(p.original.id)); // every pair, for "ignore" - see dupIgnoreGroup
+    g.editPairs = g.pairs.filter(isEdit);
+    g.dupKeys = dups.filter(d => ids.has(d.files[0].id)).map(d => d.key);
+    g.kind = g.editPairs.length ? 'edit' : 'dup';
+    g.confidence = g.kind === 'edit' ? Math.min(...g.editPairs.map(p => p.confidence ?? 100)) : null;
+    // "Sure" = every file is accounted for by a name-matched edit, so the bulk link can't sweep
+    // in a look-alike copy that only the duplicate matcher vouched for.
+    g.sure = g.kind === 'edit' && g.pairs.every(p => p.method === 'filename') && files.length === g.pairs.length + 1;
+    g.originalId = g.kind === 'edit' ? matchGroupOriginal(g.editPairs) : g.recommendedId;
+    // An edit is usually worth keeping next to its original, so nothing starts out marked for
+    // deletion there; a plain duplicate starts with only the best copy kept, as it always has.
+    if (g.kind === 'edit') g.keepIds = new Set(ids);
+    return g;
+  });
+  const rank = g => g.sure ? 0 : g.kind === 'edit' ? 1 : 2;
+  groups.sort((a, b) => rank(a) - rank(b) || b.wastedBytes - a.wastedBytes);
+  return groups;
+}
+// With several edits of one shot, the original is the file that's nobody's edit.
+function matchGroupOriginal(pairs) {
+  let cur = pairs[0].original;
+  for (let i = 0; i < pairs.length; i++) {
+    const up = pairs.find(p => p.edited.id === cur.id);
+    if (!up) break;
+    cur = up.original;
+  }
+  return cur.id;
+}
+
+// The duplicate half of computeMatchGroups.
 // opts.background paces it for running unasked: fewer at a time, yielding between files, and
 // only while Trove has focus. Returns null if it went stale.
 async function computeDuplicateGroups(opts = {}) {
@@ -7567,31 +7825,44 @@ async function computeDuplicateGroups(opts = {}) {
   await Promise.all(Array.from({ length: Math.min(CONCURRENCY, files.length) }, worker));
   if (opts.isStale?.()) return null;
 
-  // Bucket by the hash's leading 16 bits (a coarse locality key) so full pairwise
-  // comparison only ever runs within a small, plausibly-similar bucket.
+  // Candidate pairs, so full comparison never runs library-wide. Bucketed by each of the hash's
+  // 8 bytes separately: two hashes within 7 bits of each other always share at least one whole
+  // byte, so a resized/re-saved copy whose few flipped bits happen to land early in the hash is
+  // still compared (a single 16-bit key missed those).
   const buckets = new Map();
   for (let i = 0; i < files.length; i++) {
     if (!fp[i]) continue;
-    const key = (fp[i].hash[0] << 8) | fp[i].hash[1];
-    if (!buckets.has(key)) buckets.set(key, []);
-    buckets.get(key).push(i);
-  }
-  const uf = dupUnionFind(files.length);
-  for (const idxs of buckets.values()) {
-    for (let a = 0; a < idxs.length; a++) {
-      for (let b = a + 1; b < idxs.length; b++) {
-        const i = idxs[a], j = idxs[b];
-        if (isVid(files[i].ext) !== isVid(files[j].ext)) continue; // never bucket a photo with a video
-        if (dupHammingDist(fp[i].hash, fp[j].hash) > DUP_HASH_THRESHOLD) continue;
-        if (dupColorDist(fp[i].color, fp[j].color) > DUP_COLOR_THRESHOLD) continue;
-        // A single extracted frame is much weaker evidence for "same video" than it is for
-        // "same photo" (the OS thumbnailer's frame pick isn't pinned to a timestamp), so once
-        // both durations are known, require them to actually line up too before calling it a dup.
-        if (isVid(files[i].ext) && durationsMatch(dur[i], dur[j]) === false) continue;
-        uf.union(i, j);
-      }
+    for (let band = 0; band < 8; band++) {
+      const key = (band << 8) | fp[i].hash[band];
+      if (!buckets.has(key)) buckets.set(key, []);
+      buckets.get(key).push(i);
     }
   }
+  // Plus every pair shot in the same second with camera GPS: the same-shot path below can accept
+  // a looser visual match than the byte buckets guarantee to surface.
+  const dated = [];
+  for (let i = 0; i < files.length; i++) if (fp[i] && files[i].fileDate && dupCameraGps(files[i])) dated.push(i);
+  dated.sort((a, b) => files[a].fileDate - files[b].fileDate);
+  const sameMomentPairs = [];
+  for (let a = 0; a < dated.length; a++) {
+    for (let b = a + 1; b < dated.length && files[dated[b]].fileDate - files[dated[a]].fileDate <= DUP_SAME_MOMENT_MS; b++) sameMomentPairs.push([dated[a], dated[b]]);
+  }
+
+  // Files already linked as versions of each other are settled - the user said "keep both" -
+  // so they never come back as a match, which "Keep both & link" relies on.
+  const familyId = files.map(f => (f.versionParentId ? getVersionRoot(f).id : f.id));
+  const uf = dupUnionFind(files.length);
+  const consider = (i, j) => {
+    if (familyId[i] === familyId[j]) return;
+    if (uf.find(i) === uf.find(j)) return; // already grouped (pairs recur across buckets)
+    if (dupIsMatch(files[i], files[j], fp[i], fp[j], dur[i], dur[j])) uf.union(i, j);
+  };
+  for (const idxs of buckets.values()) {
+    for (let a = 0; a < idxs.length; a++) {
+      for (let b = a + 1; b < idxs.length; b++) consider(idxs[a], idxs[b]);
+    }
+  }
+  for (const [i, j] of sameMomentPairs) consider(i, j);
   const groupMap = new Map();
   for (let i = 0; i < files.length; i++) {
     if (!fp[i]) continue;
@@ -7610,31 +7881,51 @@ function renderDupMode() {
   const body = document.getElementById('dupBody');
   const progress = document.getElementById('dupProgress');
   if (dupPhase === 'scanning') {
-    body.innerHTML = `<div class="empty-state"><div class="dup-spinner"></div><div class="empty-title">Scanning your photo &amp; video library…</div><div class="empty-sub">Comparing pixel structure and color (and, for videos, duration) to find duplicates - this can take a moment for large libraries.</div></div>`;
+    body.innerHTML = `<div class="empty-state"><div class="dup-spinner"></div><div class="empty-title">Looking for duplicates &amp; edits…</div><div class="empty-sub">Comparing pixel structure and colour (and, for videos, duration), then filenames, dates and places to spot edited versions - this can take a moment for large libraries.</div></div>`;
     return;
   }
   if (dupPhase === 'compare') { progress.textContent = ''; renderDupCompare(body); return; }
   if (!dupGroups.length) {
     progress.textContent = '';
-    body.innerHTML = `<div class="empty-state"><div class="empty-icon">✨</div><div class="empty-title">No duplicates found</div><div class="empty-sub">No visually-matching photos or videos were detected in your library.</div><button class="empty-btn" onclick="scanForDuplicates()">↺ Scan again</button></div>`;
+    body.innerHTML = `<div class="empty-state"><div class="empty-icon">✨</div><div class="empty-title">No duplicates or edits found</div><div class="empty-sub">No photo or video is in your library twice, and every edited version Trove can spot is already linked to its original. You can always link one by hand from its photo view.</div><button class="empty-btn" onclick="scanForDuplicates()">↺ Scan again</button></div>`;
     return;
   }
-  const totalWaste = dupGroups.reduce((s, g) => s + g.wastedBytes, 0);
-  progress.textContent = `${dupGroups.length} duplicate group${dupGroups.length !== 1 ? 's' : ''} found · ${fmtSize(totalWaste)} could be freed`;
-  body.innerHTML = `<div class="dup-groups">${dupGroups.map(dupGroupCardHtml).join('')}</div>`;
-  dupGroups.forEach(g => {
-    const cover = g.files.find(f => f.id === g.recommendedId) || g.files[0];
-    const el = document.getElementById('dgth-' + cover.id);
-    if (el) observeThumb(el);
-  });
+  const edits = dupGroups.filter(g => g.kind === 'edit');
+  const dups = dupGroups.filter(g => g.kind === 'dup');
+  const sure = edits.filter(g => g.sure);
+  const totalWaste = dups.reduce((s, g) => s + g.wastedBytes, 0);
+  progress.textContent = [
+    edits.length && `${edits.length} edit${edits.length !== 1 ? 's' : ''} to link`,
+    dups.length && `${dups.length} duplicate group${dups.length !== 1 ? 's' : ''} · ${fmtSize(totalWaste)} could be freed`,
+  ].filter(Boolean).join(' · ');
+  body.innerHTML = (edits.length ? `
+    <div class="eg-section">
+      <div class="eg-section-head">
+        <div><div class="eg-section-title">Edited versions</div>
+        <div class="eg-section-sub">An edit and the shot it came from. Link them to keep both with only the edit showing in your library, or delete the one you don't need. Cards marked "name" are certain: the file names say which is the edit.</div></div>
+        ${sure.length ? `<button class="btn-save" onclick="dupLinkAllSure()">🌿 Link all ${sure.length} named</button>` : ''}
+      </div>
+      <div class="dup-groups">${edits.map(dupGroupCardHtml).join('')}</div>
+    </div>` : '') + (dups.length ? `
+    <div class="eg-section">
+      <div class="eg-section-head"><div><div class="eg-section-title">Duplicates · ${fmtSize(totalWaste)} could be freed</div>
+      <div class="eg-section-sub">The same picture more than once. Delete the extra copies, or keep them all and link them as versions of one original.</div></div></div>
+      <div class="dup-groups">${dups.map(dupGroupCardHtml).join('')}</div>
+    </div>` : '');
+  dupGroups.forEach(g => { const el = document.getElementById('dgth-' + g.id); if (el) observeThumb(el); });
 }
 
 function dupGroupCardHtml(g) {
-  const cover = g.files.find(f => f.id === g.recommendedId) || g.files[0];
+  // An edit shows the edit itself (what stays visible once linked); a duplicate its best copy.
+  const coverId = g.kind === 'edit' ? g.editPairs[0].edited.id : g.recommendedId;
+  const cover = g.files.find(f => f.id === coverId) || g.files[0];
+  const tag = g.kind === 'edit'
+    ? (g.sure ? '100% · name' : `${g.confidence}% · ${g.editPairs.some(p => p.method === 'filename') ? 'name' : 'visual'}`) + (g.files.length > 2 ? ` · ${g.files.length} files` : '')
+    : `${g.files.length} copies`;
   return `<div class="dup-group-card" onclick="openDupCompare('${g.id}')">
-    <div class="dup-group-thumb thumb-loading" data-thumb-for="${cover.id}" id="dgth-${cover.id}"><span class="thumb-icon">${getEmoji(cover.ext)}</span></div>
-    <div class="dup-group-count">${g.files.length} copies</div>
-    <div class="dup-group-waste">${fmtSize(g.wastedBytes)} wasted</div>
+    <div class="dup-group-thumb thumb-loading" data-thumb-for="${cover.id}" id="dgth-${g.id}"><span class="thumb-icon">${getEmoji(cover.ext)}</span></div>
+    <div class="dup-group-count${g.kind === 'edit' ? ' eg-tag' : ''}">${tag}</div>
+    ${g.kind === 'dup' ? `<div class="dup-group-waste">${fmtSize(g.wastedBytes)} wasted</div>` : ''}
   </div>`;
 }
 
@@ -7643,8 +7934,11 @@ function dupBackToResults() { dupOpenGroupId = null; dupPhase = 'results'; rende
 async function dupIgnoreGroup() {
   const group = dupGroups.find(g => g.id === dupOpenGroupId);
   if (group) {
-    dupIgnoredKeys.add(group.key);
+    // Both matchers have to forget it, or whichever one wasn't told would bring it straight back.
+    [group.key, ...group.dupKeys].forEach(k => dupIgnoredKeys.add(k));
+    group.pairs.forEach(p => editedDismissedKeys.add(versionPairKey(p.original.id, p.edited.id)));
     appData.dupIgnoredKeys = [...dupIgnoredKeys];
+    appData.editedDismissedKeys = [...editedDismissedKeys];
     await saveData();
   }
   dupGroups = dupGroups.filter(g => g.id !== dupOpenGroupId);
@@ -7666,17 +7960,28 @@ function renderDupCompare(body) {
   if (!group) { dupBackToResults(); return; }
   const toDelete = group.files.filter(f => !group.keepIds.has(f.id));
   const deleteBytes = toDelete.reduce((s, f) => s + (f.size || 0), 0);
+  const original = group.files.find(f => f.id === group.originalId) || group.files[0];
+  const others = group.files.filter(f => f !== original);
+  const methodHint = group.kind === 'dup' ? 'Visually the same picture.'
+    : group.editPairs.every(p => p.method === 'filename') ? 'Matched by filename.'
+    : isVid(original.ext) ? 'Matched by duration, date and location.' : 'Matched by date, location and visual similarity.';
+  const linkDesc = others.length === 1
+    ? `"${esc(others[0].name)}" will be linked as an edited version of "${esc(original.name)}" - only it shows in your library afterward, with the original's date, location and camera info.`
+    : `The other ${others.length} will be linked as edited versions of "${esc(original.name)}" - only they show in your library afterward, with the original's date, location and camera info.`;
   body.innerHTML = `
    <div class="dup-compare">
     <div class="dup-compare-head">
-      <button class="btn-cancel" onclick="dupBackToResults()">← Back to duplicates</button>
-      <div class="dup-compare-hint">Pick which file(s) to keep - the recommended one is pre-selected based on GPS, camera info and date.</div>
-      <button class="btn-cancel" onclick="dupIgnoreGroup()">Not duplicates - ignore</button>
+      <button class="btn-cancel" onclick="dupBackToResults()">← Back</button>
+      <div class="dup-compare-hint">${methodHint} Mark the original, then keep both and link them, or untick the ones to delete.</div>
+      <button class="btn-cancel" onclick="dupIgnoreGroup()">Not a match - ignore</button>
     </div>
     <div class="dup-compare-row">${group.files.map(f => dupPanelHtml(group, f)).join('')}</div>
     <div class="dup-compare-foot">
-      <span id="dupCompareSummary">${toDelete.length ? `Will delete ${toDelete.length} file${toDelete.length !== 1 ? 's' : ''} - ${fmtSize(deleteBytes)} freed` : 'Nothing selected for deletion'}</span>
-      <button class="btn-save" style="background:var(--red)" id="dupCompareDeleteBtn" ${toDelete.length ? '' : 'disabled'} onclick="dupOpenGroupDeleteConfirm()">🗑 Delete unselected</button>
+      <span id="dupCompareSummary">${toDelete.length ? `Will delete ${toDelete.length} file${toDelete.length !== 1 ? 's' : ''} - ${fmtSize(deleteBytes)} freed` : linkDesc}</span>
+      <div style="display:flex;gap:8px;flex-shrink:0">
+        <button class="${group.kind === 'edit' ? 'btn-save' : 'btn-cancel'}" title="${linkDesc}" onclick="dupLinkGroup()">🌿 ${group.files.length === 2 ? 'Keep both' : `Keep all ${group.files.length}`} &amp; link</button>
+        <button class="btn-save" style="background:var(--red)" id="dupCompareDeleteBtn" ${toDelete.length ? '' : 'disabled'} onclick="dupOpenGroupDeleteConfirm()">🗑 Delete unselected</button>
+      </div>
     </div>
    </div>`;
   group.files.forEach(f => {
@@ -7689,16 +7994,21 @@ function renderDupCompare(body) {
 }
 
 function dupPanelHtml(group, f) {
-  const recommended = group.recommendedId === f.id;
+  const isOriginal = group.originalId === f.id;
   const kept = group.keepIds.has(f.id);
   const place = [f.city, f.region, f.country].filter(Boolean).join(', ');
+  const badge = group.kind === 'edit' ? (isOriginal ? '📷 Original' : '✏️ Edited')
+    : group.recommendedId === f.id ? '⭐ Recommended' : '';
   return `<div class="dup-panel${kept ? ' keep' : ''}">
-    ${recommended ? '<div class="dup-panel-badge">⭐ Recommended</div>' : ''}
+    ${badge ? `<div class="dup-panel-badge">${badge}</div>` : ''}
     <div class="dup-panel-imgwrap" title="Double-click to view full size" ondblclick="dupOpenFull('${group.id}','${f.id}')">
       <span class="thumb-icon">${getEmoji(f.ext)}</span>
       <img id="dupImg-${f.id}" style="display:none" onload="this.style.display=''" src=""/>
       <div class="dup-panel-zoom-hint">🔍 Double-click to view full size</div>
     </div>
+    <label class="dup-panel-keep" title="The one the others get linked to when you keep them all">
+      <input type="radio" name="dupOrig-${group.id}" ${isOriginal ? 'checked' : ''} onchange="dupSetOriginal('${group.id}','${f.id}')"/> Original
+    </label>
     <label class="dup-panel-keep">
       <input type="checkbox" ${kept ? 'checked' : ''} onchange="dupToggleKeep('${group.id}','${f.id}',this.checked)"/> Keep this one
     </label>
@@ -7709,10 +8019,17 @@ function dupPanelHtml(group, f) {
       <div class="dup-panel-row">📅 ${f.fileDate ? fmtDate(f.fileDate) : 'Unknown date'}</div>
       <div class="dup-panel-row">📷 ${esc(f.cameraFolder || f.cameraMake || 'Unknown camera')}</div>
       <div class="dup-panel-row">${f.gps ? `📍 ${countryFlag(f.countryCode) || ''} ${esc(place || `${f.gps.lat.toFixed(4)}, ${f.gps.lng.toFixed(4)}`)}` : '📍 No location'}</div>
-      ${f.edits ? '<div class="dup-panel-row">✏️ Edited</div>' : ''}
+      ${f.edits ? '<div class="dup-panel-row">✏️ Edited in Trove</div>' : ''}
       <div class="dup-panel-path" title="${esc(f.path)}">${esc(f.path)}</div>
     </div>
   </div>`;
+}
+
+function dupSetOriginal(groupId, fileId) {
+  const group = dupGroups.find(g => g.id === groupId);
+  if (!group) return;
+  group.originalId = fileId;
+  renderDupCompare(document.getElementById('dupBody'));
 }
 
 function dupToggleKeep(groupId, fileId, checked) {
@@ -7725,6 +8042,55 @@ function dupToggleKeep(groupId, fileId, checked) {
   }
   if (checked) group.keepIds.add(fileId); else group.keepIds.delete(fileId);
   renderDupCompare(document.getElementById('dupBody'));
+}
+
+// Keeps every file and links the rest under the chosen original as its edited versions - the
+// same link "Link to original" makes by hand. A file that already belongs to a version family
+// brings the whole family along (its root is what gets linked), and one already in the
+// original's own family is left alone, so a link can never loop back on itself.
+function linkMatchGroup(group) {
+  const original = group.files.find(f => f.id === group.originalId);
+  if (!original) return 0;
+  const originalRoot = getVersionRoot(original).id;
+  let linked = 0;
+  for (const f of group.files) {
+    const root = getVersionRoot(f);
+    if (root.id === originalRoot) continue;
+    root.versionParentId = original.id;
+    syncEditedMetadataFromOriginal(original, root);
+    linked++;
+  }
+  return linked;
+}
+
+async function dupLinkGroup() {
+  const idx = dupGroups.findIndex(g => g.id === dupOpenGroupId);
+  const group = dupGroups[idx];
+  if (!group) return;
+  const original = group.files.find(f => f.id === group.originalId);
+  const others = group.files.filter(f => f !== original);
+  const linked = linkMatchGroup(group);
+  await saveData();
+  toast(!linked ? '🌿 Already linked as versions of each other'
+    : linked === 1 && others.length === 1 ? `🌿 Linked "${others[0].name}" to "${original.name}"`
+    : `🌿 Linked ${linked} version${linked !== 1 ? 's' : ''} to "${original.name}"`);
+  dupGroups = dupGroups.filter(g => g.id !== group.id);
+  // Straight on to the next one, so a batch is a run of clicks rather than a trip back each time.
+  if (!dupGroups.length) { dupBackToResults(); return; }
+  openDupCompare(dupGroups[Math.min(idx, dupGroups.length - 1)].id);
+}
+
+// Links every name-certain edit at once. Each keeps its own original; nothing is deleted, and
+// any one can still be unlinked from its photo view.
+async function dupLinkAllSure() {
+  const sure = dupGroups.filter(g => g.sure);
+  if (!sure.length) return;
+  let linked = 0;
+  for (const g of sure) linked += linkMatchGroup(g);
+  dupGroups = dupGroups.filter(g => !g.sure);
+  await saveData();
+  toast(`🌿 Linked ${linked} edited version${linked === 1 ? '' : 's'} to ${linked === 1 ? 'its original' : 'their originals'}`, 4000);
+  renderDupMode();
 }
 
 function dupOpenGroupDeleteConfirm() {
@@ -7750,6 +8116,7 @@ async function confirmDupGroupDelete() {
   const permanent = document.getElementById('deleteConfirmPermanent').checked;
   const btn = document.getElementById('deleteConfirmBtn');
   btn.disabled = true; btn.textContent = 'Deleting…';
+  releaseMediaForDelete(); // the preview is closed to reach this button, but a 360 lens partner may still be open - see releaseMediaForDelete
   const res = await window.api.deleteFiles(toDelete.map(f => f.path), permanent).catch(() => null);
   btn.disabled = false;
   if (!res) { toast('⚠️ Deletion failed'); btn.textContent = '🗑 Delete'; return; }
@@ -7760,10 +8127,12 @@ async function confirmDupGroupDelete() {
   await saveData();
   cancelDeleteConfirm();
   const freed = fmtSize(res.bytes);
-  toast(permanent
+  if (res.deleted.length) toast(permanent
     ? `🗑 Deleted ${res.deleted.length} file${res.deleted.length !== 1 ? 's' : ''} - ${freed} freed`
     : `🗑 ${res.deleted.length} file${res.deleted.length !== 1 ? 's' : ''} moved to Recycle Bin (${freed}) - empty it to free the space`, 5000);
-  if (res.failed.length) toast(`⚠️ ${res.failed.length} file${res.failed.length !== 1 ? 's' : ''} could not be deleted`, 5000);
+  toastDeleteFailures(res);
+  // Nothing went: the group is still exactly as it was, so leave it open to try again.
+  if (!res.deleted.length) { renderDupCompare(document.getElementById('dupBody')); return; }
   dupGroups = dupGroups.filter(g => g.id !== group.id);
   dupBackToResults();
 }
@@ -7872,6 +8241,7 @@ async function confirmBurstDelete() {
   const rest = burstReviewMembers.filter(f => f.id !== burstReviewSelectedId);
   const btn = document.getElementById('deleteConfirmBtn');
   btn.disabled = true; btn.textContent = 'Deleting…';
+  releaseMediaForDelete();
   const res = await window.api.deleteFiles(rest.map(f => f.path), permanent).catch(() => null);
   btn.disabled = false;
   if (!res) { toast('⚠️ Deletion failed'); return; }
@@ -7888,7 +8258,7 @@ async function confirmBurstDelete() {
   toast(permanent
     ? `🎞 Deleted ${res.deleted.length} photos - ${freed} freed`
     : `🎞 ${res.deleted.length} photos moved to Recycle Bin (${freed}) - empty it to free the space`, 5000);
-  if (res.failed.length) toast(`⚠️ ${res.failed.length} file${res.failed.length!==1?'s':''} could not be deleted`, 5000);
+  toastDeleteFailures(res);
 }
 
 // ── MEDIA POPUP ───────────────────────────────────────────────────────────────
@@ -7934,6 +8304,7 @@ async function renderPopupFile() {
   const file = popupClusterFiles[popupClusterIndex];
   if (!file) return;
   popupFileId = file.id;
+  setPopupLoading(false); // a spinner left by the photo navigated away from
   const is360 = is360File(file);
   if (!is360 && v360.open) close360Viewer();
   popupResetZoom();
@@ -8021,15 +8392,18 @@ async function renderPopupFile() {
   img.src=''; img.style.display='';
   // Show the cached thumb immediately so navigation feels instant, then upgrade in place to a
   // sharp preview once it's loaded - the blurry-to-sharp swap happens well under a user's notice
-  // of "loading", instead of a blank/spinner wait.
+  // of "loading", instead of a blank/spinner wait. A spinner does come up if the sharp version
+  // is slow (a HEIC decoded in software, a huge TIFF), after a delay so fast loads never flash it.
+  const isCurrent = () => popupClusterFiles[popupClusterIndex] === file;
+  const spinTimer = setTimeout(() => { if (isCurrent()) setPopupLoading(true); }, 300);
   const thumbUrl = await getThumb(file);
-  if (popupClusterFiles[popupClusterIndex] !== file) return; // navigated away already
+  if (!isCurrent()) { clearTimeout(spinTimer); return; } // navigated away already
   if (!thumbUrl) { img.style.display = 'none'; } else { img.src = thumbUrl; }
-  if (isImg(file.ext) && !file.edits) {
+  if (isImg(file.ext)) {
     let previewUrl = await getPreviewImage(file);
     // No OS codec for it (AVIF or WebP on a bare Windows install, say): Chromium decodes those
-    // itself, straight from the file.
-    if (!previewUrl && TroveMedia.BROWSER_IMAGE.has((file.ext || '').toLowerCase())) {
+    // itself, straight from the file. Not an edited photo: the file doesn't have its edits.
+    if (!previewUrl && !file.edits && TroveMedia.BROWSER_IMAGE.has((file.ext || '').toLowerCase())) {
       const direct = pathToFileUrl(file.path);
       previewUrl = file.rotation ? await rotateDataUrl(direct, file.rotation) : direct;
     }
@@ -8038,7 +8412,13 @@ async function renderPopupFile() {
       img.style.display = '';
     }
   }
+  clearTimeout(spinTimer);
+  if (isCurrent()) setPopupLoading(false);
   prefetchPopupNeighbors();
+}
+
+function setPopupLoading(on) {
+  document.getElementById('photoPopupLoading')?.classList.toggle('show', on);
 }
 
 // Warms the cache for the photos a Prev/Next click would land on, so browsing through a
@@ -8047,7 +8427,7 @@ function prefetchPopupNeighbors() {
   if (popupClusterFiles.length < 2) return;
   const nextFile = popupClusterFiles[(popupClusterIndex + 1) % popupClusterFiles.length];
   const prevFile = popupClusterFiles[(popupClusterIndex - 1 + popupClusterFiles.length) % popupClusterFiles.length];
-  [nextFile, prevFile].forEach(f => { if (f && isImg(f.ext) && !f.edits) getPreviewImage(f); });
+  [nextFile, prevFile].forEach(f => { if (f && isImg(f.ext)) getPreviewImage(f); });
 }
 
 // A rotated <video> can't be pre-baked into new pixels like a photo thumbnail (that would
@@ -8235,16 +8615,16 @@ function closeVersionCompareModal() { document.getElementById('versionCompareMod
 // file itself, subject to the Settings switch), then the compare closes: half a pair has
 // nothing left to compare.
 function vcDeleteButton(f, what) {
-  return `<button class="vc-delete-btn" onclick="vcDeleteVersion('${f.id}')" title="Remove this ${what} from Trove, or delete the file">${peIconLead('trash')}Delete this ${what}…</button>`;
+  return `<button class="vc-delete-btn" onclick="vcDeleteVersion('${f.id}',event)" title="Remove this ${what} from Trove, or delete the file (Ctrl+click: delete permanently, no confirmation)">${peIconLead('trash')}Delete this ${what}…</button>`;
 }
-function vcDeleteVersion(fileId) {
+function vcDeleteVersion(fileId, e) {
   openRemoveOrDelete([fileId], () => {
     closeVersionCompareModal();
     // The popup underneath may still be showing the one that was kept, with a linkage chip
     // pointing at the one that just went.
     const shown = appData.files.find(f => f.id === popupFileId);
     if (shown && document.getElementById('photoPopup').classList.contains('open')) renderPopupLinkage(shown);
-  });
+  }, e);
 }
 
 async function popupUnlink(fileId) {
@@ -8304,6 +8684,7 @@ const hiresInFlight = new Set();
 function popupMaybeLoadHires() {
   if (popupZoom <= 1.3) return;
   const file = popupClusterFiles[popupClusterIndex];
+  // An edited photo's preview is already its full-size render (see getPreviewImage).
   if (!file || !isImg(file.ext) || file.edits || hiresCache[file.id] || hiresInFlight.has(file.id)) return;
   hiresInFlight.add(file.id);
   getHiresPreview(file).then(url => {
@@ -8344,6 +8725,7 @@ function closePhotoPopup() {
   hideThumbMenu();
   if (v360.open) close360Viewer();
   document.getElementById('photoPopup').classList.remove('open');
+  setPopupLoading(false);
   const vid = document.getElementById('photoPopupVideo');
   vid.pause(); vid.removeAttribute('src'); vid.load(); // stop playback/buffering, don't leave audio running behind the closed popup
   popupFileId=null; popupClusterFiles=[]; popupClusterIndex=0; popupResetZoom();
@@ -8394,13 +8776,13 @@ function updatePopupBestOfBtn(file) {
 // same window.api.deleteFiles()/confirm pattern as Duplicate Detection and Burst Review),
 // then advances the popup to whatever slid into its slot instead of closing it -
 // so paging through a folder and deleting duds along the way keeps flowing.
-function deletePopupFile() {
+function deletePopupFile(e) {
   const file = appData.files.find(f => f.id === popupFileId);
   if (!file) return;
   // Same one-button-two-outcomes dialog as the grid. No close-on-done here: both outcomes run
   // syncPopupClusterAfterRemoval(), which steps the viewer on to the next photo (or closes it
   // when none are left) - closing here as well threw you back to the folder every time.
-  openRemoveOrDelete([file.id]);
+  openRemoveOrDelete([file.id], null, e);
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
@@ -8568,19 +8950,22 @@ function getOrCreateCategorySubfolder(parentId, name) {
   if (!f) { f = { id: 'cat-'+name.replace(/\s+/g,'-').toLowerCase()+'-'+Date.now().toString(36), name, icon: '🏷️', color: '#10b981', parentId }; appData.folders.push(f); }
   return f;
 }
+// Returns the name actually used - an existing camera's spelling if the typed one means it.
 async function guidedAssignCamera(fileIds, cameraName) {
+  const name = resolveCameraName(cameraName);
   const files = fileIds.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
-  files.forEach(f => { f.cameraFolder = cameraName; f.cameraMake = cameraName; });
+  files.forEach(f => { f.cameraFolder = name; f.cameraMake = name; });
   await autoCreateCameraFolders(files);
+  return name;
 }
 
 // ── SORT COUNTS ──────────────────────────────────────────────────────────────
-// How many duplicate groups and edited pairs are waiting, for the Sort menu's badges - worked
-// out in the background with the very same matching the two screens run (computeDuplicateGroups,
-// computeEditedPairs), so the badge never promises something the screen won't show. The slow
+// How many duplicates and unlinked edits are waiting, for the Sort menu's badge - worked out in
+// the background with the very same matching the screen runs (computeMatchGroups), so the
+// badge never promises something the screen won't show. The slow
 // part - a fingerprint per photo, a length per video - is saved (match-cache.json in main.js),
 // so after the first run a recount is only comparisons.
-let sortCounts = { dups: null, edited: null };
+let sortCounts = { dups: null }; // groups on the Find Duplicates & Edits screen
 let sortCountToken = 0, sortCountTimer = null;
 
 // Unasked-for work goes one file per idle moment, and waits while Trove is in the background.
@@ -8598,13 +8983,9 @@ function scheduleSortCounts(delay) {
 async function runSortCounts() {
   const token = ++sortCountToken;
   const isStale = () => token !== sortCountToken;
-  const groups = await computeDuplicateGroups({ background: true, isStale }).catch(() => null);
+  const groups = await computeMatchGroups({ background: true, isStale }).catch(() => null);
   if (!groups || isStale()) return;
   sortCounts.dups = groups.length;
-  updateSortButton();
-  const pairs = await computeEditedPairs({ background: true, isStale }).catch(() => null);
-  if (!pairs || isStale()) return;
-  sortCounts.edited = pairs.length;
   updateSortButton();
   saveMatchCache();
 }
@@ -8637,10 +9018,8 @@ function sortMenuItems() {
   return [
     { icon: peIcon('faceScan'), title: 'Find new people', sub: !faces ? 'Find the people in your photos who aren\'t in People yet' : people ? `${people} to look at: people not in People yet, or missing from photos` : 'Everyone in your photos is in People', badge: faces && people, run: 'openFacesMode()' },
     { icon: '📥', title: 'Sort the To Sort pile', sub: toSort ? `${toSort} photo${toSort === 1 ? '' : 's'} waiting, a question at a time` : 'Nothing waiting', badge: toSort, run: 'enterGuidedSort()' },
-    { icon: peIcon('copy'), title: 'Find duplicates', badge: sortCounts.dups,
-      sub: sortCounts.dups ? `${sortCounts.dups} set${sortCounts.dups === 1 ? '' : 's'} of duplicates to clear out` : sortCounts.dups === 0 ? 'No duplicates in your library' : 'The same photo or video more than once, even resized or renamed', run: 'enterDupDetection()' },
-    { icon: peIcon('pencil'), title: 'Find edited photos', badge: sortCounts.edited,
-      sub: sortCounts.edited ? `${sortCounts.edited} edited version${sortCounts.edited === 1 ? '' : 's'} to link to ${sortCounts.edited === 1 ? 'its' : 'their'} original` : sortCounts.edited === 0 ? 'Every edit is linked to its original' : 'Link edited versions to their originals', run: 'enterEditedScan()' },
+    { icon: peIcon('copy'), title: 'Find duplicates & edits', badge: sortCounts.dups,
+      sub: sortCounts.dups ? `${sortCounts.dups} to look at: copies to clear out or edits to link` : sortCounts.dups === 0 ? 'No duplicates, and every edit is linked' : 'The same photo twice, or an edit and its original: delete one or link them', run: 'enterDupDetection()' },
   ];
 }
 function toggleSortMenu(e) {
@@ -9827,10 +10206,10 @@ function renderGsCameraStep() {
 async function gsTagSelectedToCamera(cameraName) {
   if (!selectedIds.size) { toast('Click some photos from that camera first, then tap it'); return; }
   const ids = [...selectedIds];
-  await guidedAssignCamera(ids, cameraName);
+  const name = await guidedAssignCamera(ids, cameraName);
   clearSelection();
   await saveData();
-  toast(`📷 Assigned ${ids.length} photo${ids.length!==1?'s':''} to ${cameraName}`);
+  toast(`📷 Assigned ${ids.length} photo${ids.length!==1?'s':''} to ${name}${name !== cameraName ? ` (you typed "${cameraName}")` : ''}`);
   renderGsCameraStep();
 }
 
@@ -10886,9 +11265,8 @@ function frRenderDoneStep() {
   const unlockPhrase = frDeferredIds.length ? t('frUnlockPhrase', { n: frDeferredIds.length }) : '';
   const peoplePhrase = peopleTaggedCount ? t('frPeoplePhrase', { n: peopleTaggedCount }) : '';
   const tipsRow = toured
-    ? `<button class="fr-tip-btn" onclick="frGoTo('enterEditedScan')">${t('frTipFindEdited')}</button>`
+    ? `<button class="fr-tip-btn" onclick="frGoTo('enterDupDetection')">${t('frTipFindDuplicates')}</button>`
     : `<button class="fr-tip-btn" onclick="frGoTo('enterDupDetection')">${t('frTipFindDuplicates')}</button>
-       <button class="fr-tip-btn" onclick="frGoTo('enterEditedScan')">${t('frTipFindEdited')}</button>
        <button class="fr-tip-btn" onclick="frGoTo('toggleGlobe')">${t('frTipExploreGlobe')}</button>`;
   const tipsList = toured
     ? `<li>${t('frTipSearch')}</li>
@@ -11083,9 +11461,21 @@ const PE_ADJUSTMENTS = [
   { key:'temp',       label:'Temp' },
   { key:'tint',       label:'Tint' }
 ];
+// Listed under Tint in the Light section and stored in the same adjustments object, but kept
+// out of PE_ADJUSTMENTS on purpose: these look at neighbouring pixels or at where a pixel sits
+// in the frame, which only the whole-photo pass can do. Local mask layers and PhotoMod's
+// per-layer colours run the per-pixel tone math only, so they never get these sliders.
+const PE_EFFECTS = [
+  { key:'clarity',    label:'Clarity' },
+  { key:'dehaze',     label:'Dehaze' },
+  { key:'sharpness',  label:'Sharpness', min:0 },
+  { key:'vignette',   label:'Vignette' },
+  { key:'grain',      label:'Grain',     min:0 }
+];
 function peDefaultAdjustments() {
   const o = {};
   PE_ADJUSTMENTS.forEach(a => { o[a.key] = 0; });
+  PE_EFFECTS.forEach(a => { o[a.key] = 0; });
   return o;
 }
 
@@ -12616,13 +13006,50 @@ const PE_FRAGMENT_SRC = `
   uniform float u_exposure, u_contrast, u_highlights, u_shadows,
                 u_whites, u_blacks, u_saturation, u_vibrance,
                 u_temp, u_tint;
+  uniform float u_clarity, u_dehaze, u_sharpness, u_vignette, u_grain; // PE_EFFECTS, all -1..1 (sharpness/grain 0..1)
   uniform vec3 u_hsl[8];
   uniform bool u_bypass;
   uniform float u_straighten; // degrees, fine-angle correction on top of the 90°-step file.rotation baked into the source pixels
   uniform float u_aspect;     // source canvas width/height, needed to rotate correctly on non-square images
+  uniform vec2 u_texel;       // 1 / source size in pixels - the step between neighbouring source pixels
+  uniform float u_resScale;   // longest edge / 2000, so radii cover the same share of the photo at any resolution
   varying vec2 v_uv;
 
   ` + PE_TONE_ADJUST_GLSL + `
+
+  float peLuma(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
+
+  // 3x3 Gaussian around uv, r source pixels apart - the "blurred copy" for unsharp masking.
+  vec3 peBlurSmall(vec2 uv, float r) {
+    vec2 d = u_texel * r;
+    vec3 edges = texture2D(u_image, uv + vec2(d.x, 0.0)).rgb + texture2D(u_image, uv - vec2(d.x, 0.0)).rgb
+               + texture2D(u_image, uv + vec2(0.0, d.y)).rgb + texture2D(u_image, uv - vec2(0.0, d.y)).rgb;
+    vec3 corners = texture2D(u_image, uv + d).rgb + texture2D(u_image, uv - d).rgb
+                 + texture2D(u_image, uv + vec2(d.x, -d.y)).rgb + texture2D(u_image, uv + vec2(-d.x, d.y)).rgb;
+    return (texture2D(u_image, uv).rgb * 4.0 + edges * 2.0 + corners) / 16.0;
+  }
+
+  // Average brightness of the wider neighbourhood (two rings of 8 taps) - what Clarity
+  // pushes each pixel away from to bring out texture and local contrast.
+  float peBlurWideLuma(vec2 uv, float r) {
+    float sum = 0.0;
+    for (int i = 0; i < 8; i++) {
+      float a = float(i) * 0.785398;
+      vec2 dir = vec2(cos(a), sin(a)) * u_texel;
+      sum += peLuma(texture2D(u_image, uv + dir * r).rgb);
+      sum += peLuma(texture2D(u_image, uv + dir * r * 0.5).rgb);
+    }
+    return sum / 16.0;
+  }
+
+  // Smoothed value noise, so grain reads as film texture rather than single-pixel static.
+  float peHash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+  float peNoise(vec2 p) {
+    vec2 i = floor(p), f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(peHash(i), peHash(i + vec2(1.0, 0.0)), f.x),
+               mix(peHash(i + vec2(0.0, 1.0)), peHash(i + vec2(1.0, 1.0)), f.x), f.y);
+  }
 
   // Rotates the sample point by -angle around the frame center, auto-zooming just enough
   // that the rotated source still fully covers every corner of the frame - so straightening
@@ -12704,13 +13131,55 @@ const PE_FRAGMENT_SRC = `
     vec4 src = texture2D(u_image, uv);
     if (u_bypass) { gl_FragColor = src; return; }
     vec3 c = src.rgb;
+    float res = max(1.0, u_resScale);
+
+    // Detail first, on the untouched source, so it sharpens real edges rather than whatever
+    // the tone sliders made of them. Both work on brightness only - sharpening each colour
+    // channel separately leaves coloured fringes along edges.
+    if (u_sharpness > 0.0) {
+      float detail = peLuma(c) - peLuma(peBlurSmall(uv, res));
+      c += detail * u_sharpness * 2.5;
+    }
+    if (u_clarity != 0.0) {
+      float l = peLuma(c);
+      float detail = l - peBlurWideLuma(uv, 14.0 * res);
+      float mid = 1.0 - pow(abs(l * 2.0 - 1.0), 2.0); // midtones only, so it never clips highlights or crushes shadows
+      c += detail * u_clarity * 1.6 * mid;
+    }
+    c = clamp(c, 0.0, 1.0);
 
     c = peToneAdjust(c, u_exposure, u_contrast, u_highlights, u_shadows, u_whites, u_blacks, u_saturation, u_vibrance, u_temp, u_tint);
+
+    // Dehaze: positive pulls the haze floor out (deeper blacks, more contrast and colour),
+    // negative lays a soft milky veil over the photo.
+    if (u_dehaze > 0.0) {
+      float k = u_dehaze * 0.15;
+      c = clamp((c - k) / (1.0 - k), 0.0, 1.0);
+      c = clamp(mix(vec3(peLuma(c)), c, 1.0 + u_dehaze * 0.3), 0.0, 1.0);
+    } else if (u_dehaze < 0.0) {
+      c = mix(c, vec3(0.82), -u_dehaze * 0.45);
+    }
+
     c = applyHsl(c);
 
     c.r = texture2D(u_curveLUT, vec2(c.r, 0.5)).r;
     c.g = texture2D(u_curveLUT, vec2(c.g, 0.5)).g;
     c.b = texture2D(u_curveLUT, vec2(c.b, 0.5)).b;
+
+    // Finishing touches last, on top of the final look. The vignette follows the frame's own
+    // shape (v_uv, not straightened uv) so it stays centred after a tilt; negative darkens the
+    // edges, positive lightens them.
+    if (u_vignette != 0.0) {
+      float d = length((v_uv - 0.5) * 2.0) / 1.41421;
+      float w = smoothstep(0.25, 1.0, d);
+      if (u_vignette < 0.0) c *= 1.0 + u_vignette * 0.85 * w;
+      else c = mix(c, vec3(1.0), u_vignette * 0.75 * w);
+    }
+    if (u_grain > 0.0) {
+      float n = peNoise(gl_FragCoord.xy / (1.2 * res)) - 0.5;
+      float mid = 1.0 - abs(peLuma(c) * 2.0 - 1.0) * 0.6; // grain shows most in the midtones, like film
+      c += n * u_grain * 0.28 * mid;
+    }
 
     gl_FragColor = vec4(clamp(c, 0.0, 1.0), src.a);
   }
@@ -12781,7 +13250,7 @@ function peSyncModeChrome() {
   document.getElementById('peSaveBtn').style.display = pro ? '' : 'none';
   document.getElementById('peSaveChangesBtn').style.display = pro ? 'none' : '';
   document.getElementById('peCloseBtn').title = pro ? 'Close PhotoMod (asks first if there is anything unsaved)'
-    : 'Close the editor - your edits are kept, same as Save changes';
+    : 'Close the editor (asks first if there are edits you have not saved)';
   document.getElementById('pePickBtn').style.display = pro ? '' : 'none';
   document.getElementById('peOpenInModBtn').style.display = pro ? 'none' : '';
   // The overlay canvases are static markup reused across sessions, so their pointer-events are
@@ -12805,14 +13274,14 @@ function pmStartFrom(what) {
   else pmOpenPicker('open');
 }
 
-// Handing the photo across keeps whatever is already committed to file.edits (the simple
-// editor saves as you go), so the pro editor picks up exactly the look you were looking at.
+// Handing the photo across saves the simple editor's edits to file.edits first, so the pro
+// editor picks up exactly the look you were looking at.
 async function peOpenInPhotoMod() {
   const id = peFileId;
   if (!id) return;
   const back = popupReturn; // hand the way back to the preview on to PhotoMod, not this close
   popupReturn = null;
-  await closePhotoEditor();
+  await closePhotoEditor(true, true);
   popupReturn = back;
   await openPhotoEditor(id, 'pro');
 }
@@ -12894,8 +13363,9 @@ async function pmPick(fileId) {
   // Swapping photos mid-session is a close and a re-open, so the unsaved-work guard below
   // still gets its say before the current one is dropped.
   if (peOpen) {
-    if (!await peConfirmDiscard()) return;
-    await closePhotoEditor(true);
+    const answer = await peConfirmDiscard();
+    if (!answer) return;
+    await closePhotoEditor(true, answer === 'save');
   }
   closePhotoModPicker();
   await openPhotoEditor(fileId, 'pro');
@@ -12908,7 +13378,7 @@ async function pmPlacePhotoLayer(fileId) {
   if (!file || !peOpen) return;
   toast(`Loading ${file.name}…`);
   let result = null;
-  try { result = await window.api.getEditableImage(file.id, file.path); } catch (e) {}
+  try { result = await loadEditableImage(file); } catch (e) {}
   if (!result?.base64) { toast('⚠️ Could not load that photo'); return; }
   const img = new Image();
   const ok = await new Promise(resolve => {
@@ -12926,8 +13396,16 @@ async function pmPlacePhotoLayer(fileId) {
 
 // Pro mode holds everything in memory, so the one place it can lose work is the Close button.
 let pmDiscardResolve = null;
+// Asked before an editor with unsaved work goes away. Resolves false (keep editing), 'discard',
+// 'save' (simple editor only: PhotoMod's Save writes a new file, which is its own decision), or
+// true when there was nothing to lose.
 function peConfirmDiscard() {
-  if (!peIsPro() || !peDirty) return Promise.resolve(true);
+  if (!peDirty) return Promise.resolve(true);
+  const pro = peIsPro();
+  document.getElementById('pmDiscardText').textContent = pro
+    ? "PhotoMod doesn't save as you go - your layers, masks and adjustments are only kept if you press Save (or Export them to a new file). Close now and this work is gone."
+    : 'Your edits to this photo are only kept if you save them. Discard them and the photo stays exactly as it was when you opened it.';
+  document.getElementById('pmDiscardSaveBtn').style.display = pro ? 'none' : '';
   document.getElementById('pmDiscardModal').classList.add('open');
   return new Promise(resolve => { pmDiscardResolve = resolve; });
 }
@@ -14027,7 +14505,7 @@ async function pmCreateNewDocument() {
   if (!w || !h) return;
   pmCloseModal('pmNewDocModal');
   closePhotoModPicker();
-  if (peOpen) { if (!await peConfirmDiscard()) return; await closePhotoEditor(true); }
+  if (peOpen) { const answer = await peConfirmDiscard(); if (!answer) return; await closePhotoEditor(true, answer === 'save'); }
   const base = document.createElement('canvas');
   base.width = w; base.height = h;
   const bctx = base.getContext('2d');
@@ -14327,6 +14805,7 @@ async function openPhotoEditor(fileId, mode) {
   peMode = mode === 'pro' ? 'pro' : 'simple';
   peFileId = fileId;
   peDirty = false;
+  peRotationAtOpen = file.rotation || 0;
   peBypass = false;
   peAdjustments = Object.assign(peDefaultAdjustments(), file.edits?.adjustments || {});
   peCurves = file.edits?.curves ? peCloneCurves(file.edits.curves)
@@ -14351,7 +14830,7 @@ async function openPhotoEditor(fileId, mode) {
   loading.style.display = '';
   canvas.style.display = 'none';
   let result = null;
-  try { result = await window.api.getEditableImage(file.id, file.path); } catch (e) {}
+  try { result = await loadEditableImage(file); } catch (e) {}
   loading.style.display = 'none';
   if (!result || !result.base64) {
     toast('⚠️ Could not load this photo for editing');
@@ -15958,9 +16437,11 @@ function peInitGL(sourceCanvas) {
     curveLUT: gl.getUniformLocation(program, 'u_curveLUT'),
     hsl: gl.getUniformLocation(program, 'u_hsl'),
     straighten: gl.getUniformLocation(program, 'u_straighten'),
-    aspect: gl.getUniformLocation(program, 'u_aspect')
+    aspect: gl.getUniformLocation(program, 'u_aspect'),
+    texel: gl.getUniformLocation(program, 'u_texel'),
+    resScale: gl.getUniformLocation(program, 'u_resScale')
   };
-  PE_ADJUSTMENTS.forEach(a => { peUniforms[a.key] = gl.getUniformLocation(program, 'u_' + a.key); });
+  [...PE_ADJUSTMENTS, ...PE_EFFECTS].forEach(a => { peUniforms[a.key] = gl.getUniformLocation(program, 'u_' + a.key); });
 
   // Tone-curve LUT lives on a second texture unit so it doesn't disturb the main image
   // texture bound to unit 0 - built once here with the current (possibly neutral) curves,
@@ -16094,7 +16575,7 @@ function peRender() {
   gl.bindTexture(gl.TEXTURE_2D, peToneLUTTex);
   gl.uniform1i(peUniforms.curveLUT, 1);
   gl.uniform1i(peUniforms.bypass, peBypass ? 1 : 0);
-  PE_ADJUSTMENTS.forEach(a => { gl.uniform1f(peUniforms[a.key], (peAdjustments[a.key] || 0) / 100); });
+  [...PE_ADJUSTMENTS, ...PE_EFFECTS].forEach(a => { gl.uniform1f(peUniforms[a.key], (peAdjustments[a.key] || 0) / 100); });
   const hslFlat = new Float32Array(24);
   PE_HSL_BANDS.forEach((b, i) => {
     const v = (peHsl && peHsl[b.key]) || { h:0, s:0, l:0 };
@@ -16103,6 +16584,9 @@ function peRender() {
   gl.uniform3fv(peUniforms.hsl, hslFlat);
   gl.uniform1f(peUniforms.straighten, peStraighten || 0);
   gl.uniform1f(peUniforms.aspect, canvas.height ? canvas.width / canvas.height : 1);
+  // The canvas is always the source's own size (see peInitGL), so one canvas pixel is one source pixel.
+  gl.uniform2f(peUniforms.texel, 1 / (canvas.width || 1), 1 / (canvas.height || 1));
+  gl.uniform1f(peUniforms.resScale, Math.max(canvas.width, canvas.height) / 2000);
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
   if (!visibleLayers.length || !peMaskProgram) return;
@@ -16300,9 +16784,11 @@ function pmRenderAdjustPanel(parts) {
 
 function peBuildPanelSections() {
 
-  const lightHtml = PE_ADJUSTMENTS.map(a => peSliderRow(
-    a.label, pmColorState().adjustments[a.key], `peSlider-${a.key}`, `peVal-${a.key}`,
-    `peOnSlider('${a.key}', this.value)`, `peResetOne('${a.key}')`
+  // A pasted layer's colours only get the per-pixel sliders - see PE_EFFECTS for why.
+  const lightKeys = pmColorTargetLayer() ? PE_ADJUSTMENTS : [...PE_ADJUSTMENTS, ...PE_EFFECTS];
+  const lightHtml = lightKeys.map(a => peSliderRow(
+    a.label, pmColorState().adjustments[a.key] || 0, `peSlider-${a.key}`, `peVal-${a.key}`,
+    `peOnSlider('${a.key}', this.value)`, `peResetOne('${a.key}')`, a.min
   )).join('');
 
   const curveChips = PE_CURVE_CHANNELS.map(c => `<button class="pe-curve-chip${c.key===peActiveCurveChannel?' active':''}" style="--chip-color:${c.color}" title="${c.label}" onclick="peSelectCurveChannel('${c.key}')">${c.label}</button>`).join('');
@@ -16776,13 +17262,11 @@ function peShowOriginal(hold) {
 function peScheduleSave() {
   clearTimeout(peSaveTimer);
   pmSegDocVersion++; // every edit passes through here, so Auto select knows its analysis of the picture is stale
-  // PhotoMod is deliberately not autosaved. Everything - adjustments, masks, brush strokes and
-  // the whole layer stack - stays in memory until Save or Export, so a session of experimenting
-  // can always be thrown away. peDirty is still set by the callers, which is what the Close
-  // guard reads. The simple editor keeps saving as you go: it only ever edits a recipe, and
-  // losing a slider nudge because you hit Escape would be worse there.
-  if (peIsPro()) return;
-  peSaveTimer = setTimeout(() => { peSaveTimer = null; peCommit(); }, 400);
+  // Neither editor autosaves. Everything - adjustments, masks, brush strokes and the whole layer
+  // stack - stays in memory until Save changes (simple) or Save/Export (PhotoMod), so a session
+  // of experimenting can always be thrown away. The simple editor used to save as you go, which
+  // made its Close button keep edits the user meant to drop. peDirty is still set by the
+  // callers: it's what the Close prompt reads, so a stray Escape can't lose work either.
 }
 
 async function peCommit() {
@@ -16790,7 +17274,7 @@ async function peCommit() {
   if (!file || !peAdjustments) return;
   // Snapshot whatever's currently being painted into its layer before evaluating defaults/serializing below.
   peCommitActiveMaskLayer();
-  const adjDefault = PE_ADJUSTMENTS.every(a => !peAdjustments[a.key]);
+  const adjDefault = [...PE_ADJUSTMENTS, ...PE_EFFECTS].every(a => !peAdjustments[a.key]);
   const curveDefault = ['master', 'r', 'g', 'b'].every(ch => {
     const pts = peCurves[ch];
     return pts.length === 2 && pts[0].x === 0 && pts[0].y === 0 && pts[1].x === 255 && pts[1].y === 255;
@@ -16800,7 +17284,7 @@ async function peCommit() {
   const localLayers = peSerializeLocalLayers(peLocalLayers); // drops any never-painted layer, not just dead weight but also correctness (see isDefault below)
   const layers = peSerializeLayers(peLayers);
   const isDefault = adjDefault && curveDefault && hslDefault && !drawLayer && !peStraighten && localLayers.length === 0 && layers.length === 0;
-  delete thumbCache[file.id];
+  delete thumbCache[file.id]; delete previewCache[file.id]; delete hiresCache[file.id];
   if (isDefault) {
     delete file.edits;
     await window.api.clearEditedThumb(file.id);
@@ -16821,18 +17305,33 @@ async function peCommit() {
   persistQuiet();
 }
 
+// Saves the edited look twice: a 480px thumb for the grid, and a full-size one for the viewer
+// (getEditedPreview). Only the editor can render an edit, so without the second the viewer had
+// nothing better to show than the thumb, stretched.
+// Both are stored unturned: the editor works on the photo already turned by file.rotation, but
+// everything that shows these turns them by file.rotation again (getThumb, getPreviewImage),
+// the same as every other thumbnail - so a rotated edited photo used to come out turned twice.
+const PE_EDITED_PREVIEW_MAX = 4000; // HIRES_MAX_DIM: it doubles as the viewer's zoomed-in render
 async function peSaveEditedThumbnail(fileId) {
-  const canvas = peCompositeCanvas();
+  let canvas = peCompositeCanvas();
   if (!canvas || !canvas.width) return;
-  const small = document.createElement('canvas');
-  const scale = Math.min(1, 480 / canvas.width);
-  small.width = Math.max(1, Math.round(canvas.width * scale));
-  small.height = Math.max(1, Math.round(canvas.height * scale));
-  small.getContext('2d').drawImage(canvas, 0, 0, small.width, small.height);
-  const blob = await new Promise(res => small.toBlob(res, 'image/jpeg', 0.85));
-  if (!blob) return;
-  const base64 = arrayBufferToBase64(await blob.arrayBuffer());
-  await window.api.saveEditedThumb(fileId, base64);
+  const file = appData.files.find(f => f.id === fileId);
+  if (file?.rotation) canvas = drawRotatedToCanvas(canvas, 360 - file.rotation);
+  const encode = async (maxW, maxH, quality) => {
+    const scale = Math.min(1, maxW / canvas.width, maxH / canvas.height);
+    const out = document.createElement('canvas');
+    out.width = Math.max(1, Math.round(canvas.width * scale));
+    out.height = Math.max(1, Math.round(canvas.height * scale));
+    const ctx = out.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(canvas, 0, 0, out.width, out.height);
+    const blob = await new Promise(res => out.toBlob(res, 'image/jpeg', quality));
+    return blob ? arrayBufferToBase64(await blob.arrayBuffer()) : null;
+  };
+  const thumb = await encode(480, Infinity, 0.85);
+  if (thumb) await window.api.saveEditedThumb(fileId, thumb);
+  const full = await encode(PE_EDITED_PREVIEW_MAX, PE_EDITED_PREVIEW_MAX, 0.9);
+  if (full) await window.api.saveEditedPreview(fileId, full);
 }
 
 async function peExport() {
@@ -16893,24 +17392,30 @@ async function peBakeLayers() {
   return true;
 }
 
-// `force` skips the unsaved-work prompt, for callers that have already asked (pmPick) or that
-// are handing the same photo straight to another editor (peOpenInPhotoMod).
-// The simple editor saves as you go and again on close, which nothing on screen said - this is
-// that same close path under a name that says what it does, plus a confirmation.
+// The simple editor's only way to keep its edits: neither editor saves as you go any more, so
+// Close can mean "never mind" (see closePhotoEditor).
 async function peSaveChangesAndClose() {
   if (!peOpen || peIsPro()) return;
-  const hadChanges = peDirty || !!peSaveTimer;
-  await closePhotoEditor(true);
+  const hadChanges = peDirty;
+  await closePhotoEditor(true, true);
   toast(hadChanges ? '✅ Changes saved' : '✅ Saved - no changes to keep');
 }
 
-async function closePhotoEditor(force) {
-  if (!force && !await peConfirmDiscard()) return;
+// `force` skips the unsaved-work prompt, for callers that have already asked (pmPick) or that
+// are handing the same photo straight to another editor (peOpenInPhotoMod). `save` commits the
+// simple editor's edits on the way out; without it they're dropped and the photo keeps whatever
+// it had when the editor opened. The prompt's own "Save changes" answer sets it too.
+async function closePhotoEditor(force, save = false) {
+  if (!force) {
+    const answer = await peConfirmDiscard();
+    if (!answer) return;
+    if (answer === 'save') save = true;
+  }
   clearTimeout(peSaveTimer);
   const wasPro = peIsPro();
   // In pro mode nothing is written on the way out - anything worth keeping went through Save
   // or Export already, and the prompt above is where the user said so.
-  if (!wasPro) {
+  if (!wasPro && save) {
     // Bake before the final commit so the layers are gone from file.edits by the time it writes,
     // and so the original's own thumbnail regenerates without them.
     if (peOpen && await peBakeLayers()) {
@@ -16920,6 +17425,19 @@ async function closePhotoEditor(force) {
       peDirty = true;
     }
     if (peDirty) await peCommit();
+    // Nothing changed, but a photo edited before full-size previews were saved gets one now,
+    // so opening it and pressing Save changes is enough to make its viewer sharp.
+    else if (appData.files.find(f => f.id === peFileId)?.edits) await peSaveEditedThumbnail(peFileId);
+  } else if (!wasPro) {
+    // Discarded: file.edits was never touched, but the 90° turn buttons (and Reset all) set
+    // file.rotation as they go, since the grid and the viewer share it. Put it back.
+    const file = appData.files.find(f => f.id === peFileId);
+    if (file && (file.rotation || 0) !== peRotationAtOpen) {
+      if (peRotationAtOpen) file.rotation = peRotationAtOpen; else delete file.rotation;
+      delete previewCache[file.id]; delete hiresCache[file.id];
+      refreshFileThumbs(file);
+      persistQuiet();
+    }
   }
   document.getElementById('photoEditor').classList.remove('open');
   // Free the GPU resources this session allocated - the image texture is the big one, easily
@@ -17014,14 +17532,6 @@ document.addEventListener('keydown', e=>{
       if(confirmOpen) cancelDeleteConfirm();
       else if(dupPhase==='compare') dupBackToResults();
       else closeDupMode();
-    }
-    return;
-  }
-  if(document.getElementById('editedScanMode').classList.contains('open')){
-    if(e.key==='Escape'){
-      e.preventDefault();
-      if(editedScanPhase==='compare') editedBackToResults();
-      else closeEditedScanMode();
     }
     return;
   }

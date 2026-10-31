@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, shell, nativeImage, nativeTheme, Menu, clipboard, powerSaveBlocker } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, nativeImage, nativeTheme, Menu, clipboard, powerSaveBlocker, utilityProcess } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const os = require('os');
 const { spawn } = require('child_process');
 const TroveMedia = require('./media-types');
+const { readHeifLayout } = require('./heif-layout');
 
 // Installed builds keep the library in the OS per-user profile (%APPDATA%/Trove),
 // stable across app uninstalls/upgrades. It used to live in a "data" folder next to the exe
@@ -44,7 +45,7 @@ const DEFAULT_DATA = () => ({
   learnedCrossings: [],  // ferry/train corrections you've made once, auto-applied to matching legs from then on
   legGpxTracks: {},      // imported GPX tracks per hike leg, keyed by leg id - see importGpxForLeg() in renderer.js
   dupIgnoredKeys: [],       // Duplicate Detection groups dismissed as "Not duplicates" - see dupIgnoreGroup() in renderer.js
-  editedDismissedKeys: [],  // Edited Detection pairs dismissed as "Not a match" - see editedDismissPair() in renderer.js
+  editedDismissedKeys: [],  // edit pairs dismissed as "Not a match" - see dupIgnoreGroup() in renderer.js
   hiddenSidebarSections: [], // built-in sections (Trips/People/...) hidden via right-click - see hideSidebarSection() in renderer.js
   stats: {
     bytesDeleted: 0  // running total of real disk space freed via the 'delete-files' IPC handler below - see the sidebar's "space freed" footer in renderer.js
@@ -991,6 +992,17 @@ function createWindow() {
     webPreferences: { nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, 'preload.js') }
   });
   mainWindow.loadFile('index.html');
+  // The renderer holds the window open (beforeunload) while a photo editor has unsaved edits -
+  // neither editor saves as you go. Electron shows nothing for that by itself, so ask here;
+  // preventDefault on this event means "close anyway".
+  mainWindow.webContents.on('will-prevent-unload', (e) => {
+    const choice = dialog.showMessageBoxSync(mainWindow, {
+      type: 'warning', buttons: ['Keep editing', 'Quit without saving'], defaultId: 0, cancelId: 0, noLink: true,
+      title: 'Unsaved edits', message: "You have edits on this photo that you haven't saved.",
+      detail: 'Quit now and they are lost. Keep editing to go back and save them.'
+    });
+    if (choice === 1) e.preventDefault();
+  });
   if (process.env.FL_DEBUG_CONSOLE) {
     mainWindow.webContents.on('console-message', (e) => {
       console.log(`[renderer] ${e.message} (${e.sourceId}:${e.lineNumber})`);
@@ -1586,20 +1598,35 @@ ipcMain.handle('geocode', (_, lat, lng) => {
 // Real disk deletion (Duplicate Detection, Burst Review, bulk/single delete). Default sends to the Recycle Bin;
 // permanent=true bypasses it. Files already gone are treated as deleted so the
 // library entry still gets cleaned up.
+// Windows refuses to delete or recycle a file that still has an open handle, and that's often
+// only for a moment - a <video> the renderer just told to let go releases the file on another
+// thread a beat later - so a failed file gets a few short retries before it counts. inUse says
+// how many of the failures were still locked at the end, for the renderer's message.
 ipcMain.handle('delete-files', async (_, paths, permanent) => {
   const deleted = [], failed = [];
-  let bytes = 0;
+  let bytes = 0, inUse = 0;
+  const locked = e => ['EBUSY', 'EPERM', 'EACCES'].includes(e?.code) || /in use|being used|trash/i.test(e?.message || '');
   for (const p of paths) {
-    try {
-      if (!fs.existsSync(p)) { deleted.push(p); continue; }
-      const size = fs.statSync(p).size;
-      if (permanent) fs.unlinkSync(p);
-      else await shell.trashItem(p);
-      deleted.push(p);
-      bytes += size;
-    } catch(e) { failed.push(p); }
+    if (!fs.existsSync(p)) { deleted.push(p); continue; }
+    let size = 0;
+    try { size = fs.statSync(p).size; } catch (e) {}
+    for (let attempt = 0; ; attempt++) {
+      try {
+        if (permanent) fs.unlinkSync(p);
+        else await shell.trashItem(p);
+        deleted.push(p);
+        bytes += size;
+        break;
+      } catch (e) {
+        if (!fs.existsSync(p)) { deleted.push(p); bytes += size; break; } // gone after all
+        if (attempt < 5 && locked(e)) { await new Promise(r => setTimeout(r, 300)); continue; }
+        failed.push(p);
+        if (locked(e)) inUse++;
+        break;
+      }
+    }
   }
-  return { deleted, failed, bytes };
+  return { deleted, failed, bytes, inUse };
 });
 
 // ── MISSING FILE RELOCATION ───────────────────────────────────────────────────
@@ -1810,9 +1837,69 @@ function fitNativeImage(img, maxW, maxH) {
   const k = Math.min(1, maxW / w, maxH / h);
   return k < 1 ? img.resize({ width: Math.round(w * k), height: Math.round(h * k), quality: 'good' }) : img;
 }
+// ── HEIC FALLBACK DECODER ──
+// iPhone HEIC photos are HEVC inside, and Windows only decodes them once the Store's "HEVC
+// Video Extensions" is installed (the free HEIF Image Extension alone isn't enough). Without
+// it the shell thumbnailer fails, Chromium can't decode HEIC either, and the photo got no
+// thumbnail, preview or editor. Two ways around that:
+// - Viewer and editor: the renderer decodes the HEVC tiles on the graphics card first (see
+//   get-heic-layout below and heicGpu.js), and only falls back to get-preview-image.
+// - Here, libheif in utility processes (see worker/heic-decoder.js). Grid thumbnails come from
+//   the small preview every iPhone HEIC carries, ~10ms each; anything bigger is a full
+//   software decode, ~0.75s for 12MP, and the renderer is told once so it can say why.
+// They start on demand and quit when idle: WebAssembly memory never shrinks, so an idle
+// decoder would sit on ~200MB.
+const HEIC_DECODERS = 2;
+const HEIC_IDLE_MS = 30000;
+const heicPool = []; // { proc, job, idleTimer }
+const heicQueue = []; // { filePath, maxW, maxH, resolve }
+let heicSlowReported = false;
+function spawnHeicDecoder() {
+  const w = { proc: utilityProcess.fork(path.join(__dirname, 'worker', 'heic-decoder.js'), [], { serviceName: 'Trove HEIC decoder' }), job: null, idleTimer: null };
+  w.proc.on('message', m => {
+    if (m.full && !heicSlowReported && mainWindow) { heicSlowReported = true; mainWindow.webContents.send('heic-slow'); }
+    finishHeicJob(w, m.bitmap ? nativeImage.createFromBitmap(Buffer.from(m.bitmap.buffer, m.bitmap.byteOffset, m.bitmap.byteLength), { width: m.width, height: m.height }) : null);
+  });
+  w.proc.on('exit', () => {
+    clearTimeout(w.idleTimer);
+    const i = heicPool.indexOf(w);
+    if (i >= 0) heicPool.splice(i, 1);
+    finishHeicJob(w, null);
+  });
+  heicPool.push(w);
+  return w;
+}
+function finishHeicJob(w, img) {
+  const job = w.job;
+  w.job = null;
+  if (job) job.resolve(img && !img.isEmpty() ? img : null);
+  pumpHeicQueue();
+  if (!w.job && heicPool.includes(w)) w.idleTimer = setTimeout(() => w.proc.kill(), HEIC_IDLE_MS);
+}
+function pumpHeicQueue() {
+  while (heicQueue.length) {
+    let w = heicPool.find(p => !p.job);
+    if (!w && heicPool.length < HEIC_DECODERS) w = spawnHeicDecoder();
+    if (!w) return;
+    clearTimeout(w.idleTimer);
+    w.job = heicQueue.shift();
+    w.proc.postMessage({ filePath: w.job.filePath, maxW: w.job.maxW, maxH: w.job.maxH, thumbOnly: w.job.thumbOnly });
+  }
+}
+function decodeHeic(filePath, maxW, maxH, thumbOnly) {
+  return new Promise(resolve => {
+    const job = { filePath, maxW, maxH, thumbOnly, resolve };
+    // A photo the user just opened goes ahead of the grid thumbnails already waiting.
+    if (Math.max(maxW, maxH) > 320) heicQueue.unshift(job); else heicQueue.push(job);
+    pumpHeicQueue();
+  });
+}
+
 // The OS first, whatever the format (it knows the codecs installed on this machine), then a
-// RAW's own embedded preview. null means neither could: the renderer tries Chromium next.
-async function renderStill(filePath, maxW, maxH) {
+// RAW's own embedded preview or libheif for a HEIC. null means none could: the renderer tries
+// Chromium next. thumbOnly (grid thumbnails) stops a HEIC at its built-in preview: one without
+// gets decoded on the GPU by the renderer instead (rendererThumb), software only as a last resort.
+async function renderStill(filePath, maxW, maxH, { thumbOnly = false } = {}) {
   const ext = path.extname(filePath).toLowerCase();
   // Windows' thumbnailer squashes animated GIFs onto a wide strip (a 600x600 GIF came back
   // 320x117). Chromium decodes GIF properly - and animates it in the viewer - so it gets them.
@@ -1825,6 +1912,7 @@ async function renderStill(filePath, maxW, maxH) {
     const img = await rawEmbeddedPreview(filePath);
     if (img) return fitNativeImage(img, maxW, maxH);
   }
+  if (TroveMedia.HEIF.has(ext) && !TroveMedia.BROWSER_IMAGE.has(ext)) return decodeHeic(filePath, maxW, maxH, thumbOnly);
   return null;
 }
 
@@ -1860,7 +1948,7 @@ ipcMain.handle('get-thumb', async (_, fileId, filePath) => {
     // Windows has no shell thumbnailer for Insta360's .insp (a plain JPEG under another
     // extension), so decode it from its bytes instead.
     if (/\.insp$/i.test(filePath)) img = nativeImage.createFromBuffer(await fs.promises.readFile(filePath)).resize({ width: 320 });
-    else img = await renderStill(filePath, 320, 240);
+    else img = await renderStill(filePath, 320, 240, { thumbOnly: true });
     if (!img || img.isEmpty()) return null;
     if (/\.insv$/i.test(filePath)) img = stripInsta360Banner(img) || img;
     const buf = img.toJPEG(82);
@@ -2057,6 +2145,10 @@ ipcMain.on('start-file-drag', (event, payload) => {
 // Skips edited photos entirely (their small edited-look thumb from get-thumb is used instead,
 // since this must never show unedited pixels as if they were the current look of the photo).
 const PREVIEW_MAX_DIM = 1800;
+// The compressed tiles of a HEIC plus how to put them together, for the renderer's hardware
+// decoder (heicGpu.js). null when the file isn't laid out the usual way.
+ipcMain.handle('get-heic-layout', (_, filePath) => readHeifLayout(filePath));
+
 ipcMain.handle('get-preview-image', async (_, filePath, maxDim) => {
   try {
     const dim = maxDim || PREVIEW_MAX_DIM;
@@ -2190,7 +2282,7 @@ ipcMain.handle('get-editable-image', async (_, fileId, filePath) => {
   try {
     if (!TroveMedia.BROWSER_IMAGE.has(ext)) {
       // Chromium can't decode HEIC, TIFF or RAW itself, so the OS (or a RAW's own embedded
-      // preview) is the only source of pixels we have - same path as get-thumb above, just
+      // preview, or libheif) is the only source of pixels we have - same path as get-thumb above, just
       // asking for a much bigger render.
       const img = await renderStill(filePath, EDIT_MAX_DIM, EDIT_MAX_DIM);
       if (!img) return null;
@@ -2305,8 +2397,26 @@ ipcMain.handle('save-edited-thumb', async (_, fileId, base64) => {
 });
 
 ipcMain.handle('clear-edited-thumb', async (_, fileId) => {
-  try { await fs.promises.unlink(path.join(THUMB_DIR, fileId + '-edited.jpg')); } catch (e) {}
+  for (const suffix of ['-edited.jpg', '-edited-full.jpg']) {
+    try { await fs.promises.unlink(path.join(THUMB_DIR, fileId + suffix)); } catch (e) {}
+  }
   return true;
+});
+
+// The edited look at viewing size. An edit is a recipe only the editor's WebGL pipeline can
+// replay, so the viewer can't render it from the original the way it renders a plain photo -
+// without this it could only blow up the 480px edited thumb above, which looked like what it
+// was. Written by the editor on save (peSaveEditedThumbnail), next to that thumb.
+const EDIT_ID_RE = /^[\w-]+$/;
+ipcMain.handle('save-edited-preview', async (_, fileId, base64) => {
+  if (typeof fileId !== 'string' || !EDIT_ID_RE.test(fileId)) return false;
+  try { await fs.promises.writeFile(path.join(THUMB_DIR, fileId + '-edited-full.jpg'), Buffer.from(base64, 'base64')); return true; }
+  catch (e) { return false; }
+});
+ipcMain.handle('get-edited-preview', async (_, fileId) => {
+  if (typeof fileId !== 'string' || !EDIT_ID_RE.test(fileId)) return null;
+  try { return (await fs.promises.readFile(path.join(THUMB_DIR, fileId + '-edited-full.jpg'))).toString('base64'); }
+  catch (e) { return null; }
 });
 
 // ── CUSTOM VIDEO THUMBNAILS ─────────────────────────────────────────────────
