@@ -4,7 +4,7 @@ Thanks for taking a look. Trove is a one-person project, so bug reports, ideas, 
 
 ## Reporting a bug or suggesting something
 
-[Open an issue](https://github.com/Gilouloum/Trove-releases/issues). For bugs, it helps to include:
+[Open an issue](https://github.com/Gilouloum/Trove/issues). For bugs, it helps to include:
 
 - your OS (Windows 10/11, or macOS and which Mac)
 - what you did, what you expected, and what happened instead
@@ -17,8 +17,8 @@ Please don't attach photos from your library unless you're comfortable with them
 You need [Node.js](https://nodejs.org) 20 or newer and Git.
 
 ```bash
-git clone https://github.com/Gilouloum/Trove-releases.git
-cd Trove-releases
+git clone https://github.com/Gilouloum/Trove.git
+cd Trove
 npm install
 
 # One time: copy the libraries and AI models Trove loads from local disk into assets/.

@@ -45,7 +45,7 @@ When you open the Globe, the satellite imagery, place labels and, if you turn on
 
 ## 4. Updates (GitHub)
 
-Trove checks [GitHub](https://github.com/Gilouloum/Trove-releases) for new versions and downloads them from there. GitHub receives your IP address and the app version ([GitHub privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)).
+Trove checks [GitHub](https://github.com/Gilouloum/Trove) for new versions and downloads them from there. GitHub receives your IP address and the app version ([GitHub privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)).
 
 ## Everything else stays on your computer
 
@@ -110,7 +110,7 @@ Quand vous ouvrez le Globe, l'imagerie satellite, les noms de lieux et, si vous 
 
 ## 4. Mises à jour (GitHub)
 
-Trove vérifie sur [GitHub](https://github.com/Gilouloum/Trove-releases) si une nouvelle version existe et la télécharge depuis ce site. GitHub reçoit votre adresse IP et la version de l'application ([déclaration de confidentialité de GitHub](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)).
+Trove vérifie sur [GitHub](https://github.com/Gilouloum/Trove) si une nouvelle version existe et la télécharge depuis ce site. GitHub reçoit votre adresse IP et la version de l'application ([déclaration de confidentialité de GitHub](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)).
 
 ## Tout le reste reste sur votre ordinateur
 

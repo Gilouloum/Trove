@@ -7,11 +7,11 @@ Trove is a free, open-source, local-first photo organizer and editor for Windows
 If you've been searching for how to sort a huge, messy photo library, how to find duplicate photos, how to find your old edited shots again, or how to remove an object from a photo without uploading it anywhere, this page covers what Trove does and how. Short answers are in the [FAQ](FAQ.md).
 
 <p align="center">
-  <a href="https://github.com/Gilouloum/Trove-releases/releases/download/latest-build/Trove-Setup.exe">
+  <a href="https://github.com/Gilouloum/Trove/releases/download/latest-build/Trove-Setup.exe">
     <img src="https://img.shields.io/badge/Download-Windows-0078D6?style=for-the-badge&logo=windows11&logoColor=white" alt="Download for Windows">
   </a>
   &nbsp;
-  <a href="https://github.com/Gilouloum/Trove-releases/releases/download/latest-build/Trove-arm64.dmg">
+  <a href="https://github.com/Gilouloum/Trove/releases/download/latest-build/Trove-arm64.dmg">
     <img src="https://img.shields.io/badge/Download-macOS-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Download for macOS">
   </a>
 </p>
@@ -247,7 +247,7 @@ The full list, including duplicate detection, cloud-free storage, and platform s
 
 Trove's full source code is in this repository, under the [GPL-3.0](LICENSE) license. You can read it, build it yourself, change it, and share your changes, as long as they stay open source too.
 
-- **Found a bug or have an idea?** [Open an issue](https://github.com/Gilouloum/Trove-releases/issues). Screenshots and your OS version help a lot.
+- **Found a bug or have an idea?** [Open an issue](https://github.com/Gilouloum/Trove/issues). Screenshots and your OS version help a lot.
 - **Want to run it from source or contribute?** [CONTRIBUTING.md](CONTRIBUTING.md) covers setup and where everything lives in the code.
 - **Like it?** A star on this repo helps other people find Trove.
 

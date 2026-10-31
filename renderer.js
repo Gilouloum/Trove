@@ -6421,7 +6421,7 @@ function openMapboxSignup() { window.api.openExternal('https://www.mapbox.com/')
 // flipping it off there is a hard stop, not just a UI label. Nothing is sent unless the user
 // said yes to showTelemetryNotice() below (or turned it on in Settings). PRIVACY_URL is the
 // public policy.
-const PRIVACY_URL = 'https://github.com/Gilouloum/Trove-releases/blob/main/PRIVACY.md';
+const PRIVACY_URL = 'https://github.com/Gilouloum/Trove/blob/main/PRIVACY.md';
 function openPrivacyPolicy() { window.api.openExternal(PRIVACY_URL); }
 function sendTelemetryPing(event) {
   if (appData.settings?.telemetryEnabled !== true) return;
@@ -10484,7 +10484,7 @@ let frDupDemoFileId = null; // the demo-copy file's id, set once frRunTourDuplic
 let frPendingResumeStep = null; // non-null while the Globe/Editor/Find Duplicates is showing over a hidden-but-still-open wizard - see frPauseWizard/frResumeWizardIfPending
 let frRatingStars = null; // 0-5, transient per rating attempt
 let frExtrasShownThisSession = false; // true once the tour/unlock/rating have been shown - guards a later "Add another trip" pass from re-showing them
-const FR_GITHUB_URL = 'https://github.com/Gilouloum/Trove-releases';
+const FR_GITHUB_URL = 'https://github.com/Gilouloum/Trove';
 const FR_STEP_PCT = { language: 0, welcome: 2, goal: 6, size: 11, addfiles: 18, tripask: 30, tripcreate: 40, people: 50, categories: 58, orientation: 64, tourIntro: 69, tourGlobe: 76, tourEditor: 83, tourDuplicate: 90, unlock: 94, rating: 96, ratingThanksGithub: 98, ratingFeedback: 98, done: 100 };
 
 // isFirstLaunch: true for the automatic open on an empty install (starts at Welcome); false

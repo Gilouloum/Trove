@@ -10,7 +10,7 @@
       "description": "Trove is a free, open-source, local-first photo and video organizer for Windows and macOS. It never uploads, copies, or moves files: it organizes links back to them, exactly where they already live on disk.",
       "license": "https://www.gnu.org/licenses/gpl-3.0.html",
       "isAccessibleForFree": true,
-      "codeRepository": "https://github.com/Gilouloum/Trove-releases",
+      "codeRepository": "https://github.com/Gilouloum/Trove",
       "offers": {
         "@type": "Offer",
         "price": "0",

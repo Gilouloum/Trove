@@ -7,7 +7,7 @@
   "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gilouloum/Trove-releases.git"
+    "url": "https://github.com/Gilouloum/Trove.git"
   },
   "scripts": {
     "start": "electron .",
@@ -36,7 +36,7 @@
     "publish": {
       "provider": "github",
       "owner": "Gilouloum",
-      "repo": "Trove-releases"
+      "repo": "Trove"
     },
     "directories": {
       "output": "dist"
