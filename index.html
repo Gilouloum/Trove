@@ -996,6 +996,30 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 #peLayersCanvas{position:absolute;pointer-events:none;touch-action:none}
 #peLayersCanvas.move-tool{cursor:move}
 #peSelCanvas{position:absolute;pointer-events:none;touch-action:none}
+/* Simple editor crop: the box over the photo while the Crop tab is open, the clip everywhere else */
+.pe-stage.pe-cropped>canvas{clip-path:inset(var(--pe-crop-t) var(--pe-crop-r) var(--pe-crop-b) var(--pe-crop-l))}
+#peCropOverlay{position:absolute;z-index:6;overflow:hidden;touch-action:none}
+.pe-crop-box{position:absolute;box-shadow:0 0 0 100vmax rgba(0,0,0,.55);outline:1.5px solid rgba(255,255,255,.95);cursor:move}
+.pe-crop-grid{position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,.35)) 33.33% 0/1px 100% no-repeat,linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,.35)) 66.66% 0/1px 100% no-repeat,linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,.35)) 0 33.33%/100% 1px no-repeat,linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,.35)) 0 66.66%/100% 1px no-repeat}
+.pe-crop-h{position:absolute;filter:drop-shadow(0 0 2px rgba(0,0,0,.7))}
+/* Brackets and bars sit inside the box, so they stay grabbable when it touches the photo's edge
+   (the overlay clips at the photo, which is what keeps the dimming off the rest of the stage). */
+.pe-crop-corner{width:22px;height:22px;border:0 solid #fff}
+.pe-crop-corner[data-crop=nw]{left:0;top:0;border-left-width:4px;border-top-width:4px;cursor:nwse-resize}
+.pe-crop-corner[data-crop=se]{right:0;bottom:0;border-right-width:4px;border-bottom-width:4px;cursor:nwse-resize}
+.pe-crop-corner[data-crop=ne]{right:0;top:0;border-right-width:4px;border-top-width:4px;cursor:nesw-resize}
+.pe-crop-corner[data-crop=sw]{left:0;bottom:0;border-left-width:4px;border-bottom-width:4px;cursor:nesw-resize}
+.pe-crop-edge{background:#fff;border-radius:2px}
+.pe-crop-edge[data-crop=n],.pe-crop-edge[data-crop=s]{left:50%;width:30px;height:4px;margin-left:-15px;cursor:ns-resize}
+.pe-crop-edge[data-crop=n]{top:0}.pe-crop-edge[data-crop=s]{bottom:0}
+.pe-crop-edge[data-crop=w],.pe-crop-edge[data-crop=e]{top:50%;width:4px;height:30px;margin-top:-15px;cursor:ew-resize}
+.pe-crop-edge[data-crop=w]{left:0}.pe-crop-edge[data-crop=e]{right:0}
+#peCropOverlay.ratio-locked .pe-crop-edge{display:none}
+.pe-crop-chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.pe-crop-chip{flex:1 1 30%;padding:6px 4px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font:inherit;font-size:12px;cursor:pointer}
+.pe-crop-chip:hover{color:var(--text)}.pe-crop-chip.active{background:var(--aglow);border-color:var(--accent);color:var(--accent2);font-weight:600}
+.pe-crop-flip{width:100%;margin-bottom:4px}.pe-crop-flip:disabled{opacity:.45;cursor:default}
+.pe-crop-done{width:100%;margin-top:14px;padding:8px;border:none;border-radius:var(--rs);background:var(--accent);color:#fff;font:inherit;font-weight:600;cursor:pointer}
 #peSelCanvas.selecting{cursor:crosshair}
 #peMaskCanvas{position:absolute;pointer-events:none;touch-action:none;opacity:.55;visibility:hidden}
 /* Painted at full strength and made translucent here, so overlapping strokes don't darken */
@@ -1637,6 +1661,16 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
         <!-- Smart eraser: the stroke you paint over an object, shown until the fill replaces it -->
         <canvas id="peHealCanvas"></canvas>
         <canvas id="peTransformCanvas"></canvas>
+        <!-- Simple editor crop box (see the Crop section in renderer.js) -->
+        <div id="peCropOverlay" style="display:none" onpointerdown="peCropPointerDown(event)">
+          <div class="pe-crop-box" data-crop="move">
+            <i class="pe-crop-grid"></i>
+            <span class="pe-crop-h pe-crop-corner" data-crop="nw"></span><span class="pe-crop-h pe-crop-corner" data-crop="ne"></span>
+            <span class="pe-crop-h pe-crop-corner" data-crop="sw"></span><span class="pe-crop-h pe-crop-corner" data-crop="se"></span>
+            <span class="pe-crop-h pe-crop-edge" data-crop="n"></span><span class="pe-crop-h pe-crop-edge" data-crop="s"></span>
+            <span class="pe-crop-h pe-crop-edge" data-crop="w"></span><span class="pe-crop-h pe-crop-edge" data-crop="e"></span>
+          </div>
+        </div>
         <!-- Typing happens on the picture: this sits exactly over the text layer being edited. -->
         <textarea id="peTextEditor" spellcheck="false"></textarea>
         <div class="pe-brush-cursor" id="peBrushCursor"></div>
