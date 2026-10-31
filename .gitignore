@@ -1,6 +1,7 @@
 node_modules/
 dist/
 data/
+data-sandbox/
 assets/vendor/
 assets/models/
 # Only the clouds layer is used by the globe (see EARTH_TEXTURES in globe.js)

@@ -16,7 +16,12 @@ const { readHeifLayout } = require('./heif-layout');
 // wipes wholesale on every uninstall/upgrade - see LEGACY_PORTABLE_DIR migration below.
 // Dev mode (unpackaged, `npm start`) keeps using a "data" folder next to the source.
 const APP_ROOT = app.isPackaged ? path.dirname(process.execPath) : __dirname;
-const DATA_DIR   = app.isPackaged ? app.getPath('userData') : path.join(APP_ROOT, 'data');
+// TROVE_DATA_DIR (set by `npm run dev:sandbox`) runs against a throwaway library in its own
+// folder: userData moves there too, so Chromium's storage is separate from an installed Trove's
+// and nothing is migrated in from it (LEGACY_USERDATA_DIR below ends up equal to DATA_DIR).
+const SANDBOX_DIR = process.env.TROVE_DATA_DIR ? path.resolve(process.env.TROVE_DATA_DIR) : null;
+if (SANDBOX_DIR) app.setPath('userData', SANDBOX_DIR);
+const DATA_DIR   = (app.isPackaged || SANDBOX_DIR) ? app.getPath('userData') : path.join(APP_ROOT, 'data');
 const DATA_PATH  = path.join(DATA_DIR, 'filelinker-data.json');
 const THUMB_DIR  = path.join(DATA_DIR, 'thumbs');
 const EMBED_DIR  = path.join(DATA_DIR, 'embeddings'); // one small .bin (raw Float32Array) per fileId - see save-embedding below
@@ -992,6 +997,15 @@ function createWindow() {
     webPreferences: { nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, 'preload.js') }
   });
   mainWindow.loadFile('index.html');
+  // Sandbox runs look like the real app, so mark them: a small pill that can't be clicked.
+  if (SANDBOX_DIR) {
+    mainWindow.webContents.on('did-finish-load', () => {
+      mainWindow.webContents.insertCSS(
+        "body::after{content:'SANDBOX LIBRARY';position:fixed;bottom:8px;right:8px;z-index:2147483647;" +
+        "pointer-events:none;padding:3px 8px;border-radius:999px;background:#e5484d;color:#fff;" +
+        "font:600 10px/1.4 system-ui,sans-serif;letter-spacing:.08em;opacity:.85}");
+    });
+  }
   // The renderer holds the window open (beforeunload) while a photo editor has unsaved edits -
   // neither editor saves as you go. Electron shows nothing for that by itself, so ask here;
   // preventDefault on this event means "close anyway".

@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "electron .",
+    "dev:sandbox": "node scripts/dev-sandbox.js",
     "build": "electron-builder",
     "vendor:cesium": "node scripts/vendor-cesium.js",
     "vendor:transformers": "node scripts/vendor-transformers.js",
