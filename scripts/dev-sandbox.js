@@ -12,8 +12,21 @@ const root = path.join(__dirname, '..');
 const dir = path.resolve(process.env.TROVE_DATA_DIR || path.join(root, 'data-sandbox'));
 
 if (process.argv.includes('--reset')) {
-  fs.rmSync(dir, { recursive: true, force: true });
-  console.log(`Sandbox library reset: ${dir}`);
+  try {
+    fs.rmSync(dir, { recursive: true, force: true });
+    console.log(`Sandbox library reset: ${dir}`);
+  } catch (e) {
+    // Almost always a sandbox window still open and holding its files. The desktop shortcut runs
+    // minimized, so a console message would go unseen: show a real dialog on Windows.
+    const msg = 'Could not reset the sandbox library. Close the Trove Sandbox window first, then try again.';
+    console.error(`${msg}\n${e.message}`);
+    if (process.platform === 'win32') {
+      spawn('powershell', ['-NoProfile', '-Command',
+        `Add-Type -AssemblyName PresentationFramework; [void][System.Windows.MessageBox]::Show('${msg}', 'Trove Sandbox')`],
+        { stdio: 'ignore' }).on('exit', () => process.exit(1));
+    } else process.exit(1);
+    return;
+  }
 }
 console.log(`Sandbox library: ${dir}`);
 
