@@ -985,7 +985,7 @@ function faceGroupCardHtml(g, i) {
   // checkable (and removable with its ✕) before that.
   const maxCrops = g.combined ? 60 : 8;
   const crops = g.faces.slice(0, maxCrops).map(f =>
-    `<span class="face-crop" data-face="${f.id}"><button class="face-crop-x" title="${person ? `Not ${esc(person.name)}` : 'Not the same person - leave this face out'}" onclick="faceExclude('${f.id}', '${g.suggest || ''}')">${peIcon('close')}</button></span>`).join('');
+    `<span class="face-crop" data-face="${f.id}" title="See this face in its photo"><button class="face-crop-x" title="${person ? `Not ${esc(person.name)}` : 'Not the same person - leave this face out'}" onclick="faceExclude('${f.id}', '${g.suggest || ''}')">${peIcon('close')}</button></span>`).join('');
   const more = g.faces.length > maxCrops ? `<span class="face-crop-more">+${g.faces.length - maxCrops}</span>` : '';
   const withText = g.with?.length ? ` · with ${g.with.slice(0, 3).map(p => esc(p.name)).join(', ')}${g.with.length > 3 ? '…' : ''}` : '';
   const count = `In ${g.fileIds.length} photo${g.fileIds.length === 1 ? '' : 's'}${withText}`;
@@ -1147,6 +1147,43 @@ async function facePhotoHeadshots(fileId) {
   const crops = await window.api.faceCropsGet(faces.map(f => f.id)).catch(() => ({}));
   return new Map(faces.filter(f => crops[f.id]).map(f => [f.p, 'data:image/jpeg;base64,' + crops[f.id]]));
 }
+
+// ── A face, in its photo ─────────────────────────────────────────────────────
+// A crop is small, and someone who knows the person well can still fail to tell who it is from
+// it alone. Clicking any crop - they all carry data-face, in Guided Sort and Find new people
+// alike - opens its whole photo with that face ringed and the rest dimmed. A crop's ✕ is a
+// button of its own and keeps doing what it did.
+const FACE_PEEK_MAX = 1800; // long side asked for: the viewer's size, sharp at full screen
+let facePeekToken = 0;
+async function facePeek(faceId) {
+  const face = faceStore?.faces.find(f => f.id === faceId);
+  const file = face && appData.files.find(x => x.id === face.f);
+  if (!file || !face.b) return;
+  const el = document.getElementById('facePeek');
+  const token = ++facePeekToken;
+  el.innerHTML = `<div class="face-peek-frame"><div class="v360-spinner"></div></div><div class="face-peek-hint">Click anywhere or press Esc to close</div>`;
+  el.classList.add('open');
+  // The same picture the face was found in (see faceScanFile), so its box lands right on it.
+  let url = null;
+  const b64 = await window.api.getPreviewImage(file.path, FACE_PEEK_MAX).catch(() => null);
+  if (b64) url = file.rotation ? await rotateDataUrl('data:image/jpeg;base64,' + b64, file.rotation) : 'data:image/jpeg;base64,' + b64;
+  if (!url) url = await getThumb(file).catch(() => null);
+  if (token !== facePeekToken || !el.classList.contains('open')) return;
+  const frame = el.querySelector('.face-peek-frame');
+  if (!url) { frame.innerHTML = `<div class="face-peek-missing">${esc(file.name)}</div>`; return; }
+  const [x, y, w, h] = face.b;
+  const pad = 0.35; // the ring sits a little outside the face, so the face itself stays clear
+  frame.innerHTML = `<img src="${url}" alt=""><span class="face-peek-ring" style="left:${(x - w * pad / 2) * 100}%;top:${(y - h * pad / 2) * 100}%;width:${w * (1 + pad) * 100}%;height:${h * (1 + pad) * 100}%"></span>`;
+}
+function closeFacePeek() {
+  facePeekToken++;
+  document.getElementById('facePeek')?.classList.remove('open');
+}
+document.addEventListener('click', e => {
+  const crop = e.target.closest?.('[data-face]');
+  if (!crop || e.target.closest('button, input')) return;
+  facePeek(crop.dataset.face);
+});
 
 // ── Recognised people, and checking them ─────────────────────────────────────
 function faceKnownHtml() {

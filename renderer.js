@@ -263,112 +263,28 @@ const I18N = {
   },
   frWelcomeSkip: { en: "Skip, I'll explore on my own", fr: 'Passer, je vais explorer par moi-même', de: 'Überspringen, ich schaue mich selbst um', es: 'Omitir, prefiero explorar por mi cuenta', zh: '跳过,我自己探索' },
   frWelcomeGo: { en: "Let's go →", fr: 'C\'est parti →', de: "Los geht's →", es: 'Empecemos →', zh: '开始吧 →' },
-  // Goal step
-  frGoalOrganize: { en: 'Get a messy library organized', fr: "Remettre de l'ordre dans une bibliothèque en désordre", de: 'Eine unordentliche Bibliothek aufräumen', es: 'Poner orden en una biblioteca desordenada', zh: '整理一个杂乱的照片库' },
-  frGoalCleanup: { en: 'Find and clean up duplicates or edited photos', fr: 'Trouver et supprimer les doublons ou les photos modifiées', de: 'Duplikate oder bearbeitete Fotos finden und bereinigen', es: 'Buscar y limpiar duplicados o fotos editadas', zh: '查找并清理重复或已编辑的照片' },
-  frGoalBrowse: { en: 'Just browse and relive old trips', fr: "Simplement parcourir et revivre d'anciens voyages", de: 'Einfach alte Reisen durchstöbern und noch einmal erleben', es: 'Solo explorar y revivir viajes antiguos', zh: '只是浏览、重温以前的旅行' },
-  frGoalSubDupes: { en: 'Mostly exact duplicates', fr: 'Principalement des doublons exacts', de: 'Meist exakte Duplikate', es: 'Sobre todo duplicados exactos', zh: '主要是完全相同的重复项' },
-  frGoalSubEdited: { en: 'Mostly edited versions', fr: 'Principalement des versions modifiées', de: 'Meist bearbeitete Versionen', es: 'Sobre todo versiones editadas', zh: '主要是已编辑的版本' },
-  frGoalSubBoth: { en: 'Honestly, both', fr: 'Honnêtement, les deux', de: 'Ehrlich gesagt, beides', es: 'Sinceramente, ambas cosas', zh: '老实说,两者都有' },
-  frGoalTitle: { en: 'What brings you to Trove?', fr: 'Qu\'est-ce qui vous amène sur Trove ?', de: 'Was führt Sie zu Trove?', es: '¿Qué te trae a Trove?', zh: '是什么原因让你使用 Trove?' },
-  frGoalSub: { en: 'This just decides what we show you first, nothing is ever off-limits either way.', fr: 'Cela détermine simplement ce qui vous sera montré en premier, rien ne vous sera jamais interdit pour autant.', de: 'Das entscheidet nur, was wir Ihnen zuerst zeigen - nichts bleibt Ihnen dadurch verwehrt.', es: 'Esto solo decide qué te mostramos primero, nada queda fuera de tu alcance de todos modos.', zh: '这只是决定先向你展示什么内容,无论如何你都能使用全部功能。' },
-  frGoalFollowupTitle: { en: 'Mostly exact duplicates, edited versions, or both?', fr: 'Plutôt des doublons exacts, des versions modifiées, ou les deux ?', de: 'Eher exakte Duplikate, bearbeitete Versionen oder beides?', es: '¿Sobre todo duplicados exactos, versiones editadas, o ambas cosas?', zh: '主要是完全相同的重复项、已编辑的版本,还是两者都有?' },
-  // Size step
-  frSizeQuick: { en: 'Just a quick recent batch', fr: 'Juste un petit lot récent', de: 'Nur ein kleiner, aktueller Stapel', es: 'Solo un lote reciente y rápido', zh: '只是最近的一小批照片' },
-  frSizeThousands: { en: 'A few thousand photos', fr: 'Quelques milliers de photos', de: 'Ein paar tausend Fotos', es: 'Unos pocos miles de fotos', zh: '几千张照片' },
-  frSizeBacklog: { en: 'Years of backlog', fr: "Des années d'archives en retard", de: 'Jahrelanger Rückstau', es: 'Años de fotos acumuladas', zh: '积压了好几年的照片' },
-  frSizeTitle: { en: 'How much are you bringing in today?', fr: 'Combien allez-vous importer aujourd\'hui ?', de: 'Wie viel bringen Sie heute mit?', es: '¿Cuánto vas a importar hoy?', zh: '你今天要导入多少照片?' },
   // Add files step
-  frAddFilesTipBacklog: {
-    en: v => `Got years of backlog? Drop it all in, we'll only walk you through the first ${v.cap} here, the rest lands safely in To Sort.`,
-    fr: v => `Des années d'archives en retard ? Déposez tout, nous ne vous guiderons que pour les ${v.cap} premières ici, le reste atterrira en toute sécurité dans "À trier".`,
-    de: v => `Jahrelanger Rückstau? Legen Sie einfach alles ab - wir führen Sie hier nur durch die ersten ${v.cap}, der Rest landet sicher in "Zu sortieren".`,
-    es: v => `¿Tienes años de fotos acumuladas? Suéltalas todas, aquí solo te guiaremos con las primeras ${v.cap}; el resto llegará sin problema a "Por ordenar".`,
-    zh: v => `积压多年的照片?全部拖进来吧,我们只会在这里引导你处理前 ${v.cap} 张,其余的会安全进入"待整理"。`
-  },
   frAddFilesTipDefault: {
-    en: '💡 Tip: Trove sorts fastest one trip at a time. Got more than you expected? Drop it all in anyway - the rest lands safely in To Sort.',
-    fr: '💡 Astuce : Trove trie plus vite un voyage à la fois. Vous en avez plus que prévu ? Déposez tout quand même - le reste atterrira en toute sécurité dans "À trier".',
-    de: '💡 Tipp: Trove sortiert am schnellsten eine Reise nach der anderen. Mehr als erwartet? Legen Sie trotzdem alles ab - der Rest landet sicher in "Zu sortieren".',
-    es: '💡 Consejo: Trove ordena más rápido un viaje a la vez. ¿Tienes más de lo esperado? Suéltalo todo igualmente - el resto llegará sin problema a "Por ordenar".',
-    zh: '💡 小提示:Trove 一次整理一趟旅行时速度最快。照片比预期多?照样全部拖进来——其余的会安全进入"待整理"。'
+    en: `Pick a whole folder (your Pictures folder, a phone backup, a camera card) or drop photos here. Everything goes to To Sort, where Guided Sort helps you sort it. Nothing is copied or moved: Trove links to your files where they are.`,
+    fr: `Choisissez un dossier entier (votre dossier Images, une sauvegarde de téléphone, une carte d'appareil photo) ou déposez des photos ici. Tout arrive dans À trier, où le Tri guidé vous aide à trier. Rien n'est copié ni déplacé : Trove fait le lien avec vos fichiers là où ils sont.`,
+    de: `Wählen Sie einen ganzen Ordner (Ihren Bilder-Ordner, ein Handy-Backup, eine Kamerakarte) oder legen Sie Fotos hier ab. Alles landet in Zu sortieren, wo Ihnen Geführtes Sortieren beim Ordnen hilft. Nichts wird kopiert oder verschoben: Trove verknüpft Ihre Dateien dort, wo sie sind.`,
+    es: `Elige una carpeta entera (tu carpeta Imágenes, una copia del móvil, una tarjeta de cámara) o suelta fotos aquí. Todo va a Por ordenar, donde el Orden guiado te ayuda a ordenarlo. No se copia ni se mueve nada: Trove enlaza tus archivos donde ya están.`,
+    zh: `选择整个文件夹(你的「图片」文件夹、手机备份、相机存储卡),或把照片拖到这里。所有内容都会进入「待整理」,引导整理会帮你整理。不会复制或移动任何文件:Trove 只是链接到它们原来的位置。`
   },
   frAddFilesIntro: { en: v => `<strong>Add your photos & videos.</strong> ${v.tip}`, fr: v => `<strong>Ajoutez vos photos et vidéos.</strong> ${v.tip}`, de: v => `<strong>Fügen Sie Ihre Fotos & Videos hinzu.</strong> ${v.tip}`, es: v => `<strong>Añade tus fotos y vídeos.</strong> ${v.tip}`, zh: v => `<strong>添加你的照片和视频。</strong>${v.tip}` },
-  frDropzoneText: { en: 'Click to choose files, or drag &amp; drop them here', fr: 'Cliquez pour choisir des fichiers, ou glissez-déposez-les ici', de: 'Klicken Sie, um Dateien auszuwählen, oder ziehen Sie sie hierher', es: 'Haz clic para elegir archivos, o arrástralos y suéltalos aquí', zh: '点击选择文件,或将文件拖放到此处' },
-  frCapNote: {
-    en: v => `${v.cap} shown here for this walkthrough. ${v.n} more ${v.n!==1?'are':'is'} already queued in To Sort for after.`,
-    fr: v => `${v.cap} affichées ici pour cette visite guidée. ${v.n} photo${v.n!==1?'s':''} supplémentaire${v.n!==1?'s':''} déjà en attente dans "À trier" pour plus tard.`,
-    de: v => `${v.cap} werden hier für diese Einführung angezeigt. ${v.n} weitere Foto${v.n!==1?'s':''} liegen bereits in "Zu sortieren" für später bereit.`,
-    es: v => `${v.cap} se muestran aquí para este recorrido. ${v.n} foto${v.n!==1?'s':''} más ya ${v.n!==1?'están':'está'} en cola en "Por ordenar" para después.`,
-    zh: v => `本次引导在此显示 ${v.cap} 张。另有 ${v.n} 张已在"待整理"中排队,稍后处理。`
-  },
-  frBarInfoDeferred: { en: v => `${v.files} of ${v.cap} added (+${v.deferred} queued)`, fr: v => `${v.files} sur ${v.cap} ajoutées (+${v.deferred} en attente)`, de: v => `${v.files} von ${v.cap} hinzugefügt (+${v.deferred} in Warteschlange)`, es: v => `${v.files} de ${v.cap} añadidas (+${v.deferred} en cola)`, zh: v => `已添加 ${v.files} / ${v.cap}(另有 ${v.deferred} 张排队中)` },
+  frDropzoneText: { en: 'Drop a folder or photos here', fr: 'Déposez un dossier ou des photos ici', de: 'Ordner oder Fotos hier ablegen', es: 'Suelta aquí una carpeta o fotos', zh: '把文件夹或照片拖到这里' },
+  frPickFolder: { en: 'Choose a folder', fr: 'Choisir un dossier', de: 'Ordner wählen', es: 'Elegir una carpeta', zh: '选择文件夹' },
+  frPickFiles: { en: 'Choose files', fr: 'Choisir des fichiers', de: 'Dateien wählen', es: 'Elegir archivos', zh: '选择文件' },
+  frReadingFolder: { en: 'Reading your photos… a big folder can take a minute.', fr: 'Lecture de vos photos… un gros dossier peut prendre une minute.', de: 'Ihre Fotos werden gelesen… ein großer Ordner kann eine Minute dauern.', es: 'Leyendo tus fotos… una carpeta grande puede tardar un minuto.', zh: '正在读取你的照片……大文件夹可能需要一分钟。' },
   frBarInfoFiles: { en: v => `${v.n} file${v.n!==1?'s':''} added`, fr: v => `${v.n} fichier${v.n!==1?'s':''} ajouté${v.n!==1?'s':''}`, de: v => `${v.n} Datei${v.n!==1?'en':''} hinzugefügt`, es: v => `${v.n} archivo${v.n!==1?'s':''} añadido${v.n!==1?'s':''}`, zh: v => `已添加 ${v.n} 个文件` },
   frSkipForNow: { en: 'Skip for now', fr: "Passer pour l'instant", de: 'Vorerst überspringen', es: 'Omitir por ahora', zh: '暂时跳过' },
-  // Trip ask step
-  frTripAskFollowupText: {
-    en: v => `${v.n} photo${v.n!==1?'s':''} didn't match the dates of the trip you just created. Are these from another trip too?`,
-    fr: v => `${v.n} photo${v.n!==1?'s':''} ne correspond${v.n!==1?'ent':''} pas aux dates du voyage que vous venez de créer. Viennent-elles aussi d'un autre voyage ?`,
-    de: v => `${v.n} Foto${v.n!==1?'s':''} passte${v.n!==1?'n':''} nicht zu den Daten der gerade erstellten Reise. Stammen diese auch von einer anderen Reise?`,
-    es: v => `${v.n} foto${v.n!==1?'s':''} no coincid${v.n!==1?'ieron':'ió'} con las fechas del viaje que acabas de crear. ¿Son también de otro viaje?`,
-    zh: v => `有 ${v.n} 张照片与你刚创建的旅行日期不符。这些也是另一趟旅行的照片吗?`
-  },
-  frTripAskDefaultText: {
-    en: v => `${v.n} photo${v.n!==1?'s':''} added. If they're from somewhere you went, we'll create a trip folder for them. If it's just everyday life, no folder needed - go straight to tagging.`,
-    fr: v => `${v.n} photo${v.n!==1?'s':''} ajoutée${v.n!==1?'s':''}. Si elles viennent d'un endroit où vous êtes allé, nous créerons un dossier de voyage pour elles. Si ce sont simplement des photos du quotidien, aucun dossier n'est nécessaire - passez directement au marquage.`,
-    de: v => `${v.n} Foto${v.n!==1?'s':''} hinzugefügt. Falls sie von einem Ort stammen, an dem Sie waren, erstellen wir dafür einen Reiseordner. Falls es einfach Alltagsfotos sind, ist kein Ordner nötig - weiter geht's direkt mit dem Verschlagworten.`,
-    es: v => `${v.n} foto${v.n!==1?'s':''} añadida${v.n!==1?'s':''}. Si son de algún lugar al que fuiste, crearemos una carpeta de viaje para ellas. Si son solo fotos del día a día, no hace falta carpeta - pasa directamente a etiquetarlas.`,
-    zh: v => `已添加 ${v.n} 张照片。如果这些是你某次出行拍的,我们会为它们创建一个旅行文件夹;如果只是日常照片,不需要文件夹——直接开始打标签即可。`
-  },
-  frClusterRow: {
-    en: v => `${v.n} photo${v.n!==1?'s':''}${v.match?` · looks like ${v.match}`:''}`,
-    fr: v => `${v.n} photo${v.n!==1?'s':''}${v.match?` · ressemble à ${v.match}`:''}`,
-    de: v => `${v.n} Foto${v.n!==1?'s':''}${v.match?` · sieht aus wie ${v.match}`:''}`,
-    es: v => `${v.n} foto${v.n!==1?'s':''}${v.match?` · parece ${v.match}`:''}`,
-    zh: v => `${v.n} 张照片${v.match?` · 看起来像是「${v.match}」`:''}`
-  },
-  frClusterBreakdownIntro: {
-    en: v => `These look like ${v.n} separate groups by date. "Yes" covers <strong>one trip at a time</strong>, starting with the biggest group: its dates are filled in for you, and you'll be asked about the rest right after.`,
-    fr: v => `Cela ressemble à ${v.n} groupes distincts par date. « Oui » traite <strong>un voyage à la fois</strong>, en commençant par le plus grand groupe : ses dates sont remplies pour vous, et on vous demandera pour le reste juste après.`,
-    de: v => `Das sieht nach ${v.n} getrennten Gruppen nach Datum aus. „Ja" behandelt <strong>eine Reise auf einmal</strong>, beginnend mit der größten Gruppe: Ihre Daten werden für Sie eingetragen, und zum Rest werden Sie direkt danach gefragt.`,
-    es: v => `Esto parece ${v.n} grupos distintos por fecha. "Sí" trata <strong>un viaje a la vez</strong>, empezando por el grupo más grande: sus fechas se rellenan solas y justo después se te pregunta por el resto.`,
-    zh: v => `这些照片看起来按日期分成了 ${v.n} 组。选择"是"每次处理<strong>一趟旅行</strong>,从最大的一组开始:日期会自动填好,剩下的照片随后再问你。`
-  },
-  frTripAskFollowupStray: {
-    en: v => v.n === 1 ? ` If it was copied from another phone, its date is the day of the copy: it probably belongs to ${v.name}.` : ` If they were copied from another phone, their date is the day of the copy: they probably belong to ${v.name}.`,
-    fr: v => v.n === 1 ? ` Si elle a été copiée depuis un autre téléphone, sa date est celle de la copie : elle fait sûrement partie de ${v.name}.` : ` Si elles ont été copiées depuis un autre téléphone, leur date est celle de la copie : elles font sûrement partie de ${v.name}.`,
-    de: v => v.n === 1 ? ` Wurde es von einem anderen Handy kopiert, ist sein Datum der Tag des Kopierens: Dann gehört es wohl zu ${v.name}.` : ` Wurden sie von einem anderen Handy kopiert, ist ihr Datum der Tag des Kopierens: Dann gehören sie wohl zu ${v.name}.`,
-    es: v => v.n === 1 ? ` Si se copió desde otro móvil, su fecha es la del día de la copia: seguramente es de ${v.name}.` : ` Si se copiaron desde otro móvil, su fecha es la del día de la copia: seguramente son de ${v.name}.`,
-    zh: v => ` 如果是从其他手机复制来的,日期就是复制当天:很可能属于「${v.name}」。`
-  },
-  frTripAddToLast: {
-    en: v => `➕ Add ${v.n === 1 ? 'it' : 'them'} to ${v.name}`,
-    fr: v => `➕ ${v.n === 1 ? "L'ajouter" : 'Les ajouter'} à ${v.name}`,
-    de: v => `➕ Zu ${v.name} hinzufügen`,
-    es: v => `➕ ${v.n === 1 ? 'Añadirla' : 'Añadirlas'} a ${v.name}`,
-    zh: v => `➕ 加入「${v.name}」`
-  },
-  frTripAskTitle: { en: 'Are these from a specific trip?', fr: "Ces photos viennent-elles d'un voyage particulier ?", de: 'Stammen diese Fotos von einer bestimmten Reise?', es: '¿Son de un viaje concreto?', zh: '这些照片来自某次特定的旅行吗?' },
-  frTripYes: { en: '✈️ Yes, name one trip', fr: '✈️ Oui, nommer un voyage', de: '✈️ Ja, eine Reise benennen', es: '✈️ Sí, nombrar un viaje', zh: '✈️ 是的,为这趟旅行命名' },
-  frTripNo: { en: 'No, just everyday photos', fr: 'Non, juste des photos du quotidien', de: 'Nein, nur Alltagsfotos', es: 'No, solo fotos del día a día', zh: '不是,只是日常照片' },
-  // Trip create step
-  frTripCreateIntro: {
-    en: "<strong>Name this trip.</strong> Where did you go? The year is worked out from the dates below, so it never has to go in the name itself.",
-    fr: "<strong>Nommez ce voyage.</strong> Où êtes-vous allé ? L'année est déduite des dates ci-dessous, elle n'a donc jamais besoin de figurer dans le nom.",
-    de: "<strong>Benennen Sie diese Reise.</strong> Wohin ging es? Das Jahr wird aus den Daten unten ermittelt und muss daher nie im Namen selbst stehen.",
-    es: "<strong>Ponle nombre a este viaje.</strong> ¿A dónde fuiste? El año se calcula a partir de las fechas de abajo, así que nunca hace falta incluirlo en el nombre.",
-    zh: "<strong>为这趟旅行命名。</strong>你去了哪里?年份会根据下方的日期自动计算,因此名称中无需包含年份。"
-  },
-  frTripNamePlaceholder: { en: "e.g. Iceland, Grandma's house, Ski week…", fr: 'ex. Islande, Chez mamie, Semaine au ski…', de: 'z. B. Island, Omas Haus, Skiwoche…', es: 'p. ej. Islandia, Casa de la abuela, Semana de esquí…', zh: '例如:冰岛、奶奶家、滑雪周……' },
-  frTripDatesSub: { en: 'When was this trip? (optional - future photo dumps auto-file here if the dates match)', fr: 'Quand a eu lieu ce voyage ? (facultatif - les futurs imports de photos seront classés ici automatiquement si les dates correspondent)', de: 'Wann fand diese Reise statt? (optional - künftige Fotoimporte werden hier automatisch einsortiert, wenn die Daten übereinstimmen)', es: 'Cuándo fue este viaje? (opcional - las futuras importaciones de fotos se archivarán aquí automáticamente si las fechas coinciden)', zh: '这趟旅行是什么时候?(可选——如果日期匹配,以后导入的照片会自动归入此处)' },
-  frTripDatesSubFilled: { en: 'When was this trip? The dates come from your photos: check them and continue.', fr: 'Quand a eu lieu ce voyage ? Les dates viennent de vos photos : vérifiez-les et continuez.', de: 'Wann war diese Reise? Die Daten stammen aus Ihren Fotos: kurz prüfen und weiter.', es: '¿Cuándo fue este viaje? Las fechas salen de tus fotos: compruébalas y continúa.', zh: '这趟旅行是什么时候?日期取自你的照片:确认无误后继续即可。' },
-  // Shared by the wizard's trip step (next: true) and Guided Sort's new trip/adventure prompt - see guessTripDates
+  // Guided Sort's new trip/adventure prompt - see guessTripDates
   tripDatesLeftOut: {
-    en: v => (v.n === 1 ? "1 photo is 2+ days away from the others, so it doesn't stretch these dates: it's probably a copy from another phone or app, dated the day it was copied. " : `${v.n} photos are 2+ days away from the others, so they don't stretch these dates: they're probably copies from another phone or app, dated the day they were copied. `) + (v.next ? (v.n === 1 ? "You'll choose where it goes right after." : "You'll choose where they go right after.") : (v.n === 1 ? 'You can still add it by hand.' : 'You can still add them by hand.')),
-    fr: v => (v.n === 1 ? "1 photo est à 2 jours ou plus des autres, elle ne rallonge donc pas ces dates : c'est sûrement une copie venue d'un autre téléphone ou d'une appli, datée du jour de la copie. " : `${v.n} photos sont à 2 jours ou plus des autres, elles ne rallongent donc pas ces dates : ce sont sûrement des copies venues d'un autre téléphone ou d'une appli, datées du jour de la copie. `) + (v.next ? (v.n === 1 ? 'Vous choisirez où la ranger juste après.' : 'Vous choisirez où les ranger juste après.') : (v.n === 1 ? "Vous pouvez quand même l'ajouter à la main." : 'Vous pouvez quand même les ajouter à la main.')),
-    de: v => (v.n === 1 ? '1 Foto liegt 2 oder mehr Tage von den anderen entfernt und verlängert diese Daten daher nicht: Wahrscheinlich ist es eine Kopie von einem anderen Handy oder einer App, datiert auf den Tag des Kopierens. ' : `${v.n} Fotos liegen 2 oder mehr Tage von den anderen entfernt und verlängern diese Daten daher nicht: Wahrscheinlich sind es Kopien von einem anderen Handy oder einer App, datiert auf den Tag des Kopierens. `) + (v.next ? (v.n === 1 ? 'Gleich danach wählen Sie, wohin es gehört.' : 'Gleich danach wählen Sie, wohin sie gehören.') : (v.n === 1 ? 'Sie können es trotzdem von Hand hinzufügen.' : 'Sie können sie trotzdem von Hand hinzufügen.')),
-    es: v => (v.n === 1 ? '1 foto está a 2 días o más de las demás, así que no alarga estas fechas: seguramente es una copia de otro móvil o de una app, con la fecha del día en que se copió. ' : `${v.n} fotos están a 2 días o más de las demás, así que no alargan estas fechas: seguramente son copias de otro móvil o de una app, con la fecha del día en que se copiaron. `) + (v.next ? (v.n === 1 ? 'Justo después eliges dónde va.' : 'Justo después eliges dónde van.') : (v.n === 1 ? 'Aun así puedes añadirla a mano.' : 'Aun así puedes añadirlas a mano.')),
-    zh: v => `有 ${v.n} 张照片与其他照片相隔 2 天或更久,因此不计入这些日期:它们很可能是从其他手机或应用复制来的,日期是复制当天。` + (v.next ? '接下来你可以决定它们放在哪里。' : '你仍然可以手动添加它们。')
+    en: v => v.n === 1 ? "1 photo is 2+ days away from the others, so it doesn't stretch these dates: it's probably a copy from another phone or app, dated the day it was copied. You can still add it by hand." : `${v.n} photos are 2+ days away from the others, so they don't stretch these dates: they're probably copies from another phone or app, dated the day they were copied. You can still add them by hand.`,
+    fr: v => v.n === 1 ? "1 photo est à 2 jours ou plus des autres, elle ne rallonge donc pas ces dates : c'est sûrement une copie venue d'un autre téléphone ou d'une appli, datée du jour de la copie. Vous pouvez quand même l'ajouter à la main." : `${v.n} photos sont à 2 jours ou plus des autres, elles ne rallongent donc pas ces dates : ce sont sûrement des copies venues d'un autre téléphone ou d'une appli, datées du jour de la copie. Vous pouvez quand même les ajouter à la main.`,
+    de: v => v.n === 1 ? '1 Foto liegt 2 oder mehr Tage von den anderen entfernt und verlängert diese Daten daher nicht: Wahrscheinlich ist es eine Kopie von einem anderen Handy oder einer App, datiert auf den Tag des Kopierens. Sie können es trotzdem von Hand hinzufügen.' : `${v.n} Fotos liegen 2 oder mehr Tage von den anderen entfernt und verlängern diese Daten daher nicht: Wahrscheinlich sind es Kopien von einem anderen Handy oder einer App, datiert auf den Tag des Kopierens. Sie können sie trotzdem von Hand hinzufügen.`,
+    es: v => v.n === 1 ? '1 foto está a 2 días o más de las demás, así que no alarga estas fechas: seguramente es una copia de otro móvil o de una app, con la fecha del día en que se copió. Aun así puedes añadirla a mano.' : `${v.n} fotos están a 2 días o más de las demás, así que no alargan estas fechas: seguramente son copias de otro móvil o de una app, con la fecha del día en que se copiaron. Aun así puedes añadirlas a mano.`,
+    zh: v => `有 ${v.n} 张照片与其他照片相隔 2 天或更久,因此不计入这些日期:它们很可能是从其他手机或应用复制来的,日期是复制当天。你仍然可以手动添加它们。`
   },
   gsTripDatesLabel: {
     en: v => 'When was this trip? ' + (v.filled ? "The dates come from the photos: check them and you're done. " : '') + 'Photos taken in these dates are added automatically.',
@@ -384,106 +300,108 @@ const I18N = {
     es: v => '¿Cuándo fue esta aventura? ' + (v.filled ? 'Las fechas salen de las fotos: compruébalas y listo. ' : '') + 'Las fotos tomadas en estas fechas se añaden automáticamente.',
     zh: v => '这次探险是什么时候?' + (v.filled ? '日期取自照片:确认一下就好。' : '') + '在这些日期拍摄的照片会自动加入。'
   },
-  frTripColorSub: { en: "Color - pick one that's easy to spot in the sidebar and on the Globe", fr: 'Couleur - choisissez-en une facile à repérer dans la barre latérale et sur le Globe', de: 'Farbe - wählen Sie eine, die in der Seitenleiste und auf dem Globus leicht zu erkennen ist', es: 'Color - elige uno fácil de distinguir en la barra lateral y en el Globo', zh: '颜色——选一个在侧边栏和地球视图中容易辨认的颜色' },
-  frDateRangeTo: { en: 'to', fr: 'à', de: 'bis', es: 'a', zh: '至' },
-  frSkipTrip: { en: 'Skip trip', fr: 'Passer le voyage', de: 'Reise überspringen', es: 'Omitir viaje', zh: '跳过此旅行' },
-  frCreateTripContinue: { en: 'Create trip & continue →', fr: 'Créer le voyage et continuer →', de: 'Reise erstellen & weiter →', es: 'Crear viaje y continuar →', zh: '创建旅行并继续 →' },
-  // People step
-  frEverydayPhotos: { en: 'Everyday photos', fr: 'Photos du quotidien', de: 'Alltagsfotos', es: 'Fotos del día a día', zh: '日常照片' },
-  frScopeNote: { en: v => ` - ${v.label} (${v.i} of ${v.n})`, fr: v => ` - ${v.label} (${v.i} sur ${v.n})`, de: v => ` - ${v.label} (${v.i} von ${v.n})`, es: v => ` - ${v.label} (${v.i} de ${v.n})`, zh: v => ` - ${v.label}(第 ${v.i} 组,共 ${v.n} 组)` },
-  frPeopleExplainHas: {
-    en: 'Click every photo that includes someone, then tap their name to file it. Double-click (or 🔍) a photo to see it larger. Nobody to tag? Just continue.',
-    fr: 'Cliquez sur chaque photo où figure quelqu\'un, puis appuyez sur son nom pour la classer. Double-cliquez (ou 🔍) sur une photo pour l\'agrandir. Personne à identifier ? Continuez simplement.',
-    de: 'Klicken Sie auf jedes Foto, auf dem jemand zu sehen ist, und tippen Sie dann auf den Namen, um es einzusortieren. Doppelklicken (oder 🔍) Sie auf ein Foto, um es größer anzuzeigen. Niemand zu markieren? Einfach weiter.',
-    es: 'Haz clic en cada foto que incluya a alguien y luego pulsa su nombre para archivarla. Haz doble clic (o 🔍) en una foto para verla más grande. ¿Nadie que etiquetar? Simplemente continúa.',
-    zh: '点击每一张包含某人的照片,然后点按其姓名进行归档。双击(或点击 🔍)可放大查看照片。没有人需要标记?直接继续即可。'
+  // The guide (coachShow): To Sort after the wizard, then each Guided Sort step
+  // Guided Sort's "Not Dad" on a face suggestion - through t(), as a pattern for "Not …" would catch too much
+  gsNotPerson: { en: v => `Not ${v.name}`, fr: v => `Ce n'est pas ${v.name}`, de: v => `Nicht ${v.name}`, es: v => `No es ${v.name}`, zh: v => `不是${v.name}` },
+  coachGotIt: { en: 'Got it', fr: 'Compris', de: 'Verstanden', es: 'Entendido', zh: '知道了' },
+  coachHide: { en: 'Hide the guide', fr: 'Masquer le guide', de: 'Anleitung ausblenden', es: 'Ocultar la guía', zh: '隐藏指南' },
+  coachToSortTitle: {
+    en: v => v.n === 1 ? 'Your photo is in To Sort' : `Your ${v.n} photos are in To Sort`,
+    fr: v => v.n === 1 ? 'Votre photo est dans À trier' : `Vos ${v.n} photos sont dans À trier`,
+    de: v => v.n === 1 ? 'Ihr Foto ist in Zu sortieren' : `Ihre ${v.n} Fotos sind in Zu sortieren`,
+    es: v => v.n === 1 ? 'Tu foto está en Por ordenar' : `Tus ${v.n} fotos están en Por ordenar`,
+    zh: v => `你的 ${v.n} 张照片在「待整理」里`
   },
-  frPeopleExplainNone: {
-    en: 'Nobody added yet - click a photo below, then tap <strong>"+ New person"</strong> to name them. That\'s how you add the first one.',
-    fr: 'Personne n\'a encore été ajouté - cliquez sur une photo ci-dessous, puis appuyez sur <strong>« + Nouvelle personne »</strong> pour la nommer. C\'est ainsi que vous ajoutez la première.',
-    de: 'Noch niemand hinzugefügt - klicken Sie unten auf ein Foto und tippen Sie dann auf <strong>„+ Neue Person"</strong>, um sie zu benennen. So fügen Sie die erste Person hinzu.',
-    es: 'Todavía no se ha añadido a nadie - haz clic en una foto de abajo y luego pulsa <strong>"+ Nueva persona"</strong> para ponerle nombre. Así es como añades a la primera.',
-    zh: '还没有添加任何人——点击下方的照片,然后点按<strong>"+ 新建人物"</strong>为其命名。这样就添加了第一个人物。'
+  coachToSortBody: {
+    en: `New photos wait here until they're sorted. <b>By hand:</b> select photos (click, Ctrl+click, or drag a box around them), then click <b>📁 Folders</b> in the bar that appears to put them in a trip, a person or a category.<br><b>Faster:</b> Guided Sort asks a few simple questions, one step at a time, and does most of the filing for you. This guide explains each step as you go.`,
+    fr: `Les nouvelles photos attendent ici d'être triées. <b>À la main :</b> sélectionnez des photos (clic, Ctrl+clic, ou tracez un cadre autour), puis cliquez sur <b>📁 Dossiers</b> dans la barre qui apparaît pour les mettre dans un voyage, une personne ou une catégorie.<br><b>Plus rapide :</b> le Tri guidé vous pose quelques questions simples, une étape à la fois, et fait l'essentiel du rangement pour vous. Ce guide vous explique chaque étape au fur et à mesure.`,
+    de: `Neue Fotos warten hier, bis sie sortiert sind. <b>Von Hand:</b> Fotos auswählen (Klick, Strg+Klick oder einen Rahmen darum ziehen), dann in der eingeblendeten Leiste auf <b>📁 Ordner</b> klicken, um sie einer Reise, einer Person oder einer Kategorie zuzuordnen.<br><b>Schneller:</b> Geführtes Sortieren stellt Ihnen ein paar einfache Fragen, Schritt für Schritt, und erledigt das meiste Einordnen für Sie. Diese Anleitung erklärt jeden Schritt, sobald er kommt.`,
+    es: `Las fotos nuevas esperan aquí hasta que se ordenan. <b>A mano:</b> selecciona fotos (clic, Ctrl+clic o arrastra un recuadro a su alrededor) y haz clic en <b>📁 Carpetas</b> en la barra que aparece para ponerlas en un viaje, una persona o una categoría.<br><b>Más rápido:</b> el Orden guiado te hace unas preguntas sencillas, paso a paso, y hace casi todo el archivado por ti. Esta guía te explica cada paso sobre la marcha.`,
+    zh: `新照片会在这里等待整理。<b>手动:</b>选择照片(单击、Ctrl+单击,或拖出一个框),然后点击出现的工具栏中的<b>📁 文件夹</b>,把它们放进旅行、人物或分类。<br><b>更快:</b>引导整理会一步一步问你几个简单的问题,替你完成大部分归档。本指南会在每一步为你讲解。`
   },
-  frPeopleTitle: { en: v => `Tag the people in these photos${v.scopeNote}.`, fr: v => `Identifiez les personnes sur ces photos${v.scopeNote}.`, de: v => `Markieren Sie die Personen auf diesen Fotos${v.scopeNote}.`, es: v => `Etiqueta a las personas de estas fotos${v.scopeNote}.`, zh: v => `为这些照片中的人物打标签${v.scopeNote}。` },
-  frNewPerson: { en: '+ New person', fr: '+ Nouvelle personne', de: '+ Neue Person', es: '+ Nueva persona', zh: '+ 新建人物' },
-  frBarSelectedPeople: { en: v => `${v.n} photo${v.n!==1?'s':''} selected - tap a name above to file them`, fr: v => `${v.n} photo${v.n!==1?'s':''} sélectionnée${v.n!==1?'s':''} - appuyez sur un nom ci-dessus pour les classer`, de: v => `${v.n} Foto${v.n!==1?'s':''} ausgewählt - tippen Sie oben auf einen Namen, um sie einzusortieren`, es: v => `${v.n} foto${v.n!==1?'s':''} seleccionada${v.n!==1?'s':''} - pulsa un nombre arriba para archivarlas`, zh: v => `已选择 ${v.n} 张照片——点按上方的姓名进行归档` },
-  frBarBatchCount: { en: v => `${v.n} photo${v.n!==1?'s':''} in this batch`, fr: v => `${v.n} photo${v.n!==1?'s':''} dans ce lot`, de: v => `${v.n} Foto${v.n!==1?'s':''} in diesem Stapel`, es: v => `${v.n} foto${v.n!==1?'s':''} en este lote`, zh: v => `此批次共有 ${v.n} 张照片` },
-  frNextLabel: { en: v => `Next: ${v.label} →`, fr: v => `Suivant : ${v.label} →`, de: v => `Weiter: ${v.label} →`, es: v => `Siguiente: ${v.label} →`, zh: v => `下一步:${v.label} →` },
-  frToastPickPhotosPerson: { en: 'Click some photos of them first, then tap their name', fr: "Cliquez d'abord sur quelques photos d'elle, puis appuyez sur son nom", de: 'Klicken Sie zuerst auf ein paar Fotos von ihr/ihm und dann auf den Namen', es: 'Haz clic primero en algunas fotos suyas y luego pulsa su nombre', zh: '请先点击几张包含此人的照片,然后点按其姓名' },
-  frToastPeopleNudge: {
-    en: "No one tagged yet, that's fine. You can always tag people later from any photo's right-click menu.",
-    fr: "Personne n'a encore été identifié, ce n'est pas grave. Vous pourrez toujours identifier des personnes plus tard via le clic droit sur n'importe quelle photo.",
-    de: 'Noch niemand markiert, das ist völlig in Ordnung. Sie können Personen jederzeit später über das Rechtsklickmenü eines Fotos markieren.',
-    es: 'Todavía no se ha etiquetado a nadie, no pasa nada. Siempre puedes etiquetar personas más tarde desde el menú contextual (clic derecho) de cualquier foto.',
-    zh: '还没有标记任何人,没关系。你随时可以之后在任意照片的右键菜单中标记人物。'
+  coachToSortGuided: { en: '✨ Start Guided Sort', fr: '✨ Lancer le Tri guidé', de: '✨ Geführtes Sortieren starten', es: '✨ Iniciar el Orden guiado', zh: '✨ 开始引导整理' },
+  coachToSortByHand: { en: "I'll sort by hand", fr: 'Je trie à la main', de: 'Ich sortiere von Hand', es: 'Ordeno a mano', zh: '我自己手动整理' },
+  coachStartTitle: { en: "What's in this pile?", fr: "Qu'y a-t-il dans ce lot ?", de: 'Was steckt in diesem Stapel?', es: '¿Qué hay en este lote?', zh: '这批照片里有什么?' },
+  coachStartBody: {
+    en: `Tick every kind of photo in this pile. A trip mixed with everyday shots? Tick both: Trove separates them by date in the next steps. Trips are worth it: they get their own dates, a pin on the Globe, and Relive.`,
+    fr: `Cochez tous les types de photos de ce lot. Un voyage mélangé à des photos du quotidien ? Cochez les deux : Trove les sépare par date aux étapes suivantes. Les voyages valent le coup : ils ont leurs propres dates, une épingle sur le Globe et Revivre.`,
+    de: `Haken Sie jede Art von Foto in diesem Stapel an. Eine Reise gemischt mit Alltagsfotos? Beides anhaken: Trove trennt sie in den nächsten Schritten nach Datum. Reisen lohnen sich: Sie bekommen eigene Daten, eine Stecknadel auf dem Globus und Nacherleben.`,
+    es: `Marca todos los tipos de foto de este lote. ¿Un viaje mezclado con fotos del día a día? Marca ambos: Trove los separa por fecha en los siguientes pasos. Los viajes merecen la pena: tienen sus propias fechas, una chincheta en el Globo y Revivir.`,
+    zh: `勾选这批照片包含的所有类型。旅行照片混着日常照片?两个都勾:Trove 会在接下来的步骤中按日期把它们分开。旅行很值得建:它们有自己的日期、地球上的标记,还能「重温旅行」。`
   },
-  // Categories step
-  frCategoriesTitle: { en: v => `Add categories${v.scopeNote}.`, fr: v => `Ajoutez des catégories${v.scopeNote}.`, de: v => `Kategorien hinzufügen${v.scopeNote}.`, es: v => `Añade categorías${v.scopeNote}.`, zh: v => `添加分类${v.scopeNote}。` },
-  frCategoriesExplain: {
-    en: 'Click photos that fit one below, then tap it to file them. A photo can belong to more than one. Skip if none apply.',
-    fr: 'Cliquez sur les photos correspondant à une catégorie ci-dessous, puis appuyez dessus pour les classer. Une photo peut appartenir à plusieurs catégories. Passez si aucune ne convient.',
-    de: 'Klicken Sie auf Fotos, die zu einer der Kategorien unten passen, und tippen Sie dann darauf, um sie einzusortieren. Ein Foto kann zu mehreren Kategorien gehören. Überspringen Sie, falls keine passt.',
-    es: 'Haz clic en las fotos que encajen con una categoría de abajo y luego pulsa sobre ella para archivarlas. Una foto puede pertenecer a más de una categoría. Omite este paso si ninguna aplica.',
-    zh: '点击符合下方某个分类的照片,然后点按该分类进行归档。一张照片可以属于多个分类。如果都不适用,可以跳过。'
+  coachPickTitle: { en: 'Pick the trip, or create it', fr: 'Choisissez le voyage, ou créez-le', de: 'Reise wählen oder anlegen', es: 'Elige el viaje o créalo', zh: '选择旅行,或新建一个' },
+  coachPickBody: {
+    en: `Not in the list? Click <b>+ New trip</b>: its name and dates are filled in from your photos, you just check them. Make one trip per journey (“Iceland”, not one per town). An adventure is shorter: a day out, a trek, a festival.`,
+    fr: `Pas dans la liste ? Cliquez sur <b>+ Nouveau voyage</b> : son nom et ses dates sont remplis à partir de vos photos, il suffit de vérifier. Un voyage par séjour (« Islande », pas un par ville). Une aventure est plus courte : une sortie, une randonnée, un festival.`,
+    de: `Nicht in der Liste? Klicken Sie auf <b>+ Neue Reise</b>: Name und Daten werden aus Ihren Fotos übernommen, Sie prüfen sie nur. Eine Reise pro Urlaub („Island“, nicht eine pro Stadt). Ein Abenteuer ist kürzer: ein Ausflug, eine Wanderung, ein Festival.`,
+    es: `¿No está en la lista? Haz clic en <b>+ Nuevo viaje</b>: su nombre y sus fechas se rellenan a partir de tus fotos, solo tienes que comprobarlos. Un viaje por escapada («Islandia», no uno por ciudad). Una aventura es más corta: una excursión, una ruta, un festival.`,
+    zh: `列表里没有?点击 <b>+ 新旅行</b>:名称和日期会根据你的照片自动填好,你只需确认。一次出行建一个旅行(「冰岛」,而不是每个城市一个)。探险更短:一日游、徒步、音乐节。`
   },
-  frCustomEllipsis: { en: '+ Custom…', fr: '+ Personnalisé…', de: '+ Benutzerdefiniert…', es: '+ Personalizada…', zh: '+ 自定义……' },
-  frBarSelectedCategories: { en: v => `${v.n} photo${v.n!==1?'s':''} selected - tap a category above to file them`, fr: v => `${v.n} photo${v.n!==1?'s':''} sélectionnée${v.n!==1?'s':''} - appuyez sur une catégorie ci-dessus pour les classer`, de: v => `${v.n} Foto${v.n!==1?'s':''} ausgewählt - tippen Sie oben auf eine Kategorie, um sie einzusortieren`, es: v => `${v.n} foto${v.n!==1?'s':''} seleccionada${v.n!==1?'s':''} - pulsa una categoría arriba para archivarlas`, zh: v => `已选择 ${v.n} 张照片——点按上方的分类进行归档` },
-  frFinishArrow: { en: 'Finish →', fr: 'Terminer →', de: 'Fertig →', es: 'Finalizar →', zh: '完成 →' },
-  frToastPickPhotosCategory: { en: 'Click some photos first, then tap the category', fr: "Cliquez d'abord sur quelques photos, puis appuyez sur la catégorie", de: 'Klicken Sie zuerst auf ein paar Fotos und dann auf die Kategorie', es: 'Haz clic primero en algunas fotos y luego pulsa la categoría', zh: '请先点击几张照片,然后点按该分类' },
-  // Orientation step
-  frOrientationTitle: { en: 'Quick tour of where things live.', fr: 'Petit tour rapide pour savoir où trouver les choses.', de: 'Kurzer Rundgang, wo Sie was finden.', es: 'Un breve recorrido por dónde está todo.', zh: '快速了解各功能的位置。' },
-  frOrientationSub: { en: "This chrome is dimmed behind the wizard right now, but it's exactly what you'll see once you're in your library.", fr: "Cette interface est assombrie derrière l'assistant pour le moment, mais c'est exactement ce que vous verrez une fois dans votre bibliothèque.", de: 'Diese Oberfläche ist gerade hinter dem Assistenten abgedunkelt, aber genau das sehen Sie, sobald Sie in Ihrer Bibliothek sind.', es: 'Esta interfaz está atenuada detrás del asistente ahora mismo, pero es exactamente lo que verás una vez dentro de tu biblioteca.', zh: '此刻界面在向导后方是暗淡的,但这正是你进入照片库后会看到的样子。' },
-  frOrientSidebarTitle: { en: 'Sidebar', fr: 'Barre latérale', de: 'Seitenleiste', es: 'Barra lateral', zh: '侧边栏' },
-  frOrientSidebarDesc: { en: 'Trips, People, Categories, Cameras, and Location, on the left. Click any section to browse just those photos.', fr: 'Voyages, Personnes, Catégories, Appareils et Lieux, sur la gauche. Cliquez sur une section pour parcourir uniquement ces photos.', de: 'Reisen, Personen, Kategorien, Kameras und Standort, links. Klicken Sie auf einen Bereich, um nur diese Fotos zu durchsuchen.', es: 'Viajes, Personas, Categorías, Cámaras y Ubicación, a la izquierda. Haz clic en cualquier sección para ver solo esas fotos.', zh: '左侧是旅行、人物、分类、相机和地点。点击任意分区即可只浏览该分类下的照片。' },
-  frOrientFilterTitle: { en: 'Filter', fr: 'Filtre', de: 'Filter', es: 'Filtro', zh: '筛选' },
-  frOrientFilterDesc: { en: "Top of the library view. Narrows what's shown by date, camera, or favorites.", fr: 'En haut de la vue bibliothèque. Restreint l\'affichage par date, appareil ou favoris.', de: 'Oben in der Bibliotheksansicht. Grenzt die Anzeige nach Datum, Kamera oder Favoriten ein.', es: 'En la parte superior de la biblioteca. Reduce lo mostrado por fecha, cámara o favoritos.', zh: '位于照片库视图顶部,可按日期、相机或收藏来缩小显示范围。' },
-  frOrientSortTitle: { en: 'Sort', fr: 'Trier', de: 'Sortieren', es: 'Ordenar', zh: '排序' },
-  frOrientSortDesc: { en: 'Next to Filter. Change the order: newest first, by name, by size, and more.', fr: "À côté de Filtre. Change l'ordre d'affichage : plus récent d'abord, par nom, par taille, etc.", de: 'Neben Filter. Ändert die Reihenfolge: neueste zuerst, nach Name, nach Größe und mehr.', es: 'Junto a Filtro. Cambia el orden: más recientes primero, por nombre, por tamaño y más.', zh: '位于筛选旁边,可更改排序方式:最新优先、按名称、按大小等。' },
-  frOrientAddTitle: { en: 'Add Files', fr: 'Ajouter des fichiers', de: 'Dateien hinzufügen', es: 'Añadir archivos', zh: '添加文件' },
-  frOrientAddDesc: { en: 'Top-right, always there. Click it any time you want to bring in more photos or videos.', fr: "En haut à droite, toujours visible. Cliquez dessus chaque fois que vous voulez importer plus de photos ou de vidéos.", de: 'Oben rechts, immer sichtbar. Klicken Sie jederzeit darauf, um weitere Fotos oder Videos hinzuzufügen.', es: 'Arriba a la derecha, siempre visible. Haz clic cuando quieras añadir más fotos o vídeos.', zh: '位于右上角,始终可见。想要导入更多照片或视频时随时点击。' },
-  frGotIt: { en: 'Got it →', fr: 'Compris →', de: 'Verstanden →', es: 'Entendido →', zh: '知道了 →' },
-  // Tour intro
-  frTourIntroTitle: { en: "Let's take Trove's core features for a spin.", fr: 'Découvrons ensemble les fonctionnalités clés de Trove.', de: 'Lassen Sie uns die Kernfunktionen von Trove ausprobieren.', es: 'Probemos juntos las funciones principales de Trove.', zh: '让我们体验一下 Trove 的核心功能吧。' },
-  frTourIntroSub: { en: 'Using what you just added, no separate demo data. Takes under a minute.', fr: 'En utilisant ce que vous venez d\'ajouter, sans données de démonstration séparées. Cela prend moins d\'une minute.', de: 'Mit dem, was Sie gerade hinzugefügt haben, keine separaten Demodaten. Dauert weniger als eine Minute.', es: 'Usando lo que acabas de añadir, sin datos de demostración aparte. Lleva menos de un minuto.', zh: '使用你刚才添加的照片,无需单独的演示数据。用时不到一分钟。' },
-  frStartTour: { en: 'Start the tour →', fr: 'Démarrer la visite →', de: 'Tour starten →', es: 'Empezar el recorrido →', zh: '开始体验 →' },
-  frSkipTour: { en: 'Skip the tour', fr: 'Passer la visite', de: 'Tour überspringen', es: 'Omitir el recorrido', zh: '跳过体验' },
-  // Tour step intro
-  frTourGlobeTitle: { en: 'Explore the Globe', fr: 'Explorez le Globe', de: 'Entdecken Sie den Globus', es: 'Explora el Globo', zh: '探索地球视图' },
-  frTourGlobeBodyTrip: { en: "Trove plots every trip on a real 3D globe. Let's fly to the one you just made.", fr: "Trove place chaque voyage sur un véritable globe 3D. Envolons-nous vers celui que vous venez de créer.", de: 'Trove zeichnet jede Reise auf einem echten 3D-Globus ein. Fliegen wir zu der, die Sie gerade erstellt haben.', es: 'Trove marca cada viaje en un globo 3D real. Volemos hasta el que acabas de crear.', zh: 'Trove 会在真实的 3D 地球上标出每一趟旅行。我们飞到你刚创建的那趟旅行看看吧。' },
-  frTourGlobeBodyNoTrip: { en: "Trove plots every trip on a real 3D globe. Let's take a quick look around.", fr: 'Trove place chaque voyage sur un véritable globe 3D. Faisons un petit tour.', de: 'Trove zeichnet jede Reise auf einem echten 3D-Globus ein. Schauen wir uns kurz um.', es: 'Trove marca cada viaje en un globo 3D real. Echemos un vistazo rápido.', zh: 'Trove 会在真实的 3D 地球上标出每一趟旅行。我们先四处看看吧。' },
-  frTourGlobeBodySuffix: { en: " When you're done looking around, click ✕ Close up top to pick up right where you left off.", fr: ' Une fois votre exploration terminée, cliquez sur ✕ Fermer en haut pour reprendre exactement là où vous en étiez.', de: ' Wenn Sie fertig sind, klicken Sie oben auf ✕ Schließen, um genau dort weiterzumachen, wo Sie aufgehört haben.', es: ' Cuando termines de mirar, haz clic en ✕ Cerrar arriba para retomar justo donde lo dejaste.', zh: ' 看完之后,点击顶部的 ✕ 关闭,即可从刚才的位置继续。' },
-  frTourGlobeBtn: { en: 'Open the Globe', fr: 'Ouvrir le Globe', de: 'Globus öffnen', es: 'Abrir el Globo', zh: '打开地球视图' },
-  frTourEditorTitle: { en: 'Try the Photo Editor', fr: "Essayez l'éditeur de photos", de: 'Probieren Sie den Fotoeditor aus', es: 'Prueba el Editor de fotos', zh: '试试照片编辑器' },
-  frTourEditorBody: {
-    en: v => `Every photo gets a full, non-destructive editor: exposure, color, curves, and more. Try one real adjustment on <strong>${v.file}</strong>, then click ✕ Close up top to pick up right where you left off.`,
-    fr: v => `Chaque photo bénéficie d'un éditeur complet et non destructif : exposition, couleur, courbes, et plus encore. Essayez un vrai réglage sur <strong>${v.file}</strong>, puis cliquez sur ✕ Fermer en haut pour reprendre exactement là où vous en étiez.`,
-    de: v => `Jedes Foto erhält einen vollständigen, zerstörungsfreien Editor: Belichtung, Farbe, Kurven und mehr. Probieren Sie eine echte Anpassung an <strong>${v.file}</strong> aus, klicken Sie dann oben auf ✕ Schließen, um genau dort weiterzumachen, wo Sie aufgehört haben.`,
-    es: v => `Cada foto tiene un editor completo y no destructivo: exposición, color, curvas y más. Prueba un ajuste real en <strong>${v.file}</strong>, luego haz clic en ✕ Cerrar arriba para retomar justo donde lo dejaste.`,
-    zh: v => `每张照片都配有完整的非破坏性编辑器:曝光、色彩、曲线等等。在 <strong>${v.file}</strong> 上试着做一次真实调整,然后点击顶部的 ✕ 关闭,即可从刚才的位置继续。`
+  coachDatesTitle: { en: 'The dates did most of the work', fr: "Les dates ont fait l'essentiel", de: 'Die Daten haben das meiste erledigt', es: 'Las fechas han hecho casi todo', zh: '日期已经完成了大部分工作' },
+  coachDatesBody: {
+    en: `Photos taken within the trip's dates are already in it. The ones left here are often copies from another phone or app, dated the day they were copied: if they belong to the trip, select them and add them anyway. Just everyday photos? Mark them as not part of one.`,
+    fr: `Les photos prises pendant les dates du voyage y sont déjà. Celles qui restent ici sont souvent des copies venues d'un autre téléphone ou d'une appli, datées du jour de la copie : si elles font partie du voyage, sélectionnez-les et ajoutez-les quand même. Juste des photos du quotidien ? Indiquez qu'elles ne font partie d'aucun.`,
+    de: `Fotos aus dem Zeitraum der Reise sind schon drin. Was hier übrig bleibt, sind oft Kopien von einem anderen Handy oder einer App, datiert auf den Tag des Kopierens: Gehören sie zur Reise, wählen Sie sie aus und fügen Sie sie trotzdem hinzu. Nur Alltagsfotos? Markieren Sie sie als zu keiner gehörend.`,
+    es: `Las fotos tomadas dentro de las fechas del viaje ya están en él. Las que quedan aquí suelen ser copias de otro móvil o de una app, con la fecha del día en que se copiaron: si son del viaje, selecciónalas y añádelas igualmente. ¿Solo fotos del día a día? Márcalas como que no forman parte de ninguno.`,
+    zh: `在旅行日期内拍摄的照片已经加进去了。留在这里的通常是从其他手机或应用复制来的照片,日期是复制当天:如果它们属于这趟旅行,选中后照样添加。只是日常照片?把它们标记为不属于任何旅行。`
   },
-  frTourEditorBtn: { en: 'Open the Editor', fr: "Ouvrir l'éditeur", de: 'Editor öffnen', es: 'Abrir el editor', zh: '打开编辑器' },
-  frTourDuplicateTitle: { en: 'Watch Find Duplicates work', fr: 'Découvrez la détection de doublons en action', de: 'Sehen Sie, wie Duplikate finden funktioniert', es: 'Mira cómo funciona Buscar duplicados', zh: '看看"查找重复项"如何工作' },
-  frTourDuplicateBody: {
-    en: v => `Find Duplicates catches copies automatically, even renamed ones. We'll make one small demo copy of <strong>${v.file}</strong> right now so you can watch it get caught live. Keep it or remove it, your call, then click ✕ Close up top to pick up right where you left off.`,
-    fr: v => `La détection de doublons repère automatiquement les copies, même renommées. Nous allons créer une petite copie de démonstration de <strong>${v.file}</strong> pour que vous puissiez la voir détectée en direct. Gardez-la ou supprimez-la, à vous de voir, puis cliquez sur ✕ Fermer en haut pour reprendre exactement là où vous en étiez.`,
-    de: v => `Duplikate finden erkennt Kopien automatisch, auch umbenannte. Wir erstellen jetzt eine kleine Demo-Kopie von <strong>${v.file}</strong>, damit Sie live sehen können, wie sie erkannt wird. Behalten oder entfernen Sie sie, ganz wie Sie möchten, klicken Sie dann oben auf ✕ Schließen, um genau dort weiterzumachen, wo Sie aufgehört haben.`,
-    es: v => `Buscar duplicados detecta copias automáticamente, incluso si están renombradas. Ahora crearemos una pequeña copia de demostración de <strong>${v.file}</strong> para que veas cómo se detecta en directo. Consérvala o elimínala, tú decides, luego haz clic en ✕ Cerrar arriba para retomar justo donde lo dejaste.`,
-    zh: v => `"查找重复项"会自动识别重复文件,即使文件被重命名过也不例外。我们现在会创建一份 <strong>${v.file}</strong> 的演示副本,让你实时看到它被识别出来。保留或删除都由你决定,之后点击顶部的 ✕ 关闭,即可从刚才的位置继续。`
+  coachPeopleTitle: { en: 'Let Trove find the faces', fr: 'Laissez Trove trouver les visages', de: 'Lassen Sie Trove die Gesichter finden', es: 'Deja que Trove encuentre las caras', zh: '让 Trove 找出人脸' },
+  coachPeopleOff: {
+    en: `The fastest way by far: turn on face recognition. Trove finds the faces, you just say who they are, and it recognises those people in every photo you add later. 🔒 It all happens on this computer: no photo, face or name is ever sent anywhere, only your own processor does the work.`,
+    fr: `De loin le plus rapide : activez la reconnaissance des visages. Trove trouve les visages, vous dites juste qui c'est, et il reconnaît ces personnes dans toutes les photos que vous ajouterez ensuite. 🔒 Tout se passe sur cet ordinateur : aucune photo, aucun visage ni aucun nom n'est envoyé où que ce soit, seul votre propre processeur fait le travail.`,
+    de: `Mit Abstand am schnellsten: Schalten Sie die Gesichtserkennung ein. Trove findet die Gesichter, Sie sagen nur, wer es ist, und es erkennt diese Personen in jedem Foto, das Sie später hinzufügen. 🔒 Alles passiert auf diesem Computer: Kein Foto, kein Gesicht und kein Name wird irgendwohin gesendet, nur Ihr eigener Prozessor arbeitet.`,
+    es: `Lo más rápido, con diferencia: activa el reconocimiento facial. Trove encuentra las caras, tú solo dices quién es, y reconoce a esas personas en todas las fotos que añadas después. 🔒 Todo ocurre en este ordenador: ninguna foto, cara ni nombre se envía a ningún sitio, solo trabaja tu propio procesador.`,
+    zh: `目前最快的方法:开启人脸识别。Trove 会找出人脸,你只需说出是谁,之后添加的每张照片里它都能认出这些人。🔒 一切都在这台电脑上完成:不会把任何照片、人脸或名字发送到任何地方,只用你自己的处理器运算。`
   },
-  frTourDuplicateBtn: { en: 'Try Find Duplicates', fr: 'Essayer la détection de doublons', de: 'Duplikate finden ausprobieren', es: 'Probar Buscar duplicados', zh: '试试查找重复项' },
-  frDefaultPhoto: { en: 'one of your photos', fr: "l'une de vos photos", de: 'eines Ihrer Fotos', es: 'una de tus fotos', zh: '你的一张照片' },
-  frSkipThis: { en: 'Skip this', fr: 'Passer cette étape', de: 'Diesen Schritt überspringen', es: 'Omitir este paso', zh: '跳过此步骤' },
-  // Unlock step
-  frUnlockTitle: { en: 'A batch this size deserves the fast lane.', fr: 'Un lot de cette taille mérite la voie rapide.', de: 'Ein Stapel dieser Größe verdient die Überholspur.', es: 'Un lote de este tamaño merece vía rápida.', zh: '这么大的一批照片,值得走"快速通道"。' },
-  frUnlockBody: {
-    en: v => `${v.n} more file${v.n!==1?'s':''} just got queued and ${v.n!==1?'are':'is'} already safe in To Sort, waiting whenever you're ready.`,
-    fr: v => `${v.n} fichier${v.n!==1?'s':''} de plus vien${v.n!==1?'nent':'t'} d'être mis en attente et se trouve${v.n!==1?'nt':''} déjà en sécurité dans "À trier", prêts quand vous le serez.`,
-    de: v => `${v.n} weitere Datei${v.n!==1?'en':''} wurde${v.n!==1?'n':''} gerade in die Warteschlange gestellt und liegen bereits sicher in "Zu sortieren", bereit, wann immer Sie es sind.`,
-    es: v => `${v.n} archivo${v.n!==1?'s':''} más acaba${v.n!==1?'n':''} de entrar en cola y ya está${v.n!==1?'n':''} a salvo en "Por ordenar", esperando a que estés listo.`,
-    zh: v => `另有 ${v.n} 个文件刚刚被加入队列,已安全存放在"待整理"中,随时等你处理。`
+  coachFacesOn: { en: 'Turn on face recognition', fr: 'Activer la reconnaissance des visages', de: 'Gesichtserkennung einschalten', es: 'Activar el reconocimiento facial', zh: '开启人脸识别' },
+  coachPeopleOnTitle: { en: "Confirm who's who", fr: 'Confirmez qui est qui', de: 'Bestätigen Sie, wer wer ist', es: 'Confirma quién es quién', zh: '确认谁是谁' },
+  coachPeopleOn: {
+    en: `Start with the cards at the top: one click files every photo of that person. Photos with people in them come first in the grid. Name the 3 to 5 people you see most and Trove files them on its own next time. A face too small to recognise? Click it to see it in its photo.`,
+    fr: `Commencez par les cartes du haut : un clic range toutes les photos de cette personne. Les photos où il y a du monde arrivent en premier dans la grille. Nommez les 3 à 5 personnes que vous voyez le plus et Trove les rangera tout seul la prochaine fois. Un visage trop petit pour être reconnu ? Cliquez dessus pour le voir dans sa photo.`,
+    de: `Beginnen Sie mit den Karten oben: Ein Klick ordnet jedes Foto dieser Person zu. Fotos mit Personen darauf stehen im Raster ganz vorne. Benennen Sie die 3 bis 5 Personen, die Sie am häufigsten sehen, und Trove ordnet sie beim nächsten Mal selbst zu. Ein Gesicht zu klein zum Erkennen? Klicken Sie darauf, um es in seinem Foto zu sehen.`,
+    es: `Empieza por las tarjetas de arriba: un clic archiva todas las fotos de esa persona. Las fotos con personas salen primero en la cuadrícula. Pon nombre a las 3 a 5 personas que más ves y Trove las archivará solo la próxima vez. ¿Una cara demasiado pequeña para reconocerla? Haz clic en ella para verla en su foto.`,
+    zh: `先从顶部的卡片开始:点一下就能归档这个人的所有照片。有人物的照片会排在网格最前面。给你最常见的 3 到 5 个人起名,下次 Trove 会自动归档他们。人脸太小认不出?点击它即可在原照片中查看。`
   },
-  frUnlockTakeMe: { en: '📥 Take me there now', fr: "📥 M'y emmener maintenant", de: '📥 Jetzt dorthin bringen', es: '📥 Llévame allí ahora', zh: '📥 立即前往' },
+  coachFoldersTitle: { en: "Categories: what's in the photo", fr: 'Catégories : ce que montre la photo', de: 'Kategorien: was auf dem Foto ist', es: 'Categorías: lo que sale en la foto', zh: '分类:照片里有什么' },
+  coachFoldersBody: {
+    en: `Categories are for what a photo shows, whatever the trip: food, pets, sport… No need to redo trips or people here. Nothing to file? Just continue: you can come back any time.`,
+    fr: `Les catégories servent à ce que montre la photo, quel que soit le voyage : la cuisine, les animaux, le sport… Inutile de refaire les voyages ou les personnes ici. Rien à ranger ? Continuez simplement : vous pourrez revenir quand vous voulez.`,
+    de: `Kategorien sind dafür, was ein Foto zeigt, egal auf welcher Reise: Essen, Haustiere, Sport… Reisen oder Personen müssen Sie hier nicht noch einmal anlegen. Nichts einzuordnen? Einfach weiter: Sie können jederzeit zurückkommen.`,
+    es: `Las categorías son para lo que muestra una foto, sea del viaje que sea: comida, mascotas, deporte… No hace falta repetir aquí viajes ni personas. ¿Nada que archivar? Continúa sin más: puedes volver cuando quieras.`,
+    zh: `分类用于记录照片里有什么,不管是哪趟旅行:美食、宠物、运动……这里不用再建旅行或人物。没什么要归档?直接继续,随时都能回来。`
+  },
+  coachContentTitle: { en: "Trove's suggestions", fr: 'Les suggestions de Trove', de: 'Troves Vorschläge', es: 'Las sugerencias de Trove', zh: 'Trove 的建议' },
+  coachContentBody: {
+    en: `Trove looked at what's in each photo: matches for your categories, and groups of similar photos. Every suggested photo starts ticked: untick the ones that don't belong, then confirm. Nothing is filed until you click.`,
+    fr: `Trove a regardé ce que montre chaque photo : des correspondances avec vos catégories, et des groupes de photos qui se ressemblent. Chaque photo suggérée est déjà cochée : décochez celles qui ne vont pas, puis confirmez. Rien n'est rangé tant que vous n'avez pas cliqué.`,
+    de: `Trove hat sich angesehen, was auf jedem Foto ist: Treffer für Ihre Kategorien und Gruppen ähnlicher Fotos. Jedes vorgeschlagene Foto ist schon angehakt: Entfernen Sie den Haken bei denen, die nicht passen, und bestätigen Sie dann. Nichts wird eingeordnet, bevor Sie klicken.`,
+    es: `Trove ha mirado qué hay en cada foto: coincidencias con tus categorías y grupos de fotos parecidas. Cada foto sugerida empieza marcada: desmarca las que no encajen y confirma. No se archiva nada hasta que hagas clic.`,
+    zh: `Trove 看过了每张照片的内容:与你的分类匹配的照片,以及相似照片的分组。每张建议的照片默认已勾选:取消不合适的,然后确认。在你点击之前,什么都不会归档。`
+  },
+  coachCameraTitle: { en: 'Cameras: optional', fr: 'Appareils : facultatif', de: 'Kameras: optional', es: 'Cámaras: opcional', zh: '相机:可选' },
+  coachCameraBody: {
+    en: `Most photos say which camera took them. These ones don't: if you know, select them and tap the camera. Not sure? Skip it, it's the least important step.`,
+    fr: `La plupart des photos indiquent l'appareil qui les a prises. Pas celles-ci : si vous savez, sélectionnez-les et touchez l'appareil. Pas sûr ? Passez, c'est l'étape la moins importante.`,
+    de: `Die meisten Fotos verraten, mit welcher Kamera sie aufgenommen wurden. Diese nicht: Wenn Sie es wissen, wählen Sie sie aus und tippen Sie auf die Kamera. Nicht sicher? Überspringen, das ist der unwichtigste Schritt.`,
+    es: `La mayoría de las fotos dicen qué cámara las hizo. Estas no: si lo sabes, selecciónalas y toca la cámara. ¿No estás seguro? Sáltalo, es el paso menos importante.`,
+    zh: `大多数照片会记录拍摄用的相机,这些没有:如果你知道,选中它们再点那台相机。不确定?跳过就好,这是最不重要的一步。`
+  },
+  coachLocationTitle: { en: 'Put them on the map', fr: 'Placez-les sur la carte', de: 'Ab auf die Karte', es: 'Ponlas en el mapa', zh: '把它们放到地图上' },
+  coachLocationBody: {
+    en: `These photos have no GPS. Select the ones taken in the same place, then click the globe to drop a pin, or take a 📍 suggestion. They'll show up on the Globe and in Relive. Don't remember? Skip them.`,
+    fr: `Ces photos n'ont pas de GPS. Sélectionnez celles prises au même endroit, puis cliquez sur le globe pour poser une épingle, ou prenez une suggestion 📍. Elles apparaîtront sur le Globe et dans Revivre. Vous ne vous souvenez plus ? Passez-les.`,
+    de: `Diese Fotos haben kein GPS. Wählen Sie die am selben Ort aufgenommenen aus und klicken Sie auf den Globus, um eine Stecknadel zu setzen, oder nehmen Sie einen 📍-Vorschlag. Dann erscheinen sie auf dem Globus und beim Nacherleben. Wissen Sie es nicht mehr? Überspringen.`,
+    es: `Estas fotos no tienen GPS. Selecciona las tomadas en el mismo sitio y haz clic en el globo para poner una chincheta, o acepta una sugerencia 📍. Aparecerán en el Globo y en Revivir. ¿No te acuerdas? Sáltalas.`,
+    zh: `这些照片没有 GPS。选中在同一地点拍的照片,然后点击地球放下标记,或采用 📍 建议。之后它们就会出现在地球和「重温旅行」中。记不清了?跳过即可。`
+  },
+  coachDoneTitle: { en: 'All sorted!', fr: 'Tout est trié !', de: 'Alles sortiert!', es: '¡Todo ordenado!', zh: '全部整理好了!' },
+  coachDoneBody: {
+    en: `<b>Mark batch as sorted</b> takes these photos out of To Sort: they stay in your library, in their trips, people and folders. Photos you add later land in To Sort, and Guided Sort is one click away under <b>Sort</b>, top right. To see this guide again: Settings › Getting Started.`,
+    fr: `<b>Marquer le lot comme trié</b> sort ces photos de À trier : elles restent dans votre bibliothèque, dans leurs voyages, personnes et dossiers. Les photos que vous ajouterez ensuite arriveront dans À trier, et le Tri guidé est à un clic, sous <b>Trier</b> en haut à droite. Pour revoir ce guide : Paramètres › Prise en main.`,
+    de: `<b>Stapel als sortiert markieren</b> nimmt diese Fotos aus Zu sortieren: Sie bleiben in Ihrer Bibliothek, in ihren Reisen, Personen und Ordnern. Später hinzugefügte Fotos landen in Zu sortieren, und Geführtes Sortieren ist einen Klick entfernt, unter <b>Sortieren</b> oben rechts. Diese Anleitung wieder ansehen: Einstellungen › Erste Schritte.`,
+    es: `<b>Marcar el lote como ordenado</b> saca estas fotos de Por ordenar: siguen en tu biblioteca, en sus viajes, personas y carpetas. Las fotos que añadas después llegarán a Por ordenar, y el Orden guiado está a un clic, en <b>Ordenar</b>, arriba a la derecha. Para volver a ver esta guía: Ajustes › Primeros pasos.`,
+    zh: `<b>将这批标记为已整理</b>会把这些照片移出「待整理」:它们仍在你的照片库里,在各自的旅行、人物和文件夹中。以后添加的照片会进入「待整理」,点击右上角的<b>整理</b>即可开始引导整理。想再看一遍本指南:设置 › 快速上手。`
+  },
   // Rating step
   frRatingTitle: { en: "How's it going so far?", fr: 'Comment ça se passe jusqu\'ici ?', de: "Wie läuft's bisher?", es: '¿Qué tal va todo hasta ahora?', zh: '目前使用体验如何?' },
   frStarTitle: { en: v => `${v.n} star${v.n!==1?'s':''}`, fr: v => `${v.n} étoile${v.n!==1?'s':''}`, de: v => `${v.n} Stern${v.n!==1?'e':''}`, es: v => `${v.n} estrella${v.n!==1?'s':''}`, zh: v => `${v.n} 星` },
@@ -503,66 +421,10 @@ const I18N = {
   frSendFeedback: { en: 'Send feedback', fr: 'Envoyer le retour', de: 'Feedback senden', es: 'Enviar comentario', zh: '发送反馈' },
   frFeedbackThanksToast: { en: 'Thanks, saved locally, this never leaves your computer', fr: 'Merci, enregistré localement, cela ne quitte jamais votre ordinateur', de: 'Danke, lokal gespeichert, das verlässt Ihren Computer nie', es: 'Gracias, guardado localmente, esto nunca sale de tu ordenador', zh: '谢谢,已保存在本地,不会离开你的电脑' },
   // Done step
-  frTripPhraseSingle: { en: v => ` to ${v.name}${v.yearSuffix}`, fr: v => ` vers ${v.name}${v.yearSuffix}`, de: v => ` nach ${v.name}${v.yearSuffix}`, es: v => ` a ${v.name}${v.yearSuffix}`, zh: v => ` 前往 ${v.name}${v.yearSuffix}` },
-  frTripPhraseMulti: { en: v => ` across ${v.n} trips (${v.names})`, fr: v => ` répartis sur ${v.n} voyages (${v.names})`, de: v => ` über ${v.n} Reisen verteilt (${v.names})`, es: v => ` repartidas en ${v.n} viajes (${v.names})`, zh: v => ` 分布在 ${v.n} 趟旅行中(${v.names})` },
-  frUnlockPhrase: { en: v => `, plus ${v.n} more file${v.n!==1?'s':''} unlocked in To Sort`, fr: v => `, plus ${v.n} fichier${v.n!==1?'s':''} de plus débloqué${v.n!==1?'s':''} dans "À trier"`, de: v => `, plus ${v.n} weitere Datei${v.n!==1?'en':''} in "Zu sortieren" freigeschaltet`, es: v => `, más ${v.n} archivo${v.n!==1?'s':''} desbloqueado${v.n!==1?'s':''} en "Por ordenar"`, zh: v => `,另有 ${v.n} 个文件已在"待整理"中解锁` },
-  frPeoplePhrase: { en: v => `, ${v.n} tagged to someone`, fr: v => `, ${v.n} associée${v.n!==1?'s':''} à quelqu'un`, de: v => `, ${v.n} einer Person zugeordnet`, es: v => `, ${v.n} asociada${v.n!==1?'s':''} a alguien`, zh: v => `,其中 ${v.n} 张已关联到某人` },
-  frDoneTitle: { en: "You're set up!", fr: 'Tout est configuré !', de: 'Alles eingerichtet!', es: '¡Todo listo!', zh: '设置完成!' },
-  frDoneBody: {
-    en: v => `${v.n} photo${v.n!==1?'s':''} added${v.tripPhrase}${v.peoplePhrase}${v.unlockPhrase}. They're still in <strong>To Sort</strong> - that's on purpose: camera and location still need confirming there (Guided Sort can help). Leave them until you're fully done with a batch; nothing here is lost if you stop and come back later.`,
-    fr: v => `${v.n} photo${v.n!==1?'s':''} ajoutée${v.n!==1?'s':''}${v.tripPhrase}${v.peoplePhrase}${v.unlockPhrase}. Elles sont encore dans <strong>"À trier"</strong> - c'est voulu : la caméra et le lieu doivent encore y être confirmés (le Tri guidé peut vous aider). Laissez-les tant que vous n'avez pas fini un lot ; rien n'est perdu ici si vous vous arrêtez et revenez plus tard.`,
-    de: v => `${v.n} Foto${v.n!==1?'s':''} hinzugefügt${v.tripPhrase}${v.peoplePhrase}${v.unlockPhrase}. Sie befinden sich noch in <strong>"Zu sortieren"</strong> - das ist Absicht: Kamera und Standort müssen dort noch bestätigt werden (Geführtes Sortieren kann helfen). Lassen Sie sie dort, bis Sie mit einem Stapel ganz fertig sind; hier geht nichts verloren, wenn Sie aufhören und später zurückkommen.`,
-    es: v => `${v.n} foto${v.n!==1?'s':''} añadida${v.n!==1?'s':''}${v.tripPhrase}${v.peoplePhrase}${v.unlockPhrase}. Siguen en <strong>"Por ordenar"</strong> - es intencionado: ahí falta confirmar cámara y ubicación (el Orden guiado puede ayudarte). Déjalas ahí hasta que termines del todo con un lote; nada se pierde aquí si te detienes y vuelves más tarde.`,
-    zh: v => `已添加 ${v.n} 张照片${v.tripPhrase}${v.peoplePhrase}${v.unlockPhrase}。它们仍在<strong>"待整理"</strong>中——这是有意为之:相机和地点信息还需要在那里确认("引导整理"可以帮忙)。在完全处理完一批照片之前先留在那里;即使中途停止、以后再回来,这里的内容也不会丢失。`
-  },
-  frAddAnotherTrip: { en: '➕ Add another trip', fr: '➕ Ajouter un autre voyage', de: '➕ Weitere Reise hinzufügen', es: '➕ Añadir otro viaje', zh: '➕ 添加另一趟旅行' },
-  frViewTrip: { en: 'View your trip', fr: 'Voir votre voyage', de: 'Ihre Reise ansehen', es: 'Ver tu viaje', zh: '查看你的旅行' },
-  frBrowseLibrary: { en: 'Browse your library', fr: 'Parcourir votre bibliothèque', de: 'Ihre Bibliothek durchsuchen', es: 'Explorar tu biblioteca', zh: '浏览你的照片库' },
-  frFinishToSort: { en: '📥 Finish in To Sort →', fr: '📥 Terminer dans "À trier" →', de: '📥 In "Zu sortieren" abschließen →', es: '📥 Terminar en "Por ordenar" →', zh: '📥 前往"待整理"完成 →' },
-  frTipsTitle: { en: '💡 A few things worth knowing', fr: '💡 Quelques infos utiles à connaître', de: '💡 Ein paar nützliche Dinge', es: '💡 Algunas cosas útiles que saber', zh: '💡 一些值得了解的小提示' },
-  frTipFindDuplicates: { en: '🔁 Find Duplicates & Edits', fr: '🔁 Trouver doublons et retouches', de: '🔁 Duplikate & Bearbeitungen finden', es: '🔁 Buscar duplicados y ediciones', zh: '🔁 查找重复和编辑版本' },
-  frTipExploreGlobe: { en: '🌍 Explore the Globe', fr: '🌍 Explorer le Globe', de: '🌍 Globus entdecken', es: '🌍 Explorar el Globo', zh: '🌍 探索地球视图' },
-  frTipSearch: {
-    en: 'Search finds photos by what\'s actually in them, not just the filename, try typing something like "birthday cake" in the search bar.',
-    fr: 'La recherche trouve les photos d\'après leur contenu réel, pas seulement leur nom de fichier ; essayez de taper quelque chose comme « gâteau d\'anniversaire » dans la barre de recherche.',
-    de: 'Die Suche findet Fotos anhand ihres tatsächlichen Inhalts, nicht nur des Dateinamens - versuchen Sie, etwas wie „Geburtstagskuchen" in die Suchleiste einzugeben.',
-    es: 'La búsqueda encuentra fotos por lo que realmente contienen, no solo por el nombre del archivo; prueba a escribir algo como "tarta de cumpleaños" en la barra de búsqueda.',
-    zh: '搜索功能能根据照片实际内容查找,而不仅仅是文件名——试着在搜索框中输入类似"生日蛋糕"这样的词试试。'
-  },
-  frTipBestOf: {
-    en: '❤️ Press <strong>L</strong> (or click the heart) on a photo you love to add it to <strong>Liked</strong>, a highlight reel separate from the full library. Liked files come first in their trip.',
-    fr: '❤️ Appuyez sur <strong>L</strong> (ou cliquez sur le cœur) sur une photo que vous adorez pour l\'ajouter à <strong>Coups de cœur</strong>, une sélection à part de la bibliothèque complète. Les coups de cœur apparaissent en premier dans leur voyage.',
-    de: '❤️ Drücken Sie <strong>L</strong> (oder klicken Sie auf das Herz) bei einem Foto, das Sie lieben, um es zu <strong>Gefällt mir</strong> hinzuzufügen, einer Highlight-Auswahl getrennt von der vollständigen Bibliothek. Fotos mit Herz stehen in ihrer Reise ganz oben.',
-    es: '❤️ Pulsa <strong>L</strong> (o haz clic en el corazón) en una foto que te encante para añadirla a <strong>Me gusta</strong>, una selección destacada aparte de la biblioteca completa. Las que te gustan salen primero en su viaje.',
-    zh: '❤️ 在喜欢的照片上按 <strong>L</strong>(或点击爱心),即可添加到<strong>喜欢</strong>,一个独立于完整照片库的精彩集锦。喜欢的照片会排在所属旅行的最前面。'
-  },
-  frTipTagMore: {
-    en: "The more you tag now - people, categories, trips - the easier everything is to find later. It doesn't have to be all at once.",
-    fr: 'Plus vous étiquetez maintenant - personnes, catégories, voyages - plus tout sera facile à retrouver ensuite. Pas besoin de tout faire d\'un coup.',
-    de: 'Je mehr Sie jetzt markieren - Personen, Kategorien, Reisen -, desto leichter finden Sie später alles wieder. Es muss nicht alles auf einmal sein.',
-    es: 'Cuanto más etiquetes ahora - personas, categorías, viajes -, más fácil será encontrarlo todo después. No hace falta hacerlo todo de golpe.',
-    zh: '现在打的标签越多——人物、分类、旅行——以后查找就越轻松。不必一次性全部完成。'
-  },
-  frTipToSort: {
-    en: "It's fine to leave photos in <strong>To Sort</strong> - especially ones with no date or location, which are the hardest to auto-sort. Come back to them any time.",
-    fr: 'Il est tout à fait normal de laisser des photos dans <strong>"À trier"</strong> - surtout celles sans date ni lieu, les plus difficiles à trier automatiquement. Revenez-y quand vous voulez.',
-    de: 'Es ist völlig in Ordnung, Fotos in <strong>"Zu sortieren"</strong> zu lassen - besonders solche ohne Datum oder Standort, die am schwersten automatisch zu sortieren sind. Kommen Sie jederzeit darauf zurück.',
-    es: 'No pasa nada por dejar fotos en <strong>"Por ordenar"</strong> - sobre todo las que no tienen fecha ni ubicación, que son las más difíciles de ordenar automáticamente. Vuelve a ellas cuando quieras.',
-    zh: '把照片留在<strong>"待整理"</strong>中完全没问题——尤其是那些没有日期或地点信息、最难自动整理的照片。你可以随时回来处理。'
-  },
-  frTipColors: {
-    en: "Give trips and other folders distinct <strong>colors</strong> so they're easy to spot at a glance in the sidebar and on the Globe.",
-    fr: 'Donnez aux voyages et autres dossiers des <strong>couleurs</strong> distinctes pour les repérer facilement d\'un coup d\'œil dans la barre latérale et sur le Globe.',
-    de: 'Geben Sie Reisen und anderen Ordnern unterschiedliche <strong>Farben</strong>, damit Sie sie in der Seitenleiste und auf dem Globus auf einen Blick erkennen.',
-    es: 'Dale a los viajes y otras carpetas <strong>colores</strong> distintos para reconocerlos de un vistazo en la barra lateral y en el Globo.',
-    zh: '为不同的旅行和文件夹设置不同的<strong>颜色</strong>,这样在侧边栏和地球视图中就能一眼认出。'
-  },
   // Wizard toasts
   frToastAlreadyInLibrary: { en: 'ℹ️ Already in library', fr: 'ℹ️ Déjà dans la bibliothèque', de: 'ℹ️ Bereits in der Bibliothek', es: 'ℹ️ Ya está en la biblioteca', zh: 'ℹ️ 已存在于照片库中' },
-  frToastAddedDeferred: { en: v => `✅ Added ${v.added} for this walkthrough, +${v.deferred} queued in To Sort`, fr: v => `✅ ${v.added} ajoutée${v.added!==1?'s':''} pour cette visite guidée, +${v.deferred} en attente dans "À trier"`, de: v => `✅ ${v.added} für diese Einführung hinzugefügt, +${v.deferred} in "Zu sortieren"`, es: v => `✅ ${v.added} añadida${v.added!==1?'s':''} para este recorrido, +${v.deferred} en cola en "Por ordenar"`, zh: v => `✅ 已为本次引导添加 ${v.added} 张,另有 ${v.deferred} 张在"待整理"中排队` },
   frToastAdded: { en: v => `✅ Added ${v.n} file${v.n!==1?'s':''}`, fr: v => `✅ ${v.n} fichier${v.n!==1?'s':''} ajouté${v.n!==1?'s':''}`, de: v => `✅ ${v.n} Datei${v.n!==1?'en':''} hinzugefügt`, es: v => `✅ ${v.n} archivo${v.n!==1?'s':''} añadido${v.n!==1?'s':''}`, zh: v => `✅ 已添加 ${v.n} 个文件` },
   frToastNoPaths: { en: '⚠️ Could not read file paths', fr: '⚠️ Impossible de lire les chemins des fichiers', de: '⚠️ Dateipfade konnten nicht gelesen werden', es: '⚠️ No se pudieron leer las rutas de los archivos', zh: '⚠️ 无法读取文件路径' },
-  frToastDupCopyFailed: { en: "⚠️ Couldn't create a demo copy, skipping this one", fr: '⚠️ Impossible de créer une copie de démonstration, cette étape est ignorée', de: '⚠️ Demo-Kopie konnte nicht erstellt werden, dieser Schritt wird übersprungen', es: '⚠️ No se pudo crear una copia de demostración, se omite este paso', zh: '⚠️ 无法创建演示副本,跳过此步骤' },
   // Wizard shell (index.html)
   frWizardTitle: { en: '🚀 Getting Started', fr: '🚀 Prise en main', de: '🚀 Erste Schritte', es: '🚀 Primeros pasos', zh: '🚀 快速上手' },
   frWizardExit: { en: '✕ Exit', fr: '✕ Quitter', de: '✕ Beenden', es: '✕ Salir', zh: '✕ 退出' },
@@ -571,8 +433,8 @@ const I18N = {
   settingsAppearance: { en: 'Appearance', fr: 'Apparence', de: 'Erscheinungsbild', es: 'Apariencia', zh: '外观' },
   settingsLanguage: { en: 'Language', fr: 'Langue', de: 'Sprache', es: 'Idioma', zh: '语言' },
   settingsHelp: { en: 'Help', fr: 'Aide', de: 'Hilfe', es: 'Ayuda', zh: '帮助' },
-  settingsGettingStartedTitle: { en: 'Add a trip, the guided way - walks you through creating it, adding photos, and tagging people', fr: 'Ajouter un voyage, étape par étape - création, ajout de photos et identification des personnes', de: 'Eine Reise anlegen, Schritt für Schritt - Erstellen, Fotos hinzufügen und Personen markieren', es: 'Añadir un viaje, paso a paso - crearlo, añadir fotos y etiquetar personas', zh: '按引导添加旅程 - 创建、添加照片并标记人物' },
-  settingsGettingStartedHint: { en: 'Walks you through creating a trip, adding photos to it, and tagging the people in them.', fr: 'Vous guide pour créer un voyage, y ajouter des photos et identifier les personnes.', de: 'Führt Sie durch das Anlegen einer Reise, das Hinzufügen von Fotos und das Markieren von Personen.', es: 'Te guía para crear un viaje, añadirle fotos y etiquetar a las personas.', zh: '引导你创建旅程、添加照片并标记其中的人物。' },
+  settingsGettingStartedTitle: { en: 'Add photos, then sort them with Guided Sort, with the guide explaining each step again', fr: 'Ajouter des photos, puis les trier avec le Tri guidé, le guide réexpliquant chaque étape', de: 'Fotos hinzufügen und mit Geführtem Sortieren ordnen, die Anleitung erklärt jeden Schritt erneut', es: 'Añadir fotos y ordenarlas con el Orden guiado, con la guía explicando de nuevo cada paso', zh: '添加照片,再用引导整理来整理,指南会重新讲解每一步' },
+  settingsGettingStartedHint: { en: 'Add photos, then sort them with Guided Sort. The guide explains each step again.', fr: 'Ajoutez des photos, puis triez-les avec le Tri guidé. Le guide réexplique chaque étape.', de: 'Fotos hinzufügen und mit Geführtem Sortieren ordnen. Die Anleitung erklärt jeden Schritt erneut.', es: 'Añade fotos y ordénalas con el Orden guiado. La guía vuelve a explicar cada paso.', zh: '添加照片,再用引导整理来整理。指南会重新讲解每一步。' },
   settingsViewBackups: { en: '🗄️ View Backups', fr: '🗄️ Voir les sauvegardes', de: '🗄️ Sicherungen anzeigen', es: '🗄️ Ver copias de seguridad', zh: '🗄️ 查看备份' },
   settingsViewBackupsTitle: { en: 'View and restore backups', fr: 'Voir et restaurer les sauvegardes', de: 'Sicherungen anzeigen und wiederherstellen', es: 'Ver y restaurar copias de seguridad', zh: '查看并恢复备份' },
   settingsHiddenSections: { en: 'Hidden sidebar sections', fr: 'Sections masquées de la barre latérale', de: 'Ausgeblendete Seitenleistenbereiche', es: 'Secciones ocultas de la barra lateral', zh: '隐藏的侧边栏分区' },
@@ -712,8 +574,6 @@ const I18N = {
   flStartOver: { en: '↺ Start over', fr: '↺ Recommencer', de: '↺ Von vorn', es: '↺ Empezar de nuevo', zh: '↺ 从头开始' },
   flOpenBin: { en: 'Open the Bin', fr: 'Ouvrir la Corbeille', de: 'Papierkorb öffnen', es: 'Abrir la Papelera', zh: '打开回收站' },
   flBack: { en: 'Back to the folder', fr: 'Retour au dossier', de: 'Zurück zum Ordner', es: 'Volver a la carpeta', zh: '返回文件夹' },
-  frFirstFlickBody: { en: v => `Flick through <strong>${v.name}</strong>: scroll to move on, double-click what you love, swipe away the rest.`, fr: v => `Parcourez <strong>${v.name}</strong> : faites défiler pour avancer, double-cliquez sur ce que vous aimez, balayez le reste.`, de: v => `Blättern Sie durch <strong>${v.name}</strong>: scrollen zum Weitergehen, Doppelklick auf das, was Sie lieben, den Rest wegwischen.`, es: v => `Recorre <strong>${v.name}</strong>: desplázate para avanzar, doble clic en lo que te encanta y desliza el resto.`, zh: v => `快速浏览 <strong>${v.name}</strong>:滚动前进,双击喜欢的,其余的滑走。` },
-  frFirstFlickBtn: { en: '▶ Flick through my trip', fr: '▶ Parcourir mon voyage', de: '▶ Meine Reise durchblättern', es: '▶ Recorrer mi viaje', zh: '▶ 浏览我的旅行' },
 
   // Bin (bin.js)
   binTitle: { en: 'Bin', fr: 'Corbeille', de: 'Papierkorb', es: 'Papelera', zh: '回收站' },
@@ -2440,6 +2300,14 @@ async function init() {
     appData.editedCategorySeeded = true;
     await window.api.saveData(appData);
   }
+  // v10: the guide through Guided Sort (gsCoachForStep) and the rating asked at its end are for
+  // new libraries - one that already has photos in it has been sorted before, and was asked for
+  // a rating by the old first-run wizard.
+  if (appData.gsCoachDone === undefined) {
+    appData.gsCoachDone = appData.files.length > 0;
+    if (appData.ratingAsked === undefined) appData.ratingAsked = appData.files.length > 0;
+    await window.api.saveData(appData);
+  }
   initThumbObserver();
   renderSidebar();
   // Startup always shows the Photo Library (main page)
@@ -4068,13 +3936,6 @@ function setupLasso() {
     document.getElementById('gsBody'), 'gsLasso',
     '.file-card,.gs-preview-btn,.gs-chip,.gs-choice,.gs-pick-card,.gs-match-card,.gs-note,button,a,input'
   );
-  // First-run wizard grids (Add Files/People/Categories) - #frBody is reused across every
-  // step (including forms with no grid at all), so the exclude list is broader than Guided
-  // Sort's to keep drag-select from swallowing clicks/typing on inputs, buttons and swatches.
-  attachLasso(
-    document.getElementById('frBody'), 'frLasso',
-    '.file-card,.gs-preview-btn,.gs-chip,input,button,.color-swatch'
-  );
 }
 
 // ── FILE CONTEXT MENU ─────────────────────────────────────────────────────────
@@ -5601,7 +5462,6 @@ function setupDragDrop() {
     // otherwise silently land in whatever folder is behind it instead of the wizard's batch.
     if (frOpen) {
       if (frStep === 'addfiles') await frHandleDrop(e);
-      else toast('Go back to "Add files" in the wizard to drop more in');
       return;
     }
     const files = Array.from(e.dataTransfer.files);
@@ -5718,7 +5578,6 @@ function toggleGlobe() {
       if (gsStep === 'location') gsStep = 'done';
     }
     if (gsOpen) { clearSelection(); document.getElementById('guidedSort').classList.add('open'); renderGuidedSortStep(); }
-    frResumeWizardIfPending();
   }
 }
 
@@ -7930,7 +7789,6 @@ function closeDupMode() {
   dupScanToken++; // stale scan callbacks bail out as soon as they check this
   document.getElementById('dupMode').classList.remove('open');
   document.getElementById('deleteConfirm').classList.remove('open');
-  frResumeWizardIfPending();
 }
 
 async function scanForDuplicates() {
@@ -9321,6 +9179,8 @@ function exitGuidedSort() {
   gsActiveTarget = null;
   clearSelection();
   document.getElementById('guidedSort').classList.remove('open');
+  coachHide();
+  if (gsCoachRunDone) { gsCoachRunDone = false; frAskRatingOnce(); } // the first guided sort, seen through
 }
 function gsFiles() {
   return gsBatch.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
@@ -9395,6 +9255,7 @@ function renderGuidedSortStep() {
   else if (gsStep === 'camera') renderGsCameraStep();
   else if (gsStep === 'location') renderGsLocationStep();
   else renderGsDoneStep();
+  gsCoachForStep();
 }
 
 // Cards behave as a plain add/remove-from-selection checklist (no ctrl/shift
@@ -9463,14 +9324,12 @@ function gsRenderGrid(files) {
   return wrap;
 }
 
-let gsNamePromptContext = 'guided'; // 'guided' | 'firstrun' - which wizard's tag/re-render functions to call on submit
 // The Folders step's "+" (new subfolder) reuses the same prompt, and remembers the parent here.
 let gsNamePromptParentId = null;
-function gsOpenNamePrompt(kind, context) {
+function gsOpenNamePrompt(kind) {
   gsNamePromptKind = kind;
-  gsNamePromptContext = context || 'guided';
-  const titles = { person: 'New person', camera: 'New camera', trip: 'New trip', adventure: 'New adventure', category: 'New category', folder: 'New folder' };
-  const placeholders = { person: 'Their name…', camera: 'Camera name…', trip: 'Trip name…', adventure: 'Adventure name… (e.g. Ridge trek)', category: 'Category name…', folder: 'Folder name…' };
+  const titles = { person: 'New person', camera: 'New camera', trip: 'New trip', adventure: 'New adventure', folder: 'New folder' };
+  const placeholders = { person: 'Their name…', camera: 'Camera name…', trip: 'Trip name…', adventure: 'Adventure name… (e.g. Ridge trek)', folder: 'Folder name…' };
   const parent = kind === 'folder' && gsNamePromptParentId ? appData.folders.find(f => f.id === gsNamePromptParentId) : null;
   document.getElementById('gsNameTitle').textContent = parent ? `New folder in ${parent.name}` : titles[kind];
   const input = document.getElementById('gsNameInput');
@@ -9515,12 +9374,9 @@ async function gsSubmitNamePrompt() {
   if (!name) return;
   document.getElementById('gsNameModal').classList.remove('open');
   const kind = gsNamePromptKind;
-  const context = gsNamePromptContext;
   gsNamePromptKind = null;
-  const wizard = context === 'firstrun';
   if (kind === 'person') {
     const folder = getOrCreatePersonFolder(name);
-    if (wizard) { frTagSelectedToPerson(folder.id, folder.name); return; }
     if (!(await gsFileSelectionInto(folder.id))) { gsActiveTarget = folder.id; await saveData(); }
     renderGsPeopleChipsAndCards();
   } else if (kind === 'camera') {
@@ -9535,9 +9391,6 @@ async function gsSubmitNamePrompt() {
     await saveData();
     toast(`${kind === 'trip' ? '✈️' : '🧭'} "${folder.name}" created`);
     renderGuidedSortStep();
-  } else if (kind === 'category') {
-    const folder = getOrCreateCategoryFolder(name);
-    if (wizard) frTagSelectedToCategory(folder.id, folder.name);
   } else if (kind === 'folder') {
     const parentId = gsNamePromptParentId;
     gsNamePromptParentId = null;
@@ -9561,8 +9414,8 @@ async function gsSubmitNamePrompt() {
 const GS_TRIP_CLUSTER_GAP_MS = 48 * 60 * 60 * 1000; // 2+ days between consecutive photos starts a new cluster
 const GS_TRIP_CLUSTER_SLACK_MS = 36 * 60 * 60 * 1000; // slack around a trip's stored date range, for timezone/EXIF drift
 
-// Shared with the first-run wizard's "is this a trip?" step (frRenderTripAsk) - takes any array
-// of file ids and splits them where there's a multi-day gap, matching each group to a trip.
+// Takes any array of file ids and splits them where there's a multi-day gap, matching each
+// group to a trip.
 function buildDateClusters(fileIds) {
   const dated = fileIds.map(id => appData.files.find(f => f.id === id)).filter(f => f?.fileDate).sort((a, b) => a.fileDate - b.fileDate);
   if (!dated.length) return [];
@@ -9776,7 +9629,7 @@ function renderGsDatesStep() {
     if (!t) return '';
     return m.undone
       ? `<div class="gs-match-card undone"><span>↩ Undone - ${m.fileIds.length} photo${m.fileIds.length !== 1 ? 's' : ''} taken out of ${esc(t.name)}</span><button class="gs-link-btn" onclick="gsRedoDateMatch(${i})">Redo</button></div>`
-      : `<div class="gs-match-card"><span class="gs-match-icon">${folderIconHtml(t)}</span><span><b>${m.fileIds.length} photo${m.fileIds.length !== 1 ? 's' : ''}</b> fit ${esc(t.name)}'s dates (${esc(gsTripLikeDatesLabel(t))}) and were added.</span><button class="gs-link-btn" onclick="gsUndoDateMatch(${i})">Undo</button></div>`;
+      : `<div class="gs-match-card"><span class="gs-match-icon">${folderIconHtml(t)}</span><span>${m.fileIds.length !== 1 ? `${m.fileIds.length} photos fit` : '1 photo fits'} ${esc(t.name)}'s dates (${esc(gsTripLikeDatesLabel(t))}) and ${m.fileIds.length !== 1 ? 'were' : 'was'} added.</span><button class="gs-link-btn" onclick="gsUndoDateMatch(${i})">Undo</button></div>`;
   }).join('');
   const undatedNote = undated.length
     ? `<div class="gs-note">📅 ${undated.map(t => `<b>${esc(t.name)}</b>`).join(', ')} ${undated.length === 1 ? 'has' : 'have'} no dates, so nothing could be matched automatically. Select the photos below and use <i>Add to trip or adventure…</i>, or add dates to it from the sidebar (right-click › Customize) for next time.</div>`
@@ -10023,10 +9876,16 @@ function gsFacesChanged() {
   if (!gsOpen || gsStep !== 'people' || gsFaceSuggestTimer) return;
   gsFaceSuggestTimer = setTimeout(() => { gsFaceSuggestTimer = null; if (gsOpen && gsStep === 'people') renderGsPeopleChipsAndCards(); }, 800);
 }
+// Photos with someone in them still to name come first, then photos not looked at yet, then the
+// rest (no face found, videos) - so the people to sort are always at the top of the grid.
 function gsPeopleVisible(files) {
   if (typeof faceBatchPhotoState !== 'function' || !faceRecognitionEnabled() || !faceStore) return files;
   const byPhoto = faceByPhoto(new Set(files.map(f => f.id)));
-  return files.filter(f => faceBatchPhotoState(f, byPhoto) !== 'done');
+  const rank = (f, s) => s === 'open' ? 0 : s === 'unscanned' && isImg(f.ext) ? 1 : 2;
+  return files.map(f => ({ f, s: faceBatchPhotoState(f, byPhoto) }))
+    .filter(x => x.s !== 'done')
+    .sort((a, b) => rank(a.f, a.s) - rank(b.f, b.s))
+    .map(x => x.f);
 }
 // Rebuilds the grid when the photos it should show have changed - but never mid-paint, where a
 // photo vanishing under the pointer would make a mis-click impossible to take back.
@@ -10076,10 +9935,10 @@ function gsRenderFaceSuggestions() {
     const n = new Set(faces.map(f => f.f)).size;
     return `<div class="gs-face-card" onmouseenter="gsFaceHint('${person.id}', true)" onmouseleave="gsFaceHint('${person.id}', false)">
       <div class="gs-face-who"><span class="gs-face-pic"${pic ? ` style="background-image:url('${pic}')"` : ''}></span><span><b>${esc(person.name)}</b> is probably in ${n} of these photos</span></div>
-      <div class="gs-face-crops">${shown.map(f => `<span class="gs-face-crop" data-face="${f.id}" title="Not ${esc(person.name)}? Click to take this one out" onclick="gsFaceDrop('${person.id}', '${f.id}')"><i>✕</i></span>`).join('')}${faces.length > shown.length ? `<span class="gs-face-more">+${faces.length - shown.length}</span>` : ''}</div>
+      <div class="gs-face-crops">${shown.map(f => `<span class="gs-face-crop" data-face="${f.id}" title="See this face in its photo"><button class="gs-face-x" title="Not ${esc(person.name)}? Take this one out" onclick="gsFaceDrop('${person.id}', '${f.id}')">✕</button></span>`).join('')}${faces.length > shown.length ? `<span class="gs-face-more">+${faces.length - shown.length}</span>` : ''}</div>
       <div class="gs-face-actions">
         <button class="gs-chip gs-chip-primary" onclick="gsFaceAccept('${person.id}')">${n === 1 ? 'Add it' : `Add all ${n}`} to ${esc(person.name)}</button>
-        <button class="gs-chip" onclick="gsFaceRejectAll('${person.id}')">Not ${esc(person.name)}</button>
+        <button class="gs-chip" onclick="gsFaceRejectAll('${person.id}')">${t('gsNotPerson', { name: esc(person.name) })}</button>
       </div></div>`;
   }).join('');
   // The known people first; the unknown faces once they're settled and the scan has caught up.
@@ -10092,8 +9951,8 @@ function gsRenderFaceSuggestions() {
       const n = g.fileIds.length;
       const names = facePeopleFolders().map(p => `<option value="${esc(p.name)}">`).join('');
       html += `<div class="gs-face-card" onmouseenter="gsFaceHint(null, true)" onmouseleave="gsFaceHint(null, false)">
-        <div class="gs-face-who"><span class="gs-face-pic" data-face="${g.faces[0].id}"></span><span><b>Who is this?</b> In ${n} of these photos${groups.length > 1 ? ` · ${groups.length - 1} more to ask about` : ''}</span></div>
-        <div class="gs-face-crops">${shown.slice(1).map(f => `<span class="gs-face-crop" data-face="${f.id}" title="Not the same person? Click to take this one out" onclick="gsFaceAskDrop('${f.id}')"><i>✕</i></span>`).join('')}${g.faces.length > shown.length ? `<span class="gs-face-more">+${g.faces.length - shown.length}</span>` : ''}</div>
+        <div class="gs-face-who"><span class="gs-face-pic" data-face="${g.faces[0].id}" title="See this face in its photo"></span><span><b>Who is this?</b> In ${n} of these photos${groups.length > 1 ? ` · ${groups.length - 1} more to ask about` : ''}</span></div>
+        <div class="gs-face-crops">${shown.slice(1).map(f => `<span class="gs-face-crop" data-face="${f.id}" title="See this face in its photo"><button class="gs-face-x" title="Not the same person? Take this one out" onclick="gsFaceAskDrop('${f.id}')">✕</button></span>`).join('')}${g.faces.length > shown.length ? `<span class="gs-face-more">+${g.faces.length - shown.length}</span>` : ''}</div>
         <div class="gs-face-actions">
           <input id="gsFaceName" class="gs-face-name" list="gsFacePeople" placeholder="Their name…" onkeydown="if (event.key === 'Enter') gsFaceName()">
           <datalist id="gsFacePeople">${names}</datalist>
@@ -10737,78 +10596,129 @@ function showOneTimeTip(key, message) {
   setTimeout(() => el.remove(), 12000);
 }
 
+// ── THE GUIDE ────────────────────────────────────────────────────────────────
+// One small card explaining the screen under it: To Sort right after the first-run wizard
+// (coachToSort), then each Guided Sort step the first time it opens (gsCoachForStep), with the
+// way of doing it that pays off most later. Fixed in the bottom corner, above Guided Sort and
+// the Globe, never in the way of what's under it; "Got it" puts it away.
+let coachKey = null; // what the card is showing, so a re-render of the same screen leaves it be
+function coachShow(key, { icon, title, body, actions, topRight = false }) {
+  const el = document.getElementById('coach');
+  if (!el) return;
+  coachKey = key;
+  el.classList.toggle('coach-top-right', topRight);
+  el.style.left = topRight ? 'auto' : (document.getElementById('sidebar')?.getBoundingClientRect().right || 0) + 20 + 'px';
+  el.innerHTML = `<div class="coach-head"><span class="coach-icon">${icon}</span><b>${title}</b></div>
+    <div class="coach-body">${body}</div><div class="coach-actions"></div>`;
+  const row = el.querySelector('.coach-actions');
+  for (const a of actions) {
+    const b = document.createElement(a.link ? 'a' : 'button');
+    b.className = a.link ? 'coach-link' : 'coach-btn' + (a.primary ? ' coach-btn-primary' : '');
+    b.textContent = a.label;
+    b.onclick = a.onclick;
+    row.appendChild(b);
+  }
+  el.classList.add('open');
+}
+function coachHide() {
+  coachKey = null;
+  document.getElementById('coach')?.classList.remove('open');
+}
+function coachToSort() {
+  const n = appData.files.filter(f => f.toSort && !f.isLivePhotoVideo).length;
+  if (!n) return;
+  coachShow('tosort', {
+    icon: '📥', title: t('coachToSortTitle', { n }), body: t('coachToSortBody'),
+    actions: [
+      { label: t('coachToSortGuided'), primary: true, onclick: () => { coachHide(); enterGuidedSort(); } },
+      { label: t('coachToSortByHand'), onclick: coachHide }
+    ]
+  });
+}
+
+// Until one Guided Sort has been seen through to its end (appData.gsCoachDone), each step explains
+// itself the first time it opens (appData.gsCoachSeen). Settings' "Getting Started" starts it over.
+const GS_COACH = {
+  start: { icon: '🧭', title: 'coachStartTitle', body: 'coachStartBody' },
+  pick: { icon: '✈️', title: 'coachPickTitle', body: 'coachPickBody' },
+  dates: { icon: '📅', title: 'coachDatesTitle', body: 'coachDatesBody' },
+  folders: { icon: '📁', title: 'coachFoldersTitle', body: 'coachFoldersBody' },
+  content: { icon: '🧠', title: 'coachContentTitle', body: 'coachContentBody' },
+  camera: { icon: '📷', title: 'coachCameraTitle', body: 'coachCameraBody' },
+  location: { icon: '📍', title: 'coachLocationTitle', body: 'coachLocationBody' },
+  done: { icon: '🎉', title: 'coachDoneTitle', body: 'coachDoneBody' }
+};
+let gsCoachRunDone = false; // this run reached the end with the guide on - see exitGuidedSort
+function gsCoachReset() { appData.gsCoachDone = false; appData.gsCoachSeen = []; saveData(); }
+function gsCoachGotIt(step) {
+  appData.gsCoachSeen = [...new Set([...(appData.gsCoachSeen || []), step])];
+  saveData();
+  coachHide();
+}
+function gsCoachStop() { appData.gsCoachDone = true; saveData(); coachHide(); }
+function gsCoachForStep() {
+  const step = gsStep;
+  // People has two versions: face recognition off (turn it on - it's what makes the step quick)
+  // and on (how to use what it found).
+  const facesOn = step === 'people' && typeof faceRecognitionEnabled === 'function' && faceRecognitionEnabled();
+  const key = 'gs:' + step + (facesOn ? ':on' : '');
+  if (coachKey === key) return; // already up - a re-render within the same step
+  if (appData.gsCoachDone || (appData.gsCoachSeen || []).includes(step)) { coachHide(); return; }
+  const c = step === 'people'
+    ? { icon: '🧑', title: facesOn ? 'coachPeopleOnTitle' : 'coachPeopleTitle', body: facesOn ? 'coachPeopleOn' : 'coachPeopleOff' }
+    : GS_COACH[step];
+  if (!c) { coachHide(); return; }
+  const actions = step === 'people' && !facesOn
+    ? [{ label: t('coachFacesOn'), primary: true, onclick: async () => { await gsTurnOnFaces(); gsCoachForStep(); } },
+       { label: t('coachGotIt'), onclick: () => gsCoachGotIt(step) }]
+    : [{ label: t('coachGotIt'), primary: true, onclick: () => gsCoachGotIt(step) }];
+  if (step !== 'done') actions.push({ label: t('coachHide'), link: true, onclick: gsCoachStop });
+  coachShow(key, { icon: c.icon, title: t(c.title), body: t(c.body), actions, topRight: step === 'location' });
+  if (step === 'done') { appData.gsCoachDone = true; gsCoachRunDone = true; saveData(); }
+}
+
 // ── FIRST-RUN WIZARD ─────────────────────────────────────────────────────────
 // Fires once, automatically, on a genuinely fresh install (appData.files.length === 0 in
-// init()) - and any time after that from the sidebar's "Getting Started" button. Unlike
-// Guided Sort (which sorts an existing toSort backlog), this one drives the files IN: it
-// doesn't presume a trip up front (not everyone's first import is travel photos - could just
-// be this summer's phone dump), so it asks "add files" first and only asks about a trip once
-// there's something to ask about. Reuses Guided Sort's chip-row + multi-select grid pattern
-// (gsRenderGrid/gsAppendCards, gsBarUpdater, gsOpenNamePrompt) rather than duplicating it.
+// init()) - and any time after that from Settings' "Getting Started". Deliberately short: a
+// language, the photos, and then the real To Sort folder, where the guide (coachToSort) points
+// to Guided Sort and explains each of its steps as they open. The wizard only brings the files
+// in; sorting them is Guided Sort's job, so there's no second, smaller copy of it in here. The
+// rating screens are its last use: frAskRatingOnce, after the first guided sort is done.
 let frOpen = false;
-let frStep = 'welcome'; // 'language' | 'welcome' | 'goal' | 'size' | 'addfiles' | 'tripask' | 'tripcreate' | 'people' | 'categories' | 'tourIntro' | 'tourGlobe' | 'tourEditor' | 'tourDuplicate' | 'unlock' | 'rating' | 'ratingThanksGithub' | 'ratingFeedback' | 'done'
-let frBatch = []; // every file id added during this wizard session - the full set that flows through People/Categories/Done, never narrowed by the trip sub-loop below
-let frTripQueue = []; // files still awaiting a trip decision, working subset of frBatch - see frGoToTripAsk/frSubmitTripCreate
-let frTripAskFollowup = false; // true when frRenderTripAsk is re-asking about leftovers from a date range that didn't cover the whole queue
-let frCurrentTripId = null; // most recently created trip, or null if the user said "just everyday photos"
-let frTripsThisSession = []; // {id,name,icon,count} for every trip created this session - a batch can span more than one, see frSubmitTripCreate
-// Goal/size answers only steer THIS session's tour order and copy tone - never persisted, since
-// the "Getting Started" sidebar re-open path skips straight to addfiles and never asks either.
-let frGoal = null; // null | 'organize' | 'cleanup' | 'browse'
-let frGoalSub = null; // null | 'dupes' | 'edited' | 'both' - only set when frGoal === 'cleanup'
-let frLibrarySize = null; // null | 'quick' | 'thousands' | 'backlog' - pacing/reassurance copy only
-const FR_IMPORT_CAP = 20; // hard cap on how many of this session's files flow into the interactive walkthrough - see frAddProcessedFiles
-let frDeferredIds = []; // ids pushed to appData.files (toSort:true) beyond the cap, hidden from every tagging grid until the 'unlock' step reveals them
-let frTourOrder = []; // ['globe','editor','duplicate'] reordered by frGoal and pruned of demos with nothing to show, built once by frBuildTourOrder()
-let frTourIndex = 0;
-let frDupDemoFileId = null; // the demo-copy file's id, set once frRunTourDuplicate() creates it
-let frPendingResumeStep = null; // non-null while the Globe/Editor/Find Duplicates is showing over a hidden-but-still-open wizard - see frPauseWizard/frResumeWizardIfPending
+let frStep = 'welcome'; // 'language' | 'welcome' | 'addfiles' | 'rating' | 'ratingThanksGithub' | 'ratingFeedback'
+let frBatch = []; // every file id added during this wizard session, for the Add Files step's count and preview
+let frBusy = false; // a folder is being read - can take a while for a big one
 let frRatingStars = null; // 0-5, transient per rating attempt
-let frExtrasShownThisSession = false; // true once the tour/unlock/rating have been shown - guards a later "Add another trip" pass from re-showing them
 const FR_GITHUB_URL = 'https://github.com/Gilouloum/Trove';
-const FR_STEP_PCT = { language: 0, welcome: 2, goal: 6, size: 11, addfiles: 18, tripask: 30, tripcreate: 40, people: 50, categories: 58, orientation: 64, tourIntro: 69, tourGlobe: 76, tourEditor: 83, tourDuplicate: 90, unlock: 94, rating: 96, ratingThanksGithub: 98, ratingFeedback: 98, done: 100 };
+const FR_STEP_PCT = { language: 0, welcome: 20, addfiles: 60, rating: 90, ratingThanksGithub: 100, ratingFeedback: 100 };
+const FR_PREVIEW_MAX = 40; // thumbnails on the Add Files step - the count covers the rest
 
-// isFirstLaunch: true for the automatic open on an empty install (starts at Welcome); false
-// for the persistent "Getting Started" sidebar button, which jumps straight to Add Files -
-// a returning user already knows what the app does and may not have a trip at all.
+// isFirstLaunch: true for the automatic open on an empty install (starts at the language step);
+// false for Settings' "Getting Started", which goes straight to Add Files and replays the guide.
 function openFirstRunWizard(isFirstLaunch) {
-  frOpen = true;
   frBatch = [];
-  frTripQueue = [];
-  frTripAskFollowup = false;
-  frCurrentTripId = null;
-  frTripsThisSession = [];
-  frTagScopes = [];
-  frTagScopeIndex = 0;
-  frGoal = null;
-  frGoalSub = null;
-  frLibrarySize = null;
-  frDeferredIds = [];
-  frTourOrder = [];
-  frTourIndex = 0;
-  frDupDemoFileId = null;
-  frPendingResumeStep = null;
-  frRatingStars = null;
-  frExtrasShownThisSession = false;
-  frStep = isFirstLaunch ? 'language' : 'addfiles';
+  if (!isFirstLaunch) gsCoachReset();
+  frShow(isFirstLaunch ? 'language' : 'addfiles');
+}
+function frShow(step) {
+  frOpen = true;
+  frStep = step;
   clearSelection();
   document.getElementById('sidebar')?.classList.add('wizard-dimmed');
   document.getElementById('firstRunWizard').classList.add('open');
   frRender();
 }
-async function frFinish(navigate) {
+async function frFinish() {
   appData.onboardingCompleted = true;
-  const tripId = frCurrentTripId;
   await saveData();
   document.getElementById('firstRunWizard').classList.remove('open');
   document.getElementById('sidebar')?.classList.remove('wizard-dimmed');
   frOpen = false;
   clearSelection();
-  if (navigate) selectFolder(tripId || 'timeline');
-  else renderSidebar();
+  renderSidebar();
 }
-function frClose() { frFinish(false); }
-function frSkipAll() { frFinish(false); }
+function frClose() { frFinish(); }
+function frSkipAll() { frFinish(); }
 function frAdvance(step) {
   frStep = step;
   clearSelection();
@@ -10819,27 +10729,15 @@ function frRender() {
   if (fill) fill.style.width = (FR_STEP_PCT[frStep] ?? 0) + '%';
   if (frStep === 'language') frRenderLanguage();
   else if (frStep === 'welcome') frRenderWelcome();
-  else if (frStep === 'goal') frRenderGoal();
-  else if (frStep === 'size') frRenderSize();
   else if (frStep === 'addfiles') frRenderAddFiles();
-  else if (frStep === 'tripask') frRenderTripAsk();
-  else if (frStep === 'tripcreate') frRenderTripCreate();
-  else if (frStep === 'people') frRenderPeopleStep();
-  else if (frStep === 'categories') frRenderCategoriesStep();
-  else if (frStep === 'orientation') frRenderOrientation();
-  else if (frStep === 'tourIntro') frRenderTourIntro();
-  else if (frStep === 'tourGlobe' || frStep === 'tourEditor' || frStep === 'tourDuplicate') frRenderTourStepIntro();
-  else if (frStep === 'unlock') frRenderUnlockStep();
   else if (frStep === 'rating') frRenderRatingStep();
   else if (frStep === 'ratingThanksGithub') frRenderRatingThanksStep();
-  else if (frStep === 'ratingFeedback') frRenderRatingFeedbackStep();
-  else frRenderDoneStep();
+  else frRenderRatingFeedbackStep();
 }
 
-// Shown once, first, only on a fresh install (isFirstLaunch) - the "Getting Started" sidebar
-// re-open path skips straight to addfiles and never revisits this. Picking a language here
-// applies it immediately (setLanguage() re-renders #frBody/#frBar too), so every following
-// step - and the rest of the app - already reflects the choice by the time Welcome shows.
+// Shown once, first, only on a fresh install. Picking a language applies it immediately
+// (setLanguage() re-renders #frBody/#frBar too), so every following step - and the rest of
+// the app - already reflects the choice by the time Welcome shows.
 function frRenderLanguage() {
   document.getElementById('frBody').innerHTML = `
     <div class="fr-hero">
@@ -10869,134 +10767,68 @@ function frRenderWelcome() {
   document.getElementById('frBar').innerHTML = `
     <span class="gs-bar-info"></span>
     <button class="dump-banner-btn" onclick="frSkipAll()">${t('frWelcomeSkip')}</button>
-    <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frAdvance('goal')">${t('frWelcomeGo')}</button>`;
-}
-
-// ── Goal / library size questions ────────────────────────────────────────────
-// Branches purely steer the hands-on tour's order and a little pacing copy - nobody is ever
-// fully denied a feature based on the answer, see frBuildTourOrder().
-const FR_GOALS = [
-  { key: 'organize', icon: '🗂️', labelKey: 'frGoalOrganize' },
-  { key: 'cleanup', icon: '🧹', labelKey: 'frGoalCleanup' },
-  { key: 'browse', icon: '🌍', labelKey: 'frGoalBrowse' }
-];
-const FR_GOAL_SUBS = [
-  { key: 'dupes', labelKey: 'frGoalSubDupes' },
-  { key: 'edited', labelKey: 'frGoalSubEdited' },
-  { key: 'both', labelKey: 'frGoalSubBoth' }
-];
-function frRenderGoal() {
-  document.getElementById('frBody').innerHTML = `
-    <div class="fr-hero">
-      <div class="fr-hero-icon">🧭</div>
-      <div class="gs-intro" style="max-width:460px"><strong>${t('frGoalTitle')}</strong><br>${t('frGoalSub')}</div>
-      <div class="fr-choice-row" id="frGoalChoices"></div>
-      <div id="frGoalFollowup"></div>
-    </div>`;
-  const row = document.getElementById('frGoalChoices');
-  FR_GOALS.forEach(g => {
-    const btn = document.createElement('button');
-    btn.className = 'fr-choice-btn' + (frGoal === g.key ? ' selected' : '');
-    btn.textContent = `${g.icon} ${t(g.labelKey)}`;
-    btn.onclick = () => frPickGoal(g.key);
-    row.appendChild(btn);
-  });
-  frRenderGoalFollowup();
-  document.getElementById('frBar').innerHTML = `
-    <span class="gs-bar-info"></span>
-    <button class="dump-banner-btn dump-sort-btn fr-cta" ${frGoal ? '' : 'disabled'} onclick="frGoalContinue()">${t('continueArrow')}</button>`;
-}
-function frPickGoal(key) {
-  frGoal = key;
-  if (key !== 'cleanup') frGoalSub = null;
-  frRenderGoal();
-}
-function frRenderGoalFollowup() {
-  const el = document.getElementById('frGoalFollowup');
-  if (!el) return;
-  if (frGoal !== 'cleanup') { el.innerHTML = ''; return; }
-  el.innerHTML = `
-    <div class="fr-goal-followup">
-      <div class="gs-intro" style="max-width:420px;margin-bottom:10px"><strong>${t('frGoalFollowupTitle')}</strong></div>
-      <div class="fr-choice-row" id="frGoalSubChoices"></div>
-    </div>`;
-  const row = document.getElementById('frGoalSubChoices');
-  FR_GOAL_SUBS.forEach(s => {
-    const btn = document.createElement('button');
-    btn.className = 'fr-choice-btn' + (frGoalSub === s.key ? ' selected' : '');
-    btn.textContent = t(s.labelKey);
-    btn.onclick = () => { frGoalSub = s.key; frRenderGoalFollowup(); };
-    row.appendChild(btn);
-  });
-}
-function frGoalContinue() {
-  if (!frGoal) return;
-  if (frGoal === 'cleanup' && !frGoalSub) frGoalSub = 'both'; // silently defaults rather than blocking on a sub-choice nobody's forced to make
-  frAdvance('size');
-}
-const FR_SIZES = [
-  { key: 'quick', icon: '📷', labelKey: 'frSizeQuick' },
-  { key: 'thousands', icon: '🗃️', labelKey: 'frSizeThousands' },
-  { key: 'backlog', icon: '📦', labelKey: 'frSizeBacklog' }
-];
-function frRenderSize() {
-  document.getElementById('frBody').innerHTML = `
-    <div class="fr-hero">
-      <div class="fr-hero-icon">📊</div>
-      <div class="gs-intro" style="max-width:420px"><strong>${t('frSizeTitle')}</strong></div>
-      <div class="fr-choice-row" id="frSizeChoices"></div>
-    </div>`;
-  const row = document.getElementById('frSizeChoices');
-  FR_SIZES.forEach(s => {
-    const btn = document.createElement('button');
-    btn.className = 'fr-choice-btn';
-    btn.textContent = `${s.icon} ${t(s.labelKey)}`;
-    btn.onclick = () => frPickSize(s.key);
-    row.appendChild(btn);
-  });
-  document.getElementById('frBar').innerHTML = `<span class="gs-bar-info"></span>`;
-}
-function frPickSize(key) {
-  frLibrarySize = key;
-  frAdvance('addfiles');
+    <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frAdvance('addfiles')">${t('frWelcomeGo')}</button>`;
 }
 
 // ── Add files step ───────────────────────────────────────────────────────────
+// No limit on how much comes in: everything goes to To Sort, like any other import. The step
+// only shows the count and a strip of what was just added, not a grid to work in.
 function frRenderAddFiles() {
   const files = frBatch.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
-  const backlogTip = frLibrarySize === 'backlog'
-    ? t('frAddFilesTipBacklog', { cap: FR_IMPORT_CAP })
-    : t('frAddFilesTipDefault');
   const body = document.getElementById('frBody');
   body.innerHTML = `
-    <div id="frLasso" class="lasso"></div>
-    <div class="gs-intro">${t('frAddFilesIntro', { tip: backlogTip })}</div>
-    <div class="fr-dropzone" id="frDropzone" onclick="frPickFiles()">
-      <div class="fr-dropzone-icon">📥</div>
+    <div class="gs-intro">${t('frAddFilesIntro', { tip: t('frAddFilesTipDefault') })}</div>
+    <div class="fr-dropzone${frBusy ? ' fr-busy' : ''}" id="frDropzone">
+      ${frBusy
+        ? `<div class="dup-spinner"></div><div>${t('frReadingFolder')}</div>`
+        : `<div class="fr-dropzone-icon">📥</div>
       <div>${t('frDropzoneText')}</div>
+      <div class="fr-choice-row">
+        <button class="fr-choice-btn fr-choice-primary" onclick="frPickFolder()">📁 ${t('frPickFolder')}</button>
+        <button class="fr-choice-btn" onclick="frPickFiles()">🖼️ ${t('frPickFiles')}</button>
+      </div>`}
     </div>
-    ${frDeferredIds.length ? `<div class="fr-cap-note">${t('frCapNote', { cap: FR_IMPORT_CAP, n: frDeferredIds.length })}</div>` : ''}
-    <div id="frAddFilesGrid"></div>`;
-  if (files.length) body.querySelector('#frAddFilesGrid').appendChild(gsRenderGrid(files));
+    <div class="fr-added-strip" id="frAddedStrip"></div>`;
+  const strip = body.querySelector('#frAddedStrip');
+  files.slice(-FR_PREVIEW_MAX).reverse().forEach(f => {
+    const el = document.createElement('div');
+    el.className = 'file-card-thumb fr-added-thumb' + (isMedia(f.ext) ? ' thumb-loading' : '');
+    el.dataset.thumbFor = f.id;
+    el.innerHTML = `<span class="thumb-icon">${getEmoji(f.ext)}</span>`;
+    strip.appendChild(el);
+    if (isMedia(f.ext)) gsObserveThumb(el);
+  });
+  if (files.length > FR_PREVIEW_MAX) strip.insertAdjacentHTML('beforeend', `<div class="fr-added-more">+${(files.length - FR_PREVIEW_MAX).toLocaleString(uiLocale())}</div>`);
   const dz = document.getElementById('frDropzone');
   dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('fr-drag-over'); });
   dz.addEventListener('dragleave', () => dz.classList.remove('fr-drag-over'));
   dz.addEventListener('drop', e => { e.stopPropagation(); frHandleDrop(e); });
-  const barInfo = frDeferredIds.length
-    ? t('frBarInfoDeferred', { files: files.length, cap: FR_IMPORT_CAP, deferred: frDeferredIds.length })
-    : t('frBarInfoFiles', { n: files.length });
   document.getElementById('frBar').innerHTML = `
-    <span class="gs-bar-info">${barInfo}</span>
-    <button class="dump-banner-btn" onclick="frFinish(false)">${t('frSkipForNow')}</button>
-    <button class="dump-banner-btn dump-sort-btn fr-cta" ${files.length?'':'disabled'} onclick="frGoToTripAsk()">${t('continueArrow')}</button>`;
+    <span class="gs-bar-info">${t('frBarInfoFiles', { n: files.length })}</span>
+    <button class="dump-banner-btn" onclick="frFinish()">${t('frSkipForNow')}</button>
+    <button class="dump-banner-btn dump-sort-btn fr-cta" ${files.length && !frBusy ? '' : 'disabled'} onclick="frGoToToSort()">${t('continueArrow')}</button>`;
 }
-// Starts (or restarts) the trip sub-loop over the current frBatch - frTripQueue is a working
-// copy that shrinks as frSubmitTripCreate resolves date-matched subsets, while frBatch itself
-// stays untouched so People/Categories/Done still see every file added this session.
-function frGoToTripAsk() {
-  frTripQueue = [...frBatch];
-  frTripAskFollowup = false;
-  frAdvance('tripask');
+// Reads folders and/or loose files in, with the drop zone showing it's working meanwhile.
+async function frImport(dirs, paths) {
+  if (frBusy) return;
+  frBusy = true;
+  if (frStep === 'addfiles') frRenderAddFiles();
+  const newFiles = [];
+  try {
+    for (const dir of dirs) {
+      const res = await window.api.processDroppedFolder(dir).catch(() => null);
+      if (res?.files?.length) newFiles.push(...res.files);
+    }
+    if (paths.length) newFiles.push(...await window.api.processDroppedPaths(paths));
+  } finally {
+    frBusy = false;
+  }
+  if (newFiles.length) await frAddProcessedFiles(newFiles);
+  else if (frOpen && frStep === 'addfiles') frRenderAddFiles();
+}
+async function frPickFolder() {
+  const dirs = await window.api.openFolderDialog();
+  if (dirs?.length) await frImport(dirs, []);
 }
 async function frPickFiles() {
   const newFiles = await window.api.openFileDialog();
@@ -11012,460 +10844,39 @@ async function frHandleDrop(e) {
   if (!paths.length) { toast(t('frToastNoPaths')); return; }
   const dirs = [], flat = [];
   for (const p of paths) { if (await window.api.isDirectory(p).catch(() => false)) dirs.push(p); else flat.push(p); }
-  const newFiles = [];
-  for (const dir of dirs) {
-    const res = await window.api.processDroppedFolder(dir).catch(() => null);
-    if (res?.files?.length) newFiles.push(...res.files);
-  }
-  if (flat.length) newFiles.push(...await window.api.processDroppedPaths(flat));
-  await frAddProcessedFiles(newFiles);
+  await frImport(dirs, flat);
 }
 async function frAddProcessedFiles(newFiles) {
-  const toAdd = newFiles.filter(nf => !appData.files.find(f => f.path === nf.path));
-  if (!toAdd.length) { toast(t('frToastAlreadyInLibrary')); return; }
-  // Stays true through the whole wizard, same as a normal dump - the wizard doesn't have its
-  // own camera/location steps (Guided Sort does), and if the user closes the app partway
-  // through tagging, these files must still be sitting in To Sort afterward, not scattered
-  // into the main library half-tagged with no reminder to finish camera/location later.
-  // Cumulative across every pick/drop made during this addfiles visit (frBatch only resets when
-  // the wizard (re)opens) - only the first FR_IMPORT_CAP files ever flow into the interactive
-  // walkthrough; everything past that still lands in appData.files with toSort:true immediately,
-  // just hidden from the tagging grids and revealed later at the 'unlock' step.
-  const room = Math.max(0, FR_IMPORT_CAP - frBatch.length);
-  const forInteractive = toAdd.slice(0, room);
-  const deferred = toAdd.slice(room);
+  const known = new Set(appData.files.map(f => f.path));
+  const toAdd = newFiles.filter(nf => !known.has(nf.path));
+  if (!toAdd.length) { toast(t('frToastAlreadyInLibrary')); if (frOpen && frStep === 'addfiles') frRenderAddFiles(); return; }
+  // toSort, like every other import: the wizard hands them to To Sort and Guided Sort.
   toAdd.forEach(nf => { nf.toSort = true; appData.files.push(nf); });
-  frBatch.push(...forInteractive.map(f => f.id));
-  frDeferredIds.push(...deferred.map(f => f.id));
+  frBatch.push(...toAdd.map(f => f.id));
   await autoCreateCameraFolders(toAdd);
   await saveData();
   queueForIndexing(toAdd);
-  toast(deferred.length
-    ? t('frToastAddedDeferred', { added: forInteractive.length, deferred: deferred.length })
-    : t('frToastAdded', { n: toAdd.length }));
+  toast(t('frToastAdded', { n: toAdd.length }));
   setTimeout(() => geocodeFiles(), 1000);
   if (frOpen && frStep === 'addfiles') frRenderAddFiles();
 }
-
-// ── "Is this a trip?" step ───────────────────────────────────────────────────
-function frRenderTripAsk() {
-  const files = frTripQueue.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
-  const clusters = buildDateClusters(frTripQueue);
-  // Leftovers from a trip just created are often that trip's own photos with a wrong date
-  // (copied from another phone, see guessTripDates) - so they can go straight into it, dates unchanged.
-  const lastTrip = frTripAskFollowup && frTripsThisSession.find(trip => trip.id === frCurrentTripId);
-  const explain = frTripAskFollowup
-    ? t('frTripAskFollowupText', { n: files.length }) + (lastTrip ? t('frTripAskFollowupStray', { n: files.length, name: esc(lastTrip.name) }) : '')
-    : t('frTripAskDefaultText', { n: files.length });
-  // A batch spanning more than one distinct date range (several trips, or trips + everyday
-  // photos mixed together) makes a blind yes/no ambiguous - "yes" only asks for ONE trip's
-  // dates at a time, so show the actual breakdown and say so explicitly, rather than leaving
-  // the user to guess what a single answer covers.
-  const breakdown = clusters.length > 1 ? `
-    <div class="fr-cluster-list">
-      ${clusters.map(c => `<div class="fr-cluster-row"><span>${formatDateRangeShort(c.start, c.end)}</span><span>${t('frClusterRow', { n: c.fileIds.length, match: c.match ? esc(c.match.name) : '' })}</span></div>`).join('')}
-    </div>
-    <div class="gs-intro" style="max-width:460px">${t('frClusterBreakdownIntro', { n: clusters.length })}</div>` : '';
-  document.getElementById('frBody').innerHTML = `
-    <div class="fr-hero">
-      <div class="fr-hero-icon">🏖️</div>
-      <div class="gs-intro" style="max-width:460px"><strong>${t('frTripAskTitle')}</strong><br>${explain}</div>
-      ${breakdown}
-      <div class="fr-choice-row">
-        <button class="fr-choice-btn fr-choice-primary fr-cta" onclick="frAdvance('tripcreate')">${t('frTripYes')}</button>
-        ${lastTrip ? `<button class="fr-choice-btn" onclick="frTripAddLeftoversToLast()">${t('frTripAddToLast', { n: files.length, name: esc(lastTrip.name) })}</button>` : ''}
-        <button class="fr-choice-btn" onclick="frTripAskNo()">${t('frTripNo')}</button>
-      </div>
-    </div>`;
-  document.getElementById('frBar').innerHTML = `<span class="gs-bar-info"></span>`;
+// Done adding: into the real To Sort folder, with the guide explaining what to do there.
+async function frGoToToSort() {
+  await frFinish();
+  selectFolder('to-sort', document.querySelector('[data-folder="to-sort"]'));
+  coachToSort();
 }
-async function frTripAddLeftoversToLast() {
-  const trip = frTripsThisSession.find(trip => trip.id === frCurrentTripId);
-  if (!trip) return;
-  await assignFilesToFolderAdditive(frTripQueue, trip.id);
-  trip.count += frTripQueue.length;
-  frTripQueue = [];
-  frEnterTagging();
-}
-// "No" resolves the *entire* current queue as non-trip in one go - there's no further
-// date-splitting to offer once the answer is "none of these are a trip."
-function frTripAskNo() {
-  frTripQueue = [];
-  frEnterTagging();
-}
-
-// ── Create trip step ─────────────────────────────────────────────────────────
-let frSelectedColor = COLORS[7]; // cyan - matches the trip default used everywhere else (addVacation etc.)
-function frRenderColorSwatches() {
-  const row = document.getElementById('frColorSwatches');
-  if (!row) return;
-  row.innerHTML = COLORS.map(c => `<div class="color-swatch${c===frSelectedColor?' selected':''}" style="background:${c}" onclick="frSelectedColor='${c}';frRenderColorSwatches()"></div>`).join('');
-}
-function frRenderTripCreate() {
-  frSelectedColor = COLORS[frTripsThisSession.length % COLORS.length]; // cycles through the palette so trips created back-to-back this session don't default to the same color
-  // Dates come from the photos themselves (see guessTripDates), so this step is name + confirm.
-  const range = guessTripDates(frTripQueue);
-  document.getElementById('frBody').innerHTML = `
-    <div class="gs-intro">${t('frTripCreateIntro')}</div>
-    <div class="input-row">
-      <input class="text-input" id="frTripName" type="text" placeholder="${t('frTripNamePlaceholder')}" onkeydown="if(event.key==='Enter')frSubmitTripCreate()"/>
-    </div>
-    <div class="modal-sub" style="margin-bottom:6px">${range ? t('frTripDatesSubFilled') : t('frTripDatesSub')}</div>
-    <div class="input-row">
-      <input class="text-input" id="frTripDateStart" type="date" value="${range ? dateInputValue(range.start) : ''}"/>
-      <span style="align-self:center;color:var(--text3);font-size:12px">${t('frDateRangeTo')}</span>
-      <input class="text-input" id="frTripDateEnd" type="date" value="${range ? dateInputValue(range.end) : ''}"/>
-    </div>
-    ${range?.leftOut ? `<div class="modal-sub" style="margin:-4px 0 10px">${t('tripDatesLeftOut', { n: range.leftOut, next: true })}</div>` : ''}
-    <div class="modal-sub" style="margin-bottom:6px">${t('frTripColorSub')}</div>
-    <div class="color-row" id="frColorSwatches"></div>`;
-  frRenderColorSwatches();
-  document.getElementById('frBar').innerHTML = `
-    <span class="gs-bar-info"></span>
-    <button class="dump-banner-btn" onclick="frTripAskNo()">${t('frSkipTrip')}</button>
-    <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frSubmitTripCreate()">${t('frCreateTripContinue')}</button>`;
-  setTimeout(() => document.getElementById('frTripName')?.focus(), 60);
-  suggestTripName(frTripQueue.map(id => appData.files.find(f => f.id === id)).filter(Boolean)).then(name => {
-    const input = document.getElementById('frTripName');
-    if (name && input && !input.value.trim() && frStep === 'tripcreate') { input.value = name; input.select(); }
-  });
-}
-async function frSubmitTripCreate() {
-  const name = document.getElementById('frTripName').value.trim();
-  if (!name) { document.getElementById('frTripName').focus(); return; }
-  const s = document.getElementById('frTripDateStart').value;
-  const e = document.getElementById('frTripDateEnd').value;
-  const dateStart = s ? new Date(s + 'T00:00:00').getTime() : null;
-  const dateEnd = e ? new Date(e + 'T00:00:00').getTime() : null;
-  const folder = getOrCreateTripFolder(name, dateStart, dateEnd);
-  folder.color = frSelectedColor;
-  frCurrentTripId = folder.id;
-
-  // A single Add Files batch can mix more than one trip (or trip + non-trip photos) - when
-  // dates were entered, only file the photos that actually fall inside them (same slack window
-  // as Guided Sort's date-based trip matching, gsBuildTripMatchClusters) rather than blindly
-  // filing the whole queue just because the user said "yes" once. No dates entered means no
-  // signal to split on, so the whole queue is filed as before.
-  let matched = frTripQueue, leftover = [];
-  if (dateStart) {
-    const rangeStart = dateStart - GS_TRIP_CLUSTER_SLACK_MS;
-    const rangeEnd = (dateEnd || dateStart) + GS_TRIP_CLUSTER_SLACK_MS;
-    matched = []; leftover = [];
-    frTripQueue.forEach(id => {
-      const f = appData.files.find(f => f.id === id);
-      (f?.fileDate && f.fileDate >= rangeStart && f.fileDate <= rangeEnd ? matched : leftover).push(id);
-    });
-    // Nothing had a matching date (e.g. no EXIF at all on any of them) - fall back to filing
-    // the whole queue rather than creating a trip with zero photos in it.
-    if (!matched.length) { matched = frTripQueue; leftover = []; }
-  }
-  await assignFilesToFolderAdditive(matched, folder.id);
-  frTripsThisSession.push({ id: folder.id, name: folder.name, count: matched.length });
-
-  frTripQueue = leftover;
-  if (frTripQueue.length) { frTripAskFollowup = true; frAdvance('tripask'); }
-  else frEnterTagging();
-}
-
-// ── People / Categories: tag scopes ─────────────────────────────────────────
-// Once trips are resolved, People/Categories used to dump the WHOLE session's batch (could be
-// hundreds of photos from several trips at once) into one grid - technically fine since a photo
-// can carry more than one tag, but it reads as overwhelming right when the user just finished
-// making sense of the same pile for trips. Splitting it back into the same per-trip groups (plus
-// one "everyday" group for whatever wasn't filed to any trip) keeps each pass small and concrete
-// - "tag people in your Iceland photos" instead of "tag people in all 900 photos at once."
-let frTagScopes = []; // [{label, fileIds}], built once by frBuildTagScopes()
-let frTagScopeIndex = 0;
-function frBuildTagScopes() {
-  const usedIds = new Set();
-  const scopes = frTripsThisSession.map(trip => {
-    const ids = frBatch.filter(id => appData.files.find(f => f.id === id)?.folders?.includes(trip.id));
-    ids.forEach(id => usedIds.add(id));
-    return { label: trip.name, fileIds: ids };
-  }).filter(s => s.fileIds.length);
-  const everyday = frBatch.filter(id => !usedIds.has(id));
-  if (everyday.length) scopes.push({ label: scopes.length ? t('frEverydayPhotos') : '', fileIds: everyday });
-  return scopes.length ? scopes : [{ label: '', fileIds: [...frBatch] }]; // nothing was ever filed to a trip - one scope covering everything, same as before this split existed
-}
-// Entry point into People (from either trip resolution path) - builds the scopes exactly once
-// per wizard pass so re-rendering a step never rebuilds (and potentially reorders) them mid-tagging.
-function frEnterTagging() {
-  frTagScopes = frBuildTagScopes();
-  frTagScopeIndex = 0;
-  frAdvance('people');
-}
-
-// ── People step ──────────────────────────────────────────────────────────────
-function frRenderPeopleStep() {
-  const body = document.getElementById('frBody');
-  const bar = document.getElementById('frBar');
-  const root = getOrCreatePeopleRoot();
-  const peopleChips = getFolderChipList(root.id);
-  const scope = frTagScopes[frTagScopeIndex] || { label: '', fileIds: frBatch };
-  const files = scope.fileIds.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
-  const scopeNote = frTagScopes.length > 1 ? t('frScopeNote', { label: esc(scope.label), i: frTagScopeIndex + 1, n: frTagScopes.length }) : '';
-  const explain = peopleChips.length ? t('frPeopleExplainHas') : t('frPeopleExplainNone');
-  body.innerHTML = `
-    <div id="frLasso" class="lasso"></div>
-    <div class="gs-intro"><strong>${t('frPeopleTitle', { scopeNote })}</strong> ${explain}</div>
-    <div class="gs-chip-row" id="frPeopleChips"></div>`;
-  const chipRow = document.getElementById('frPeopleChips');
-  peopleChips.forEach(({ folder: p, label }) => {
-    const chip = document.createElement('button');
-    chip.className = 'gs-chip';
-    chip.textContent = label;
-    chip.onclick = () => frTagSelectedToPerson(p.id, p.name);
-    chipRow.appendChild(chip);
-  });
-  const addChip = document.createElement('button');
-  // Highlighted while it's the only option in the row (nobody tagged yet) - otherwise it's a
-  // small dashed chip easy to miss entirely on a first visit, which is exactly what happened.
-  addChip.className = 'gs-chip gs-chip-new' + (peopleChips.length ? '' : ' fr-chip-attn');
-  addChip.textContent = t('frNewPerson');
-  addChip.onclick = () => gsOpenNamePrompt('person', 'firstrun');
-  chipRow.appendChild(addChip);
-  body.appendChild(gsRenderGrid(files));
-  const isLast = frTagScopeIndex >= frTagScopes.length - 1;
-  gsBarUpdater = () => {
-    const n = selectedIds.size;
-    bar.querySelector('.gs-bar-info').textContent = n ? t('frBarSelectedPeople', { n }) : t('frBarBatchCount', { n: files.length });
-  };
-  bar.innerHTML = `<span class="gs-bar-info"></span><button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frPeopleContinue()">${isLast ? t('continueArrow') : t('frNextLabel', { label: esc(frTagScopes[frTagScopeIndex+1].label) })}</button>`;
-  gsBarUpdater();
-}
-function frPeopleContinue() {
-  const scope = frTagScopes[frTagScopeIndex];
-  if (scope && !scope.fileIds.some(id => appData.files.find(f => f.id === id)?.folders?.some(fid => appData.folders.find(pf => pf.id === fid)?.parentId === getOrCreatePeopleRoot().id))) {
-    if (!appData.tipsShown) appData.tipsShown = {};
-    if (!appData.tipsShown.frPeopleNudgeShown) {
-      appData.tipsShown.frPeopleNudgeShown = true;
-      saveData();
-      toast(t('frToastPeopleNudge'), 5000);
-    }
-  }
-  if (frTagScopeIndex < frTagScopes.length - 1) { frTagScopeIndex++; frRenderPeopleStep(); }
-  else { frTagScopeIndex = 0; frAdvance('categories'); }
-}
-async function frTagSelectedToPerson(folderId, name) {
-  if (!selectedIds.size) { toast(t('frToastPickPhotosPerson')); return; }
-  const ids = [...selectedIds];
-  await assignFilesToFolderAdditive(ids, folderId);
-  clearSelection();
-  frRenderPeopleStep();
-}
-
-// ── Categories step ──────────────────────────────────────────────────────────
-function frRenderCategoriesStep() {
-  const body = document.getElementById('frBody');
-  const bar = document.getElementById('frBar');
-  const root = getOrCreateCategoryRoot();
-  const catChips = getFolderChipList(root.id);
-  const scope = frTagScopes[frTagScopeIndex] || { label: '', fileIds: frBatch };
-  const files = scope.fileIds.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
-  const scopeNote = frTagScopes.length > 1 ? t('frScopeNote', { label: esc(scope.label), i: frTagScopeIndex + 1, n: frTagScopes.length }) : '';
-  body.innerHTML = `
-    <div id="frLasso" class="lasso"></div>
-    <div class="gs-intro"><strong>${t('frCategoriesTitle', { scopeNote })}</strong> ${t('frCategoriesExplain')}</div>
-    <div class="gs-chip-row" id="frCategoryChips"></div>`;
-  const chipRow = document.getElementById('frCategoryChips');
-  catChips.forEach(({ folder: c, label }) => {
-    const chip = document.createElement('button');
-    chip.className = 'gs-chip';
-    chip.textContent = `${c.icon||'🏷️'} ${label}`;
-    chip.onclick = () => frTagSelectedToCategory(c.id, c.name);
-    chipRow.appendChild(chip);
-  });
-  const existingNames = new Set(catChips.map(c => c.folder.name.toLowerCase()));
-  STARTER_CATEGORIES.filter(c => !existingNames.has(c.name.toLowerCase())).forEach(c => {
-    const chip = document.createElement('button');
-    chip.className = 'gs-chip gs-chip-new';
-    chip.textContent = `+ ${c.icon} ${c.name}`;
-    chip.onclick = () => { const f = getOrCreateCategoryFolder(c.name); f.icon = c.icon; frTagSelectedToCategory(f.id, f.name); };
-    chipRow.appendChild(chip);
-  });
-  const addChip = document.createElement('button');
-  addChip.className = 'gs-chip gs-chip-new';
-  addChip.textContent = t('frCustomEllipsis');
-  addChip.onclick = () => gsOpenNamePrompt('category', 'firstrun');
-  chipRow.appendChild(addChip);
-  body.appendChild(gsRenderGrid(files));
-  const isLast = frTagScopeIndex >= frTagScopes.length - 1;
-  gsBarUpdater = () => {
-    const n = selectedIds.size;
-    bar.querySelector('.gs-bar-info').textContent = n ? t('frBarSelectedCategories', { n }) : t('frBarBatchCount', { n: files.length });
-  };
-  bar.innerHTML = `<span class="gs-bar-info"></span><button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frCategoriesContinue()">${isLast ? t('frFinishArrow') : t('frNextLabel', { label: esc(frTagScopes[frTagScopeIndex+1].label) })}</button>`;
-  gsBarUpdater();
-}
-function frCategoriesContinue() {
-  if (frTagScopeIndex < frTagScopes.length - 1) { frTagScopeIndex++; frRenderCategoriesStep(); }
-  else {
-    frTagScopeIndex = 0;
-    if (frExtrasShownThisSession) { frAdvance('done'); return; } // a later "Add another trip" pass - never re-show the tour or re-ask for a rating
-    if (!frBatch.length) { frAdvance('rating'); return; } // nothing was ever added (e.g. wizard reopened straight into tagging with an empty batch) - nothing to tour
-    frTourOrder = frBuildTourOrder();
-    frTourIndex = 0;
-    frExtrasShownThisSession = true;
-    frAdvance('orientation');
-  }
-}
-async function frTagSelectedToCategory(folderId, name) {
-  if (!selectedIds.size) { toast(t('frToastPickPhotosCategory')); return; }
-  const ids = [...selectedIds];
-  await assignFilesToFolderAdditive(ids, folderId);
-  clearSelection();
-  frRenderCategoriesStep();
-}
-
-// ── Hands-on feature tour ─────────────────────────────────────────────────────
-// Everybody gets all three demos - frGoal only reorders them, it never removes one, so nobody
-// is denied a flagship feature based on an answer. Each demo pauses the wizard (hides the
-// overlay without closing it, frOpen stays true) and opens the REAL Globe/Editor/Find Duplicates
-// screen, exactly as a user would from the toolbar - not a scripted fake. Closing that real
-// screen (its own ✕/Escape/resolve action) calls frResumeWizardIfPending(), which is hooked
-// into toggleGlobe()'s close branch, closePhotoEditor(), and closeDupMode().
-
-// ── Orientation (sidebar, filter, sort, add files) ───────────────────────────
-// The wizard dims and disables the sidebar/toolbar behind it (see .wizard-dimmed), so this is
-// necessarily a "look, don't touch" explainer rather than a real hands-on step like the tour
-// below - there's nothing live to click yet.
-function frRenderOrientation() {
-  document.getElementById('frBody').innerHTML = `
-    <div class="fr-hero">
-      <div class="fr-hero-icon">🧭</div>
-      <div class="gs-intro" style="max-width:480px"><strong>${t('frOrientationTitle')}</strong><br>${t('frOrientationSub')}</div>
-      <div class="fr-orient-grid">
-        <div class="fr-orient-item"><div class="fr-orient-icon">📁</div><div><div class="fr-orient-title">${t('frOrientSidebarTitle')}</div><div class="fr-orient-desc">${t('frOrientSidebarDesc')}</div></div></div>
-        <div class="fr-orient-item"><div class="fr-orient-icon">🔍</div><div><div class="fr-orient-title">${t('frOrientFilterTitle')}</div><div class="fr-orient-desc">${t('frOrientFilterDesc')}</div></div></div>
-        <div class="fr-orient-item"><div class="fr-orient-icon">↕️</div><div><div class="fr-orient-title">${t('frOrientSortTitle')}</div><div class="fr-orient-desc">${t('frOrientSortDesc')}</div></div></div>
-        <div class="fr-orient-item"><div class="fr-orient-icon">➕</div><div><div class="fr-orient-title">${t('frOrientAddTitle')}</div><div class="fr-orient-desc">${t('frOrientAddDesc')}</div></div></div>
-      </div>
-      <button class="fr-choice-btn fr-choice-primary fr-cta fr-big-cta" onclick="frOrientationContinue()">${t('frGotIt')}</button>
-    </div>`;
-  document.getElementById('frBar').innerHTML = `<span class="gs-bar-info"></span>`;
-}
-function frOrientationContinue() { frAdvance('tourIntro'); }
-
-const FR_TOUR_STEP = { globe: 'tourGlobe', editor: 'tourEditor', duplicate: 'tourDuplicate' };
-function frBuildTourOrder() {
-  let order = frGoal === 'cleanup' ? ['duplicate', 'editor', 'globe']
-    : frGoal === 'browse' ? ['globe', 'editor', 'duplicate']
-    : ['editor', 'globe', 'duplicate']; // 'organize', or no goal answered
-  const hasEditable = frBatch.some(id => isEditable(appData.files.find(f => f.id === id)?.ext));
-  if (!hasEditable) order = order.filter(k => k !== 'editor'); // nothing to demo the editor with - skip, don't show a dead step
-  return order;
-}
-function frRenderTourIntro() {
-  document.getElementById('frBody').innerHTML = `
-    <div class="fr-hero">
-      <div class="fr-hero-icon">🎬</div>
-      <div class="gs-intro" style="max-width:440px"><strong>${t('frTourIntroTitle')}</strong><br>${t('frTourIntroSub')}</div>
-      <button class="fr-choice-btn fr-choice-primary fr-cta fr-big-cta" onclick="frStartTour()">${t('frStartTour')}</button>
-    </div>`;
-  document.getElementById('frBar').innerHTML = `
-    <span class="gs-bar-info"></span>
-    <button class="dump-banner-btn" onclick="frSkipTour()">${t('frSkipTour')}</button>`;
-}
-function frStartTour() { frTourIndex = 0; frAdvanceToTourStep(); }
-function frSkipTour() { frTourIndex = frTourOrder.length; frTourAllDone(); }
-function frAdvanceToTourStep() {
-  if (frTourIndex >= frTourOrder.length) { frTourAllDone(); return; }
-  frAdvance(FR_TOUR_STEP[frTourOrder[frTourIndex]]);
-}
-function frTourContinue() { frTourIndex++; frAdvanceToTourStep(); }
-function frTourAllDone() { frAdvance(frDeferredIds.length ? 'unlock' : 'rating'); }
-function frRenderTourStepIntro() {
-  const key = frTourOrder[frTourIndex];
-  const dots = frTourOrder.map((k, i) => `<span class="gs-step-dot${i === frTourIndex ? ' active' : i < frTourIndex ? ' done' : ''}"></span>`).join('');
-  let icon, title, body, runFn, btnLabel;
-  if (key === 'globe') {
-    const trip = frTripsThisSession.length ? buildTripMarkers().find(m => m.id === frCurrentTripId) : null;
-    icon = '🌍'; title = t('frTourGlobeTitle');
-    body = (trip ? t('frTourGlobeBodyTrip') : t('frTourGlobeBodyNoTrip')) + t('frTourGlobeBodySuffix');
-    runFn = 'frRunTourGlobe'; btnLabel = t('frTourGlobeBtn');
-  } else if (key === 'editor') {
-    const file = frBatch.map(id => appData.files.find(f => f.id === id)).find(f => f && isEditable(f.ext));
-    icon = '🎨'; title = t('frTourEditorTitle');
-    body = t('frTourEditorBody', { file: esc(file?.name || t('frDefaultPhoto')) });
-    runFn = 'frRunTourEditor'; btnLabel = t('frTourEditorBtn');
-  } else {
-    const file = frBatch.map(id => appData.files.find(f => f.id === id)).find(Boolean);
-    icon = '🔁'; title = t('frTourDuplicateTitle');
-    body = t('frTourDuplicateBody', { file: esc(file?.name || t('frDefaultPhoto')) });
-    runFn = 'frRunTourDuplicate'; btnLabel = t('frTourDuplicateBtn');
-  }
-  document.getElementById('frBody').innerHTML = `
-    <div class="fr-hero">
-      <div class="fr-tour-dots">${dots}</div>
-      <div class="fr-hero-icon">${icon}</div>
-      <div class="gs-intro" style="max-width:460px"><strong>${title}</strong><br>${body}</div>
-      <button class="fr-choice-btn fr-choice-primary fr-cta fr-big-cta" onclick="${runFn}()">${btnLabel} →</button>
-    </div>`;
-  document.getElementById('frBar').innerHTML = `
-    <span class="gs-bar-info"></span>
-    <button class="dump-banner-btn" onclick="frTourContinue()">${t('frSkipThis')}</button>`;
-}
-// Hides the wizard overlay without ending it (frOpen stays true) so a real full-screen feature
-// can show through - mirrors this codebase's existing gsOpen/vpReturnTo pause-resume precedents.
-function frPauseWizard(resumeFn) {
-  frPendingResumeStep = resumeFn;
-  document.getElementById('firstRunWizard').classList.remove('open');
-  document.getElementById('sidebar')?.classList.remove('wizard-dimmed');
-}
-function frResumeWizardIfPending() {
-  if (!frOpen || !frPendingResumeStep) return;
-  const fn = frPendingResumeStep;
-  frPendingResumeStep = null;
-  document.getElementById('firstRunWizard').classList.add('open');
-  document.getElementById('sidebar')?.classList.add('wizard-dimmed');
-  if (typeof window[fn] === 'function') window[fn]();
-}
-async function frRunTourGlobe() {
-  const trip = frTripsThisSession.length ? buildTripMarkers().find(m => m.id === frCurrentTripId) : null;
-  frPauseWizard('frTourContinue');
-  if (!globeOpen) toggleGlobe();
-  if (trip) {
-    // Cold Cesium load is async and toggleGlobe() doesn't expose a promise - poll rather than
-    // assume synchronous init (ctxSeeOnMap's fly-to is known to silently no-op on a cold load).
-    for (let i = 0; i < 50 && !globeCtrl; i++) await new Promise(r => setTimeout(r, 150));
-    try { globeCtrl?.flyToBounds(trip.bounds); } catch (e) {}
-  }
-}
-function frRunTourEditor() {
-  const file = frBatch.map(id => appData.files.find(f => f.id === id)).find(f => f && isEditable(f.ext));
-  if (!file) { frTourContinue(); return; }
-  frPauseWizard('frTourContinue');
-  openPhotoEditor(file.id);
-}
-async function frRunTourDuplicate() {
-  const file = frBatch.map(id => appData.files.find(f => f.id === id)).find(Boolean);
-  if (!file) { frTourContinue(); return; }
-  const res = await window.api.duplicateFile(file.path);
-  if (!res?.success) { toast(t('frToastDupCopyFailed')); frTourContinue(); return; }
-  res.entry.toSort = true; // same convention every other freshly-added file follows, so it's findable in To Sort if the user keeps it
-  appData.files.push(res.entry);
-  frDupDemoFileId = res.entry.id;
-  await saveData();
-  frPauseWizard('frTourContinue');
-  enterDupDetection();
-}
-
-// ── Unlock step (only when files were deferred past the import cap) ─────────
-function frRenderUnlockStep() {
-  document.getElementById('frBody').innerHTML = `
-    <div class="fr-hero">
-      <div class="fr-hero-icon">🎁</div>
-      <div class="gs-intro" style="max-width:420px"><strong>${t('frUnlockTitle')}</strong><br>${t('frUnlockBody', { n: frDeferredIds.length })}</div>
-      <div class="fr-choice-row">
-        <button class="fr-choice-btn" onclick="frGoToSort()">${t('frUnlockTakeMe')}</button>
-        <button class="fr-choice-btn fr-choice-primary fr-cta" onclick="frUnlockContinue()">${t('continueArrow')}</button>
-      </div>
-    </div>`;
-  document.getElementById('frBar').innerHTML = `<span class="gs-bar-info"></span>`;
-}
-function frUnlockContinue() { frAdvance('rating'); }
 
 // ── Rating / review step ─────────────────────────────────────────────────────
+// Asked once, when the first guided sort is done (see exitGuidedSort) - after Trove has done
+// real work on the user's own photos, rather than in their first minute with it.
+function frAskRatingOnce() {
+  if (appData.ratingAsked) return;
+  appData.ratingAsked = true;
+  saveData();
+  frRatingStars = null;
+  frShow('rating');
+}
 function frRenderRatingStep() {
   document.getElementById('frBody').innerHTML = `
     <div class="fr-hero">
@@ -11484,13 +10895,12 @@ function frRenderRatingStep() {
   }
   document.getElementById('frBar').innerHTML = `
     <span class="gs-bar-info"></span>
-    <button class="dump-banner-btn" onclick="frSkipRating()">${t('frSkip')}</button>`;
+    <button class="dump-banner-btn" onclick="frFinish()">${t('frSkip')}</button>`;
 }
 function frSubmitRating(n) {
   frRatingStars = n;
   frAdvance(n >= 4 ? 'ratingThanksGithub' : 'ratingFeedback');
 }
-function frSkipRating() { frAdvance('done'); }
 function frRenderRatingThanksStep() {
   document.getElementById('frBody').innerHTML = `
     <div class="fr-hero">
@@ -11502,7 +10912,7 @@ function frRenderRatingThanksStep() {
     </div>`;
   document.getElementById('frBar').innerHTML = `
     <span class="gs-bar-info"></span>
-    <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frAdvance('done')">${t('continueArrow')}</button>`;
+    <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frFinish()">${t('continueArrow')}</button>`;
 }
 function frOpenGithubStar() { window.api.openExternal(FR_GITHUB_URL); }
 function frRenderRatingFeedbackStep() {
@@ -11514,119 +10924,17 @@ function frRenderRatingFeedbackStep() {
     </div>`;
   document.getElementById('frBar').innerHTML = `
     <span class="gs-bar-info"></span>
-    <button class="dump-banner-btn" onclick="frSkipFeedback()">${t('frSkip')}</button>
+    <button class="dump-banner-btn" onclick="frFinish()">${t('frSkip')}</button>
     <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frSubmitFeedback()">${t('frSendFeedback')}</button>`;
 }
 function frSubmitFeedback() {
   const text = document.getElementById('frFeedbackText')?.value.trim();
-  if (!text) { frSkipFeedback(); return; }
+  if (!text) { frFinish(); return; }
   if (!appData.feedbackLog) appData.feedbackLog = [];
   appData.feedbackLog.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), ts: Date.now(), stars: frRatingStars, text });
   saveData();
   toast(t('frFeedbackThanksToast'));
-  frAdvance('done');
-}
-function frSkipFeedback() { frAdvance('done'); }
-
-// ── Done step ────────────────────────────────────────────────────────────────
-function frRenderDoneStep() {
-  const files = frBatch.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
-  const peopleRoot = getOrCreatePeopleRoot();
-  const peopleTaggedCount = files.filter(f => f.folders?.some(fid => appData.folders.find(pf => pf.id === fid)?.parentId === peopleRoot.id)).length;
-  let tripPhrase = '';
-  if (frTripsThisSession.length === 1) {
-    const trip = frTripsThisSession[0];
-    const folder = appData.folders.find(f => f.id === trip.id);
-    tripPhrase = t('frTripPhraseSingle', { name: esc(trip.name), yearSuffix: folder ? formatTripYearSuffix(folder) : '' });
-  } else if (frTripsThisSession.length > 1) {
-    tripPhrase = t('frTripPhraseMulti', { n: frTripsThisSession.length, names: frTripsThisSession.map(trip => esc(trip.name)).join(', ') });
-  }
-  const toured = frTourOrder.length > 0; // false only in the edge case where frBatch was empty and the tour never ran
-  const unlockPhrase = frDeferredIds.length ? t('frUnlockPhrase', { n: frDeferredIds.length }) : '';
-  const peoplePhrase = peopleTaggedCount ? t('frPeoplePhrase', { n: peopleTaggedCount }) : '';
-  const tipsRow = toured
-    ? `<button class="fr-tip-btn" onclick="frGoTo('enterDupDetection')">${t('frTipFindDuplicates')}</button>`
-    : `<button class="fr-tip-btn" onclick="frGoTo('enterDupDetection')">${t('frTipFindDuplicates')}</button>
-       <button class="fr-tip-btn" onclick="frGoTo('toggleGlobe')">${t('frTipExploreGlobe')}</button>`;
-  const tipsList = toured
-    ? `<li>${t('frTipSearch')}</li>
-       <li>${t('frTipBestOf')}</li>
-       <li>${t('frTipTagMore')}</li>`
-    : `<li>${t('frTipToSort')}</li>
-       <li>${t('frTipTagMore')}</li>
-       <li>${t('frTipColors')}</li>`;
-  // The quickest win on offer: flicking through the biggest trip just added.
-  const flickTripId = frTripsThisSession.length ? flickBestTrip(frTripsThisSession.map(trip => trip.id)) : null;
-  const flickTrip = flickTripId && appData.folders.find(f => f.id === flickTripId);
-  document.getElementById('frBody').innerHTML = `
-    <div class="fr-hero">
-      <div class="fr-hero-icon">🎉</div>
-      <div class="gs-intro" style="max-width:440px"><strong>${t('frDoneTitle')}</strong><br>${t('frDoneBody', { n: files.length, tripPhrase, peoplePhrase, unlockPhrase })}</div>
-      ${flickTrip ? `<div class="fr-first-duel">
-        <div class="fr-first-duel-text">${t('frFirstFlickBody', { name: esc(flickTrip.name) })}</div>
-        <button class="fr-choice-btn fr-choice-primary fr-cta" onclick="frStartFirstFlick('${flickTrip.id}')">${t('frFirstFlickBtn')}</button>
-      </div>` : ''}
-      <div class="fr-choice-row">
-        <button class="fr-choice-btn" onclick="frAddAnotherTrip()">${t('frAddAnotherTrip')}</button>
-        <button class="fr-choice-btn" onclick="frFinish(true)">${frTripsThisSession.length ? t('frViewTrip') : t('frBrowseLibrary')}</button>
-        <button class="fr-choice-btn${flickTrip ? '' : ' fr-choice-primary fr-cta'}" onclick="frGoToSort()">${t('frFinishToSort')}</button>
-      </div>
-      <div class="fr-tips">
-        <div class="fr-tips-title">${t('frTipsTitle')}</div>
-        <div class="fr-tips-row">${tipsRow}</div>
-        <ul class="fr-tips-list">${tipsList}</ul>
-      </div>
-    </div>`;
-  document.getElementById('frBar').innerHTML = `<span class="gs-bar-info"></span>`;
-  frShowDoneConfetti();
-}
-// One-shot celebration burst, pure CSS/DOM, no library. Respects prefers-reduced-motion and
-// removes itself once the animation finishes so it never lingers as dead markup.
-function frShowDoneConfetti() {
-  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
-  const wrap = document.getElementById('firstRunWizard');
-  if (!wrap) return;
-  const el = document.createElement('div');
-  el.className = 'fr-confetti';
-  for (let i = 0; i < 60; i++) {
-    const piece = document.createElement('div');
-    piece.className = 'fr-confetti-piece';
-    piece.style.left = `${Math.random() * 100}%`;
-    piece.style.background = COLORS[i % COLORS.length];
-    piece.style.animationDelay = `${Math.random() * 0.4}s`;
-    el.appendChild(piece);
-  }
-  wrap.appendChild(el);
-  setTimeout(() => el.remove(), 2200);
-}
-// Closes the wizard, then jumps straight into another feature - used by the Done step's tips
-// so "Find Duplicates" etc. don't require exiting the wizard manually first.
-async function frGoTo(fnName) {
-  await frFinish(false);
-  if (typeof window[fnName] === 'function') window[fnName]();
-}
-async function frStartFirstFlick(tripId) {
-  await frFinish(false);
-  selectFolder(tripId);
-  openFlick(tripId);
-}
-async function frGoToSort() {
-  await frFinish(false);
-  const el = document.querySelector('[data-folder="to-sort"]');
-  selectFolder('to-sort', el);
-}
-function frAddAnotherTrip() {
-  frBatch = [];
-  frTripQueue = [];
-  frTripAskFollowup = false;
-  frCurrentTripId = null;
-  frTripsThisSession = [];
-  frTagScopes = [];
-  frTagScopeIndex = 0;
-  frDeferredIds = []; // fresh 20-file budget for this new batch
-  // Deliberately NOT reset: frExtrasShownThisSession, frGoal/frGoalSub/frLibrarySize, frRatingStars -
-  // a second "add another trip" pass never re-shows the tour or re-asks for a rating, see frCategoriesContinue().
-  frAdvance('addfiles');
+  frFinish();
 }
 
 // ── SMART MATCH ──────────────────────────────────────────────────────────────
@@ -17971,7 +17279,6 @@ async function closePhotoEditor(force, save = false) {
   peMode = 'simple';
   peZoom = 1; pePanX = 0; pePanY = 0; peSpaceHeld = false;
   if (!wasPro) await saveData();
-  frResumeWizardIfPending();
   resumePopupReturn();
 }
 
@@ -17985,6 +17292,11 @@ function editPopupPhoto() {
 
 // ── KEYBOARD / CLICK-OUT ──────────────────────────────────────────────────────
 document.addEventListener('keydown', e=>{
+  // A face opened in its photo (facePeek) sits over everything, Guided Sort included.
+  if(document.getElementById('facePeek')?.classList.contains('open')){
+    if(e.key==='Escape'){ e.preventDefault(); closeFacePeek(); }
+    return;
+  }
   // Flick through (flick.js) covers the whole window, so it takes the keyboard first.
   if(fl){ flickHandleKey(e); return; }
   // The 360 player takes every key while it's showing, unless a dialog (Remove, Edit Props...)

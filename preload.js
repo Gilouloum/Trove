@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('api', {
   getLastSaved: () => ipcRenderer.invoke('get-last-saved'),
   saveData: (data) => ipcRenderer.invoke('save-data', data),
   openFileDialog: () => ipcRenderer.invoke('open-file-dialog'),
+  openFolderDialog: () => ipcRenderer.invoke('open-folder-dialog'),
   openFile: (fp) => ipcRenderer.invoke('open-file', fp),
   showInFolder: (fp) => ipcRenderer.invoke('show-in-folder', fp),
   showMultipleInFolder: (paths) => ipcRenderer.invoke('show-multiple-in-folder', paths),

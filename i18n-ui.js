@@ -485,7 +485,9 @@ Object.assign(UI_TEXT, {
   'Suggested': ['Suggéré', 'Vorgeschlagen', 'Sugerido', '建议'],
   'Has GPS': ['A un GPS', 'Hat GPS', 'Tiene GPS', '有 GPS'],
   'Skip the trip steps': ['Passer les étapes de voyage', 'Reiseschritte überspringen', 'Saltar los pasos del viaje', '跳过旅行步骤'],
-  'Not the same person? Click to take this one out': ["Pas la même personne ? Cliquez pour l'enlever", 'Nicht dieselbe Person? Klicken, um sie herauszunehmen', '¿No es la misma persona? Haz clic para quitarla', '不是同一个人?点击移除'],
+  'Not the same person? Take this one out': ["Pas la même personne ? L'enlever", 'Nicht dieselbe Person? Herausnehmen', '¿No es la misma persona? Quitarla', '不是同一个人?移除'],
+  'See this face in its photo': ['Voir ce visage dans sa photo', 'Dieses Gesicht in seinem Foto ansehen', 'Ver esta cara en su foto', '在原照片中查看这张脸'],
+  'Click anywhere or press Esc to close': ["Cliquez n'importe où ou appuyez sur Échap pour fermer", 'Irgendwo klicken oder Esc drücken zum Schließen', 'Haz clic en cualquier sitio o pulsa Esc para cerrar', '点击任意位置或按 Esc 关闭'],
   'Their name…': ['Son nom…', 'Name…', 'Su nombre…', '名字…'],
   'Their name': ['Son nom', 'Name', 'Su nombre', '名字'],
   'Nobody to tag - a stranger, a poster, a statue': ['Personne à étiqueter : un inconnu, une affiche, une statue', 'Niemand zu markieren: ein Fremder, ein Plakat, eine Statue', 'Nadie que etiquetar: un desconocido, un póster, una estatua', '无需标记:陌生人、海报、雕像'],
@@ -888,6 +890,7 @@ Object.assign(UI_TEXT, {
 
 // Text with numbers or names, continued.
 UI_PATTERNS.push(
+  [/^Not (.+)\? Take this one out$/, ["Ce n'est pas $1 ? L'enlever", 'Nicht $1? Herausnehmen', '¿No es $1? Quitarla', '不是 $1?移除']],
   [/^Open (.+)$/, ['Ouvrir $1', '$1 öffnen', 'Abrir $1', '打开 $1']],
   [/^(\d+) to look at: copies to clear out or edits to link$/, ['$1 à voir : copies à supprimer ou retouches à lier', '$1 zu prüfen: Kopien entfernen oder Bearbeitungen verknüpfen', '$1 por revisar: copias que quitar o ediciones que enlazar', '$1 项待查看:要清理的副本或要关联的编辑版本']],
   [/^(\d+) photos? waiting, a question at a time$/, ['$1 photo(s) en attente, une question à la fois', '$1 Foto(s) warten, eine Frage nach der anderen', '$1 foto(s) pendiente(s), una pregunta cada vez', '$1 张照片待处理,一次一个问题']],
@@ -918,14 +921,17 @@ Object.assign(UI_TEXT, {
 });
 
 UI_PATTERNS.push(
-  [/^Step (\d+) of (\d+) - (.+)\.$/, [m => `Étape ${m[1]} sur ${m[2]} : ${uiPart(m[3])}.`, m => `Schritt ${m[1]} von ${m[2]}: ${uiPart(m[3])}.`, m => `Paso ${m[1]} de ${m[2]}: ${uiPart(m[3])}.`, m => `第 ${m[1]} / ${m[2]} 步:${uiPart(m[3])}。`]],
+  // With its full stop in the step intro, without it in the Location step's panel title.
+  [/^Step (\d+) of (\d+) - (.+?)(\.?)$/, [m => `Étape ${m[1]} sur ${m[2]} : ${uiPart(m[3])}${m[4]}`, m => `Schritt ${m[1]} von ${m[2]}: ${uiPart(m[3])}${m[4]}`, m => `Paso ${m[1]} de ${m[2]}: ${uiPart(m[3])}${m[4]}`, m => `第 ${m[1]} / ${m[2]} 步:${uiPart(m[3])}${m[4] ? '。' : ''}`]],
   [/^Where are these (\d+) photos? from(?: \(taken (.+)\))?\? Pick everything that applies - one batch can mix a trip with everyday shots\. Your answer decides which steps come next\.$/, [
     m => `D'où viennent ces ${m[1]} photos${m[2] ? ` (prises ${m[2]})` : ''} ? Choisissez tout ce qui s'applique : un lot peut mélanger un voyage et des photos du quotidien. Votre réponse décide des étapes suivantes.`,
     m => `Woher stammen diese ${m[1]} Fotos${m[2] ? ` (aufgenommen ${m[2]})` : ''}? Wählen Sie alles Zutreffende: ein Stapel kann eine Reise mit Alltagsfotos mischen. Ihre Antwort bestimmt die nächsten Schritte.`,
     m => `¿De dónde son estas ${m[1]} fotos${m[2] ? ` (tomadas ${m[2]})` : ''}? Elige todo lo que corresponda: un lote puede mezclar un viaje con fotos del día a día. Tu respuesta decide los siguientes pasos.`,
     m => `这 ${m[1]} 张照片来自哪里${m[2] ? `(拍摄于 ${m[2]})` : ''}?选择所有适用项:一批照片可以混合旅行和日常照片。你的回答决定接下来的步骤。`]],
   [/^Which (.+) are these from\? Select every one that applies( - the ones whose dates match these photos are already ticked)?\. Next, photos are matched to them by date automatically\.$/, [
-    m => `De quels ${uiPart(m[1]).toLowerCase()} viennent-elles ? Choisissez tous ceux qui s'appliquent${m[2] ? ' (ceux dont les dates correspondent sont déjà cochés)' : ''}. Ensuite, les photos y sont associées automatiquement par date.`,
+    m => m[1] === 'adventure'
+      ? `De quelles aventures viennent-elles ? Choisissez toutes celles qui s'appliquent${m[2] ? ' (celles dont les dates correspondent sont déjà cochées)' : ''}. Ensuite, les photos y sont associées automatiquement par date.`
+      : `De quels ${uiPart(m[1]).toLowerCase()} viennent-elles ? Choisissez tous ceux qui s'appliquent${m[2] ? ' (ceux dont les dates correspondent sont déjà cochés)' : ''}. Ensuite, les photos y sont associées automatiquement par date.`,
     m => `Aus welchen ${uiPart(m[1])} stammen sie? Wählen Sie alle zutreffenden${m[2] ? ' (die mit passenden Daten sind schon angehakt)' : ''}. Danach werden die Fotos automatisch per Datum zugeordnet.`,
     m => `¿De qué ${uiPart(m[1]).toLowerCase()} son? Elige todos los que correspondan${m[2] ? ' (los que coinciden en fecha ya están marcados)' : ''}. Después, las fotos se asocian automáticamente por fecha.`,
     m => `这些照片来自哪些${uiPart(m[1])}?选择所有适用项${m[2] ? '(日期匹配的已自动勾选)' : ''}。接着会按日期自动匹配照片。`]],
@@ -944,6 +950,67 @@ UI_PATTERNS.push(
   [/^(\d+) copies$/, ['$1 copies', '$1 Kopien', '$1 copias', '$1 个副本']],
   [/^(\d+)%$/, ['$1 %', '$1 %', '$1 %', '$1%']],
   [/^Add a subfolder inside (.+)$/, ['Ajouter un sous-dossier dans $1', 'Unterordner in $1 hinzufügen', 'Añadir una subcarpeta dentro de $1', '在 $1 中添加子文件夹']],
+);
+
+// The rest of Guided Sort - every step now opens with the guide on a first run, so all of it shows.
+Object.assign(UI_TEXT, {
+  'An adventure': ['Une aventure', 'Ein Abenteuer', 'Una aventura', '一次探险'],
+  'Pick at least one answer above': ['Choisissez au moins une réponse ci-dessus', 'Wählen Sie oben mindestens eine Antwort', 'Elige al menos una respuesta arriba', '请在上方至少选择一项'],
+  'Select at least one, or create a new one': ['Sélectionnez-en au moins un, ou créez-en un nouveau', 'Wählen Sie mindestens eines aus oder legen Sie ein neues an', 'Selecciona al menos uno o crea uno nuevo', '至少选择一个,或新建一个'],
+  'Trip': ['Voyage', 'Reise', 'Viaje', '旅行'],
+  'Adventure': ['Aventure', 'Abenteuer', 'Aventura', '探险'],
+  // Lowercase, plural: what "Which … are these from?" asks about
+  'trip': ['voyages', 'Reisen', 'viajes', '旅行'],
+  'adventure': ['aventures', 'Abenteuern', 'aventuras', '探险'],
+  'trip or adventure': ['voyages ou aventures', 'Reisen oder Abenteuern', 'viajes o aventuras', '旅行或探险'],
+  'New camera': ['Nouvel appareil', 'Neue Kamera', 'Nueva cámara', '新相机'],
+  'New trip': ['Nouveau voyage', 'Neue Reise', 'Nuevo viaje', '新旅行'],
+  'New adventure': ['Nouvelle aventure', 'Neues Abenteuer', 'Nueva aventura', '新探险'],
+  'New folder': ['Nouveau dossier', 'Neuer Ordner', 'Nueva carpeta', '新文件夹'],
+  'Camera name…': ["Nom de l'appareil…", 'Kameraname…', 'Nombre de la cámara…', '相机名称…'],
+  'Trip name…': ['Nom du voyage…', 'Name der Reise…', 'Nombre del viaje…', '旅行名称…'],
+  'Adventure name… (e.g. Ridge trek)': ["Nom de l'aventure… (ex. Rando des crêtes)", 'Name des Abenteuers… (z. B. Gratwanderung)', 'Nombre de la aventura… (p. ej. Ruta de las crestas)', '探险名称…(例如:山脊徒步)'],
+  'None of these are part of one': ["Aucune ne fait partie d'un voyage", 'Keines gehört zu einer Reise', 'Ninguna forma parte de uno', '这些都不属于任何旅行'],
+  'Click again to stop tagging': ['Cliquez à nouveau pour arrêter', 'Erneut klicken zum Beenden', 'Haz clic de nuevo para dejar de etiquetar', '再次点击停止标记'],
+  '- click photos to add or remove ·': ['- cliquez sur les photos pour ajouter ou retirer ·', '- Fotos anklicken zum Hinzufügen oder Entfernen ·', '- haz clic en las fotos para añadir o quitar ·', '- 点击照片添加或移除 ·'],
+  'Nothing selected': ['Rien de sélectionné', 'Nichts ausgewählt', 'Nada seleccionado', '未选择任何内容'],
+  'Select photos, then click the globe to drop a pin': ['Sélectionnez des photos, puis cliquez sur le globe pour poser une épingle', 'Fotos auswählen, dann auf den Globus klicken, um eine Stecknadel zu setzen', 'Selecciona fotos y haz clic en el globo para poner una chincheta', '选择照片,然后点击地球放下标记'],
+  'Place each at its spot': ['Placer chacune à son endroit', 'Jedes an seinen Ort setzen', 'Colocar cada una en su sitio', '把每张放到各自的位置'],
+  'Right-click any photo for more - edit it, add or remove its location, file it into folders, and more.': ["Clic droit sur une photo pour plus d'options : la modifier, ajouter ou retirer son lieu, la ranger dans des dossiers, et plus encore.", 'Rechtsklick auf ein Foto für mehr: bearbeiten, Ort hinzufügen oder entfernen, in Ordner einordnen und mehr.', 'Clic derecho en cualquier foto para más: editarla, añadir o quitar su ubicación, archivarla en carpetas y más.', '右键点击任意照片可执行更多操作:编辑、添加或移除位置、归入文件夹等。'],
+});
+
+UI_PATTERNS.push(
+  [/^(\d+)% sorted$/, ['$1 % trié', '$1 % sortiert', '$1 % ordenado', '已整理 $1%']],
+  [/^Next: (.+)$/, [m => `Ensuite : ${m[1].split(' → ').map(uiPart).join(' → ')}`, m => `Danach: ${m[1].split(' → ').map(uiPart).join(' → ')}`, m => `Después: ${m[1].split(' → ').map(uiPart).join(' → ')}`, m => `接下来:${m[1].split(' → ').map(uiPart).join(' → ')}`]],
+  [/^No (?:trip|adventure|trip or adventure)s yet - create one below\. Adding its dates lets Trove file the photos for you\.$/, ["Rien pour l'instant : créez-en un ci-dessous. Avec ses dates, Trove range les photos pour vous.", 'Noch nichts da: Legen Sie unten eines an. Mit Daten ordnet Trove die Fotos für Sie ein.', 'Aún no hay ninguno: crea uno abajo. Con sus fechas, Trove archiva las fotos por ti.', '还没有:在下方新建一个。填好日期后,Trove 会替你归档照片。']],
+  [/^New folder in (.+)$/, ['Nouveau dossier dans $1', 'Neuer Ordner in $1', 'Nueva carpeta en $1', '在 $1 中新建文件夹']],
+  [/^"(.+)" created$/, ['« $1 » créé', '„$1“ erstellt', '«$1» creado', '已创建「$1」']],
+  [/^(\d+) photos? fits? (.+)'s dates \((.+)\) and (?:was|were) added\.$/, ['$1 photo(s) correspondent aux dates de $2 ($3) et ont été ajoutées.', '$1 Foto(s) passen zu den Daten von $2 ($3) und wurden hinzugefügt.', '$1 foto(s) encajan con las fechas de $2 ($3) y se han añadido.', '有 $1 张照片符合「$2」的日期($3),已加入。']],
+  [/^Undone - (\d+) photos? taken out of (.+)$/, ['Annulé : $1 photo(s) retirée(s) de $2', 'Rückgängig: $1 Foto(s) aus $2 entfernt', 'Deshecho: $1 foto(s) quitada(s) de $2', '已撤销:$1 张照片已移出「$2」']],
+  [/^Add all to (.+)$/, ['Tout ajouter à $1', 'Alle zu $1 hinzufügen', 'Añadir todas a $1', '全部加入「$1」']],
+  [/^Not part of any \((\d+)\)$/, ["Ne fait partie d'aucun ($1)", 'Gehört zu keiner ($1)', 'No forma parte de ninguno ($1)', '不属于任何旅行($1)']],
+  [/^Added (\d+) photos? to (.+)$/, ['$1 photo(s) ajoutée(s) à $2', '$1 Foto(s) zu $2 hinzugefügt', '$1 foto(s) añadida(s) a $2', '已将 $1 张照片加入「$2」']],
+  [/^(\d+) of (\d+) photos left to check$/, ['$1 photo(s) sur $2 à vérifier', '$1 von $2 Fotos noch zu prüfen', '$1 de $2 fotos por revisar', '$2 张中还有 $1 张待检查']],
+  [/^(\d+) photos? in this batch$/, ['$1 photo(s) dans ce lot', '$1 Foto(s) in diesem Stapel', '$1 foto(s) en este lote', '这批共 $1 张照片']],
+  [/^(\d+) of (\d+) photos have (.+)$/, ['$1 photo(s) sur $2 avec $3', '$1 von $2 Fotos mit $3', '$1 de $2 fotos con $3', '$2 张中有 $1 张有「$3」']],
+  [/^Tag (.+)$/, ['Identifier $1', '$1 markieren', 'Etiquetar a $1', '标记「$1」']],
+  [/^Looking for faces in these photos… (\d+) to go$/, ['Recherche de visages dans ces photos… encore $1', 'Gesichter in diesen Fotos werden gesucht… noch $1', 'Buscando caras en estas fotos… faltan $1', '正在这些照片中查找人脸……还剩 $1 张']],
+  [/^is probably in (\d+) of these photos$/, ['est probablement sur $1 de ces photos', 'ist wahrscheinlich auf $1 dieser Fotos', 'probablemente aparece en $1 de estas fotos', '可能出现在其中 $1 张照片里']],
+  [/^Add all (\d+) to (.+)$/, ['Ajouter les $1 à $2', 'Alle $1 zu $2 hinzufügen', 'Añadir las $1 a $2', '把 $1 张都加入「$2」']],
+  [/^Add it to (.+)$/, ["L'ajouter à $1", 'Zu $1 hinzufügen', 'Añadirla a $1', '加入「$1」']],
+  [/^In (\d+) of these photos$/, ['Sur $1 de ces photos', 'Auf $1 dieser Fotos', 'En $1 de estas fotos', '出现在其中 $1 张照片里']],
+  [/^(\d+) more to ask about$/, ['encore $1 à demander', 'noch $1 zu fragen', '$1 más por preguntar', '还有 $1 个待询问']],
+  [/^Everyone Trove can see in these photos is tagged\. The (\d+) left have no face it could make out: tag anyone in them by hand, or carry on\.$/, ["Tous ceux que Trove voit sur ces photos sont identifiés. Sur les $1 restantes, aucun visage n'est lisible : identifiez-y les gens à la main, ou continuez.", 'Alle, die Trove auf diesen Fotos sieht, sind markiert. Auf den $1 übrigen ist kein Gesicht erkennbar: Markieren Sie Personen darauf von Hand oder machen Sie weiter.', 'Todas las personas que Trove ve en estas fotos están etiquetadas. En las $1 restantes no distingue ninguna cara: etiqueta a mano a quien salga o continúa.', 'Trove 在这些照片中能看到的人都已标记。剩下的 $1 张中没有可识别的人脸:可以手动标记,或继续。']],
+  [/^Analyzing (\d+) \/ (\d+)…$/, ['Analyse $1 / $2…', 'Analyse $1 / $2…', 'Analizando $1 / $2…', '正在分析 $1 / $2…']],
+  [/^(\d+) photos? looks? like (.+)$/, ['$1 photo(s) ressemblent à $2', '$1 Foto(s) sehen aus wie $2', '$1 foto(s) se parecen a $2', '$1 张照片看起来像「$2」']],
+  [/^(\d+) photos? look similar to each other$/, ['$1 photo(s) se ressemblent', '$1 Foto(s) sehen sich ähnlich', '$1 foto(s) se parecen entre sí', '$1 张照片彼此相似']],
+  [/^Add to (.+)$/, ['Ajouter à $1', 'Zu $1 hinzufügen', 'Añadir a $1', '加入「$1」']],
+  // A button label with its "picked / total" count, like "Create Folder & File Them (11/11)"
+  [/^(.+) \((\d+\/\d+)\)$/, [m => `${uiPart(m[1])} (${m[2]})`, m => `${uiPart(m[1])} (${m[2]})`, m => `${uiPart(m[1])} (${m[2]})`, m => `${uiPart(m[1])}(${m[2]})`]],
+  [/^(\d+) photos? not yet in a category$/, ['$1 photo(s) sans catégorie', '$1 Foto(s) noch ohne Kategorie', '$1 foto(s) aún sin categoría', '$1 张照片尚未分类']],
+  [/^Assigned (\d+) photos? to (.+)$/, ['$1 photo(s) associée(s) à $2', '$1 Foto(s) $2 zugeordnet', '$1 foto(s) asignada(s) a $2', '已将 $1 张照片分配给 $2']],
+  [/^(\d+) photos? (?:have|has) no location\. Select the ones taken in the same place, then click the globe to drop a pin - or use a 📍 suggestion below, guessed from other geotagged photos taken around the same time\.$/, ["$1 photo(s) n'ont pas de lieu. Sélectionnez celles prises au même endroit, puis cliquez sur le globe pour poser une épingle, ou utilisez une suggestion 📍 ci-dessous, devinée d'après d'autres photos géolocalisées prises à peu près au même moment.", '$1 Foto(s) haben keinen Ort. Wählen Sie die am selben Ort aufgenommenen aus und klicken Sie auf den Globus, um eine Stecknadel zu setzen, oder nutzen Sie unten einen 📍-Vorschlag, abgeleitet aus anderen Fotos mit Ortsangabe aus derselben Zeit.', '$1 foto(s) no tienen ubicación. Selecciona las tomadas en el mismo sitio y haz clic en el globo para poner una chincheta, o usa una sugerencia 📍 de abajo, deducida de otras fotos geolocalizadas tomadas más o menos a la vez.', '有 $1 张照片没有位置。选中在同一地点拍的照片,然后点击地球放下标记,或使用下方的 📍 建议(根据同一时间附近拍摄的带定位照片推测)。']],
+  [/^Set Location for (\d+)$/, ['Définir le lieu pour $1', 'Ort für $1 festlegen', 'Definir ubicación para $1', '为 $1 张设置位置']],
 );
 
 // Backups' storage line, part by part.

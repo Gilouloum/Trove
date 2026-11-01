@@ -1489,6 +1489,12 @@ ipcMain.handle('open-file-dialog', async () => {
   if (r.canceled) return [];
   return mapYielding(r.filePaths, buildFileEntry);
 });
+// Folders to import whole (the first-run wizard's "Choose a folder") - each one then goes through
+// process-dropped-folder, exactly like a folder dropped on the window.
+ipcMain.handle('open-folder-dialog', async () => {
+  const r = await dialog.showOpenDialog(mainWindow, { properties: ['openDirectory', 'multiSelections'] });
+  return r.canceled ? [] : r.filePaths;
+});
 ipcMain.handle('open-file', async (_, fp) => {
   try { await shell.openPath(fp); return { success: true }; } catch(e) { return { success: false }; }
 });

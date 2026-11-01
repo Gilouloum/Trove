@@ -284,7 +284,7 @@ function flickRenderDone() {
   } else celebrationConfetti(document.getElementById('flickMode'));
 }
 
-// Same burst as the first-run wizard's (frShowDoneConfetti), in whichever overlay is showing.
+// A one-shot confetti burst, in whichever overlay is showing.
 function celebrationConfetti(host) {
   if (!host || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
   const el = document.createElement('div');

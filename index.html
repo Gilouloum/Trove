@@ -684,7 +684,7 @@ textarea.text-input{resize:vertical}
    the overlay in front of it, not the app underneath. */
 #sidebar.wizard-dimmed{filter:blur(2px) brightness(.5);pointer-events:none;transition:filter .35s ease}
 @keyframes frGlowPulse{0%,100%{box-shadow:0 0 0 0 var(--aglow)}50%{box-shadow:0 0 0 9px transparent}}
-#firstRunWizard .fr-cta,#firstRunWizard .fr-choice-primary,.fr-chip-attn{animation:frGlowPulse 2.1s ease-in-out infinite}
+#firstRunWizard .fr-cta,#firstRunWizard .fr-choice-primary{animation:frGlowPulse 2.1s ease-in-out infinite}
 .fr-hero{display:flex;flex-direction:column;align-items:center;gap:16px;padding:34px 20px;text-align:center}
 .fr-hero-icon{font-size:52px}
 .fr-choice-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
@@ -698,30 +698,42 @@ textarea.text-input{resize:vertical}
 .to-sort-dropzone{position:absolute;top:16px;left:16px;right:16px;bottom:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}
 .to-sort-dropzone .fr-dropzone-icon{font-size:48px;opacity:.6}
 .to-sort-dropzone-cta{font-size:13.5px;font-weight:600;color:var(--accent2);margin-top:6px}
-.fr-cluster-list{width:100%;max-width:400px;display:flex;flex-direction:column;gap:6px;text-align:left}
-.fr-cluster-row{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rs);font-size:12.5px;color:var(--text2)}
-.fr-cluster-row span:first-child{color:var(--text);font-weight:600}
-.fr-tips{width:100%;max-width:460px;margin-top:8px;padding-top:20px;border-top:1px solid var(--border2);text-align:left}
-.fr-tips-title{font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:10px}
-.fr-tips-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.fr-tip-btn{padding:7px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:inherit;font-size:12px;color:var(--text2);cursor:pointer;transition:border-color .12s,color .12s}
-.fr-tip-btn:hover{border-color:var(--accent);color:var(--text)}
-.fr-tips-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--text2);line-height:1.5}
-.fr-tips-list strong{color:var(--text)}
 .fr-star-row{display:flex;flex-direction:row-reverse;gap:6px;justify-content:center;margin:10px 0}
 .fr-star{background:none;border:none;font-size:30px;line-height:1;opacity:.35;cursor:pointer;padding:2px;transition:opacity .12s,transform .1s;font-family:inherit}
 .fr-star:hover,.fr-star:hover~.fr-star,.fr-star.filled{opacity:1}
 .fr-star:active{transform:scale(.9)}
-.fr-goal-followup{width:100%;margin-top:14px;padding-top:14px;border-top:1px solid var(--border2)}
-.fr-cap-note{font-size:11.5px;color:var(--text3);text-align:center;margin-top:6px}
-.fr-tour-dots{display:flex;gap:4px;justify-content:center;margin-top:2px}
-.fr-big-cta{margin-top:10px;padding:16px 34px;font-size:15px;font-weight:600}
-.fr-orient-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:540px;margin:6px 0}
-.fr-orient-item{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rs);text-align:left}
-.fr-orient-icon{font-size:20px;flex-shrink:0;line-height:1.3}
-.fr-orient-title{color:var(--text);font-weight:600;font-size:13px;margin-bottom:2px}
-.fr-orient-desc{color:var(--text2);font-size:12px;line-height:1.45}
-@media (max-width:520px){.fr-orient-grid{grid-template-columns:1fr}}
+#firstRunWizard .fr-dropzone{cursor:default}
+.fr-dropzone .fr-choice-row{margin-top:14px}
+.fr-dropzone.fr-busy{display:flex;flex-direction:column;align-items:center;gap:12px;border-color:var(--accent)}
+.fr-added-strip{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:16px}
+.fr-added-thumb{width:64px;height:64px;aspect-ratio:auto;border-radius:var(--rs);flex-shrink:0}
+.fr-added-more{width:64px;height:64px;border-radius:var(--rs);background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text2)}
+/* The guide (coachShow in renderer.js): bottom left of the main area, clear of the toasts at the
+   bottom right (coachShow sets left: past the sidebar); top right on the Globe, where the left
+   is the photo panel. Above Guided Sort, the wizard and the Globe, below dialogs and previews. */
+#coach{position:fixed;left:20px;bottom:76px;z-index:70;width:360px;max-width:calc(100vw - 32px);box-sizing:border-box;background:var(--bg2);border:1px solid var(--border2);border-left:3px solid var(--accent);border-radius:var(--r);box-shadow:0 18px 50px rgba(0,0,0,.28);padding:14px 16px;display:none;flex-direction:column;gap:8px;font-size:13px;line-height:1.5;color:var(--text)}
+#coach.open{display:flex;animation:coachIn .25s ease-out}
+#coach.coach-top-right{top:100px;bottom:auto;right:20px}
+@keyframes coachIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#coach.open{animation:none}}
+.coach-head{display:flex;align-items:center;gap:8px;font-size:14px}
+.coach-icon{font-size:18px;line-height:1}
+.coach-body{color:var(--text2)}
+.coach-body b{color:var(--text)}
+.coach-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.coach-btn{font-family:inherit;font-size:12.5px;padding:6px 12px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--bg3);color:var(--text);cursor:pointer}
+.coach-btn:hover{border-color:var(--accent)}
+.coach-btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.coach-link{margin-left:auto;font-size:12px;color:var(--text3);cursor:pointer}
+.coach-link:hover{color:var(--text2);text-decoration:underline}
+/* A face crop opened in its photo, the face ringed (facePeek in faceIndex.js) */
+#facePeek{position:fixed;inset:0;z-index:450;background:rgba(0,0,0,.82);backdrop-filter:blur(6px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:zoom-out}
+#facePeek.open{display:flex}
+.face-peek-frame{position:relative;overflow:hidden;border-radius:var(--r);line-height:0;min-width:120px;min-height:120px;display:flex;align-items:center;justify-content:center}
+.face-peek-frame img{display:block;max-width:92vw;max-height:84vh}
+.face-peek-ring{position:absolute;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 3px var(--accent),0 0 0 200vmax rgba(0,0,0,.45);pointer-events:none}
+.face-peek-hint,.face-peek-missing{color:rgba(255,255,255,.7);font-size:12px;line-height:1.4}
+.face-crop[data-face],.gs-face-pic[data-face]{cursor:zoom-in}
 .fr-confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
 .fr-confetti-piece{position:absolute;top:-20px;width:8px;height:14px;border-radius:2px;animation:fr-confetti-fall 1.6s ease-in forwards}
 @keyframes fr-confetti-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(340px) rotate(360deg);opacity:0}}
@@ -811,9 +823,10 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 .gs-face-who b{color:var(--text)}
 .gs-face-pic{width:34px;height:34px;border-radius:50%;background:var(--bg2) center/cover;flex-shrink:0}
 .gs-face-crops{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
-.gs-face-crop{position:relative;width:44px;height:44px;border-radius:50%;background:var(--bg2) center/cover no-repeat;cursor:pointer;flex-shrink:0;box-shadow:0 0 0 1px var(--border2)}
-.gs-face-crop i{position:absolute;inset:0;display:none;align-items:center;justify-content:center;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-style:normal;font-size:14px}
-.gs-face-crop:hover i{display:flex}
+.gs-face-crop{position:relative;width:44px;height:44px;border-radius:50%;background:var(--bg2) center/cover no-repeat;cursor:zoom-in;flex-shrink:0;box-shadow:0 0 0 1px var(--border2)}
+.gs-face-x{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;border:none;background:rgba(0,0,0,.7);color:#fff;display:none;align-items:center;justify-content:center;padding:0;cursor:pointer;font-family:inherit;font-size:10px;line-height:1}
+.gs-face-x:hover{background:var(--red)}
+.gs-face-crop:hover .gs-face-x{display:flex}
 .gs-face-more{align-self:center;font-size:12px;color:var(--text3)}
 .gs-face-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .gs-face-name{padding:6px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font:inherit;font-size:12.5px;width:170px}
@@ -1197,8 +1210,6 @@ body.win-chrome #flickMode{top:32px}
 .fl-confetti .fr-confetti-piece{animation-name:fl-confetti-fall;animation-duration:2.3s}
 @keyframes fl-confetti-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}85%{opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}
 @media (prefers-reduced-motion:reduce){.fl-enter-up,.fl-enter-down{animation:none}}
-.fr-first-duel{display:flex;flex-direction:column;align-items:center;gap:10px;margin:6px 0 4px;padding:14px 18px;border-radius:var(--r);background:rgba(210,63,107,.07);border:1px solid rgba(210,63,107,.25);max-width:440px}
-.fr-first-duel-text{font-size:13px;color:var(--text2);text-align:center}
 /* BIN (bin.js) */
 .bin-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:14px;border-radius:var(--rs);background:var(--bg3);border:1px solid var(--border);font-size:12.5px;color:var(--text2);flex-wrap:wrap}
 .bin-banner-text{display:flex;flex-direction:column;gap:2px;flex:1;min-width:240px}.bin-banner-text strong{color:var(--text);font-size:13px}
@@ -2412,8 +2423,8 @@ body.win-chrome #flickMode{top:32px}
       <button class="sf-rescan" onclick="closeSettingsModal();openBackupsModal();" style="width:100%;box-sizing:border-box;margin-bottom:14px" data-i18n-title="settingsViewBackupsTitle" data-i18n="settingsViewBackups" title="View and restore backups">🗄️ View Backups</button>
 
       <div class="modal-sub" style="margin-bottom:6px" data-i18n="settingsHelp">Help</div>
-      <button class="sf-rescan" onclick="closeSettingsModal();openFirstRunWizard(false);" style="width:100%;box-sizing:border-box;margin-bottom:4px" data-i18n="frWizardTitle" data-i18n-title="settingsGettingStartedTitle" title="Add a trip, the guided way - walks you through creating it, adding photos, and tagging people">🚀 Getting Started</button>
-      <div class="settings-hint" style="margin:0 0 14px" data-i18n="settingsGettingStartedHint">Walks you through creating a trip, adding photos to it, and tagging the people in them.</div>
+      <button class="sf-rescan" onclick="closeSettingsModal();openFirstRunWizard(false);" style="width:100%;box-sizing:border-box;margin-bottom:4px" data-i18n="frWizardTitle" data-i18n-title="settingsGettingStartedTitle" title="Add photos, then sort them with Guided Sort, with the guide explaining each step again">🚀 Getting Started</button>
+      <div class="settings-hint" style="margin:0 0 14px" data-i18n="settingsGettingStartedHint">Add photos, then sort them with Guided Sort. The guide explains each step again.</div>
 
       <div class="modal-sub" style="margin-bottom:6px" data-i18n="settingsLanguage">Language</div>
       <select class="sel-input" id="setLanguage" style="margin-bottom:14px">
@@ -2486,6 +2497,9 @@ body.win-chrome #flickMode{top:32px}
      fetched on demand the first time the user opens the Globe view. See ensureCesiumLoaded()
      in renderer.js. globe.js itself only touches the Cesium global inside buildGlobe(), never
      at parse time, so it's safe to load before Cesium is present. -->
+<!-- The guide (coachShow) and a face crop opened in its photo (facePeek) -->
+<div id="coach" role="status" aria-live="polite"></div>
+<div id="facePeek" onclick="closeFacePeek()"></div>
 <script src="media-types.js"></script>
 <script src="heicGpu.js"></script>
 <script src="globe.js"></script>
