@@ -539,6 +539,9 @@ textarea.text-input{resize:vertical}
 .photo-inner{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;width:min(96vw,1600px);height:min(94vh,1000px);box-shadow:0 32px 100px rgba(0,0,0,.6);position:relative;display:flex;flex-direction:column}
 .photo-img-wrap{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000;position:relative;cursor:zoom-in}
 .photo-img-wrap.zoomed{cursor:grab}
+/* Unzoomed, the photo itself can be dragged out of the preview (popupWatchFileDrag) */
+.photo-img-wrap:not(.zoomed):not(.video-mode) #photoPopupImg{cursor:grab}
+.popup-drag-handle{cursor:grab}.popup-drag-handle:active{cursor:grabbing}
 .photo-img-wrap.panning{cursor:grabbing}
 .photo-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;visibility:hidden;opacity:0;transition:opacity .2s,visibility .2s}
 .photo-loading.show{visibility:visible;opacity:1}
@@ -2028,7 +2031,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
           <button class="v360-menu-item" onclick="v360GrabSphere()"><b>Full 360 photo</b><span>The whole sphere, full resolution, opens as 360 in Trove, Google Photos, Facebook · Shift+G</span></button>
         </div>
       </div>
-      <div class="photo-zoom-hint" id="photoZoomHint">🔍 Scroll to zoom · Drag to pan · Double-click to reset</div>
+      <div class="photo-zoom-hint" id="photoZoomHint" data-i18n="popupZoomHint">🔍 Scroll to zoom · Drag the photo out to another app · Zoomed in, drag to pan</div>
       <!-- Where this file is filed: trips, people, categories, tags (renderPopupFolderChips) -->
       <div class="photo-folder-chips" id="photoFolderChips" style="display:none"></div>
     </div>
@@ -2044,6 +2047,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
         <button class="btn-save" onclick="openPopupFile()">Open File</button>
         <button class="btn-cancel" id="popupBestOfBtn" onclick="togglePopupBestOf()">♡ Like</button>
         <button class="btn-cancel" onclick="revealPopupFile()">Reveal</button>
+        <button class="btn-cancel popup-drag-handle" onmousedown="popupDragHandleDown(event)" data-i18n-title="popupDragTitle" title="Drag this file into another app, an email or a folder, without closing the preview. You can also drag the photo itself.">✋ <span data-i18n="popupDragFile">Drag file</span></button>
         <button class="btn-cancel" onclick="editPopupFile()">Edit Props</button>
         <button class="btn-cancel" id="popupEditPhotoBtn" onclick="editPopupPhoto()">✏️ Edit Photo</button>
         <button class="btn-cancel" id="popupRotateBtn" onclick="rotatePopupFile()" title="Rotate 90° clockwise - only how Trove shows it, the file itself isn't changed (R)">↻ Rotate</button>

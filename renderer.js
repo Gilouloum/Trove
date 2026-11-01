@@ -755,7 +755,12 @@ const I18N = {
   peCropPortrait: { en: 'Portrait', fr: 'Portrait', de: 'Hochformat', es: 'Vertical', zh: '竖向' },
   peCropLandscape: { en: 'Landscape', fr: 'Paysage', de: 'Querformat', es: 'Horizontal', zh: '横向' },
   peCropHint: { en: 'Drag the corners or edges of the box, or drag inside it to move it. Only the part inside is kept; the original photo is never cut, and reset brings it all back.', fr: "Faites glisser les coins ou les bords du cadre, ou l'intérieur pour le déplacer. Seule la partie à l'intérieur est gardée ; la photo d'origine n'est jamais coupée, et réinitialiser la rend en entier.", de: 'Ziehen Sie an den Ecken oder Kanten des Rahmens oder in ihm, um ihn zu verschieben. Nur der Teil darin bleibt; das Originalfoto wird nie beschnitten, und Zurücksetzen holt alles zurück.', es: 'Arrastra las esquinas o los bordes del recuadro, o su interior para moverlo. Solo se queda lo de dentro; la foto original nunca se corta y restablecer la recupera entera.', zh: '拖动边框的角或边,或拖动框内移动它。只保留框内部分;原照片不会被裁掉,重置即可恢复完整照片。' },
-  peCropDone: { en: '✓ Done', fr: '✓ Terminé', de: '✓ Fertig', es: '✓ Listo', zh: '✓ 完成' }
+  peCropDone: { en: '✓ Done', fr: '✓ Terminé', de: '✓ Fertig', es: '✓ Listo', zh: '✓ 完成' },
+
+  // Photo preview: dragging the file out
+  popupZoomHint: { en: '🔍 Scroll to zoom · Drag the photo out to another app · Zoomed in, drag to pan', fr: "🔍 Molette pour zoomer · Glissez la photo vers une autre application · En zoom, glissez pour vous déplacer", de: '🔍 Scrollen zum Zoomen · Foto in eine andere App ziehen · Gezoomt: ziehen zum Verschieben', es: '🔍 Rueda para hacer zoom · Arrastra la foto a otra aplicación · Con zoom, arrastra para moverte', zh: '🔍 滚动缩放 · 将照片拖到其他应用 · 放大后拖动可平移' },
+  popupDragFile: { en: 'Drag file', fr: 'Glisser le fichier', de: 'Datei ziehen', es: 'Arrastrar archivo', zh: '拖出文件' },
+  popupDragTitle: { en: 'Drag this file into another app, an email or a folder, without closing the preview. You can also drag the photo itself.', fr: "Faites glisser ce fichier vers une autre application, un e-mail ou un dossier, sans fermer l'aperçu. Vous pouvez aussi faire glisser la photo elle-même.", de: 'Ziehen Sie diese Datei in eine andere App, eine E-Mail oder einen Ordner, ohne die Vorschau zu schließen. Sie können auch das Foto selbst ziehen.', es: 'Arrastra este archivo a otra aplicación, un correo o una carpeta sin cerrar la vista previa. También puedes arrastrar la propia foto.', zh: '无需关闭预览,即可将此文件拖到其他应用、邮件或文件夹中。也可以直接拖动照片本身。' }
 };
 
 // A folder's icon is normally an emoji string, but folder.iconImage (a data URL, set via the
@@ -8901,9 +8906,27 @@ function popupMaybeLoadHires() {
   });
 }
 
+// Dragging the file out of the preview, so it can go into an editor, an email or Explorer without
+// closing the preview first. It's the same OS drag a grid card hands over once it leaves the
+// window (handFileDragToOs): the real file, never a copy. A press only turns into a drag once the
+// mouse has moved a few pixels, so a click or a double-click to zoom still work as before.
+const POPUP_FILE_DRAG_PX = 6;
+let popupFileDragStart = null; // { x, y, file } between the press and the drag starting
+function popupWatchFileDrag(e) {
+  const file = popupClusterFiles[popupClusterIndex];
+  if (!file || file._missing || e.button !== 0) return false;
+  popupFileDragStart = { x: e.clientX, y: e.clientY, file };
+  e.preventDefault();
+  return true;
+}
+// The side panel's handle: works for every file, zoomed in or not, videos and 360 included.
+function popupDragHandleDown(e) { popupWatchFileDrag(e); }
+
 function popupOnMouseDown(e) {
   const file = popupClusterFiles[popupClusterIndex];
   if (file && (isVid(file.ext) || is360File(file))) return; // don't hijack clicks on the native video controls
+  // Unzoomed, pressing on the photo itself starts a file drag; zoomed in, a drag pans instead.
+  if (popupZoom <= 1 && e.target.id === 'photoPopupImg' && popupWatchFileDrag(e)) return;
   if (popupZoom <= 1 || (e.button !== 0 && e.button !== 1)) return; // left- or middle-drag pans
   popupDragging = true;
   popupDragStart = { x: e.clientX, y: e.clientY, panX: popupPanX, panY: popupPanY };
@@ -8912,6 +8935,14 @@ function popupOnMouseDown(e) {
 }
 
 function popupOnMouseMove(e) {
+  const start = popupFileDragStart;
+  if (start) {
+    if (!(e.buttons & 1)) { popupFileDragStart = null; return; } // released outside the window
+    if (Math.hypot(e.clientX - start.x, e.clientY - start.y) < POPUP_FILE_DRAG_PX) return;
+    popupFileDragStart = null;
+    window.api.startFileDrag([start.file.path], start.file.id);
+    return;
+  }
   if (!popupDragging) return;
   popupPanX = popupDragStart.panX + (e.clientX - popupDragStart.x);
   popupPanY = popupDragStart.panY + (e.clientY - popupDragStart.y);
@@ -8919,6 +8950,7 @@ function popupOnMouseMove(e) {
 }
 
 function popupOnMouseUp() {
+  popupFileDragStart = null;
   if (!popupDragging) return;
   popupDragging = false;
   document.getElementById('photoImgWrap')?.classList.remove('panning');
