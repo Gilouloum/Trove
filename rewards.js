@@ -13,8 +13,8 @@
 
 // Tuned so the first level-up comes within a minute of flicking through a trip, and going
 // through a whole 400-photo trip (liking and binning as you go) reaches the second rank.
-const REWARD_XP = { seen: 1, like: 3, bin: 2, dup: 10, personNew: 25, personMore: 5, tripDone: 150 };
-const REWARD_COUNTER = { seen: 'seen', like: 'likes', bin: 'binned', dup: 'dups', personNew: 'people', tripDone: 'trips' };
+const REWARD_XP = { seen: 1, like: 3, bin: 2, dup: 10, personNew: 25, personMore: 5, tripDone: 150, locate: 4 };
+const REWARD_COUNTER = { seen: 'seen', like: 'likes', bin: 'binned', dup: 'dups', personNew: 'people', tripDone: 'trips', locate: 'located' };
 // Level L starts at 25 * (L-1) * L XP: 50, 150, 300, 500... each level a little longer than the last.
 function rewardsXpForLevel(level) { return 25 * (level - 1) * level; }
 function rewardsLevelOf(xp) { let l = 1; while (rewardsXpForLevel(l + 1) <= xp) l++; return l; }
@@ -247,6 +247,8 @@ function sfxPlay(name) {
     else if (name === 'tick') note(380, 0, 0.05, { type: 'triangle', peak: 0.35 });
     else if (name === 'chime') { note(1318.5, 0, 0.7, { peak: 0.35 }); note(1975.5, 0.09, 0.8, { peak: 0.25 }); }
     else if (name === 'levelUp') [523.3, 659.3, 784, 1046.5].forEach((f, i) => note(f, i * 0.085, 0.45, { peak: 0.4 }));
+    // Guided Sort's locate mission: a radar lock-on when a photo is placed
+    else if (name === 'lock') { note(1760, 0, 0.05, { type: 'square', peak: 0.16 }); note(2349.3, 0.07, 0.05, { type: 'square', peak: 0.16 }); note(2793.8, 0.14, 0.16, { peak: 0.3 }); }
     else if (name === 'fanfare') {
       [523.3, 659.3, 784, 1046.5].forEach((f, i) => note(f, i * 0.1, 0.35, { peak: 0.4 }));
       [523.3, 659.3, 784, 1046.5].forEach(f => note(f, 0.45, 1.3, { peak: 0.22 }));

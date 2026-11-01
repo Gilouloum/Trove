@@ -501,6 +501,73 @@ textarea.text-input{resize:vertical}
 .gsl-bar-info{font-size:11.5px;color:rgba(255,255,255,.4);margin-right:auto}
 .gsl-bar .dump-banner-btn{margin-left:0}
 .gsl-bar .dump-banner-btn:disabled{opacity:.4;cursor:default;pointer-events:none}
+/* The locate mission (renderGsLocatePanel / reconMount): a recon look - near-black glass, one
+   cyan accent, DM Mono for every readout, chamfered corners, scanlines over the globe. */
+#gsLocatePanel{--recon:#00d4ff;font-family:'DM Sans',sans-serif}
+.gsl-head{position:sticky;top:0;z-index:1;padding:14px 16px 12px;background:rgba(8,10,16,.94);backdrop-filter:blur(6px);border-bottom:1px solid rgba(0,212,255,.18)}
+.gsl-kicker,.gsl-label,.gsl-count,.gsl-intel,#reconHud{font-family:'DM Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.12em}
+.gsl-kicker{font-size:10px;color:var(--recon);margin-bottom:4px}
+.gsl-progress{height:3px;margin:10px 0 6px;background:rgba(255,255,255,.08);overflow:hidden}
+.gsl-progress span{display:block;height:100%;background:var(--recon);box-shadow:0 0 8px var(--recon);transition:width .4s ease}
+.gsl-count{font-size:10.5px;color:rgba(255,255,255,.6)}
+.gsl-target{margin:12px;padding:12px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.22);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.gsl-label{font-size:10px;color:var(--recon);margin-bottom:8px}
+.gsl-target-photo{position:relative;aspect-ratio:4/3;background:#05070b;overflow:hidden}
+.gsl-target-photo .rdp-thumb{opacity:1;font-size:28px}
+.gsl-target-photo .rdp-thumb img{width:100%;height:100%;object-fit:contain}
+.gsl-target-photo::after{content:'';position:absolute;inset:8px;pointer-events:none;background:linear-gradient(var(--recon),var(--recon)) top left/14px 1.5px,linear-gradient(var(--recon),var(--recon)) top left/1.5px 14px,linear-gradient(var(--recon),var(--recon)) top right/14px 1.5px,linear-gradient(var(--recon),var(--recon)) top right/1.5px 14px,linear-gradient(var(--recon),var(--recon)) bottom left/14px 1.5px,linear-gradient(var(--recon),var(--recon)) bottom left/1.5px 14px,linear-gradient(var(--recon),var(--recon)) bottom right/14px 1.5px,linear-gradient(var(--recon),var(--recon)) bottom right/1.5px 14px;background-repeat:no-repeat}
+.gsl-target-more{position:absolute;right:8px;bottom:8px;padding:2px 8px;background:rgba(0,0,0,.7);color:#fff;font-size:12px;border-radius:10px}
+.gsl-intel{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:10px 0;font-size:10.5px}
+.gsl-intel dt{color:rgba(255,255,255,.4)}
+.gsl-intel dd{margin:0;color:#e8eaed;text-transform:none;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gsl-target .gsl-suggest{margin:0 0 10px;background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.35);color:#e8eaed}
+.gsl-how{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:10px}
+.gsl-actions{display:flex;gap:8px;flex-wrap:wrap}
+.gsl-actions .dump-banner-btn{margin-left:0}
+.gsl-actions .dump-banner-btn:disabled{opacity:.4;cursor:default}
+.gsl-actions kbd{font-family:'DM Mono',monospace;font-size:10px;padding:0 4px;margin-left:4px;border:1px solid currentColor;border-radius:3px;opacity:.7}
+.gsl-queue-label{margin:4px 16px 2px}
+.gsl-queue-hint{margin:0 16px;font-size:11px;color:rgba(255,255,255,.4)}
+.rdp-item.gsl-skipped{opacity:.35}
+.gsl-complete{display:flex;flex-direction:column;align-items:center;gap:12px;padding:48px 24px;text-align:center}
+.gsl-complete-icon{font-size:44px;filter:drop-shadow(0 0 14px rgba(0,212,255,.6))}
+.gsl-complete-title{font-family:'DM Mono',monospace;font-size:20px;letter-spacing:.2em;text-transform:uppercase;color:var(--recon,#00d4ff)}
+.gsl-complete .dump-banner-btn{margin-left:0}
+/* The HUD over the globe */
+#globeMapArea.recon{--recon:#00d4ff}
+#globeMapArea.recon canvas{cursor:none}
+#globeMapArea[data-sensor="nvg"]{--recon:#5cff8a}
+#globeMapArea[data-sensor="flir"]{--recon:#ffb347}
+#reconHud{position:absolute;inset:0;pointer-events:none;z-index:2;color:var(--recon);font-size:11px}
+.recon-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%)}
+.recon-corner{position:absolute;width:26px;height:26px;border:2px solid var(--recon);opacity:.8}
+.recon-corner.tl{top:14px;left:14px;border-right:0;border-bottom:0}
+.recon-corner.tr{top:14px;right:14px;border-left:0;border-bottom:0}
+.recon-corner.bl{bottom:30px;left:14px;border-right:0;border-top:0}
+.recon-corner.br{bottom:30px;right:14px;border-left:0;border-top:0}
+.recon-tl{position:absolute;top:22px;left:52px;display:flex;flex-direction:column;gap:4px;text-shadow:0 0 6px rgba(0,0,0,.9)}
+#reconStatus{color:#e8eaed;font-size:10.5px}
+#reconStatus[data-state="searching"]::after{content:'_';animation:reconBlink 1s steps(1) infinite}
+#reconStatus[data-state="marked"]{color:var(--recon)}
+#reconStatus[data-state="acquired"],#reconStatus[data-state="complete"]{color:#0b0f14;background:var(--recon);padding:1px 6px;align-self:flex-start}
+@keyframes reconBlink{50%{opacity:0}}
+.recon-tr{position:absolute;top:72px;left:52px;display:flex;align-items:center;gap:4px;pointer-events:auto}
+.recon-tr span{margin-right:4px;opacity:.7}
+.recon-tr button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;background:rgba(5,8,12,.7);border:1px solid rgba(255,255,255,.18);padding:4px 8px;cursor:pointer}
+.recon-tr button.active{border-color:var(--recon);box-shadow:inset 0 0 0 1px var(--recon),0 0 10px rgba(0,0,0,.4)}
+.recon-tr kbd{font:inherit;opacity:.55;margin-right:2px}
+.recon-readout{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);display:flex;gap:18px;padding:6px 14px;background:rgba(5,8,12,.72);border:1px solid rgba(255,255,255,.12);white-space:nowrap;color:#e8eaed}
+.recon-readout span{color:inherit}
+.recon-reticle{position:absolute;left:0;top:0;width:0;height:0;opacity:0;transition:opacity .15s}
+.recon-reticle::before,.recon-reticle::after{content:'';position:absolute;background:var(--recon);box-shadow:0 0 4px var(--recon)}
+.recon-reticle::before{left:-22px;top:-.5px;width:44px;height:1px;background:linear-gradient(90deg,var(--recon) 0 16px,transparent 16px 28px,var(--recon) 28px)}
+.recon-reticle::after{top:-22px;left:-.5px;width:1px;height:44px;background:linear-gradient(180deg,var(--recon) 0 16px,transparent 16px 28px,var(--recon) 28px)}
+.recon-reticle i{position:absolute;left:-15px;top:-15px;width:30px;height:30px;border:1px dashed var(--recon);border-radius:50%;animation:reconSpin 6s linear infinite}
+@keyframes reconSpin{to{transform:rotate(360deg)}}
+/* A photo placed: brackets closing on the spot */
+.recon-lock{position:fixed;width:90px;height:90px;margin:-45px 0 0 -45px;z-index:60;pointer-events:none;border:2px solid #00d4ff;animation:reconLock .9s ease-out forwards}
+@keyframes reconLock{0%{transform:scale(1.6);opacity:0}30%{transform:scale(.55);opacity:1}70%{transform:scale(.55);opacity:1}100%{transform:scale(.55);opacity:0}}
+@media (prefers-reduced-motion:reduce){.recon-reticle i,#reconStatus::after{animation:none}.recon-lock{animation:none;opacity:0}}
 
 /* RELIVE TRIP (day-by-day bar over the globe) */
 #reliveBar{position:absolute;left:0;right:0;bottom:0;z-index:60;display:none;flex-direction:column;background:rgba(7,7,20,.88);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.08)}
@@ -826,6 +893,18 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 .gs-face-crop{position:relative;width:44px;height:44px;border-radius:50%;background:var(--bg2) center/cover no-repeat;cursor:zoom-in;flex-shrink:0;box-shadow:0 0 0 1px var(--border2)}
 .gs-face-x{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;border:none;background:rgba(0,0,0,.7);color:#fff;display:none;align-items:center;justify-content:center;padding:0;cursor:pointer;font-family:inherit;font-size:10px;line-height:1}
 .gs-face-x:hover{background:var(--red)}
+/* Folders step suggestions: a few small thumbnails per suggestion (gsRenderFolderSuggestions) */
+.gs-suggest-thumb{width:44px;height:44px;border-radius:var(--rs);overflow:hidden;flex-shrink:0;background:var(--bg2);box-shadow:0 0 0 1px var(--border2)}
+.gs-suggest-thumb img{width:100%;height:100%;object-fit:cover}
+/* Done step, batch sorted into a trip: one big way on, to Flick through (renderGsDoneStep) */
+.gs-done-flick{gap:14px}
+.gs-done-icon{font-size:48px;line-height:1}
+.gs-flick-cta{font-size:15px;padding:14px 28px;animation:frGlowPulse 2.1s ease-in-out infinite}
+.gs-done-later{font-size:12px;color:var(--text3);cursor:pointer;text-decoration:underline}
+.gs-done-later:hover{color:var(--text2)}
+/* The button a guide nudge is about (discoverMaybeNudge) */
+.coach-pulse{position:relative;z-index:1;animation:frGlowPulse 1.6s ease-in-out infinite;box-shadow:0 0 0 2px var(--accent)}
+@media (prefers-reduced-motion:reduce){.gs-flick-cta,.coach-pulse{animation:none}}
 .gs-face-crop:hover .gs-face-x{display:flex}
 .gs-face-more{align-self:center;font-size:12px;color:var(--text3)}
 .gs-face-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}

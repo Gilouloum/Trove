@@ -364,20 +364,22 @@ const I18N = {
   },
   coachFoldersTitle: { en: "Categories: what's in the photo", fr: 'Catégories : ce que montre la photo', de: 'Kategorien: was auf dem Foto ist', es: 'Categorías: lo que sale en la foto', zh: '分类:照片里有什么' },
   coachFoldersBody: {
-    en: `Categories are for what a photo shows, whatever the trip: food, pets, sport… No need to redo trips or people here. Nothing to file? Just continue: you can come back any time.`,
-    fr: `Les catégories servent à ce que montre la photo, quel que soit le voyage : la cuisine, les animaux, le sport… Inutile de refaire les voyages ou les personnes ici. Rien à ranger ? Continuez simplement : vous pourrez revenir quand vous voulez.`,
-    de: `Kategorien sind dafür, was ein Foto zeigt, egal auf welcher Reise: Essen, Haustiere, Sport… Reisen oder Personen müssen Sie hier nicht noch einmal anlegen. Nichts einzuordnen? Einfach weiter: Sie können jederzeit zurückkommen.`,
-    es: `Las categorías son para lo que muestra una foto, sea del viaje que sea: comida, mascotas, deporte… No hace falta repetir aquí viajes ni personas. ¿Nada que archivar? Continúa sin más: puedes volver cuando quieras.`,
-    zh: `分类用于记录照片里有什么,不管是哪趟旅行:美食、宠物、运动……这里不用再建旅行或人物。没什么要归档?直接继续,随时都能回来。`
+    en: `Start with Trove's suggestions at the top, if there are any: photos that look like what's already in your folders, one click each. Then file anything else by hand. Categories are for what a photo shows (food, pets, sport…), whatever the trip. Nothing to file? Just continue.`,
+    fr: `Commencez par les suggestions de Trove en haut, s'il y en a : des photos qui ressemblent à ce qu'il y a déjà dans vos dossiers, un clic chacune. Rangez ensuite le reste à la main. Les catégories servent à ce que montre la photo (cuisine, animaux, sport…), quel que soit le voyage. Rien à ranger ? Continuez simplement.`,
+    de: `Beginnen Sie mit Troves Vorschlägen oben, falls es welche gibt: Fotos, die dem ähneln, was schon in Ihren Ordnern ist, je ein Klick. Den Rest ordnen Sie von Hand ein. Kategorien sind dafür, was ein Foto zeigt (Essen, Haustiere, Sport…), egal auf welcher Reise. Nichts einzuordnen? Einfach weiter.`,
+    es: `Empieza por las sugerencias de Trove de arriba, si las hay: fotos que se parecen a lo que ya hay en tus carpetas, un clic cada una. Luego archiva el resto a mano. Las categorías son para lo que muestra la foto (comida, mascotas, deporte…), sea del viaje que sea. ¿Nada que archivar? Continúa sin más.`,
+    zh: `如果顶部有 Trove 的建议,先看它们:与你文件夹中已有内容相似的照片,每组点一下即可。其余的再手动归档。分类用于记录照片里有什么(美食、宠物、运动……),不管是哪趟旅行。没什么要归档?直接继续。`
   },
-  coachContentTitle: { en: "Trove's suggestions", fr: 'Les suggestions de Trove', de: 'Troves Vorschläge', es: 'Las sugerencias de Trove', zh: 'Trove 的建议' },
-  coachContentBody: {
-    en: `Trove looked at what's in each photo: matches for your categories, and groups of similar photos. Every suggested photo starts ticked: untick the ones that don't belong, then confirm. Nothing is filed until you click.`,
-    fr: `Trove a regardé ce que montre chaque photo : des correspondances avec vos catégories, et des groupes de photos qui se ressemblent. Chaque photo suggérée est déjà cochée : décochez celles qui ne vont pas, puis confirmez. Rien n'est rangé tant que vous n'avez pas cliqué.`,
-    de: `Trove hat sich angesehen, was auf jedem Foto ist: Treffer für Ihre Kategorien und Gruppen ähnlicher Fotos. Jedes vorgeschlagene Foto ist schon angehakt: Entfernen Sie den Haken bei denen, die nicht passen, und bestätigen Sie dann. Nichts wird eingeordnet, bevor Sie klicken.`,
-    es: `Trove ha mirado qué hay en cada foto: coincidencias con tus categorías y grupos de fotos parecidas. Cada foto sugerida empieza marcada: desmarca las que no encajen y confirma. No se archiva nada hasta que hagas clic.`,
-    zh: `Trove 看过了每张照片的内容:与你的分类匹配的照片,以及相似照片的分组。每张建议的照片默认已勾选:取消不合适的,然后确认。在你点击之前,什么都不会归档。`
+  gsSuggestLooking: { en: 'Trove is looking for photos that fit your folders…', fr: 'Trove cherche des photos qui vont dans vos dossiers…', de: 'Trove sucht Fotos, die zu Ihren Ordnern passen…', es: 'Trove busca fotos que encajen en tus carpetas…', zh: 'Trove 正在寻找适合你文件夹的照片……' },
+  gsSuggestTitle: {
+    en: v => `<b>${v.n} photo${v.n === 1 ? '' : 's'}</b> look${v.n === 1 ? 's' : ''} like ${v.name}`,
+    fr: v => `<b>${v.n} photo${v.n === 1 ? '' : 's'}</b> ressemble${v.n === 1 ? '' : 'nt'} à ${v.name}`,
+    de: v => `<b>${v.n} Foto${v.n === 1 ? '' : 's'}</b> ${v.n === 1 ? 'sieht' : 'sehen'} aus wie ${v.name}`,
+    es: v => `<b>${v.n} foto${v.n === 1 ? '' : 's'}</b> se parece${v.n === 1 ? '' : 'n'} a ${v.name}`,
+    zh: v => `<b>${v.n} 张照片</b>看起来像「${v.name}」`
   },
+  gsSuggestAdd: { en: v => `Add to ${v.name}`, fr: v => `Ajouter à ${v.name}`, de: v => `Zu ${v.name} hinzufügen`, es: v => `Añadir a ${v.name}`, zh: v => `加入「${v.name}」` },
+  gsSuggestNot: { en: 'Not these', fr: 'Pas celles-ci', de: 'Nicht diese', es: 'Estas no', zh: '不是这些' },
   coachCameraTitle: { en: 'Cameras: optional', fr: 'Appareils : facultatif', de: 'Kameras: optional', es: 'Cámaras: opcional', zh: '相机:可选' },
   coachCameraBody: {
     en: `Most photos say which camera took them. These ones don't: if you know, select them and tap the camera. Not sure? Skip it, it's the least important step.`,
@@ -386,14 +388,62 @@ const I18N = {
     es: `La mayoría de las fotos dicen qué cámara las hizo. Estas no: si lo sabes, selecciónalas y toca la cámara. ¿No estás seguro? Sáltalo, es el paso menos importante.`,
     zh: `大多数照片会记录拍摄用的相机,这些没有:如果你知道,选中它们再点那台相机。不确定?跳过就好,这是最不重要的一步。`
   },
-  coachLocationTitle: { en: 'Put them on the map', fr: 'Placez-les sur la carte', de: 'Ab auf die Karte', es: 'Ponlas en el mapa', zh: '把它们放到地图上' },
+  coachLocationTitle: { en: 'Mission: locate', fr: 'Mission : localiser', de: 'Mission: orten', es: 'Misión: localizar', zh: '任务:定位' },
   coachLocationBody: {
-    en: `These photos have no GPS. Select the ones taken in the same place, then click the globe to drop a pin, or take a 📍 suggestion. They'll show up on the Globe and in Relive. Don't remember? Skip them.`,
-    fr: `Ces photos n'ont pas de GPS. Sélectionnez celles prises au même endroit, puis cliquez sur le globe pour poser une épingle, ou prenez une suggestion 📍. Elles apparaîtront sur le Globe et dans Revivre. Vous ne vous souvenez plus ? Passez-les.`,
-    de: `Diese Fotos haben kein GPS. Wählen Sie die am selben Ort aufgenommenen aus und klicken Sie auf den Globus, um eine Stecknadel zu setzen, oder nehmen Sie einen 📍-Vorschlag. Dann erscheinen sie auf dem Globus und beim Nacherleben. Wissen Sie es nicht mehr? Überspringen.`,
-    es: `Estas fotos no tienen GPS. Selecciona las tomadas en el mismo sitio y haz clic en el globo para poner una chincheta, o acepta una sugerencia 📍. Aparecerán en el Globo y en Revivir. ¿No te acuerdas? Sáltalas.`,
-    zh: `这些照片没有 GPS。选中在同一地点拍的照片,然后点击地球放下标记,或采用 📍 建议。之后它们就会出现在地球和「重温旅行」中。记不清了?跳过即可。`
+    en: `Put each photo back where it was taken. Click the globe, then confirm (Enter); or, when there's a 📡 lead, use it: the next photo comes up by itself. Try the night vision and thermal optics (1, 2, 3). Don't remember a place? Skip it (S).`,
+    fr: `Remettez chaque photo là où elle a été prise. Cliquez sur le globe puis confirmez (Entrée) ; ou, s'il y a une piste 📡, utilisez-la : la photo suivante arrive toute seule. Essayez la vision nocturne et la thermique (1, 2, 3). Vous ne vous souvenez plus d'un endroit ? Passez (S).`,
+    de: `Bringen Sie jedes Foto dorthin zurück, wo es aufgenommen wurde. Klicken Sie auf den Globus und bestätigen Sie (Enter), oder nutzen Sie einen 📡-Hinweis, wenn es einen gibt: Das nächste Foto kommt von selbst. Probieren Sie Nachtsicht und Wärmebild (1, 2, 3). Ort vergessen? Überspringen (S).`,
+    es: `Devuelve cada foto al lugar donde se tomó. Haz clic en el globo y confirma (Intro); o, si hay una pista 📡, úsala: la siguiente foto aparece sola. Prueba la visión nocturna y la térmica (1, 2, 3). ¿No recuerdas un sitio? Sáltalo (S).`,
+    zh: `把每张照片放回拍摄地点。点击地球再确认(Enter);如果有 📡 线索,直接使用:下一张会自动出现。试试夜视和热成像(1、2、3)。记不清地点?跳过(S)。`
   },
+  // The locate mission (renderGsLocatePanel / reconMount)
+  reconKicker: { en: 'Trove // Recon', fr: 'Trove // Reconnaissance', de: 'Trove // Aufklärung', es: 'Trove // Reconocimiento', zh: 'Trove // 侦察' },
+  reconLocated: { en: v => `Located ${v.n} / ${v.total}`, fr: v => `Localisées ${v.n} / ${v.total}`, de: v => `Geortet ${v.n} / ${v.total}`, es: v => `Localizadas ${v.n} / ${v.total}`, zh: v => `已定位 ${v.n} / ${v.total}` },
+  reconTarget: { en: 'Current target', fr: 'Cible actuelle', de: 'Aktuelles Ziel', es: 'Objetivo actual', zh: '当前目标' },
+  reconGroup: { en: v => `Group of ${v.n} targets`, fr: v => `Groupe de ${v.n} cibles`, de: v => `Gruppe aus ${v.n} Zielen`, es: v => `Grupo de ${v.n} objetivos`, zh: v => `${v.n} 个目标一组` },
+  reconCaptured: { en: 'Taken', fr: 'Prise le', de: 'Aufgenommen', es: 'Tomada el', zh: '拍摄于' },
+  reconCamera: { en: 'Camera', fr: 'Appareil', de: 'Kamera', es: 'Cámara', zh: '相机' },
+  reconFile: { en: 'File', fr: 'Fichier', de: 'Datei', es: 'Archivo', zh: '文件' },
+  reconIntel: {
+    en: v => v.n === 1 ? `Lead: 1 photo taken within ${v.min} min of this one was here.` : `Lead: ${v.n} photos taken within ${v.min} min of this one were here.`,
+    fr: v => v.n === 1 ? `Piste : 1 photo prise à moins de ${v.min} min de celle-ci était ici.` : `Piste : ${v.n} photos prises à moins de ${v.min} min de celle-ci étaient ici.`,
+    de: v => v.n === 1 ? `Hinweis: 1 Foto, höchstens ${v.min} Min. davon entfernt aufgenommen, war hier.` : `Hinweis: ${v.n} Fotos, höchstens ${v.min} Min. davon entfernt aufgenommen, waren hier.`,
+    es: v => v.n === 1 ? `Pista: 1 foto tomada a menos de ${v.min} min de esta estaba aquí.` : `Pista: ${v.n} fotos tomadas a menos de ${v.min} min de esta estaban aquí.`,
+    zh: v => `线索:与这张相隔 ${v.min} 分钟内拍摄的 ${v.n} 张照片在这里。`
+  },
+  reconIntelGroup: {
+    en: v => `Lead for ${v.k} of these ${v.n} photos, from photos taken within ${v.min} min.`,
+    fr: v => `Piste pour ${v.k} de ces ${v.n} photos, d'après des photos prises à moins de ${v.min} min.`,
+    de: v => `Hinweis für ${v.k} dieser ${v.n} Fotos, aus Fotos innerhalb von ${v.min} Min.`,
+    es: v => `Pista para ${v.k} de estas ${v.n} fotos, por fotos tomadas a menos de ${v.min} min.`,
+    zh: v => `这 ${v.n} 张中有 ${v.k} 张有线索,来自 ${v.min} 分钟内拍摄的照片。`
+  },
+  reconUseSpot: { en: 'Use this spot', fr: 'Utiliser cet endroit', de: 'Diesen Ort nehmen', es: 'Usar este sitio', zh: '使用这个位置' },
+  reconUseSpots: { en: 'Place each at its spot', fr: 'Placer chacune à son endroit', de: 'Jedes an seinen Ort setzen', es: 'Colocar cada una en su sitio', zh: '各自放到对应位置' },
+  reconHow: { en: 'Click the globe where it was taken, then confirm.', fr: 'Cliquez sur le globe là où elle a été prise, puis confirmez.', de: 'Klicken Sie auf dem Globus, wo es aufgenommen wurde, und bestätigen Sie.', es: 'Haz clic en el globo donde se tomó y confirma.', zh: '在地球上点击拍摄地点,然后确认。' },
+  reconConfirm: { en: 'Confirm position', fr: 'Confirmer la position', de: 'Position bestätigen', es: 'Confirmar posición', zh: '确认位置' },
+  reconSkip: { en: 'Skip target', fr: 'Passer la cible', de: 'Ziel überspringen', es: 'Saltar objetivo', zh: '跳过目标' },
+  reconQueue: { en: v => `Target queue · ${v.n}`, fr: v => `File des cibles · ${v.n}`, de: v => `Zielliste · ${v.n}`, es: v => `Cola de objetivos · ${v.n}`, zh: v => `目标队列 · ${v.n}` },
+  reconQueueHint: { en: 'Click a photo to make it the target. Ctrl+click to group photos taken at the same place.', fr: 'Cliquez sur une photo pour en faire la cible. Ctrl+clic pour grouper des photos prises au même endroit.', de: 'Klicken Sie auf ein Foto, um es zum Ziel zu machen. Strg+Klick gruppiert Fotos vom selben Ort.', es: 'Haz clic en una foto para convertirla en el objetivo. Ctrl+clic para agrupar fotos tomadas en el mismo sitio.', zh: '点击照片设为目标。Ctrl+点击可把同一地点拍的照片编为一组。' },
+  reconFinish: { en: 'End mission', fr: 'Terminer la mission', de: 'Mission beenden', es: 'Terminar la misión', zh: '结束任务' },
+  reconSearching: { en: 'Searching', fr: 'Recherche', de: 'Suche', es: 'Buscando', zh: '搜索中' },
+  reconMarked: { en: 'Position marked · Enter to confirm', fr: 'Position marquée · Entrée pour confirmer', de: 'Position markiert · Enter zum Bestätigen', es: 'Posición marcada · Intro para confirmar', zh: '已标记位置 · 按 Enter 确认' },
+  reconAcquired: { en: 'Target acquired', fr: 'Cible localisée', de: 'Ziel erfasst', es: 'Objetivo localizado', zh: '目标已锁定' },
+  reconComplete: { en: 'Mission complete', fr: 'Mission accomplie', de: 'Mission erfüllt', es: 'Misión cumplida', zh: '任务完成' },
+  reconCompleteBody: {
+    en: v => `${v.located} located${v.skipped ? ` · ${v.skipped} skipped` : ''}`,
+    fr: v => `${v.located} localisée${v.located === 1 ? '' : 's'}${v.skipped ? ` · ${v.skipped} passée${v.skipped === 1 ? '' : 's'}` : ''}`,
+    de: v => `${v.located} geortet${v.skipped ? ` · ${v.skipped} übersprungen` : ''}`,
+    es: v => `${v.located} localizada${v.located === 1 ? '' : 's'}${v.skipped ? ` · ${v.skipped} saltada${v.skipped === 1 ? '' : 's'}` : ''}`,
+    zh: v => `已定位 ${v.located} 张${v.skipped ? ` · 跳过 ${v.skipped} 张` : ''}`
+  },
+  reconRetrySkipped: { en: v => `Retry the ${v.n} skipped`, fr: v => `Reprendre les ${v.n} passées`, de: v => `Die ${v.n} übersprungenen erneut`, es: v => `Retomar las ${v.n} saltadas`, zh: v => `重试跳过的 ${v.n} 张` },
+  reconOptic: { en: 'Optics', fr: 'Optique', de: 'Optik', es: 'Óptica', zh: '光学' },
+  reconStd: { en: 'Normal', fr: 'Normal', de: 'Normal', es: 'Normal', zh: '标准' },
+  reconNvg: { en: 'Night vision', fr: 'Vision nocturne', de: 'Nachtsicht', es: 'Visión nocturna', zh: '夜视' },
+  reconFlir: { en: 'Thermal', fr: 'Thermique', de: 'Wärmebild', es: 'Térmica', zh: '热成像' },
+  // North, south, east, west - one letter each, for the coordinates readout
+  reconCompass: { en: 'NSEW', fr: 'NSEO', de: 'NSOW', es: 'NSEO', zh: 'NSEW' },
   coachDoneTitle: { en: 'All sorted!', fr: 'Tout est trié !', de: 'Alles sortiert!', es: '¡Todo ordenado!', zh: '全部整理好了!' },
   coachDoneBody: {
     en: `<b>Mark batch as sorted</b> takes these photos out of To Sort: they stay in your library, in their trips, people and folders. Photos you add later land in To Sort, and Guided Sort is one click away under <b>Sort</b>, top right. To see this guide again: Settings › Getting Started.`,
@@ -402,6 +452,59 @@ const I18N = {
     es: `<b>Marcar el lote como ordenado</b> saca estas fotos de Por ordenar: siguen en tu biblioteca, en sus viajes, personas y carpetas. Las fotos que añadas después llegarán a Por ordenar, y el Orden guiado está a un clic, en <b>Ordenar</b>, arriba a la derecha. Para volver a ver esta guía: Ajustes › Primeros pasos.`,
     zh: `<b>将这批标记为已整理</b>会把这些照片移出「待整理」:它们仍在你的照片库里,在各自的旅行、人物和文件夹中。以后添加的照片会进入「待整理」,点击右上角的<b>整理</b>即可开始引导整理。想再看一遍本指南:设置 › 快速上手。`
   },
+  // The Done step when the batch went into a trip: on to Flick through (renderGsDoneStep)
+  coachDoneFlick: {
+    en: `Now the best part: swipe through the trip and double-click the photos you love. They go to Liked, so your best shots are always one click away. Photos you add later land in To Sort, and Guided Sort is under <b>Sort</b>, top right.`,
+    fr: `Maintenant le meilleur : faites défiler le voyage et double-cliquez sur les photos que vous adorez. Elles vont dans Coups de cœur : vos meilleures photos sont toujours à un clic. Les photos ajoutées plus tard arriveront dans À trier, et le Tri guidé est sous <b>Trier</b>, en haut à droite.`,
+    de: `Jetzt das Beste: Blättern Sie durch die Reise und doppelklicken Sie auf die Fotos, die Sie lieben. Sie landen in Gefällt mir, Ihre besten Aufnahmen sind also immer einen Klick entfernt. Später hinzugefügte Fotos landen in Zu sortieren, und Geführtes Sortieren finden Sie unter <b>Sortieren</b> oben rechts.`,
+    es: `Ahora lo mejor: recorre el viaje y haz doble clic en las fotos que te encanten. Van a Me gusta, así tus mejores fotos están siempre a un clic. Las fotos que añadas después llegarán a Por ordenar, y el Orden guiado está en <b>Ordenar</b>, arriba a la derecha.`,
+    zh: `现在是最精彩的部分:浏览这趟旅行,双击你喜欢的照片。它们会进入「喜欢」,最好的照片随时一键可达。以后添加的照片会进入「待整理」,引导整理在右上角的<b>整理</b>里。`
+  },
+  gsDoneFlickTitle: { en: v => `${v.name} is sorted. Let's find its best photos!`, fr: v => `${v.name} est trié. Trouvons ses meilleures photos !`, de: v => `${v.name} ist sortiert. Finden wir die besten Fotos!`, es: v => `${v.name} está ordenado. ¡Busquemos sus mejores fotos!`, zh: v => `「${v.name}」已整理好。来找出最好的照片吧!` },
+  gsDoneFlickBody: {
+    en: 'One photo at a time, full screen: double-click the ones you love, swipe away the misses. A few minutes, and the best of the trip is set aside.',
+    fr: 'Une photo à la fois, en plein écran : double-cliquez sur celles que vous adorez, balayez les ratées. Quelques minutes, et le meilleur du voyage est mis de côté.',
+    de: 'Ein Foto nach dem anderen, im Vollbild: Doppelklicken Sie die, die Sie lieben, wischen Sie die misslungenen weg. Ein paar Minuten, und das Beste der Reise ist beiseitegelegt.',
+    es: 'Una foto cada vez, a pantalla completa: haz doble clic en las que te encanten y desliza las fallidas. En unos minutos tendrás apartado lo mejor del viaje.',
+    zh: '全屏一次一张:双击喜欢的,把拍糊的划走。几分钟就能挑出这趟旅行的精华。'
+  },
+  gsDoneFlickBtn: { en: v => `❤️ Find the best photos of ${v.name}`, fr: v => `❤️ Trouver les meilleures photos de ${v.name}`, de: v => `❤️ Die besten Fotos von ${v.name} finden`, es: v => `❤️ Buscar las mejores fotos de ${v.name}`, zh: v => `❤️ 找出「${v.name}」最好的照片` },
+  gsDoneFlickLater: { en: 'Not now, just mark it as sorted', fr: 'Pas maintenant, juste le marquer comme trié', de: 'Nicht jetzt, nur als sortiert markieren', es: 'Ahora no, solo marcarlo como ordenado', zh: '暂不,只标记为已整理' },
+  gsDoneSortedN: { en: v => `${v.n} photo${v.n === 1 ? '' : 's'} sorted`, fr: v => `${v.n} photo${v.n === 1 ? '' : 's'} triée${v.n === 1 ? '' : 's'}`, de: v => `${v.n} Foto${v.n === 1 ? '' : 's'} sortiert`, es: v => `${v.n} foto${v.n === 1 ? '' : 's'} ordenada${v.n === 1 ? '' : 's'}`, zh: v => `已整理 ${v.n} 张照片` },
+  // Discovering the rest (discoverSeen / discoverMaybeNudge): what a feature is for, the first
+  // time it opens; and a nudge when it's still unopened days later
+  discoverShowMe: { en: 'Show me', fr: 'Montre-moi', de: 'Zeig es mir', es: 'Muéstramelo', zh: '带我看看' },
+  discoverLater: { en: 'Later', fr: 'Plus tard', de: 'Später', es: 'Más tarde', zh: '以后再说' },
+  discoverTitle_globe: { en: 'The Globe', fr: 'Le Globe', de: 'Der Globus', es: 'El Globo', zh: '地球' },
+  discoverBody_globe: {
+    en: "Every photo with a location sits where it was taken. Click a trip's marker to Relive it day by day, with the route between places.",
+    fr: "Chaque photo avec un lieu est posée là où elle a été prise. Cliquez sur le repère d'un voyage pour le revivre jour par jour, avec le trajet entre les lieux.",
+    de: 'Jedes Foto mit Ort liegt dort, wo es aufgenommen wurde. Klicken Sie auf die Markierung einer Reise, um sie Tag für Tag nachzuerleben, mit der Route zwischen den Orten.',
+    es: 'Cada foto con ubicación está donde se tomó. Haz clic en el marcador de un viaje para revivirlo día a día, con la ruta entre los lugares.',
+    zh: '每张带位置的照片都放在拍摄地点。点击旅行标记,即可逐日重温这趟旅行,还能看到各地之间的路线。'
+  },
+  discoverTitle_editor: { en: 'The photo editor', fr: "L'éditeur photo", de: 'Der Fotoeditor', es: 'El editor de fotos', zh: '照片编辑器' },
+  discoverBody_editor: {
+    en: 'Light, colours and crop in a few clicks. Nothing touches your file until you save, and "Hold to compare" shows the original. For layers, text or the Smart eraser: Open in PhotoMod.',
+    fr: "Lumière, couleurs et recadrage en quelques clics. Rien ne touche votre fichier tant que vous n'enregistrez pas, et « Maintenir pour comparer » montre l'original. Pour les calques, le texte ou la gomme intelligente : Ouvrir dans PhotoMod.",
+    de: 'Licht, Farben und Zuschnitt mit wenigen Klicks. Ihre Datei bleibt unberührt, bis Sie speichern, und „Halten zum Vergleichen“ zeigt das Original. Für Ebenen, Text oder den intelligenten Radierer: In PhotoMod öffnen.',
+    es: 'Luz, colores y recorte en unos clics. Nada toca tu archivo hasta que guardas, y «Mantén para comparar» muestra el original. Para capas, texto o el borrador inteligente: Abrir en PhotoMod.',
+    zh: '几下就能调整光线、颜色和裁剪。保存之前不会改动你的文件,「按住对比」可查看原图。需要图层、文字或智能橡皮擦:在 PhotoMod 中打开。'
+  },
+  discoverTitle_dups: { en: 'Find duplicates', fr: 'Trouver les doublons', de: 'Duplikate finden', es: 'Buscar duplicados', zh: '查找重复项' },
+  discoverBody_dups: {
+    en: 'Trove compares the pictures themselves, not just their names, to find copies and edited versions. For each group you choose what to keep: nothing goes without your click.',
+    fr: "Trove compare les images elles-mêmes, pas seulement leurs noms, pour trouver les copies et les versions retouchées. Pour chaque groupe, vous choisissez quoi garder : rien ne part sans votre clic.",
+    de: 'Trove vergleicht die Bilder selbst, nicht nur ihre Namen, um Kopien und bearbeitete Versionen zu finden. Für jede Gruppe wählen Sie, was bleibt: Nichts verschwindet ohne Ihren Klick.',
+    es: 'Trove compara las imágenes en sí, no solo sus nombres, para encontrar copias y versiones editadas. En cada grupo eliges qué conservar: nada se va sin tu clic.',
+    zh: 'Trove 比较的是图片本身,而不只是文件名,用来找出副本和编辑过的版本。每组由你决定保留哪张:不点击就不会删除任何东西。'
+  },
+  nudgeTitle_globe: { en: 'Have you seen your trips on the Globe?', fr: 'Avez-vous vu vos voyages sur le Globe ?', de: 'Haben Sie Ihre Reisen schon auf dem Globus gesehen?', es: '¿Has visto tus viajes en el Globo?', zh: '你在地球上看过你的旅行吗?' },
+  nudgeBody_globe: { en: 'Your photos are waiting on a 3D globe, each one where it was taken.', fr: 'Vos photos vous attendent sur un globe en 3D, chacune là où elle a été prise.', de: 'Ihre Fotos warten auf einem 3D-Globus, jedes dort, wo es aufgenommen wurde.', es: 'Tus fotos te esperan en un globo 3D, cada una donde se tomó.', zh: '你的照片正在 3D 地球上等你,每张都在拍摄的地方。' },
+  nudgeTitle_editor: { en: 'Touch up a photo in a few clicks', fr: 'Retouchez une photo en quelques clics', de: 'Ein Foto mit wenigen Klicks verbessern', es: 'Retoca una foto en unos clics', zh: '几下就能修好一张照片' },
+  nudgeBody_editor: { en: 'Light, colours, crop, and removing what spoils a shot. Your file only changes if you save.', fr: "Lumière, couleurs, recadrage, et effacer ce qui gâche une photo. Votre fichier ne change que si vous enregistrez.", de: 'Licht, Farben, Zuschnitt und Entfernen, was ein Bild stört. Ihre Datei ändert sich nur, wenn Sie speichern.', es: 'Luz, colores, recorte y quitar lo que estropea una foto. Tu archivo solo cambia si guardas.', zh: '光线、颜色、裁剪,还能去掉碍眼的东西。只有保存时才会改动你的文件。' },
+  nudgeTitle_dups: { en: 'Any copies hiding in your library?', fr: 'Des copies cachées dans votre bibliothèque ?', de: 'Verstecken sich Kopien in Ihrer Bibliothek?', es: '¿Hay copias escondidas en tu biblioteca?', zh: '你的照片库里藏着副本吗?' },
+  nudgeBody_dups: { en: 'Find duplicates spots the same photo saved twice, even under different names, so you can free up space.', fr: 'La recherche de doublons repère la même photo enregistrée deux fois, même sous des noms différents, pour libérer de la place.', de: 'Duplikate finden erkennt dasselbe Foto, das doppelt gespeichert ist, auch unter anderen Namen, damit Sie Platz schaffen können.', es: 'Buscar duplicados detecta la misma foto guardada dos veces, aunque tenga otro nombre, para que liberes espacio.', zh: '查找重复项会找出存了两次的同一张照片,即使文件名不同,帮你腾出空间。' },
   // Rating step
   frRatingTitle: { en: "How's it going so far?", fr: 'Comment ça se passe jusqu\'ici ?', de: "Wie läuft's bisher?", es: '¿Qué tal va todo hasta ahora?', zh: '目前使用体验如何?' },
   frStarTitle: { en: v => `${v.n} star${v.n!==1?'s':''}`, fr: v => `${v.n} étoile${v.n!==1?'s':''}`, de: v => `${v.n} Stern${v.n!==1?'e':''}`, es: v => `${v.n} estrella${v.n!==1?'s':''}`, zh: v => `${v.n} 星` },
@@ -2308,6 +2411,13 @@ async function init() {
     if (appData.ratingAsked === undefined) appData.ratingAsked = appData.files.length > 0;
     await window.api.saveData(appData);
   }
+  // v11: feature discovery (discoverSeen / discoverMaybeNudge) is for new libraries too - one that
+  // already has photos counts as knowing its way around, so it gets no explanations or nudges.
+  if (!appData.discover) {
+    const known = appData.files.length > 0;
+    appData.discover = { seen: known ? Object.fromEntries(DISCOVER_FEATURES.map(f => [f.key, 1])) : {}, nudges: {}, since: known ? Date.now() : null, lastNudgeAt: 0 };
+    await window.api.saveData(appData);
+  }
   initThumbObserver();
   renderSidebar();
   // Startup always shows the Photo Library (main page)
@@ -2332,6 +2442,7 @@ async function init() {
   setupPowerSaving();
   await hideSplash(splashStart);
   if (!appData.files.length && !appData.onboardingCompleted) openFirstRunWizard(true);
+  else setTimeout(discoverMaybeNudge, 5000); // once the library has settled
   if (appData.settings.telemetryAsked) sendTelemetryPing('app_open');
   else showTelemetryNotice();
   // Flush any pending debounced save before the window closes
@@ -5551,6 +5662,8 @@ function toggleGlobe() {
   globeOpen = !globeOpen;
   document.getElementById('globeView').classList.toggle('open', globeOpen);
   document.getElementById('globeToggle').classList.toggle('active', globeOpen);
+  if (globeOpen && !gsPickMode && !locateModeFileIds) discoverSeen('globe'); // the Globe itself - not the locate mission or "Set Location"
+  if (!globeOpen) discoverClosed('globe');
   if (globeOpen) {
     if (window.Cesium) {
       initGlobe();
@@ -5562,6 +5675,7 @@ function toggleGlobe() {
     }
   } else {
     if (globeCtrl) { globeCtrl.cleanup(); globeCtrl = null; }
+    reconUnmount();
     closeGlobeFilterMenu();
     // Closing (including clicking ✕ Close mid-pick) always cancels any pending "Set Location"
     locateModeFileIds = null;
@@ -5626,9 +5740,10 @@ function initGlobe() {
   }
   if (pickMode) {
     globeOpts.pickMode = true;
+    if (gsPickMode) globeOpts.onHover = reconReadout;
     globeOpts.onPick = (lat, lng) => {
       locatePending = { lat, lng };
-      if (gsPickMode) { updateGslBar(); return; } // confirm button lives in the left panel instead
+      if (gsPickMode) { updateGslBar(); reconSetStatus('marked'); sfxPlay('tick'); return; } // confirm button lives in the left panel instead
       const btn = document.getElementById('globeConfirmBtn');
       btn.style.display = '';
       btn.textContent = `✓ Set Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
@@ -5638,7 +5753,8 @@ function initGlobe() {
   // synchronously, which needs gtclMaster already populated.
   initGlobeTripCarousel(trips);
   globeCtrl = buildGlobe(canvas, pickMode ? gpsFiles : globeFilteredFiles(gpsFiles), globeOpts);
-  if (gsPickMode) renderGsLocatePanel();
+  if (gsPickMode) { reconMount(); renderGsLocatePanel(); }
+  else reconUnmount();
 }
 
 // ── Globe filter + hide from map ────────────────────────────────────────────
@@ -6978,10 +7094,9 @@ function setManualLocation(f, lat, lng) {
 // Guided Sort stays open at the same camera position/zoom after a confirm - this is the whole
 // point when several remaining photos were taken near each other (no re-finding the spot on
 // the map for every single one).
-function gslAfterConfirm() {
-  clearSelection();
-  locatePending = null;
-  globeCtrl?.clearPendingPin();
+function gslAfterConfirm(count, lat, lng) {
+  gslAcquired(count, lat, lng);
+  gslPickNext();
   renderGsLocatePanel();
 }
 
@@ -6994,11 +7109,11 @@ async function confirmLocatePick() {
   const { lat, lng } = locatePending;
   ids.forEach(id => { const f = appData.files.find(f => f.id === id); if (f) setManualLocation(f, lat, lng); });
   await saveData();
-  toast(`📍 Location set for ${ids.length} file${ids.length!==1?'s':''}`);
+  if (!gsPickMode) toast(`📍 Location set for ${ids.length} file${ids.length!==1?'s':''}`); // the locate mission shows its own lock-on instead
   setTimeout(() => geocodeFiles(), 500);
 
   if (gsPickMode) {
-    gslAfterConfirm();
+    gslAfterConfirm(ids.length, lat, lng); // a burst's hidden photos are placed with it, and count
   } else {
     locateModeFileIds = null; // clear before toggleGlobe() closes so its cleanup doesn't re-cancel
     toggleGlobe();
@@ -7782,10 +7897,12 @@ function versionTreeOpen(fileId) {
 function enterDupDetection() {
   dupOpenGroupId = null;
   document.getElementById('dupMode').classList.add('open');
+  discoverSeen('dups');
   scanForDuplicates();
 }
 
 function closeDupMode() {
+  discoverClosed('dups');
   dupScanToken++; // stale scan callbacks bail out as soon as they check this
   document.getElementById('dupMode').classList.remove('open');
   document.getElementById('deleteConfirm').classList.remove('open');
@@ -8926,9 +9043,8 @@ const TRIP_LIKE_ROOT_IDS = [VACATIONS_ROOT_ID, ADVENTURES_ROOT_ID];
 const CATEGORY_ROOT_NAME = 'Categories'; // matched by name, not id - see getOrCreateCategoryRoot
 let gsOpen = false;
 let gsStep = 'start'; // one of gsStepList(), or 'done'
-let gsContentSuggestions = null; // {folderMatches, newClusters} for the current 'content' step batch, null until computed
+let gsContentSuggestions = null; // {folderMatches} suggested at the top of the Folders step, null until computed
 let gsContentLoading = false;
-let gsContentResolvedIds = new Set(); // fileIds already filed by this step this session, hidden from re-suggestion
 let gsBatch = []; // file ids snapshotted when the wizard opened
 let gsNamePromptKind = null; // 'person' | 'camera' | 'trip' | 'adventure' | 'category' | 'folder', while #gsNameModal is open
 let gsBarUpdater = null; // refreshes the current step's bottom-bar count/button state on every card click
@@ -9166,7 +9282,7 @@ function enterGuidedSort() {
   gsCardHooks = null;
   gsContentSuggestions = null;
   gsContentLoading = false;
-  gsContentResolvedIds = new Set();
+  gsFolderSuggestDismissed = new Set();
   clearSelection();
   document.getElementById('guidedSort').classList.add('open');
   renderGuidedSortStep();
@@ -9180,7 +9296,8 @@ function exitGuidedSort() {
   clearSelection();
   document.getElementById('guidedSort').classList.remove('open');
   coachHide();
-  if (gsCoachRunDone) { gsCoachRunDone = false; frAskRatingOnce(); } // the first guided sort, seen through
+  if (gsCoachRunDone) { gsCoachRunDone = false; frAskRatingOnce(); return; } // the first guided sort, seen through
+  setTimeout(discoverMaybeNudge, 1500);
 }
 function gsFiles() {
   return gsBatch.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
@@ -9199,10 +9316,10 @@ function gsAdvanceStep(next) {
 function gsStepList() {
   const steps = ['start'];
   if (gsKinds.trip || gsKinds.adventure) steps.push('pick', 'dates');
-  steps.push('people', 'folders', 'content', 'camera', 'location');
+  steps.push('people', 'folders', 'camera', 'location');
   return steps;
 }
-const GS_STEP_TITLES = { start: 'Where from', pick: 'Trips & adventures', dates: 'Check dates', people: 'People', folders: 'Folders', content: 'Auto-Group', camera: 'Cameras', location: 'Location' };
+const GS_STEP_TITLES = { start: 'Where from', pick: 'Trips & adventures', dates: 'Check dates', people: 'People', folders: 'Folders', camera: 'Cameras', location: 'Location' };
 function gsStepLabel(step = gsStep) {
   const list = gsStepList();
   return `Step ${list.indexOf(step) + 1} of ${list.length} - ${GS_STEP_TITLES[step]}.`;
@@ -9222,7 +9339,7 @@ function gsStepCompletionFraction(step) {
   if (step === 'start' || step === 'pick') return 0;
   if (step === 'dates') { const t = getTripLikeDescendantIds(); return files.filter(f => inAny(t)(f) || gsOutsideDismissed.has(f.id)).length / files.length; }
   if (step === 'people') return files.filter(inAny(gsPeopleIds())).length / files.length;
-  if (step === 'folders' || step === 'content') return files.filter(inAny(gsOtherFolderIds())).length / files.length;
+  if (step === 'folders') return files.filter(inAny(gsOtherFolderIds())).length / files.length;
   if (step === 'camera') return files.filter(f => f.cameraFolder).length / files.length;
   if (step === 'location') return files.filter(f => f.gps).length / files.length;
   return 0;
@@ -9251,7 +9368,6 @@ function renderGuidedSortStep() {
   else if (gsStep === 'dates') renderGsDatesStep();
   else if (gsStep === 'people') renderGsPeopleStep();
   else if (gsStep === 'folders') renderGsFoldersStep();
-  else if (gsStep === 'content') renderGsContentStep();
   else if (gsStep === 'camera') renderGsCameraStep();
   else if (gsStep === 'location') renderGsLocationStep();
   else renderGsDoneStep();
@@ -10061,10 +10177,13 @@ function renderGsFoldersStep() {
   const files = gsFiles();
   body.innerHTML = `<div id="gsLasso" class="lasso"></div>
     <div class="gs-intro"><strong>${gsStepLabel()}</strong> Anything else to file? Open <b>Add to folder</b> to see all your folders, pick one, then click the photos that go in it (or <i>Add all</i>). You can also select photos first and then pick the folder.</div>
+    <div id="gsFolderSuggest" class="gs-face-suggest"></div>
     <div class="gs-chip-row gs-folder-bar" id="gsFolderBar"></div>`;
-  gsCardHooks = gsPaintHooks(gsOtherFolderIds, () => { gsRefreshCards(); gsRenderFolderBar(); });
+  gsCardHooks = gsPaintHooks(gsOtherFolderIds, () => { gsRefreshCards(); gsRenderFolderBar(); gsRenderFolderSuggestions(); });
   body.appendChild(gsRenderGrid(files));
   gsRenderFolderBar();
+  gsRenderFolderSuggestions();
+  gsLoadFolderSuggestions();
   gsBarUpdater = () => {
     const n = selectedIds.size;
     const info = bar.querySelector('.gs-bar-info');
@@ -10148,158 +10267,79 @@ function gsNewFolderPrompt(parentId) {
   gsOpenNamePrompt('folder');
 }
 
-// ── Content step (auto-grouping) ────────────────────────────────────────────
-// Unlike every other Guided Sort step, this one isn't "manually multi-select photos, then
-// click a target" - it's "review pre-computed suggestions." See semanticIndex.js's
-// suggestGroupsForBatch() (embeds the batch with priority, asks main.js's suggest-groups for
-// folder matches + new leftover clusters, then names the new clusters against a vocabulary)
-// and main.js's suggest-groups handler for how the suggestions themselves are computed.
+// ── Trove's suggestions, at the top of the Folders step ─────────────────────
+// Photos that look like what's already in one of your folders (semanticIndex.js's
+// suggestGroupsForBatch, matches only): at most GS_FOLDER_SUGGEST_MAX, biggest first, each one
+// click to file or "Not these" to let go. Only folders that exist - no new ones invented here,
+// so the step stays one simple job: filing, with Trove doing the obvious part first.
+const GS_FOLDER_SUGGEST_MAX = 3;
+let gsFolderSuggestDismissed = new Set(); // folder ids waved off this run
 function gsContentRemaining() {
   const catRoot = appData.folders.find(f => !f.parentId && f.name.toLowerCase() === CATEGORY_ROOT_NAME.toLowerCase());
   const categoryIds = catRoot ? new Set([catRoot.id, ...getAllDesc(catRoot.id)]) : new Set();
-  return gsFiles().filter(f => !gsContentResolvedIds.has(f.id) && !f.folders?.some(id => categoryIds.has(id)));
+  return gsFiles().filter(f => !f.folders?.some(id => categoryIds.has(id)));
 }
-
-async function renderGsContentStep() {
+// Worked out once per run, in the background while the step is already usable.
+async function gsLoadFolderSuggestions() {
+  if (gsContentSuggestions || gsContentLoading) return;
   const remaining = gsContentRemaining();
-  if (!remaining.length) {
-    toast('🧠 Nothing left to auto-group');
-    gsContentSuggestions = null;
-    gsAdvanceStep('camera');
-    return;
+  if (!remaining.length || typeof suggestGroupsForBatch !== 'function') { gsContentSuggestions = { folderMatches: [] }; return; }
+  gsContentLoading = true;
+  gsRenderFolderSuggestions();
+  try {
+    gsContentSuggestions = await suggestGroupsForBatch(remaining, null, { matchesOnly: true });
+  } catch (e) {
+    gsContentSuggestions = { folderMatches: [] };
   }
-  const body = document.getElementById('gsBody');
-  const bar = document.getElementById('gsBar');
-  bar.innerHTML = `
-    <span class="gs-bar-info">${remaining.length} photo${remaining.length!==1?'s':''} not yet in a category</span>
-    <button class="dump-banner-btn dump-sort-btn" onclick="gsAdvanceStep('camera')">Skip / Continue →</button>`;
-
-  if (!gsContentSuggestions && !gsContentLoading) {
-    gsContentLoading = true;
-    body.innerHTML = `<div class="gs-intro"><strong>${gsStepLabel('content')}</strong> Looking for photos that match your existing categories, and grouping whatever's left by what's visually similar.</div>
-      <div class="empty-state"><div class="dup-spinner"></div><div class="empty-title" id="gsContentProgress">Analyzing 0 / ${remaining.length}…</div></div>`;
-    try {
-      gsContentSuggestions = await suggestGroupsForBatch(remaining, (done, total) => {
-        const el = document.getElementById('gsContentProgress');
-        if (el) el.textContent = `Analyzing ${done} / ${total}…`;
-      });
-    } catch (e) {
-      gsContentSuggestions = { folderMatches: [], newClusters: [] };
-    }
-    gsContentLoading = false;
-    // Every suggested photo starts checked - the user un-checks whichever doesn't belong,
-    // rather than building each group's selection up from nothing. Seeded once here, not on
-    // every render, so confirming one card doesn't reset another card's selection the user
-    // already adjusted (renderGsContentStep re-renders every remaining card each time).
-    gsContentSuggestions.folderMatches.forEach(g => g.fileIds.forEach(id => selectedIds.add(id)));
-    gsContentSuggestions.newClusters.forEach(c => c.fileIds.forEach(id => selectedIds.add(id)));
-    if (gsStep === 'content') renderGsContentStep(); // re-render now that suggestions are ready
-    return;
-  }
-  if (gsContentLoading) return; // already showing the spinner above
-
-  const { folderMatches, newClusters } = gsContentSuggestions;
-  const byId = new Map(appData.files.map(f => [f.id, f]));
-  const suggestedCount = folderMatches.reduce((s, g) => s + g.fileIds.length, 0) + newClusters.reduce((s, c) => s + c.fileIds.length, 0);
-
-  body.innerHTML = `<div class="gs-intro"><strong>${gsStepLabel('content')}</strong> ${suggestedCount
-    ? `Found ${suggestedCount} match${suggestedCount!==1?'es':''} out of ${remaining.length} photo${remaining.length!==1?'s':''} - review below, nothing is filed until you confirm.`
-    : `No confident matches or groups found among these ${remaining.length} photo${remaining.length!==1?'s':''} - continue whenever ready.`}</div>
-    <div class="gs-suggest-list" id="gsSuggestList"></div>`;
-  const list = document.getElementById('gsSuggestList');
-
-  folderMatches.forEach((g, i) => {
+  gsContentLoading = false;
+  if (gsOpen && gsStep === 'folders') gsRenderFolderSuggestions();
+}
+// What's still worth suggesting: photos not already in that folder, folders still there.
+function gsFolderSuggestions() {
+  return (gsContentSuggestions?.folderMatches || [])
+    .filter(g => !gsFolderSuggestDismissed.has(g.folderId) && appData.folders.some(f => f.id === g.folderId))
+    .map(g => ({ folderId: g.folderId, fileIds: g.fileIds.filter(id => !appData.files.find(f => f.id === id)?.folders?.includes(g.folderId)) }))
+    .filter(g => g.fileIds.length)
+    .sort((a, b) => b.fileIds.length - a.fileIds.length)
+    .slice(0, GS_FOLDER_SUGGEST_MAX);
+}
+function gsRenderFolderSuggestions() {
+  const box = document.getElementById('gsFolderSuggest');
+  if (!box) return;
+  if (gsContentLoading) { box.innerHTML = `<div class="gs-face-status"><span class="gs-face-spinner"></span>${t('gsSuggestLooking')}</div>`; return; }
+  box.innerHTML = gsFolderSuggestions().map(g => {
     const folder = appData.folders.find(f => f.id === g.folderId);
-    list.appendChild(gsSuggestionCardHtml({
-      icon: folder ? folderIconHtml(folder) : '🏷️', title: `${g.fileIds.length} photo${g.fileIds.length!==1?'s':''} look like ${folder?.name || 'this folder'}`,
-      fileIds: g.fileIds, byId,
-      actionLabel: `✓ Add to ${folder?.name || 'folder'}`,
-      onConfirm: () => gsConfirmFolderMatch(i),
-    }));
-  });
-  newClusters.forEach((c, i) => {
-    list.appendChild(gsSuggestionCardHtml({
-      icon: '✨', title: `${c.fileIds.length} photo${c.fileIds.length!==1?'s':''} look similar to each other`,
-      fileIds: c.fileIds, byId,
-      nameInputId: `gsClusterName-${i}`, nameValue: c.suggestedName || `New Group ${i+1}`,
-      actionLabel: 'Create Folder & File Them',
-      onConfirm: () => gsConfirmNewCluster(i),
-    }));
-  });
-  if (!folderMatches.length && !newClusters.length) {
-    list.innerHTML = `<div class="gs-empty"><div style="font-size:40px">🤷</div><div>Nothing confident enough to suggest</div></div>`;
-  }
-  // Each card has its own full photo grid rather than one shared bottom bar - this refreshes
-  // every card's confirm-button label/state after any click, so deselecting a photo in one
-  // group updates that group's own count without disturbing any other card on screen.
-  gsBarUpdater = gsUpdateContentConfirmButtons;
-  gsUpdateContentConfirmButtons();
+    const shown = g.fileIds.slice(0, 6);
+    return `<div class="gs-face-card" onmouseenter="gsSuggestHint('${g.folderId}', true)" onmouseleave="gsSuggestHint('${g.folderId}', false)">
+      <div class="gs-face-who">${folderIconHtml(folder, 22)}<span>${t('gsSuggestTitle', { n: g.fileIds.length, name: esc(folder.name) })}</span></div>
+      <div class="gs-face-crops">${shown.map(id => `<span class="gs-suggest-thumb" data-thumb-for="${id}"></span>`).join('')}${g.fileIds.length > shown.length ? `<span class="gs-face-more">+${g.fileIds.length - shown.length}</span>` : ''}</div>
+      <div class="gs-face-actions">
+        <button class="gs-chip gs-chip-primary" onclick="gsSuggestAccept('${g.folderId}')">${t('gsSuggestAdd', { name: esc(folder.name) })}</button>
+        <button class="gs-chip" onclick="gsSuggestDismiss('${g.folderId}')">${t('gsSuggestNot')}</button>
+      </div></div>`;
+  }).join('');
+  box.querySelectorAll('[data-thumb-for]').forEach(el => gsObserveThumb(el));
 }
-
-function gsUpdateContentConfirmButtons() {
-  document.querySelectorAll('#gsSuggestList .gs-suggest-card').forEach(card => {
-    const total = card.querySelectorAll('.file-card').length;
-    const selected = card.querySelectorAll('.file-card.selected').length;
-    const btn = card.querySelector('.gs-suggest-confirm');
-    if (!btn) return;
-    btn.textContent = selected ? `${btn.dataset.label} (${selected}/${total})` : 'Nothing selected';
-    btn.disabled = !selected;
-  });
+// Hovering a suggestion outlines its photos in the grid below, like the People step's face cards.
+function gsSuggestHint(folderId, on) {
+  const ids = new Set(gsFolderSuggestions().find(g => g.folderId === folderId)?.fileIds || []);
+  document.querySelectorAll('#gsBody .gs-grid-wrap .file-card').forEach(card => card.classList.toggle('gs-face-hint', on && ids.has(card.dataset.fileId)));
 }
-
-// One suggestion card: the full photo grid for the group (every photo shown at real size,
-// clickable to deselect one that doesn't belong, double-click or 🔍 to preview larger - the
-// same gsRenderGrid/gsAppendCards every other Guided Sort step already uses, instead of a
-// capped small thumbnail strip with no way to review or exclude individual photos), an
-// optional editable name field (new-cluster suggestions only), and a confirm action that only
-// files whatever is still checked - shared layout for both folder-match and new-cluster
-// suggestions since they only differ in whether there's a name to edit and what the button does.
-function gsSuggestionCardHtml({ icon, title, fileIds, byId, nameInputId, nameValue, actionLabel, onConfirm }) {
-  const card = document.createElement('div');
-  card.className = 'gs-suggest-card';
-  card.innerHTML = `
-    <div class="gs-suggest-head">
-      <span class="gs-suggest-icon">${icon}</span>
-      <span class="gs-suggest-title">${esc(title)}</span>
-    </div>
-    ${nameInputId ? `<input type="text" class="text-input gs-suggest-name" id="${nameInputId}" value="${esc(nameValue)}" placeholder="Folder name…"/>` : ''}
-    <div class="gs-suggest-hint">Click a photo to leave it out of this suggestion. Double-click or 🔍 to see it larger.</div>`;
-  const files = fileIds.map(id => byId.get(id)).filter(Boolean);
-  card.appendChild(gsRenderGrid(files));
-  const btn = document.createElement('button');
-  btn.className = 'dump-banner-btn dump-sort-btn gs-suggest-confirm';
-  btn.dataset.label = actionLabel;
-  btn.addEventListener('click', onConfirm);
-  card.appendChild(btn);
-  return card;
+async function gsSuggestAccept(folderId) {
+  const g = gsFolderSuggestions().find(g => g.folderId === folderId);
+  const folder = appData.folders.find(f => f.id === folderId);
+  if (!g || !folder) return;
+  g.fileIds.forEach(id => { const f = appData.files.find(f => f.id === id); if (f) gsSetFileIn(f, folderId, true); });
+  await saveData();
+  toast(`📁 Added ${g.fileIds.length} photo${g.fileIds.length !== 1 ? 's' : ''} to ${folder.name}`);
+  gsSuggestHint(folderId, false);
+  gsRenderFolderSuggestions(); gsRenderFolderBar(); gsRefreshCards();
+  if (typeof gsBarUpdater === 'function') gsBarUpdater();
 }
-
-async function gsConfirmFolderMatch(index) {
-  const g = gsContentSuggestions.folderMatches[index];
-  if (!g) return;
-  const confirmedIds = g.fileIds.filter(id => selectedIds.has(id));
-  if (!confirmedIds.length) { toast('Nothing selected - click at least one photo to file it here'); return; }
-  await assignFilesToFolderAdditive(confirmedIds, g.folderId);
-  confirmedIds.forEach(id => { gsContentResolvedIds.add(id); selectedIds.delete(id); }); // filed, so no longer selected
-  updateSelectionUI();
-  gsContentSuggestions.folderMatches.splice(index, 1);
-  renderGsContentStep();
-}
-
-async function gsConfirmNewCluster(index) {
-  const c = gsContentSuggestions.newClusters[index];
-  if (!c) return;
-  const nameInput = document.getElementById(`gsClusterName-${index}`);
-  const name = (nameInput?.value || c.suggestedName || `New Group ${index+1}`).trim();
-  if (!name) { nameInput?.focus(); return; }
-  const confirmedIds = c.fileIds.filter(id => selectedIds.has(id));
-  if (!confirmedIds.length) { toast('Nothing selected - click at least one photo to create the folder'); return; }
-  const folder = getOrCreateCategoryFolder(name);
-  await assignFilesToFolderAdditive(confirmedIds, folder.id);
-  confirmedIds.forEach(id => { gsContentResolvedIds.add(id); selectedIds.delete(id); }); // filed, so no longer selected
-  updateSelectionUI();
-  gsContentSuggestions.newClusters.splice(index, 1);
-  renderGsContentStep();
+function gsSuggestDismiss(folderId) {
+  gsFolderSuggestDismissed.add(folderId);
+  gsSuggestHint(folderId, false);
+  gsRenderFolderSuggestions();
 }
 
 // ── Camera step ──────────────────────────────────────────────────────────────
@@ -10414,87 +10454,166 @@ function renderGsLocationStep() {
   gsPickMode = true;
   clearSelection();
   locatePending = null;
+  gslStart();
   document.getElementById('guidedSort').classList.remove('open');
   document.getElementById('reliveDayPhotoPanel')?.classList.remove('open');
   if (globeOpen) initGlobe(); else toggleGlobe();
 }
+// ── The locate mission ───────────────────────────────────────────────────────
+// Putting photos back on the map, played as a recon mission: one target at a time (or a group,
+// Ctrl+click in the queue), its intel (when, which camera, a lead from nearby geotagged photos),
+// a HUD over the globe with live coordinates and switchable optics, and each placed photo
+// "acquired" with a lock-on sound and XP before the next one comes up by itself.
+let gslSkipped = new Set(); // targets passed over this mission - offered again only once the rest are done
+let gslLocated = 0;         // targets placed this mission, for the counter
+let gslTotal = 0;           // targets when the mission started
+let gslSensor = 'std';      // 'std' | 'nvg' | 'flir' - see setSensor in globe.js
+const GSL_SENSORS = [{ key: 'std', label: 'reconStd' }, { key: 'nvg', label: 'reconNvg' }, { key: 'flir', label: 'reconFlir' }];
+function gslStart() {
+  gslSkipped = new Set();
+  gslLocated = 0;
+  gslTotal = gsLocationRemaining().length;
+}
+// Non-skipped targets first, each group in the batch's own (date) order.
+function gslQueue() {
+  const remaining = gsLocationRemaining();
+  return [...remaining.filter(f => !gslSkipped.has(f.id)), ...remaining.filter(f => gslSkipped.has(f.id))];
+}
+// The next target: the first one not yet passed over. Null when only skipped ones are left.
+function gslPickNext() {
+  clearSelection();
+  locatePending = null;
+  globeCtrl?.clearPendingPin();
+  const next = gslQueue().find(f => !gslSkipped.has(f.id));
+  if (next) selectedIds.add(next.id);
+  return next || null;
+}
+function gslSkipTarget() {
+  selectedIds.forEach(id => gslSkipped.add(id));
+  gslPickNext();
+  renderGsLocatePanel();
+}
 function renderGsLocatePanel() {
   const panel = document.getElementById('gsLocatePanel');
   if (!panel) return;
-  const remaining = gsLocationRemaining();
-  if (!remaining.length) {
-    toast('📍 All photos now have a location');
-    toggleGlobe(); // close branch (below) advances gsStep to 'done' and reopens the wizard there
-    return;
-  }
   panel.classList.add('open');
+  const queue = gslQueue();
+  const remainingIds = new Set(queue.map(f => f.id));
+  [...selectedIds].forEach(id => { if (!remainingIds.has(id)) selectedIds.delete(id); });
+  if (!selectedIds.size) gslPickNext();
+  if (!selectedIds.size) { gslRenderComplete(panel, queue.length); return; }
+  const targets = [...selectedIds].map(id => appData.files.find(f => f.id === id)).filter(Boolean);
+  const lead = targets[0];
+  const pct = gslTotal ? Math.round(gslLocated / gslTotal * 100) : 0;
+  const when = lead.fileDate ? new Date(lead.fileDate).toLocaleString(uiLocale(), { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+  const camera = [lead.cameraMake, lead.cameraModel].filter(Boolean).join(' ') || '-';
   panel.innerHTML = `
-    <div class="rdp-head">
+    <div class="gsl-head">
+      <div class="gsl-kicker">${t('reconKicker')}</div>
       <div class="rdp-title">📍 ${gsStepLabel('location').replace(/\.$/, '')}</div>
-      <div class="rdp-sub">${remaining.length} photo${remaining.length!==1?'s have':' has'} no location. Select the ones taken in the same place, then click the globe to drop a pin - or use a 📍 suggestion below, guessed from other geotagged photos taken around the same time.</div>
+      <div class="gsl-progress"><span style="width:${pct}%"></span></div>
+      <div class="gsl-count">${t('reconLocated', { n: gslLocated, total: gslTotal })}</div>
     </div>
-    <div class="gsl-suggest" id="gslSuggest" style="display:none"></div>
+    <div class="gsl-target">
+      <div class="gsl-label">${targets.length > 1 ? t('reconGroup', { n: targets.length }) : t('reconTarget')}</div>
+      <div class="gsl-target-photo">
+        <div class="rdp-thumb thumb-loading" data-thumb-for="${lead.id}">${getEmoji(lead.ext)}</div>
+        ${targets.length > 1 ? `<span class="gsl-target-more">+${targets.length - 1}</span>` : ''}
+      </div>
+      <dl class="gsl-intel">
+        <dt>${t('reconCaptured')}</dt><dd>${esc(when)}</dd>
+        <dt>${t('reconCamera')}</dt><dd>${esc(camera)}</dd>
+        <dt>${t('reconFile')}</dt><dd>${esc(lead.name)}</dd>
+      </dl>
+      <div class="gsl-suggest" id="gslSuggest" style="display:none"></div>
+      <div class="gsl-how">${t('reconHow')}</div>
+      <div class="gsl-actions">
+        <button class="dump-banner-btn dump-sort-btn" id="gslConfirmBtn" onclick="confirmLocatePick()" disabled>🎯 ${t('reconConfirm')} <kbd>↵</kbd></button>
+        <button class="dump-banner-btn" onclick="gslSkipTarget()">${t('reconSkip')} <kbd>S</kbd></button>
+      </div>
+    </div>
+    <div class="gsl-label gsl-queue-label">${t('reconQueue', { n: queue.length })}</div>
+    <div class="gsl-queue-hint">${t('reconQueueHint')}</div>
     <div class="rdp-grid" id="gslGrid"></div>
-    <div class="gsl-bar">
-      <span class="gsl-bar-info" id="gslBarInfo"></span>
-      <button class="dump-banner-btn dump-sort-btn" id="gslConfirmBtn" onclick="confirmLocatePick()" disabled>📍 Set Location</button>
-      <button class="dump-banner-btn" onclick="toggleGlobe()">Skip / Finish →</button>
-    </div>`;
+    <div class="gsl-bar"><button class="dump-banner-btn" onclick="toggleGlobe()">${t('reconFinish')} →</button></div>`;
+  gsObserveThumb(panel.querySelector('.gsl-target-photo .rdp-thumb'));
   const grid = document.getElementById('gslGrid');
-  remaining.forEach(f => {
-    const suggestion = suggestLocationFor(f);
+  queue.forEach(f => {
     const item = document.createElement('div');
-    item.className = 'rdp-item' + (selectedIds.has(f.id) ? ' selected' : '');
+    item.className = 'rdp-item' + (selectedIds.has(f.id) ? ' selected' : '') + (gslSkipped.has(f.id) ? ' gsl-skipped' : '');
     item.innerHTML = `
       <div class="rdp-thumb thumb-loading" data-thumb-for="${f.id}">${getEmoji(f.ext)}</div>
       ${isVid(f.ext) ? '<span class="rdp-item-video">▶️</span>' : ''}
-      ${suggestion ? `<span class="rdp-item-suggest" title="A photo geotagged within ${suggestion.minutes} min of this one suggests a nearby spot">📍</span>` : ''}`;
-    item.onclick = () => {
-      if (selectedIds.has(f.id)) selectedIds.delete(f.id); else selectedIds.add(f.id);
-      item.classList.toggle('selected', selectedIds.has(f.id));
-      updateGslBar();
+      ${suggestLocationFor(f) ? '<span class="rdp-item-suggest">📍</span>' : ''}`;
+    // A plain click makes it the target; Ctrl/Shift+click adds it to (or takes it out of) the group.
+    item.onclick = e => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey) {
+        if (selectedIds.has(f.id) && selectedIds.size > 1) selectedIds.delete(f.id); else selectedIds.add(f.id);
+      } else {
+        clearSelection();
+        selectedIds.add(f.id);
+      }
+      gslSkipped.delete(f.id);
+      renderGsLocatePanel();
     };
     grid.appendChild(item);
     gsObserveThumb(item.querySelector('.rdp-thumb'));
   });
   updateGslBar();
+  reconSetStatus(locatePending ? 'marked' : 'searching');
 }
-// Stages the suggested zone as the pending pin (same pending state a manual
-// globe click sets) so the "Set Location" button can confirm it - the globe has
-// already flown to and highlighted this exact spot by the time this is
-// clickable, via the preview in updateGslBar() below, so there's nothing left
-// to visually confirm here, just commit to it.
-// With several photos selected, each gets its OWN suggested spot (they can be minutes and
-// hundreds of metres apart on a walk) rather than all being stacked on the average, and that's
-// committed straight away - the globe is already framing every one of them. Photos in the
-// selection with no suggestion of their own stay selected, for a pin placed by hand.
+// Every target placed (or the rest skipped): the mission's end card, then on to the last step.
+function gslRenderComplete(panel, skipped) {
+  gslPreviewedKey = null;
+  globeCtrl?.hideHighlight();
+  reconSetStatus('complete');
+  panel.innerHTML = `
+    <div class="gsl-complete">
+      <div class="gsl-kicker">${t('reconKicker')}</div>
+      <div class="gsl-complete-icon">🛰️</div>
+      <div class="gsl-complete-title">${t('reconComplete')}</div>
+      <div class="gsl-count">${t('reconCompleteBody', { located: gslLocated, skipped })}</div>
+      ${skipped ? `<button class="dump-banner-btn" onclick="gslSkipped.clear(); renderGsLocatePanel()">${t('reconRetrySkipped', { n: skipped })}</button>` : ''}
+      <button class="dump-banner-btn dump-sort-btn" onclick="toggleGlobe()">${t('continueArrow')}</button>
+    </div>`;
+  sfxPlay('chime');
+}
+// One or more targets just placed: the lock-on (sound, XP, a bracket closing on the spot), then
+// the next target comes up on its own.
+function gslAcquired(count, lat, lng) {
+  gslLocated += count;
+  rewardsGain('locate', count, { sound: 'lock' });
+  const at = lat != null ? globeCtrl?.screenPosition(lat, lng) : null;
+  if (at) {
+    const lock = document.createElement('div');
+    lock.className = 'recon-lock';
+    lock.style.left = at.x + 'px';
+    lock.style.top = at.y + 'px';
+    document.body.appendChild(lock);
+    setTimeout(() => lock.remove(), 900);
+  }
+  reconSetStatus('acquired');
+  setTimeout(() => { if (gsPickMode) reconSetStatus(locatePending ? 'marked' : 'searching'); }, 1400);
+}
+// "Use this spot": the lead from nearby geotagged photos, placed straight away. With a group,
+// each photo goes to its OWN lead (they can be minutes and hundreds of metres apart on a walk);
+// any without one stay the target, for a pin placed by hand.
 async function gsUseSuggestedLocation() {
   const s = gslSuggestionForSelection();
   if (!s) return;
-  if (selectedIds.size === 1) {
-    locatePending = { lat: s.lat, lng: s.lng };
-    updateGslBar();
-    return;
-  }
-  let placed = 0;
+  let placed = 0; // a burst's hidden photos are placed with it, and count
   for (const { file, s: own } of s.perFile) {
     const ids = [file.id, ...(burstCoverMap.get(file.id)?.memberIds || [])];
-    ids.forEach(id => { const f = appData.files.find(f => f.id === id); if (f) { setManualLocation(f, own.lat, own.lng); placed++; } });
+    ids.forEach(id => { const f = appData.files.find(f => f.id === id); if (f && !f.gps) { setManualLocation(f, own.lat, own.lng); placed++; } });
   }
   await saveData();
   setTimeout(() => geocodeFiles(), 500);
   const leftIds = [...selectedIds].filter(id => !s.perFile.some(x => x.file.id === id));
-  toast(`📍 Placed ${placed} file${placed!==1?'s':''} at ${placed!==1?'their':'its'} suggested spot${placed!==1?'s':''}` +
-    (leftIds.length ? ` · ${leftIds.length} had no suggestion - pin ${leftIds.length!==1?'them':'it'} by hand` : ''));
-  gslAfterConfirm();
-  if (leftIds.length) {
-    leftIds.forEach(id => selectedIds.add(id));
-    document.querySelectorAll('#gslGrid .rdp-item').forEach(el => {
-      const id = el.querySelector('[data-thumb-for]')?.dataset.thumbFor;
-      if (id) el.classList.toggle('selected', selectedIds.has(id));
-    });
-    updateGslBar();
-  }
+  gslAcquired(placed, s.lat, s.lng);
+  locatePending = null;
+  globeCtrl?.clearPendingPin();
+  if (leftIds.length) { clearSelection(); leftIds.forEach(id => selectedIds.add(id)); } else gslPickNext();
+  renderGsLocatePanel();
 }
 // lat,lng (rounded) of whichever suggestion is currently shown on the globe -
 // lets updateGslBar() below skip re-flying the camera when the suggestion for
@@ -10502,33 +10621,24 @@ async function gsUseSuggestedLocation() {
 // yanking the view back to the same spot.
 let gslPreviewedKey = null;
 function updateGslBar() {
-  const info = document.getElementById('gslBarInfo');
   const btn = document.getElementById('gslConfirmBtn');
   const suggestBox = document.getElementById('gslSuggest');
-  if (!info || !btn) return;
+  if (!btn) return;
   const n = selectedIds.size;
-  info.textContent = n ? `${n} selected` : 'Select photos, then click the globe to drop a pin';
   btn.disabled = !(n > 0 && locatePending);
-  btn.textContent = n > 1 ? `📍 Set Location for ${n}` : '📍 Set Location';
-
   const s = n ? gslSuggestionForSelection() : null;
   if (suggestBox) {
     if (s) {
       suggestBox.style.display = '';
       suggestBox.innerHTML = `
-        <span>📍 ${n>1
-          ? `${s.perFile.length} of these ${n} photos have a suggested spot, from photos taken within ${s.minutes} min of each - the globe frames them all.`
-          : `${s.totalMatches} nearby photo${s.totalMatches!==1?'s':''} taken within ${s.minutes} min suggest a spot for this photo - see it highlighted on the globe.`}</span>
-        <button class="dump-banner-btn dump-sort-btn" onclick="gsUseSuggestedLocation()">${n>1 ? `Place each at its spot →` : 'Use this spot →'}</button>`;
+        <span>📡 ${n > 1 ? t('reconIntelGroup', { k: s.perFile.length, n, min: s.minutes }) : t('reconIntel', { n: s.totalMatches, min: s.minutes })}</span>
+        <button class="dump-banner-btn dump-sort-btn" onclick="gsUseSuggestedLocation()">${n > 1 ? t('reconUseSpots') : t('reconUseSpot')} →</button>`;
     } else {
       suggestBox.style.display = 'none';
     }
   }
-
-  // Preview the suggested spot on the globe the moment one's available, without
-  // committing to it (locatePending is untouched here) - the whole point is
-  // seeing whether the guess actually looks right before deciding whether to
-  // use it or place a pin yourself instead.
+  // Preview the lead on the globe the moment there is one, without committing to it - the whole
+  // point is seeing whether the guess looks right before using it or placing a pin by hand.
   if (s) {
     const key = s.lat.toFixed(5) + ',' + s.lng.toFixed(5);
     if (key !== gslPreviewedKey) {
@@ -10544,21 +10654,122 @@ function updateGslBar() {
   }
 }
 
+// ── The HUD over the globe ──
+// Corner brackets, scanlines, the optics switch, the live coordinates under the pointer and a
+// reticle that follows it. Only ever during the locate mission; nothing in it takes clicks except
+// the optics buttons, so the globe underneath works exactly as usual.
+function reconMount() {
+  reconUnmount();
+  const area = document.getElementById('globeMapArea');
+  if (!area) return;
+  area.classList.add('recon');
+  const hud = document.createElement('div');
+  hud.id = 'reconHud';
+  hud.innerHTML = `
+    <div class="recon-scan"></div>
+    <i class="recon-corner tl"></i><i class="recon-corner tr"></i><i class="recon-corner bl"></i><i class="recon-corner br"></i>
+    <div class="recon-tl">${t('reconKicker')}<span id="reconStatus"></span></div>
+    <div class="recon-tr"><span>${t('reconOptic')}</span>${GSL_SENSORS.map((s, i) => `<button data-sensor="${s.key}" onclick="reconSetSensor('${s.key}')"><kbd>${i + 1}</kbd> ${t(s.label)}</button>`).join('')}</div>
+    <div class="recon-readout" id="reconReadout"></div>
+    <div class="recon-reticle" id="reconReticle"><i></i></div>`;
+  area.appendChild(hud);
+  area.addEventListener('mousemove', reconMoveReticle);
+  area.addEventListener('mouseleave', reconHideReticle);
+  reconSetSensor(gslSensor);
+  reconReadout(null);
+}
+function reconUnmount() {
+  const area = document.getElementById('globeMapArea');
+  area?.classList.remove('recon');
+  area?.removeEventListener('mousemove', reconMoveReticle);
+  area?.removeEventListener('mouseleave', reconHideReticle);
+  document.getElementById('reconHud')?.remove();
+}
+function reconMoveReticle(e) {
+  const r = document.getElementById('reconReticle');
+  const area = document.getElementById('globeMapArea');
+  if (!r || !area) return;
+  const box = area.getBoundingClientRect();
+  r.style.transform = `translate(${e.clientX - box.left}px, ${e.clientY - box.top}px)`;
+  r.style.opacity = '1';
+}
+function reconHideReticle() {
+  const r = document.getElementById('reconReticle');
+  if (r) r.style.opacity = '0';
+}
+function reconSetSensor(mode) {
+  gslSensor = mode;
+  globeCtrl?.setSensor(mode);
+  document.querySelectorAll('#reconHud [data-sensor]').forEach(b => b.classList.toggle('active', b.dataset.sensor === mode));
+  document.getElementById('globeMapArea')?.setAttribute('data-sensor', mode);
+}
+function reconSetStatus(state) {
+  const el = document.getElementById('reconStatus');
+  if (!el) return;
+  el.textContent = t({ searching: 'reconSearching', marked: 'reconMarked', acquired: 'reconAcquired', complete: 'reconComplete' }[state]);
+  el.dataset.state = state;
+}
+// 64°08'47.2"N - the compass letters in the current language (N/S/E/W, N/S/E/O...).
+function reconDms(v, latitude) {
+  const [n, s, e, w] = t('reconCompass');
+  const a = Math.abs(v), d = Math.floor(a), mf = (a - d) * 60, m = Math.floor(mf), sec = ((mf - m) * 60).toFixed(1);
+  return `${d}°${String(m).padStart(2, '0')}'${sec.padStart(4, '0')}"${latitude ? (v >= 0 ? n : s) : (v >= 0 ? e : w)}`;
+}
+function reconReadout(lat, lng) {
+  const el = document.getElementById('reconReadout');
+  if (!el) return;
+  const h = globeCtrl?.cameraHeight?.();
+  const alt = h != null ? `${(h / 1000).toLocaleString(uiLocale(), { maximumFractionDigits: h < 100000 ? 1 : 0 })} km` : '-';
+  el.innerHTML = lat == null
+    ? `<span>LAT ---</span><span>LON ---</span><span>ALT ${alt}</span>`
+    : `<span>LAT ${reconDms(lat, true)}</span><span>LON ${reconDms(lng, false)}</span><span>ALT ${alt}</span>`;
+}
+
 // ── Done step ────────────────────────────────────────────────────────────────
+// The trip or adventure this batch mostly went into, if it has enough photos to flick through.
+function gsBestTripForFlick() {
+  const ids = [...new Set(gsFiles().map(f => getTripLikeForFile(f)?.id).filter(Boolean))];
+  return ids.length ? flickBestTrip(ids) : null;
+}
 function renderGsDoneStep() {
   const body = document.getElementById('gsBody');
   const bar = document.getElementById('gsBar');
   const total = gsBatch.length;
+  // Sorted into a trip: the reward comes next - finding its best photos in Flick through, offered
+  // as THE way on, every time (the batch is marked sorted on the way there).
+  const tripId = gsBestTripForFlick();
+  const trip = tripId && appData.folders.find(f => f.id === tripId);
+  if (trip) {
+    body.innerHTML = `<div class="gs-empty gs-done-flick">
+      <div class="gs-done-icon">❤️</div>
+      <div class="gs-intro" style="text-align:center"><strong>${t('gsDoneFlickTitle', { name: esc(trip.name) })}</strong><br>${t('gsDoneFlickBody')}</div>
+      <button class="fr-choice-btn fr-choice-primary gs-flick-cta" onclick="gsFinishMarkSorted('${trip.id}')">${t('gsDoneFlickBtn', { name: esc(trip.name) })}</button>
+      <a class="gs-done-later" onclick="gsFinishMarkSorted()">${t('gsDoneFlickLater')}</a>
+    </div>`;
+    bar.innerHTML = `<span class="gs-bar-info">${t('gsDoneSortedN', { n: total })}</span>`;
+    return;
+  }
   body.innerHTML = `<div class="gs-empty"><div style="font-size:44px">🎉</div><div class="gs-intro" style="text-align:center"><strong>All done!</strong><br>You went through ${total} photo${total!==1?'s':''}. Mark this batch as sorted, or leave it in To Sort to revisit later.</div></div>`;
   bar.innerHTML = `
     <span class="gs-bar-info"></span>
     <button class="dump-banner-btn" onclick="exitGuidedSort()">Leave in To Sort</button>
     <button class="dump-banner-btn dump-sort-btn" onclick="gsFinishMarkSorted()">✓ Mark batch as sorted</button>`;
 }
-async function gsFinishMarkSorted() {
+// flickTripId: straight on into Flick through on that trip (the Done step's main button). A
+// rating owed for the first guided sort then waits until Flick through is closed.
+let frRatingAfterFlick = false;
+async function gsFinishMarkSorted(flickTripId) {
   gsBatch.forEach(id => { const f = appData.files.find(f => f.id === id); if (f) f.toSort = false; });
   await saveData();
   toast('✅ Batch marked as sorted');
+  if (flickTripId) {
+    frRatingAfterFlick = gsCoachRunDone;
+    gsCoachRunDone = false;
+    exitGuidedSort();
+    selectFolder(flickTripId);
+    openFlick(flickTripId);
+    return;
+  }
   exitGuidedSort();
   // First time someone finishes a full pass (trip/people/category/camera/location all
   // addressed), point them at what the wizards don't cover - never shown again after this,
@@ -10602,10 +10813,12 @@ function showOneTimeTip(key, message) {
 // way of doing it that pays off most later. Fixed in the bottom corner, above Guided Sort and
 // the Globe, never in the way of what's under it; "Got it" puts it away.
 let coachKey = null; // what the card is showing, so a re-render of the same screen leaves it be
-function coachShow(key, { icon, title, body, actions, topRight = false }) {
+function coachShow(key, { icon, title, body, actions, topRight = false, pulse = null }) {
   const el = document.getElementById('coach');
   if (!el) return;
   coachKey = key;
+  document.querySelectorAll('.coach-pulse').forEach(p => p.classList.remove('coach-pulse'));
+  if (pulse) document.querySelector(pulse)?.classList.add('coach-pulse'); // the button the card is about
   el.classList.toggle('coach-top-right', topRight);
   el.style.left = topRight ? 'auto' : (document.getElementById('sidebar')?.getBoundingClientRect().right || 0) + 20 + 'px';
   el.innerHTML = `<div class="coach-head"><span class="coach-icon">${icon}</span><b>${title}</b></div>
@@ -10623,6 +10836,7 @@ function coachShow(key, { icon, title, body, actions, topRight = false }) {
 function coachHide() {
   coachKey = null;
   document.getElementById('coach')?.classList.remove('open');
+  document.querySelectorAll('.coach-pulse').forEach(p => p.classList.remove('coach-pulse'));
 }
 function coachToSort() {
   const n = appData.files.filter(f => f.toSort && !f.isLivePhotoVideo).length;
@@ -10643,7 +10857,6 @@ const GS_COACH = {
   pick: { icon: '✈️', title: 'coachPickTitle', body: 'coachPickBody' },
   dates: { icon: '📅', title: 'coachDatesTitle', body: 'coachDatesBody' },
   folders: { icon: '📁', title: 'coachFoldersTitle', body: 'coachFoldersBody' },
-  content: { icon: '🧠', title: 'coachContentTitle', body: 'coachContentBody' },
   camera: { icon: '📷', title: 'coachCameraTitle', body: 'coachCameraBody' },
   location: { icon: '📍', title: 'coachLocationTitle', body: 'coachLocationBody' },
   done: { icon: '🎉', title: 'coachDoneTitle', body: 'coachDoneBody' }
@@ -10673,8 +10886,74 @@ function gsCoachForStep() {
        { label: t('coachGotIt'), onclick: () => gsCoachGotIt(step) }]
     : [{ label: t('coachGotIt'), primary: true, onclick: () => gsCoachGotIt(step) }];
   if (step !== 'done') actions.push({ label: t('coachHide'), link: true, onclick: gsCoachStop });
-  coachShow(key, { icon: c.icon, title: t(c.title), body: t(c.body), actions, topRight: step === 'location' });
+  const body = step === 'done' && gsBestTripForFlick() ? 'coachDoneFlick' : c.body;
+  coachShow(key, { icon: c.icon, title: t(c.title), body: t(body), actions, topRight: step === 'location' });
   if (step === 'done') { appData.gsCoachDone = true; gsCoachRunDone = true; saveData(); }
+}
+
+// ── Discovering the rest ─────────────────────────────────────────────────────
+// The Globe, the photo editor and Find duplicates aren't part of the onboarding: people come
+// across them by themselves. The first time each one opens, the guide says in a couple of lines
+// what it's for (discoverSeen). One still never opened some days after the first sort gets a
+// nudge instead - one a day at most, "Show me" opens it - and after two it's left alone for good.
+// Smart search isn't in the list yet: its model only understands English descriptions.
+const DISCOVER_FEATURES = [
+  { key: 'globe', icon: '🌍', afterDays: 1, target: '#globeToggle', topRight: true, open: () => { if (!globeOpen) toggleGlobe(); } },
+  { key: 'editor', icon: '✏️', afterDays: 3, target: null, open: () => discoverOpenEditor() },
+  { key: 'dups', icon: '🔁', afterDays: 5, target: '#sortMenuBtn', open: () => enterDupDetection() }
+];
+const DISCOVER_DAY_MS = 24 * 60 * 60 * 1000;
+function discoverState() {
+  if (!appData.discover) appData.discover = { seen: {}, nudges: {}, since: null, lastNudgeAt: 0 };
+  return appData.discover;
+}
+// A feature just opened: the first time ever, its short explanation.
+function discoverSeen(key) {
+  const d = discoverState();
+  if (d.seen[key]) return;
+  d.seen[key] = Date.now();
+  saveData();
+  const f = DISCOVER_FEATURES.find(f => f.key === key);
+  if (!f) return;
+  coachShow('discover:' + key, {
+    icon: f.icon, title: t('discoverTitle_' + key), body: t('discoverBody_' + key), topRight: !!f.topRight,
+    actions: [{ label: t('coachGotIt'), primary: true, onclick: coachHide }]
+  });
+}
+// Its screen closing takes its explanation with it.
+function discoverClosed(key) { if (coachKey === 'discover:' + key) coachHide(); }
+// Called when Trove is idle in the library (startup, after Guided Sort or Flick through).
+function discoverMaybeNudge() {
+  const d = discoverState();
+  const now = Date.now();
+  if (!d.since || frOpen || gsOpen || globeOpen || coachKey || (typeof fl !== 'undefined' && fl)) return;
+  if (now - (d.lastNudgeAt || 0) < DISCOVER_DAY_MS) return;
+  const f = DISCOVER_FEATURES.find(f => {
+    const n = d.nudges[f.key] || { n: 0, at: 0 };
+    return !d.seen[f.key] && now - d.since >= f.afterDays * DISCOVER_DAY_MS && n.n < 2 && now - n.at >= 3 * DISCOVER_DAY_MS;
+  });
+  if (!f) return;
+  d.nudges[f.key] = { n: (d.nudges[f.key]?.n || 0) + 1, at: now };
+  d.lastNudgeAt = now;
+  saveData();
+  coachShow('nudge:' + f.key, {
+    icon: f.icon, title: t('nudgeTitle_' + f.key), body: t('nudgeBody_' + f.key), pulse: f.target,
+    actions: [
+      { label: t('discoverShowMe'), primary: true, onclick: () => { coachHide(); f.open(); } },
+      { label: t('discoverLater'), onclick: coachHide }
+    ]
+  });
+}
+// "Show me" for the editor: a photo worth editing - the latest Liked one, else the newest.
+function discoverOpenEditor() {
+  const editable = appData.files.filter(f => isEditable(f.ext) && !f._missing && !f.isLivePhotoVideo);
+  const file = editable.filter(f => f.bestOf).sort((a, b) => (b.fileDate || 0) - (a.fileDate || 0))[0]
+    || editable.sort((a, b) => (b.fileDate || 0) - (a.fileDate || 0))[0];
+  if (file) openPhotoEditor(file.id);
+}
+function onFlickClosed() {
+  if (frRatingAfterFlick) { frRatingAfterFlick = false; frAskRatingOnce(); return; }
+  setTimeout(discoverMaybeNudge, 1500);
 }
 
 // ── FIRST-RUN WIZARD ─────────────────────────────────────────────────────────
@@ -10710,6 +10989,7 @@ function frShow(step) {
 }
 async function frFinish() {
   appData.onboardingCompleted = true;
+  if (!discoverState().since) discoverState().since = Date.now(); // the clock for discoverMaybeNudge starts here
   await saveData();
   document.getElementById('firstRunWizard').classList.remove('open');
   document.getElementById('sidebar')?.classList.remove('wizard-dimmed');
@@ -14401,6 +14681,7 @@ function pmToggleAdjustPanel(force) {
 async function openPhotoEditor(fileId, mode) {
   const file = appData.files.find(f => f.id === fileId);
   if (!file || !isEditable(file.ext)) return;
+  if (mode !== 'pro') discoverSeen('editor');
   peOpen = true;
   peMode = mode === 'pro' ? 'pro' : 'simple';
   peFileId = fileId;
@@ -17200,6 +17481,7 @@ async function closePhotoEditor(force, save = false) {
     if (!answer) return;
     if (answer === 'save') save = true;
   }
+  discoverClosed('editor');
   clearTimeout(peSaveTimer);
   const wasPro = peIsPro();
   // In pro mode nothing is written on the way out - anything worth keeping went through Save
@@ -17330,6 +17612,14 @@ document.addEventListener('keydown', e=>{
       else closeDupMode();
     }
     return;
+  }
+  // The locate mission (Guided Sort's last step, on the Globe): Enter confirms the pin, S skips
+  // the target, 1-3 switch the optics.
+  if(gsPickMode && globeOpen && !document.querySelector('.modal-backdrop.open') && !document.getElementById('photoPopup').classList.contains('open') && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName || '')){
+    if(e.key==='Enter'){ e.preventDefault(); confirmLocatePick(); return; }
+    if(e.key==='s' || e.key==='S'){ e.preventDefault(); gslSkipTarget(); return; }
+    const sensor = GSL_SENSORS[Number(e.key) - 1];
+    if(sensor){ e.preventDefault(); reconSetSensor(sensor.key); return; }
   }
   if(gsOpen){
     if(e.key==='Escape'){

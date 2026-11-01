@@ -113,6 +113,7 @@ function closeFlick() {
   document.getElementById('flickMode').classList.remove('open');
   document.getElementById('flickStage').innerHTML = '';
   saveData();
+  if (typeof onFlickClosed === 'function') onFlickClosed();
 }
 
 function flickLikedCount() { return fl.files.filter(f => f.bestOf).length; }

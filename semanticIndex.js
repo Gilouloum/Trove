@@ -290,10 +290,13 @@ async function suggestNameForCluster(centroidArray) {
 // Full pipeline for the Guided Sort "content" step: embed the batch (priority, not the
 // background pace), ask main.js for suggestions, then name the new-cluster suggestions.
 // onProgress(done,total) is called while embedding, before any suggestions are available.
-async function suggestGroupsForBatch(files, onProgress) {
+// opts.matchesOnly: only folderMatches are wanted (Guided Sort's Folders step), so the new
+// clusters aren't named - naming each one is a round of text embeddings for nothing.
+async function suggestGroupsForBatch(files, onProgress, opts = {}) {
   await embedBatchNow(files, onProgress);
   const ids = files.filter(f => isMedia(f.ext) && !f._missing && !f.isLivePhotoVideo).map(f => f.id);
   const result = await window.api.suggestGroups(ids);
+  if (opts.matchesOnly) return { folderMatches: result.folderMatches, newClusters: [] };
   for (const cluster of result.newClusters) {
     cluster.suggestedName = await suggestNameForCluster(cluster.centroid).catch(() => null);
   }
