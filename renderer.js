@@ -98,6 +98,7 @@ let peLayersCanvas = null, peLayersCtx = null;
 let peLayerDrag = null; // {id, startX, startY, originX, originY} while dragging a layer with the Move tool
 let peActiveHslBand = 'red';
 let peStraighten = 0; // fine-angle correction in degrees, -45..45, on top of file.rotation's 90° steps
+let peCrop = null; // simple editor only: {x, y, w, h} in 0..1 of the turned + tilted photo, or null - see Crop below
 let peRawCanvas = null; // this photo's freshly-decoded, EXIF-corrected canvas *before* file.rotation is applied - cached so the 90° Rotate buttons can re-derive without re-reading the file from disk
 // PhotoMod is a document editor, not a recipe editor: Canvas Size, Image Size and Rotate all
 // change the document's own pixels rather than a field on the library file. peBaseOverride is
@@ -743,7 +744,18 @@ const I18N = {
   rwBadge_familiarFaces: { en: 'Familiar faces', fr: 'Visages familiers', de: 'Bekannte Gesichter', es: 'Caras conocidas', zh: '熟悉的面孔' },
   rwBadgeHow_familiarFaces: { en: 'Name 5 people', fr: 'Nommez 5 personnes', de: 'Benennen Sie 5 Personen', es: 'Pon nombre a 5 personas', zh: '为 5 个人命名' },
   rwBadge_bigHeart: { en: 'Big heart', fr: 'Grand cœur', de: 'Großes Herz', es: 'Gran corazón', zh: '大爱之心' },
-  rwBadgeHow_bigHeart: { en: 'Like 50 photos', fr: 'Aimez 50 photos', de: 'Markieren Sie 50 Fotos mit Gefällt mir', es: 'Marca 50 fotos con me gusta', zh: '喜欢 50 张照片' }
+  rwBadgeHow_bigHeart: { en: 'Like 50 photos', fr: 'Aimez 50 photos', de: 'Markieren Sie 50 Fotos mit Gefällt mir', es: 'Marca 50 fotos con me gusta', zh: '喜欢 50 张照片' },
+
+  // Photo editor: crop (simple editor)
+  peCropTab: { en: 'Crop', fr: 'Recadrer', de: 'Zuschneiden', es: 'Recortar', zh: '裁剪' },
+  peCropReset: { en: 'reset', fr: 'réinitialiser', de: 'zurücksetzen', es: 'restablecer', zh: '重置' },
+  peCropFree: { en: 'Free', fr: 'Libre', de: 'Frei', es: 'Libre', zh: '自由' },
+  peCropOriginal: { en: 'Original', fr: 'Original', de: 'Original', es: 'Original', zh: '原始比例' },
+  peCropSquare: { en: 'Square', fr: 'Carré', de: 'Quadrat', es: 'Cuadrado', zh: '正方形' },
+  peCropPortrait: { en: 'Portrait', fr: 'Portrait', de: 'Hochformat', es: 'Vertical', zh: '竖向' },
+  peCropLandscape: { en: 'Landscape', fr: 'Paysage', de: 'Querformat', es: 'Horizontal', zh: '横向' },
+  peCropHint: { en: 'Drag the corners or edges of the box, or drag inside it to move it. Only the part inside is kept; the original photo is never cut, and reset brings it all back.', fr: "Faites glisser les coins ou les bords du cadre, ou l'intérieur pour le déplacer. Seule la partie à l'intérieur est gardée ; la photo d'origine n'est jamais coupée, et réinitialiser la rend en entier.", de: 'Ziehen Sie an den Ecken oder Kanten des Rahmens oder in ihm, um ihn zu verschieben. Nur der Teil darin bleibt; das Originalfoto wird nie beschnitten, und Zurücksetzen holt alles zurück.', es: 'Arrastra las esquinas o los bordes del recuadro, o su interior para moverlo. Solo se queda lo de dentro; la foto original nunca se corta y restablecer la recupera entera.', zh: '拖动边框的角或边,或拖动框内移动它。只保留框内部分;原照片不会被裁掉,重置即可恢复完整照片。' },
+  peCropDone: { en: '✓ Done', fr: '✓ Terminé', de: '✓ Fertig', es: '✓ Listo', zh: '✓ 完成' }
 };
 
 // A folder's icon is normally an emoji string, but folder.iconImage (a data URL, set via the
@@ -15021,6 +15033,8 @@ async function openPhotoEditor(fileId, mode) {
   peActiveCurveChannel = 'master';
   peHsl = peCloneHsl(file.edits?.hsl);
   peStraighten = file.edits?.straighten || 0;
+  peCrop = peMode === 'simple' && file.edits?.crop ? { ...file.edits.crop } : null;
+  peCropRatioKey = 'free'; peCropPortrait = false;
   peActiveTab = 'colors';
   peActiveHslBand = 'red';
   peLayers = null; // reloaded from file.edits by peInitLayers once the source size is known
@@ -15197,7 +15211,9 @@ function peFitScale() {
   if (!glCanvas?.width || !stage) return 1;
   const r = stage.getBoundingClientRect();
   if (!r.width || !r.height) return 1;
-  return Math.min(r.width / glCanvas.width, r.height / glCanvas.height);
+  // A cropped photo fits by its crop, not by the whole canvas (see peCropViewActive).
+  const cv = peCropViewActive() ? peCrop : null;
+  return Math.min(r.width / (glCanvas.width * (cv ? cv.w : 1)), r.height / (glCanvas.height * (cv ? cv.h : 1)));
 }
 // Displayed pixels per image pixel - what the zoom readout shows.
 function peEffectiveScale() { return peFitScale() * peZoom; }
@@ -15214,7 +15230,10 @@ function peApplyZoom() {
   const limX = halfW + r.width / 2 - 60, limY = halfH + r.height / 2 - 60;
   pePanX = Math.max(-limX, Math.min(limX, pePanX));
   pePanY = Math.max(-limY, Math.min(limY, pePanY));
-  glCanvas.style.transform = `translate(${pePanX}px, ${pePanY}px)`;
+  // ...and sits centred on its crop, the rest of the canvas clipped away by peCropSync.
+  const cv = peCropViewActive() ? peCrop : null;
+  const ox = cv ? (0.5 - (cv.x + cv.w / 2)) * glCanvas.width * s : 0, oy = cv ? (0.5 - (cv.y + cv.h / 2)) * glCanvas.height * s : 0;
+  glCanvas.style.transform = `translate(${pePanX + ox}px, ${pePanY + oy}px)`;
   peSyncOverlayCanvasLayout();
   const readout = document.getElementById('peZoomLevel');
   if (readout) readout.textContent = Math.round(s * 100) + '%';
@@ -15299,6 +15318,7 @@ function peSyncOverlayCanvasLayout() {
     el.style.width = glRect.width + 'px';
     el.style.height = glRect.height + 'px';
   });
+  peCropSync();
 }
 
 // ── Tool rail + Layers panel (Photoshop-shaped shell) ───────────────────────
@@ -16886,17 +16906,20 @@ function peRenderPanel() {
     <div class="pe-tabs">
       <button class="pe-tab${peActiveTab==='colors'?' active':''}" id="peTabBtn-colors" onclick="peSwitchTab('colors')">Colors</button>
       <button class="pe-tab${peActiveTab==='rotate'?' active':''}" id="peTabBtn-rotate" onclick="peSwitchTab('rotate')">Direction</button>
+      <button class="pe-tab${peActiveTab==='crop'?' active':''}" id="peTabBtn-crop" onclick="peSwitchTab('crop')">${t('peCropTab')}</button>
       <button class="pe-tab${peActiveTab==='draw'?' active':''}" id="peTabBtn-draw" onclick="peSwitchTab('draw')">Brush</button>
       <button class="pe-tab${peActiveTab==='masks'?' active':''}" id="peTabBtn-masks" onclick="peSwitchTab('masks')">Masks</button>
     </div>
     <div class="pe-tab-content" id="peTabColors" style="display:${peActiveTab==='colors'?'':'none'}">${parts.text}${parts.colors}</div>
     <div class="pe-tab-content" id="peTabRotate" style="display:${peActiveTab==='rotate'?'':'none'}">${parts.rotate}</div>
+    <div class="pe-tab-content" id="peTabCrop" style="display:${peActiveTab==='crop'?'':'none'}">${peCropPanelHtml()}</div>
     <div class="pe-tab-content" id="peTabDraw" style="display:${peActiveTab==='draw'?'':'none'}">${parts.draw}</div>
     <div class="pe-tab-content" id="peTabMasks" style="display:${peActiveTab==='masks'?'':'none'}">${parts.masks}</div>`;
   }
   peSetupCurveDrag();
   peDrawCurve();
   peSyncMaskCanvasVisibility();
+  peCropSync();
 }
 
 // PhotoMod's right column: the options for whatever tool is in hand, and nothing else. This is
@@ -17174,7 +17197,7 @@ function peToggleColorSection(key) {
 // on the stage will do (peSelectTool drives it the other way round).
 function peSwitchTab(tab) {
   peActiveTab = tab;
-  ['colors','rotate','draw','masks'].forEach(t => {
+  ['colors','rotate','crop','draw','masks'].forEach(t => {
     document.getElementById('peTabBtn-'+t)?.classList.toggle('active', t === tab);
     const content = document.getElementById('peTab'+t[0].toUpperCase()+t.slice(1));
     if (content) content.style.display = t === tab ? '' : 'none';
@@ -17186,6 +17209,7 @@ function peSwitchTab(tab) {
     : (PE_SELECT_TOOLS.includes(peTool) ? peTool : (peIsPro() ? 'move' : 'none'));
   peSyncToolCanvases();
   peRenderToolRail();
+  peApplyZoom(); // in or out of the Crop tab, the photo fits differently (see peFitScale)
 }
 
 function peOnSlider(key, val) {
@@ -17214,6 +17238,8 @@ function peResetAll() {
   peCurves = peDefaultCurves();
   peHsl = peDefaultHsl();
   peStraighten = 0;
+  peCrop = null;
+  peApplyZoom(); // back to fitting the whole photo
   peUpdateToneLUT();
   if (peDrawHasContent && peDrawCtx && peDrawCanvas) {
     peDrawSnapshotForUndo();
@@ -17255,6 +17281,11 @@ function peRotate90(delta) {
   const file = appData.files.find(f => f.id === peFileId);
   if (!file || !peRawCanvas) return;
   bumpRotation(file, delta);
+  // The crop box turns with the photo, so it keeps framing the same part of it.
+  if (peCrop) {
+    const { x, y, w, h } = peCrop;
+    peCrop = delta > 0 ? { x: 1 - (y + h), y: x, w: h, h: w } : { x: y, y: 1 - (x + w), w: h, h: w };
+  }
   peDirty = true;
   peApplyRotationAndInit(delta);
   peRenderPanel(); // refreshes the "Current: X°" readout
@@ -17279,6 +17310,175 @@ function peResetStraighten() {
   peDirty = true;
   peRender();
   peScheduleSave();
+}
+
+// ── Crop (simple editor) ─────────────────────────────────────────────────────
+// A box over the photo as Direction leaves it (turned and tilted), stored in fractions of it, so
+// it's a recipe like every other simple edit: the file itself is never cut and Reset brings the
+// whole photo back. The Crop tab shows the whole photo with the box on it; every other tab shows
+// the result (a CSS clip on the stage's canvases), and what gets saved - the edited thumbnail,
+// the viewer's preview, an export - is cut for real (peOutputCanvas). PhotoMod has its own
+// document tools (Canvas Size) and never sees this.
+const PE_CROP_RATIOS = [['free', 'peCropFree', null], ['orig', 'peCropOriginal', 'orig'], ['square', 'peCropSquare', 1], ['4:5', '4:5', 4 / 5], ['3:2', '3:2', 3 / 2], ['16:9', '16:9', 16 / 9]];
+const PE_CROP_MIN = 0.04; // smallest box side, as a fraction of the photo
+let peCropRatioKey = 'free';
+let peCropPortrait = false; // flips the chosen ratio (3:2 becomes 2:3)
+let peCropDrag = null;
+
+function peCropImageAspect() {
+  const c = document.getElementById('peCanvas');
+  return c?.width && c.height ? c.width / c.height : 1;
+}
+// The chosen ratio as width / height in pixels, or null when free.
+function peCropRatio() {
+  const r = PE_CROP_RATIOS.find(x => x[0] === peCropRatioKey)?.[2];
+  if (!r) return null;
+  const px = r === 'orig' ? peCropImageAspect() : r;
+  return peCropPortrait ? 1 / px : px;
+}
+
+function peCropPanelHtml() {
+  const chips = PE_CROP_RATIOS.map(([key, label]) =>
+    `<button class="pe-crop-chip${peCropRatioKey === key ? ' active' : ''}" onclick="peSetCropRatio('${key}')">${label.startsWith('pe') ? t(label) : label}</button>`).join('');
+  return `
+    <div class="pe-tone-head"><span>${t('peCropTab')}</span><span class="pe-slider-reset" onclick="peResetCrop()">${t('peCropReset')}</span></div>
+    <div class="pe-crop-chips">${chips}</div>
+    <button class="pe-rotate-btn pe-crop-flip" onclick="peFlipCropRatio()" ${peCropRatioKey === 'free' || peCropRatioKey === 'square' ? 'disabled' : ''}>⇄ ${(peCropRatio() || 1) < 1 ? t('peCropPortrait') : t('peCropLandscape')}</button>
+    <div class="pe-tone-hint">${t('peCropHint')}</div>
+    <button class="pe-crop-done" onclick="peSwitchTab('colors')">${t('peCropDone')}</button>`;
+}
+
+function peRefreshCropPanel() {
+  const el = document.getElementById('peTabCrop');
+  if (el) el.innerHTML = peCropPanelHtml();
+}
+
+function peCropChanged() {
+  peDirty = true;
+  peCropSync();
+  peScheduleSave();
+}
+
+// The largest box of the chosen ratio that fits, around the current box's centre.
+function peSetCropRatio(key) {
+  peCropRatioKey = key;
+  if (key === 'free' || key === 'square') peCropPortrait = false;
+  const r = peCropRatio();
+  if (r) {
+    const n = r / peCropImageAspect(); // the same ratio in fractions of the photo
+    let w = Math.min(1, n), h = w / n;
+    if (h > 1) { h = 1; w = n; }
+    const cur = peCrop || { x: 0, y: 0, w: 1, h: 1 };
+    const cx = cur.x + cur.w / 2, cy = cur.y + cur.h / 2;
+    peCrop = { x: Math.max(0, Math.min(1 - w, cx - w / 2)), y: Math.max(0, Math.min(1 - h, cy - h / 2)), w, h };
+    peCropChanged();
+  }
+  peRefreshCropPanel();
+}
+function peFlipCropRatio() {
+  peCropPortrait = !peCropPortrait;
+  peSetCropRatio(peCropRatioKey);
+}
+function peResetCrop() {
+  peCrop = null;
+  peCropRatioKey = 'free';
+  peCropPortrait = false;
+  peRefreshCropPanel();
+  peCropChanged();
+}
+
+// Outside the Crop tab, a cropped photo is shown cropped: fitted and centred on its box.
+function peCropViewActive() { return !!(peOpen && peCrop && !peIsPro() && peActiveTab !== 'crop'); }
+
+// Shows the box on the Crop tab, and clips the photo to it everywhere else.
+function peCropSync() {
+  const overlay = document.getElementById('peCropOverlay');
+  const glCanvas = document.getElementById('peCanvas');
+  const stage = glCanvas?.closest('.pe-stage');
+  if (!overlay || !stage) return;
+  const simple = peOpen && !peIsPro() && glCanvas.width;
+  const editing = simple && peActiveTab === 'crop';
+  overlay.style.display = editing ? '' : 'none';
+  const clipped = simple && !editing && !!peCrop;
+  stage.classList.toggle('pe-cropped', !!clipped);
+  if (clipped) {
+    stage.style.setProperty('--pe-crop-t', (peCrop.y * 100) + '%');
+    stage.style.setProperty('--pe-crop-r', ((1 - peCrop.x - peCrop.w) * 100) + '%');
+    stage.style.setProperty('--pe-crop-b', ((1 - peCrop.y - peCrop.h) * 100) + '%');
+    stage.style.setProperty('--pe-crop-l', (peCrop.x * 100) + '%');
+  }
+  if (!editing) return;
+  const s = stage.getBoundingClientRect(), g = glCanvas.getBoundingClientRect();
+  Object.assign(overlay.style, { left: (g.left - s.left) + 'px', top: (g.top - s.top) + 'px', width: g.width + 'px', height: g.height + 'px' });
+  const c = peCrop || { x: 0, y: 0, w: 1, h: 1 };
+  const box = overlay.querySelector('.pe-crop-box');
+  Object.assign(box.style, { left: (c.x * 100) + '%', top: (c.y * 100) + '%', width: (c.w * 100) + '%', height: (c.h * 100) + '%' });
+  // With a fixed ratio only the corners resize; an edge alone would have to drag the other one.
+  overlay.classList.toggle('ratio-locked', !!peCropRatio());
+}
+
+function peCropPointerDown(e) {
+  const handle = e.target.closest('[data-crop]')?.dataset.crop;
+  if (!handle || e.button !== 0) return;
+  e.preventDefault(); e.stopPropagation();
+  const r = document.getElementById('peCropOverlay').getBoundingClientRect();
+  peCropDrag = { handle, start: { ...(peCrop || { x: 0, y: 0, w: 1, h: 1 }) }, px: e.clientX, py: e.clientY, rw: r.width, rh: r.height };
+  e.target.setPointerCapture?.(e.pointerId);
+}
+
+function peCropPointerMove(e) {
+  const d = peCropDrag;
+  if (!d) return;
+  const dx = (e.clientX - d.px) / d.rw, dy = (e.clientY - d.py) / d.rh;
+  const s = d.start, MIN = PE_CROP_MIN;
+  let { x, y, w, h } = s;
+  if (d.handle === 'move') {
+    x = Math.max(0, Math.min(1 - w, s.x + dx));
+    y = Math.max(0, Math.min(1 - h, s.y + dy));
+  } else {
+    const r = peCropRatio();
+    let left = s.x, top = s.y, right = s.x + s.w, bottom = s.y + s.h;
+    if (d.handle.includes('w')) left = Math.max(0, Math.min(right - MIN, left + dx));
+    if (d.handle.includes('e')) right = Math.min(1, Math.max(left + MIN, right + dx));
+    if (d.handle.includes('n')) top = Math.max(0, Math.min(bottom - MIN, top + dy));
+    if (d.handle.includes('s')) bottom = Math.min(1, Math.max(top + MIN, bottom + dy));
+    if (r && d.handle.length === 2) {
+      // Keep the ratio from the corner opposite the one being dragged: the bigger of the two
+      // moves wins, then the box shrinks back to whatever room the photo leaves.
+      const n = r / peCropImageAspect();
+      const ax = d.handle.includes('w') ? s.x + s.w : s.x, ay = d.handle.includes('n') ? s.y + s.h : s.y;
+      const roomW = d.handle.includes('w') ? ax : 1 - ax, roomH = d.handle.includes('n') ? ay : 1 - ay;
+      let nw = Math.max(right - left, (bottom - top) * n);
+      nw = Math.max(MIN, Math.min(nw, roomW, roomH * n));
+      const nh = nw / n;
+      left = d.handle.includes('w') ? ax - nw : ax; right = left + nw;
+      top = d.handle.includes('n') ? ay - nh : ay; bottom = top + nh;
+    }
+    x = left; y = top; w = right - left; h = bottom - top;
+  }
+  peCrop = { x, y, w, h };
+  peCropSync();
+}
+
+function peCropPointerUp() {
+  if (!peCropDrag) return;
+  peCropDrag = null;
+  // A box that covers the whole photo is no crop at all.
+  if (peCrop && peCrop.x < 0.001 && peCrop.y < 0.001 && peCrop.w > 0.999 && peCrop.h > 0.999) peCrop = null;
+  peCropChanged();
+}
+
+// What the simple editor saves and exports: the composite, cut to the crop box.
+function peOutputCanvas() {
+  const canvas = peCompositeCanvas();
+  if (!canvas || peIsPro() || !peCrop) return canvas;
+  const sx = Math.round(peCrop.x * canvas.width), sy = Math.round(peCrop.y * canvas.height);
+  const sw = Math.max(1, Math.min(canvas.width - sx, Math.round(peCrop.w * canvas.width)));
+  const sh = Math.max(1, Math.min(canvas.height - sy, Math.round(peCrop.h * canvas.height)));
+  const out = document.createElement('canvas');
+  out.width = sw; out.height = sh;
+  out.getContext('2d').drawImage(canvas, sx, sy, sw, sh, 0, 0, sw, sh);
+  return out;
 }
 
 // ── Tone curve (Master + per-channel, Photoshop/Lightroom-style) ───────────────
@@ -17490,7 +17690,7 @@ async function peCommit() {
   const drawLayer = (peDrawHasContent && peDrawCanvas) ? peDrawCanvas.toDataURL('image/png') : null;
   const localLayers = peSerializeLocalLayers(peLocalLayers); // drops any never-painted layer, not just dead weight but also correctness (see isDefault below)
   const layers = peSerializeLayers(peLayers);
-  const isDefault = adjDefault && curveDefault && hslDefault && !drawLayer && !peStraighten && localLayers.length === 0 && layers.length === 0;
+  const isDefault = adjDefault && curveDefault && hslDefault && !drawLayer && !peStraighten && !peCrop && localLayers.length === 0 && layers.length === 0;
   delete thumbCache[file.id]; delete previewCache[file.id]; delete hiresCache[file.id];
   if (isDefault) {
     delete file.edits;
@@ -17502,6 +17702,7 @@ async function peCommit() {
       curves: peCloneCurves(peCurves),
       hsl: peCloneHsl(peHsl),
       straighten: peStraighten || 0,
+      crop: peCrop ? { ...peCrop } : null,
       drawLayer,
       localLayers,
       layers,
@@ -17520,7 +17721,7 @@ async function peCommit() {
 // the same as every other thumbnail - so a rotated edited photo used to come out turned twice.
 const PE_EDITED_PREVIEW_MAX = 4000; // HIRES_MAX_DIM: it doubles as the viewer's zoomed-in render
 async function peSaveEditedThumbnail(fileId) {
-  let canvas = peCompositeCanvas();
+  let canvas = peOutputCanvas();
   if (!canvas || !canvas.width) return;
   const file = appData.files.find(f => f.id === fileId);
   if (file?.rotation) canvas = drawRotatedToCanvas(canvas, 360 - file.rotation);
@@ -17546,7 +17747,7 @@ async function peExport() {
   const file = appData.files.find(f => f.id === peFileId);
   if (!file && !peIsPro()) return;
   pmCommitLiveMesh();
-  const canvas = peCompositeCanvas();
+  const canvas = peOutputCanvas();
   if (!canvas) return;
   // A PhotoMod document can have transparency (a new canvas, or layers over an erased area),
   // which JPEG would flatten to black - pmOutputFormat keeps PNG for that and for designs, and
@@ -17579,7 +17780,7 @@ async function peExport() {
 async function peBakeLayers() {
   const file = appData.files.find(f => f.id === peFileId);
   if (!file || !(peLayers || []).some(l => l.dataUrl && l.visible)) return false;
-  const canvas = peCompositeCanvas();
+  const canvas = peOutputCanvas();
   if (!canvas) return false;
   const blob = await peEncodeJpegLikeOriginal(canvas, file);
   if (!blob) return false;
@@ -17670,7 +17871,8 @@ async function closePhotoEditor(force, save = false) {
   peFileId = null; peAdjustments = null; peBypass = false; peDirty = false;
   peSourceCanvas = null; peHistogram = null; peChannelHistograms = null; peCurveDrag = null;
   peCurves = null; peActiveCurveChannel = 'master'; peHsl = null; peActiveTab = 'colors'; peActiveHslBand = 'red';
-  peStraighten = 0; peRawCanvas = null;
+  peStraighten = 0; peRawCanvas = null; peCrop = null; peCropDrag = null;
+  peCropSync();
   peDrawCanvas = null; peDrawCtx = null; peDrawUndoStack = []; peDrawHasContent = false;
   peDrawing = false; peDrawLastPoint = null;
   peLocalLayers = null; peEditingLayerId = null; peMaskCanvas = null; peMaskCtx = null;
@@ -17907,6 +18109,8 @@ document.addEventListener('pointerdown',e=>{
 document.addEventListener('keyup',e=>{
   if(e.key===' '){ peSpaceHeld = false; document.querySelector('.pe-stage')?.classList.remove('can-pan'); }
 });
+document.addEventListener('pointermove', peCropPointerMove);
+document.addEventListener('pointerup', peCropPointerUp);
 // A window that loses focus mid-pan would otherwise come back still thinking Space is down.
 window.addEventListener('blur',()=>{ peSpaceHeld = false; document.querySelector('.pe-stage')?.classList.remove('can-pan'); });
 // Anywhere outside an open menu closes it - including a click on the canvas, which would
