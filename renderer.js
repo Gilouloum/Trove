@@ -647,8 +647,6 @@ const I18N = {
 
   // Photo preview: dragging the file out
   popupZoomHint: { en: '🔍 Scroll to zoom · Drag the photo out to another app · Zoomed in, drag to pan', fr: "🔍 Molette pour zoomer · Glissez la photo vers une autre application · En zoom, glissez pour vous déplacer", de: '🔍 Scrollen zum Zoomen · Foto in eine andere App ziehen · Gezoomt: ziehen zum Verschieben', es: '🔍 Rueda para hacer zoom · Arrastra la foto a otra aplicación · Con zoom, arrastra para moverte', zh: '🔍 滚动缩放 · 将照片拖到其他应用 · 放大后拖动可平移' },
-  popupDragFile: { en: 'Drag file', fr: 'Glisser le fichier', de: 'Datei ziehen', es: 'Arrastrar archivo', zh: '拖出文件' },
-  popupDragTitle: { en: 'Drag this file into another app, an email or a folder, without closing the preview. You can also drag the photo itself.', fr: "Faites glisser ce fichier vers une autre application, un e-mail ou un dossier, sans fermer l'aperçu. Vous pouvez aussi faire glisser la photo elle-même.", de: 'Ziehen Sie diese Datei in eine andere App, eine E-Mail oder einen Ordner, ohne die Vorschau zu schließen. Sie können auch das Foto selbst ziehen.', es: 'Arrastra este archivo a otra aplicación, un correo o una carpeta sin cerrar la vista previa. También puedes arrastrar la propia foto.', zh: '无需关闭预览,即可将此文件拖到其他应用、邮件或文件夹中。也可以直接拖动照片本身。' },
 
   // Flick through (flick.js)
   flBannerLiked: { en: v => `${v.liked} liked of ${v.n} (${v.pct}%)`, fr: v => `${v.liked} coups de cœur sur ${v.n} (${v.pct} %)`, de: v => `${v.liked} von ${v.n} mit Gefällt mir (${v.pct} %)`, es: v => `${v.liked} de ${v.n} te gustan (${v.pct} %)`, zh: v => `${v.n} 个中喜欢 ${v.liked} 个(${v.pct}%)` },
@@ -8883,8 +8881,6 @@ function popupWatchFileDrag(e) {
   e.preventDefault();
   return true;
 }
-// The side panel's handle: works for every file, zoomed in or not, videos and 360 included.
-function popupDragHandleDown(e) { popupWatchFileDrag(e); }
 
 function popupOnMouseDown(e) {
   const file = popupClusterFiles[popupClusterIndex];
