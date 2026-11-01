@@ -192,17 +192,18 @@ function fmtDuration(sec) {
 }
 function fmtDate(ts) {
   if (!ts) return '-';
-  return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});
+  return new Date(ts).toLocaleDateString(uiLocale(),{month:'short',day:'numeric',year:'2-digit'});
 }
 function fmtTime(ts) {
   if (!ts) return '-';
-  return new Date(ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  return new Date(ts).toLocaleTimeString(uiLocale(),{hour:'numeric',minute:'2-digit'});
 }
 function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ── I18N ─────────────────────────────────────────────────────────────────────
-// Covers the First-Run Wizard and the Settings modal only - the rest of the app's UI stays
-// English for now (see I18N below for the full string list). `native` names are shown as-is in
+// I18N below holds the keyed strings (the wizard, Settings, Liked, Flick through, the Bin, XP...);
+// everything else written in English straight into the interface is translated on screen by
+// i18n-ui.js, from its own table keyed by the English text. `native` names are shown as-is in
 // the language picker itself, never translated. appData.settings.language is '' until the user
 // picks one (in the wizard's language step, or Settings), meaning "follow the OS locale".
 const LANGUAGES = [
@@ -233,6 +234,8 @@ function setLanguage(lang) {
   if (!appData.settings) appData.settings = {};
   appData.settings.language = currentLang;
   applyI18n();
+  uiI18nRefresh(); // the rest of the interface (i18n-ui.js)
+  rewardsRenderChip();
   if (typeof frOpen !== 'undefined' && frOpen) frRender();
   saveData();
 }
@@ -578,6 +581,7 @@ const I18N = {
   themeAuto: { en: '🖥️ Theme: Auto', fr: '🖥️ Thème : Auto', de: '🖥️ Design: Automatisch', es: '🖥️ Tema: Automático', zh: '🖥️ 主题:自动' },
   themeLight: { en: '☀️ Theme: Light', fr: '☀️ Thème : Clair', de: '☀️ Design: Hell', es: '☀️ Tema: Claro', zh: '☀️ 主题:浅色' },
   themeDark: { en: '🌙 Theme: Dark', fr: '🌙 Thème : Sombre', de: '🌙 Design: Dunkel', es: '🌙 Tema: Oscuro', zh: '🌙 主题:深色' },
+  tbAddFiles: { en: 'Add Files', fr: 'Ajouter des fichiers', de: 'Dateien hinzufügen', es: 'Añadir archivos', zh: '添加文件' },
   themeToggleTitle: { en: "Click to switch between matching your computer's setting, Light, and Dark", fr: "Cliquez pour basculer entre le réglage de votre ordinateur, Clair et Sombre", de: 'Klicken Sie, um zwischen der Einstellung Ihres Computers, Hell und Dunkel zu wechseln', es: 'Haz clic para alternar entre la configuración de tu ordenador, Claro y Oscuro', zh: '点击可在跟随系统设置、浅色和深色之间切换' },
 
   // Liked (formerly Best Of - the file field is still bestOf)
@@ -2299,6 +2303,7 @@ async function init() {
   if (!appData.settings.telemetryAsked) appData.settings.telemetryEnabled = false;
   currentLang = resolveLanguage(appData.settings.language);
   applyI18n();
+  uiI18nStart(); // the rest of the interface (i18n-ui.js)
   rewardsRenderChip();
   binStartPurgeTimer();
   flickWireInput();
@@ -3877,7 +3882,8 @@ function appendTimelineThumbs(fileSlice, wrap) {
       header.className = 'tl-month-header';
       countEl = document.createElement('span');
       countEl.className = 'tl-month-count';
-      header.innerHTML = `<span class="tl-month-name">${MONTH_NAMES[mo]} ${yr}</span>`;
+      const monthLabel = new Date(yr, mo, 1).toLocaleDateString(uiLocale(), { month: 'long', year: 'numeric' });
+      header.innerHTML = `<span class="tl-month-name">${esc(monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1))}</span>`;
       header.appendChild(countEl);
       section.appendChild(header);
 
@@ -6820,7 +6826,7 @@ function ensureReliveBarResizeSync() {
 function renderReliveDayPhotoPanel(day) {
   renderRelivePhotoPanel(
     `Day ${day.dayIndex}: ${esc(day.label)}`,
-    `${day.date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} · ${day.count} photo${day.count !== 1 ? 's' : ''}`,
+    `${day.date.toLocaleDateString(uiLocale(), { weekday: 'long', month: 'long', day: 'numeric' })} · ${day.count} photo${day.count !== 1 ? 's' : ''}`,
     day.photos
   );
 }
@@ -6851,7 +6857,7 @@ function renderRelivePhotoPanel(title, subtitle, photos) {
     // it (or fully recenters if it's off-screen) - see hoverHighlight in globe.js.
     item.onmouseenter = () => globeCtrl?.hoverHighlight(f.gps.lat, f.gps.lng);
     item.onmouseleave = () => globeCtrl?.hideHighlight();
-    const time = new Date(f.fileDate).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const time = new Date(f.fileDate).toLocaleTimeString(uiLocale(), { hour: 'numeric', minute: '2-digit' });
     item.innerHTML = `
       <div class="rdp-thumb thumb-loading" data-thumb-for="${f.id}">${getEmoji(f.ext)}</div>
       ${isVid(f.ext) ? '<span class="rdp-item-video">▶️</span>' : ''}
@@ -6893,7 +6899,7 @@ function renderReliveDayCards() {
       <div class="relive-day-body">
         <div class="relive-day-num">Day ${day.dayIndex} ${modeBadges}</div>
         <div class="relive-day-place">${esc(day.label)}</div>
-        <div class="relive-day-meta">${day.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · ${day.count} photo${day.count !== 1 ? 's' : ''}</div>
+        <div class="relive-day-meta">${day.date.toLocaleDateString(uiLocale(), { month: 'short', day: 'numeric' })} · ${day.count} photo${day.count !== 1 ? 's' : ''}</div>
       </div>`;
     host.appendChild(card);
     observeThumb(card.querySelector('.relive-day-thumb'));
@@ -9067,9 +9073,9 @@ function formatTripYearSuffix(folder) {
 function formatDateRangeShort(start, end) {
   if (!start) return '';
   const opts = { month: 'short', day: 'numeric' };
-  const s = new Date(start).toLocaleDateString('en-US', opts);
+  const s = new Date(start).toLocaleDateString(uiLocale(), opts);
   if (!end || new Date(end).toDateString() === new Date(start).toDateString()) return s;
-  const e = new Date(end).toLocaleDateString('en-US', opts);
+  const e = new Date(end).toLocaleDateString(uiLocale(), opts);
   return `${s} – ${e}`;
 }
 

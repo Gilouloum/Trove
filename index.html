@@ -1109,8 +1109,8 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 .burst-cell-preview:hover{background:var(--accent)}
 .burst-cell-check{position:absolute;bottom:8px;right:8px;background:var(--gold);color:#000;font-size:11px;font-weight:700;padding:2px 6px;border-radius:10px;display:none}
 .burst-cell.current .burst-cell-check{display:block}
-.pe-tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px}
-.pe-tab{flex:1;padding:6px 0;background:none;border:none;color:var(--text3);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border-radius:var(--rs);transition:background .12s,color .12s}
+.pe-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:10px}
+.pe-tab{flex:1 1 auto;padding:6px 6px;white-space:nowrap;background:none;border:none;color:var(--text3);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border-radius:var(--rs);transition:background .12s,color .12s}
 .pe-tab:hover{color:var(--text2)}
 .pe-tab.active{background:var(--aglow);color:var(--accent2)}
 .pe-tone-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
@@ -1528,7 +1528,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
     </div>
     <button class="globe-btn sort-menu-btn" id="sortMenuBtn" onclick="toggleSortMenu(event)" title="Tidy up your library: find new people, sort the To Sort pile, find duplicates and edited photos">Sort<span class="sort-menu-count" id="sortMenuBadge" style="display:none"></span> ▾</button>
     <button class="globe-btn" id="globeToggle" onclick="toggleGlobe()">🌍<span class="tb-hide-sm"> Globe</span></button>
-    <button class="add-btn" onclick="addFiles()" title="Add Files"><span style="font-size:14px;line-height:1">+</span><span class="tb-hide-sm"> Add</span><span class="tb-hide-md"> Files</span></button>
+    <button class="add-btn" onclick="addFiles()" title="Add Files"><span style="font-size:14px;line-height:1">+</span><span class="tb-hide-sm"> <span data-i18n="tbAddFiles">Add Files</span></span></button>
   </div>
 
   <!-- Selection bar -->
@@ -2486,6 +2486,7 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 <script src="media-types.js"></script>
 <script src="heicGpu.js"></script>
 <script src="globe.js"></script>
+<script src="i18n-ui.js"></script>
 <script src="rewards.js"></script>
 <script src="bin.js"></script>
 <script src="flick.js"></script>
