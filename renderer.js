@@ -490,11 +490,11 @@ const I18N = {
     zh: '搜索功能能根据照片实际内容查找,而不仅仅是文件名——试着在搜索框中输入类似"生日蛋糕"这样的词试试。'
   },
   frTipBestOf: {
-    en: '❤️ Press <strong>L</strong> (or click the heart) on a photo you love to add it to <strong>Liked</strong>, a highlight reel separate from the full library. A liked photo also goes into its trip\'s photobook.',
-    fr: '❤️ Appuyez sur <strong>L</strong> (ou cliquez sur le cœur) sur une photo que vous adorez pour l\'ajouter à <strong>Coups de cœur</strong>, une sélection à part de la bibliothèque complète. Une photo aimée entre aussi dans l\'album photo de son voyage.',
-    de: '❤️ Drücken Sie <strong>L</strong> (oder klicken Sie auf das Herz) bei einem Foto, das Sie lieben, um es zu <strong>Gefällt mir</strong> hinzuzufügen, einer Highlight-Auswahl getrennt von der vollständigen Bibliothek. Ein Foto mit Herz kommt auch ins Fotobuch seiner Reise.',
-    es: '❤️ Pulsa <strong>L</strong> (o haz clic en el corazón) en una foto que te encante para añadirla a <strong>Me gusta</strong>, una selección destacada aparte de la biblioteca completa. Una foto que te gusta también entra en el fotolibro de su viaje.',
-    zh: '❤️ 在喜欢的照片上按 <strong>L</strong>(或点击爱心),即可添加到<strong>喜欢</strong>,一个独立于完整照片库的精彩集锦。喜欢的照片也会自动加入所属旅行的相册。'
+    en: '❤️ Press <strong>L</strong> (or click the heart) on a photo you love to add it to <strong>Liked</strong>, a highlight reel separate from the full library. Liked files come first in their trip.',
+    fr: '❤️ Appuyez sur <strong>L</strong> (ou cliquez sur le cœur) sur une photo que vous adorez pour l\'ajouter à <strong>Coups de cœur</strong>, une sélection à part de la bibliothèque complète. Les coups de cœur apparaissent en premier dans leur voyage.',
+    de: '❤️ Drücken Sie <strong>L</strong> (oder klicken Sie auf das Herz) bei einem Foto, das Sie lieben, um es zu <strong>Gefällt mir</strong> hinzuzufügen, einer Highlight-Auswahl getrennt von der vollständigen Bibliothek. Fotos mit Herz stehen in ihrer Reise ganz oben.',
+    es: '❤️ Pulsa <strong>L</strong> (o haz clic en el corazón) en una foto que te encante para añadirla a <strong>Me gusta</strong>, una selección destacada aparte de la biblioteca completa. Las que te gustan salen primero en su viaje.',
+    zh: '❤️ 在喜欢的照片上按 <strong>L</strong>(或点击爱心),即可添加到<strong>喜欢</strong>,一个独立于完整照片库的精彩集锦。喜欢的照片会排在所属旅行的最前面。'
   },
   frTipTagMore: {
     en: "The more you tag now - people, categories, trips - the easier everything is to find later. It doesn't have to be all at once.",
@@ -595,100 +595,7 @@ const I18N = {
   lkEmptySub: { en: 'Press L or click the heart on any photo you love', fr: "Appuyez sur L ou cliquez sur le cœur d'une photo que vous adorez", de: 'Drücken Sie L oder klicken Sie auf das Herz eines Fotos, das Sie lieben', es: 'Pulsa L o haz clic en el corazón de una foto que te encante', zh: '在喜爱的照片上按 L 或点击爱心' },
   lkNothingToExport: { en: '⚠️ No liked files to export', fr: '⚠️ Aucun coup de cœur à exporter', de: '⚠️ Keine Dateien mit Gefällt mir zum Exportieren', es: '⚠️ No hay archivos que te gusten para exportar', zh: '⚠️ 没有可导出的喜欢文件' },
 
-  // Trip photobook (photobook.js)
-  pbBannerStartTitle: { en: 'Make a photobook of this trip', fr: 'Faites un album photo de ce voyage', de: 'Machen Sie ein Fotobuch dieser Reise', es: 'Haz un fotolibro de este viaje', zh: '为这趟旅行制作相册' },
-  pbBannerStartBody: { en: v => `Keep your best ~${v.goal} of ${v.n}. Similar shots go head to head, you just tap the better one.`, fr: v => `Gardez vos ~${v.goal} meilleures sur ${v.n}. Les photos similaires s'affrontent, il suffit de toucher la meilleure.`, de: v => `Behalten Sie Ihre besten ~${v.goal} von ${v.n}. Ähnliche Aufnahmen treten gegeneinander an, Sie tippen einfach die bessere an.`, es: v => `Quédate con tus ~${v.goal} mejores de ${v.n}. Las fotos parecidas se enfrentan y tú solo tocas la mejor.`, zh: v => `从 ${v.n} 张中留下最好的约 ${v.goal} 张。相似的照片两两对决,你只需点选更好的那张。` },
-  pbBannerCount: { en: v => `Photobook: ${v.kept} / ${v.goal}`, fr: v => `Album photo : ${v.kept} / ${v.goal}`, de: v => `Fotobuch: ${v.kept} / ${v.goal}`, es: v => `Fotolibro: ${v.kept} / ${v.goal}`, zh: v => `相册:${v.kept} / ${v.goal}` },
-  pbBannerToLook: { en: v => `${v.n} photo${v.n!==1?'s':''} still to look at`, fr: v => `${v.n} photo${v.n!==1?'s':''} encore à regarder`, de: v => `noch ${v.n} Foto${v.n!==1?'s':''} anzusehen`, es: v => `${v.n} foto${v.n!==1?'s':''} por mirar`, zh: v => `还有 ${v.n} 张待查看` },
-  pbBannerAllSeen: { en: 'Every photo has been looked at. Nothing left out was deleted, it is just further down.', fr: "Toutes les photos ont été vues. Rien n'a été supprimé, le reste est simplement plus bas.", de: 'Alle Fotos wurden angesehen. Nichts wurde gelöscht, der Rest steht nur weiter unten.', es: 'Has visto todas las fotos. No se ha borrado nada, el resto solo está más abajo.', zh: '所有照片都已看过。没有删除任何照片,其余的只是排在下面。' },
-  pbStartPicking: { en: '⚔️ Start picking', fr: '⚔️ Commencer le tri', de: '⚔️ Auswahl starten', es: '⚔️ Empezar a elegir', zh: '⚔️ 开始挑选' },
-  pbKeepPicking: { en: '⚔️ Keep picking', fr: '⚔️ Continuer le tri', de: '⚔️ Weiter auswählen', es: '⚔️ Seguir eligiendo', zh: '⚔️ 继续挑选' },
-  pbSeeGroups: { en: 'Similar shots', fr: 'Photos similaires', de: 'Ähnliche Aufnahmen', es: 'Fotos parecidas', zh: '相似照片' },
-  pbPresent: { en: '▶ Present', fr: '▶ Présenter', de: '▶ Vorführen', es: '▶ Presentar', zh: '▶ 展示' },
-  pbNotInBook: { en: 'Not in your photobook', fr: 'Pas dans votre album photo', de: 'Nicht in Ihrem Fotobuch', es: 'Fuera de tu fotolibro', zh: '不在相册中' },
-  pbCtxAdd: { en: 'Add to photobook', fr: "Ajouter à l'album photo", de: 'Zum Fotobuch hinzufügen', es: 'Añadir al fotolibro', zh: '加入相册' },
-  pbCtxRemove: { en: 'Take out of photobook', fr: "Retirer de l'album photo", de: 'Aus dem Fotobuch nehmen', es: 'Quitar del fotolibro', zh: '移出相册' },
-  pbAddedN: { en: v => `📖 ${v.n} added to the photobook`, fr: v => `📖 ${v.n} ajoutée${v.n!==1?'s':''} à l'album photo`, de: v => `📖 ${v.n} zum Fotobuch hinzugefügt`, es: v => `📖 ${v.n} añadida${v.n!==1?'s':''} al fotolibro`, zh: v => `📖 已将 ${v.n} 张加入相册` },
-  pbRemovedN: { en: v => `📖 ${v.n} taken out of the photobook (still in the trip)`, fr: v => `📖 ${v.n} retirée${v.n!==1?'s':''} de l'album photo (toujours dans le voyage)`, de: v => `📖 ${v.n} aus dem Fotobuch genommen (noch in der Reise)`, es: v => `📖 ${v.n} fuera del fotolibro (sigue en el viaje)`, zh: v => `📖 已将 ${v.n} 张移出相册(仍在旅行中)` },
-  pbNoMedia: { en: 'This trip has no photos yet', fr: "Ce voyage n'a pas encore de photos", de: 'Diese Reise hat noch keine Fotos', es: 'Este viaje aún no tiene fotos', zh: '这趟旅行还没有照片' },
-  pbFinding: { en: 'Finding similar shots…', fr: 'Recherche des photos similaires…', de: 'Ähnliche Aufnahmen werden gesucht…', es: 'Buscando fotos parecidas…', zh: '正在查找相似照片…' },
-  pbAnalyzing: { en: v => `Looking at photos ${v.done} / ${v.total}`, fr: v => `Analyse des photos ${v.done} / ${v.total}`, de: v => `Fotos werden angesehen ${v.done} / ${v.total}`, es: v => `Mirando fotos ${v.done} / ${v.total}`, zh: v => `正在查看照片 ${v.done} / ${v.total}` },
-  pbWaiting: { en: v => `Getting the next photos ready… ${v.done} / ${v.total}`, fr: v => `Préparation des photos suivantes… ${v.done} / ${v.total}`, de: v => `Die nächsten Fotos werden vorbereitet… ${v.done} / ${v.total}`, es: v => `Preparando las siguientes fotos… ${v.done} / ${v.total}`, zh: v => `正在准备接下来的照片… ${v.done} / ${v.total}` },
-  pbGoalCount: { en: v => `${v.kept} / ${v.goal} photos`, fr: v => `${v.kept} / ${v.goal} photos`, de: v => `${v.kept} / ${v.goal} Fotos`, es: v => `${v.kept} / ${v.goal} fotos`, zh: v => `${v.kept} / ${v.goal} 张` },
-  pbGoalEditTitle: { en: 'Your goal for this book. Click to change it, going over is fine.', fr: "Votre objectif pour cet album. Cliquez pour le changer, le dépasser n'est pas grave.", de: 'Ihr Ziel für dieses Buch. Klicken zum Ändern, mehr ist auch in Ordnung.', es: 'Tu objetivo para este libro. Haz clic para cambiarlo, pasarse no pasa nada.', zh: '这本相册的目标。点击修改,超出也没关系。' },
-  pbTabPick: { en: 'Pick', fr: 'Trier', de: 'Auswählen', es: 'Elegir', zh: '挑选' },
-  pbTabGroups: { en: 'Similar shots', fr: 'Photos similaires', de: 'Ähnliche Aufnahmen', es: 'Fotos parecidas', zh: '相似照片' },
-  pbUndo: { en: 'Undo', fr: 'Annuler', de: 'Rückgängig', es: 'Deshacer', zh: '撤销' },
-  pbUndoTitle: { en: 'Undo the last pick (Backspace or Ctrl+Z)', fr: 'Annuler le dernier choix (Retour arrière ou Ctrl+Z)', de: 'Letzte Wahl rückgängig machen (Rücktaste oder Strg+Z)', es: 'Deshacer la última elección (Retroceso o Ctrl+Z)', zh: '撤销上一次选择(退格键或 Ctrl+Z)' },
-  pbClose: { en: 'Close', fr: 'Fermer', de: 'Schließen', es: 'Cerrar', zh: '关闭' },
-  pbDuelHint: { en: 'Which one is better? Click it, or use the arrow keys.', fr: 'Laquelle est la meilleure ? Cliquez dessus, ou utilisez les flèches.', de: 'Welches ist besser? Klicken Sie darauf oder nutzen Sie die Pfeiltasten.', es: '¿Cuál es mejor? Haz clic en ella o usa las flechas.', zh: '哪张更好?点击它,或使用方向键。' },
-  pbSingleHint: { en: 'Keep this one for the photobook?', fr: "Garder celle-ci pour l'album photo ?", de: 'Dieses Foto ins Fotobuch nehmen?', es: '¿Guardar esta para el fotolibro?', zh: '把这张留在相册里吗?' },
-  pbGroupProgress: { en: v => `Similar shots ${v.n} of ${v.total}`, fr: v => `Photos similaires ${v.n} sur ${v.total}`, de: v => `Ähnliche Aufnahmen ${v.n} von ${v.total}`, es: v => `Fotos parecidas ${v.n} de ${v.total}`, zh: v => `相似照片 第 ${v.n} / ${v.total} 张` },
-  pbSingleShot: { en: 'A single shot', fr: 'Une photo unique', de: 'Eine einzelne Aufnahme', es: 'Una foto única', zh: '单张照片' },
-  pbVs: { en: 'VS', fr: 'VS', de: 'VS', es: 'VS', zh: 'VS' },
-  pbLeftBetter: { en: 'Left one', fr: 'Celle de gauche', de: 'Das linke', es: 'La de la izquierda', zh: '左边这张' },
-  pbRightBetter: { en: 'Right one', fr: 'Celle de droite', de: 'Das rechte', es: 'La de la derecha', zh: '右边这张' },
-  pbKeepBoth: { en: 'Keep both', fr: 'Garder les deux', de: 'Beide behalten', es: 'Quedarme con las dos', zh: '两张都留' },
-  pbKeepBothTitle: { en: 'Both go in the photobook (arrow down)', fr: "Les deux vont dans l'album photo (flèche bas)", de: 'Beide kommen ins Fotobuch (Pfeil nach unten)', es: 'Las dos van al fotolibro (flecha abajo)', zh: '两张都放进相册(下方向键)' },
-  pbLater: { en: 'Decide later', fr: 'Décider plus tard', de: 'Später entscheiden', es: 'Decidir más tarde', zh: '稍后决定' },
-  pbSkip: { en: 'Skip', fr: 'Passer', de: 'Überspringen', es: 'Saltar', zh: '跳过' },
-  pbKeep: { en: 'Keep', fr: 'Garder', de: 'Behalten', es: 'Guardar', zh: '保留' },
-  pbTrovesPick: { en: "Trove's pick", fr: 'Le choix de Trove', de: 'Troves Wahl', es: 'La elección de Trove', zh: 'Trove 推荐' },
-  pbPickWhySharper: { en: 'This one looks a little sharper. Just a hint, you decide.', fr: "Celle-ci semble un peu plus nette. Ce n'est qu'une suggestion, c'est vous qui décidez.", de: 'Dieses wirkt etwas schärfer. Nur ein Hinweis, Sie entscheiden.', es: 'Esta parece un poco más nítida. Solo es una pista, tú decides.', zh: '这张看起来稍微清晰一点。只是建议,由你决定。' },
-  pbPickWhyFaces: { en: 'Faces look a little better here (eyes open, facing the camera). Just a hint, you decide.', fr: "Les visages semblent un peu mieux ici (yeux ouverts, face à l'objectif). Ce n'est qu'une suggestion, c'est vous qui décidez.", de: 'Die Gesichter wirken hier etwas besser (Augen offen, zur Kamera gewandt). Nur ein Hinweis, Sie entscheiden.', es: 'Las caras se ven un poco mejor aquí (ojos abiertos, mirando a la cámara). Solo es una pista, tú decides.', zh: '这张的人脸看起来稍好一些(睁眼、面向镜头)。只是建议,由你决定。' },
-  pbDoneTitle: { en: 'Your photobook is ready!', fr: 'Votre album photo est prêt !', de: 'Ihr Fotobuch ist fertig!', es: '¡Tu fotolibro está listo!', zh: '你的相册完成了!' },
-  pbDoneBody: { en: v => `${v.kept} photos kept out of ${v.n}. The rest stay in the trip, just further down. Nothing was deleted.`, fr: v => `${v.kept} photos gardées sur ${v.n}. Les autres restent dans le voyage, simplement plus bas. Rien n'a été supprimé.`, de: v => `${v.kept} von ${v.n} Fotos behalten. Der Rest bleibt in der Reise, nur weiter unten. Nichts wurde gelöscht.`, es: v => `${v.kept} fotos guardadas de ${v.n}. El resto sigue en el viaje, solo más abajo. No se ha borrado nada.`, zh: v => `从 ${v.n} 张中留下了 ${v.kept} 张。其余的仍在旅行中,只是排在下面。没有删除任何照片。` },
-  pbDoneLater: { en: v => `${v.n} group${v.n!==1?'s':''} left for later.`, fr: v => `${v.n} groupe${v.n!==1?'s':''} laissé${v.n!==1?'s':''} pour plus tard.`, de: v => `${v.n} Gruppe${v.n!==1?'n':''} für später aufgehoben.`, es: v => `${v.n} grupo${v.n!==1?'s':''} para más tarde.`, zh: v => `还有 ${v.n} 组留待稍后。` },
-  pbDoneBackToLater: { en: 'Back to the ones I left', fr: "Revenir à celles que j'ai laissées", de: 'Zurück zu den übersprungenen', es: 'Volver a las que dejé', zh: '回到留待稍后的照片' },
-  pbBackToTrip: { en: 'Back to the trip', fr: 'Retour au voyage', de: 'Zurück zur Reise', es: 'Volver al viaje', zh: '返回旅行' },
-  pbGroupsTitle: { en: v => `${v.n} group${v.n!==1?'s':''} of similar shots`, fr: v => `${v.n} groupe${v.n!==1?'s':''} de photos similaires`, de: v => `${v.n} Gruppe${v.n!==1?'n':''} ähnlicher Aufnahmen`, es: v => `${v.n} grupo${v.n!==1?'s':''} de fotos parecidas`, zh: v => `${v.n} 组相似照片` },
-  pbGroupsSub: { en: v => `${v.inGroups} photos in groups, ${v.singles} single shots. Shots group together when taken close in time and nearly identical.`, fr: v => `${v.inGroups} photos dans des groupes, ${v.singles} photos uniques. Les photos sont groupées quand elles sont prises à peu d'intervalle et presque identiques.`, de: v => `${v.inGroups} Fotos in Gruppen, ${v.singles} Einzelaufnahmen. Aufnahmen werden gruppiert, wenn sie kurz nacheinander entstanden und fast gleich sind.`, es: v => `${v.inGroups} fotos en grupos, ${v.singles} fotos únicas. Se agrupan cuando se hicieron casi a la vez y son casi idénticas.`, zh: v => `${v.inGroups} 张在组中,${v.singles} 张单独照片。拍摄时间接近且几乎相同的照片会被分为一组。` },
-  pbGroupMeta: { en: v => `${v.n} shots over ${v.span}`, fr: v => `${v.n} photos en ${v.span}`, de: v => `${v.n} Aufnahmen in ${v.span}`, es: v => `${v.n} fotos en ${v.span}`, zh: v => `${v.span} 内拍了 ${v.n} 张` },
-  pbSeconds: { en: v => `${v.n}s`, fr: v => `${v.n} s`, de: v => `${v.n} s`, es: v => `${v.n} s`, zh: v => `${v.n} 秒` },
-  pbMinutes: { en: v => `${v.n} min`, fr: v => `${v.n} min`, de: v => `${v.n} Min.`, es: v => `${v.n} min`, zh: v => `${v.n} 分钟` },
-  pbPickThisGroup: { en: 'Pick in this group', fr: 'Trier ce groupe', de: 'In dieser Gruppe auswählen', es: 'Elegir en este grupo', zh: '挑选这一组' },
-  pbPickAgain: { en: 'Pick again', fr: 'Trier à nouveau', de: 'Neu auswählen', es: 'Volver a elegir', zh: '重新挑选' },
-  pbNoGroups: { en: 'No near-identical shots found in this trip.', fr: 'Aucune photo presque identique dans ce voyage.', de: 'Keine fast gleichen Aufnahmen in dieser Reise gefunden.', es: 'No hay fotos casi idénticas en este viaje.', zh: '这趟旅行中没有找到几乎相同的照片。' },
-  pbStrictnessTitle: { en: 'How alike shots must be to be grouped', fr: 'À quel point les photos doivent se ressembler pour être groupées', de: 'Wie ähnlich Aufnahmen sein müssen, um gruppiert zu werden', es: 'Cuánto deben parecerse las fotos para agruparse', zh: '照片需要多相似才会被分为一组' },
-  pbLooser: { en: 'Looser', fr: 'Plus large', de: 'Lockerer', es: 'Más amplio', zh: '宽松' },
-  pbNormal: { en: 'Normal', fr: 'Normal', de: 'Normal', es: 'Normal', zh: '标准' },
-  pbTighter: { en: 'Tighter', fr: 'Plus strict', de: 'Strenger', es: 'Más estricto', zh: '严格' },
-  frFirstDuelBody: { en: v => `Got ten shots of the same view? Let's pick the best ones from <strong>${v.name}</strong>, two at a time.`, fr: v => `Dix photos de la même vue ? Choisissons les meilleures de <strong>${v.name}</strong>, deux par deux.`, de: v => `Zehn Fotos vom selben Motiv? Wählen wir die besten aus <strong>${v.name}</strong>, immer zwei auf einmal.`, es: v => `¿Diez fotos de la misma vista? Elijamos las mejores de <strong>${v.name}</strong>, de dos en dos.`, zh: v => `同一个景拍了十张?我们两两对比,从 <strong>${v.name}</strong> 中挑出最好的。` },
-  frFirstDuelBtn: { en: '⚔️ Pick my best shots', fr: '⚔️ Choisir mes meilleures photos', de: '⚔️ Meine besten Fotos auswählen', es: '⚔️ Elegir mis mejores fotos', zh: '⚔️ 挑选我的最佳照片' },
 
-  // Photobook presentation (presentation.js)
-  prEmpty: { en: '📖 Keep a few photos in the photobook first', fr: "📖 Gardez d'abord quelques photos dans l'album photo", de: '📖 Nehmen Sie zuerst ein paar Fotos ins Fotobuch', es: '📖 Primero guarda algunas fotos en el fotolibro', zh: '📖 请先在相册中保留几张照片' },
-  prPreparing: { en: 'Laying out your photobook…', fr: 'Mise en page de votre album photo…', de: 'Ihr Fotobuch wird gestaltet…', es: 'Maquetando tu fotolibro…', zh: '正在排版你的相册…' },
-  prLookBook: { en: '📖 Book', fr: '📖 Livre', de: '📖 Buch', es: '📖 Libro', zh: '📖 书本' },
-  prLookSlides: { en: '🖥 Slideshow', fr: '🖥 Diaporama', de: '🖥 Diashow', es: '🖥 Diapositivas', zh: '🖥 幻灯片' },
-  prArrange: { en: '✋ Arrange', fr: '✋ Arranger', de: '✋ Anordnen', es: '✋ Ordenar', zh: '✋ 调整' },
-  prArrangeHint: { en: 'Click a photo, then another, to swap them. ◀ ▶ move a whole page.', fr: 'Cliquez sur une photo puis une autre pour les échanger. ◀ ▶ déplacent une page entière.', de: 'Klicken Sie ein Foto und dann ein anderes an, um sie zu tauschen. ◀ ▶ verschieben eine ganze Seite.', es: 'Haz clic en una foto y luego en otra para intercambiarlas. ◀ ▶ mueven una página entera.', zh: '先点一张照片,再点另一张即可互换。◀ ▶ 移动整页。' },
-  prShuffle: { en: 'Shuffle', fr: 'Mélanger', de: 'Mischen', es: 'Barajar', zh: '换个排版' },
-  prShuffleTitle: { en: 'Try a different layout (photos stay in date order)', fr: "Essayer une autre mise en page (les photos restent dans l'ordre des dates)", de: 'Ein anderes Layout ausprobieren (Fotos bleiben in Datumsreihenfolge)', es: 'Probar otra maquetación (las fotos siguen en orden de fecha)', zh: '换一种排版(照片仍按日期排序)' },
-  prFullscreen: { en: 'Full screen', fr: 'Plein écran', de: 'Vollbild', es: 'Pantalla completa', zh: '全屏' },
-  prEditHint: { en: 'Click to edit', fr: 'Cliquez pour modifier', de: 'Zum Bearbeiten klicken', es: 'Haz clic para editar', zh: '点击编辑' },
-  prPageN: { en: v => `Page ${v.n}`, fr: v => `Page ${v.n}`, de: v => `Seite ${v.n}`, es: v => `Página ${v.n}`, zh: v => `第 ${v.n} 页` },
-  prMapTitle: { en: 'Where we went', fr: 'Où nous sommes allés', de: 'Wo wir waren', es: 'Dónde estuvimos', zh: '我们去过的地方' },
-  prStatsTitle: { en: 'The trip in numbers', fr: 'Le voyage en chiffres', de: 'Die Reise in Zahlen', es: 'El viaje en cifras', zh: '旅行数据' },
-  prStatDays: { en: v => v.n === 1 ? 'day' : 'days', fr: v => v.n === 1 ? 'jour' : 'jours', de: v => v.n === 1 ? 'Tag' : 'Tage', es: v => v.n === 1 ? 'día' : 'días', zh: () => '天' },
-  prStatPlaces: { en: v => v.n === 1 ? 'place' : 'places', fr: v => v.n === 1 ? 'lieu' : 'lieux', de: v => v.n === 1 ? 'Ort' : 'Orte', es: v => v.n === 1 ? 'lugar' : 'lugares', zh: () => '个地点' },
-  prStatTaken: { en: () => 'photos and videos taken', fr: () => 'photos et vidéos prises', de: () => 'Fotos und Videos aufgenommen', es: () => 'fotos y vídeos tomados', zh: () => '张照片和视频' },
-  prStatKept: { en: () => 'kept for this book', fr: () => 'gardées pour cet album', de: () => 'für dieses Buch behalten', es: () => 'guardados para este libro', zh: () => '张收入本相册' },
-  prTheEnd: { en: 'The end', fr: 'Fin', de: 'Ende', es: 'Fin', zh: '完' },
-  prExport: { en: 'Export', fr: 'Exporter', de: 'Exportieren', es: 'Exportar', zh: '导出' },
-  prExportPdf: { en: 'PDF', fr: 'PDF', de: 'PDF', es: 'PDF', zh: 'PDF' },
-  prExportPdfSub: { en: 'To keep, share or print yourself', fr: 'Pour garder, partager ou imprimer vous-même', de: 'Zum Behalten, Teilen oder selbst Drucken', es: 'Para guardar, compartir o imprimir tú mismo', zh: '用于保存、分享或自行打印' },
-  prExportHtml: { en: 'Web page', fr: 'Page web', de: 'Webseite', es: 'Página web', zh: '网页' },
-  prExportHtmlSub: { en: 'One file that opens in any browser, offline', fr: "Un seul fichier qui s'ouvre dans n'importe quel navigateur, hors ligne", de: 'Eine Datei, die in jedem Browser offline öffnet', es: 'Un solo archivo que se abre en cualquier navegador, sin conexión', zh: '单个文件,可在任意浏览器离线打开' },
-  prExportComplete: { en: 'Complete export', fr: 'Export complet', de: 'Vollständiger Export', es: 'Exportación completa', zh: '完整导出' },
-  prExportCompleteSub: { en: 'A folder with the web page, the PDF and the videos', fr: 'Un dossier avec la page web, le PDF et les vidéos', de: 'Ein Ordner mit Webseite, PDF und den Videos', es: 'Una carpeta con la página web, el PDF y los vídeos', zh: '一个包含网页、PDF 和视频的文件夹' },
-  prExportVideoNote: { en: 'Videos play in the web page of the complete export. In a PDF they show as a still that links to the video, but many PDF readers block those links, and a PDF on its own only links to the videos on this computer.', fr: "Les vidéos se lisent dans la page web de l'export complet. Dans un PDF, elles apparaissent comme une image liée à la vidéo, mais beaucoup de lecteurs PDF bloquent ces liens, et un PDF seul ne pointe que vers les vidéos de cet ordinateur.", de: 'Videos laufen in der Webseite des vollständigen Exports. Im PDF erscheinen sie als Standbild mit Link zum Video, aber viele PDF-Reader blockieren solche Links, und ein einzelnes PDF verweist nur auf die Videos auf diesem Computer.', es: 'Los vídeos se reproducen en la página web de la exportación completa. En un PDF aparecen como una imagen enlazada al vídeo, pero muchos lectores de PDF bloquean esos enlaces, y un PDF suelto solo enlaza a los vídeos de este ordenador.', zh: '视频可在完整导出的网页中播放。在 PDF 中,视频显示为链接到视频的静态画面,但许多 PDF 阅读器会阻止这类链接,而且单独的 PDF 只能链接到这台电脑上的视频。' },
-  prVideoInComplete: { en: '▶ Video in the complete export', fr: "▶ Vidéo dans l'export complet", de: '▶ Video im vollständigen Export', es: '▶ Vídeo en la exportación completa', zh: '▶ 视频见完整导出' },
-  prExportPreparing: { en: v => `Preparing photos ${v.done} / ${v.total}…`, fr: v => `Préparation des photos ${v.done} / ${v.total}…`, de: v => `Fotos werden vorbereitet ${v.done} / ${v.total}…`, es: v => `Preparando fotos ${v.done} / ${v.total}…`, zh: v => `正在准备照片 ${v.done} / ${v.total}…` },
-  prExportSaving: { en: 'Choose where to save it…', fr: "Choisissez où l'enregistrer…", de: 'Wählen Sie den Speicherort…', es: 'Elige dónde guardarlo…', zh: '请选择保存位置…' },
-  prExportDone: { en: '📖 Photobook exported', fr: '📖 Album photo exporté', de: '📖 Fotobuch exportiert', es: '📖 Fotolibro exportado', zh: '📖 相册已导出' },
-  prExportDoneSkipped: { en: v => `📖 Photobook exported, ${v.n} video${v.n!==1?'s':''} could not be copied`, fr: v => v.n !== 1 ? `📖 Album photo exporté, ${v.n} vidéos n'ont pas pu être copiées` : `📖 Album photo exporté, 1 vidéo n'a pas pu être copiée`, de: v => `📖 Fotobuch exportiert, ${v.n} Video${v.n!==1?'s':''} konnte${v.n!==1?'n':''} nicht kopiert werden`, es: v => `📖 Fotolibro exportado, no se ${v.n!==1?'pudieron':'pudo'} copiar ${v.n} vídeo${v.n!==1?'s':''}`, zh: v => `📖 相册已导出,有 ${v.n} 个视频无法复制` },
-  prExportFailed: { en: 'The export could not be saved', fr: "L'export n'a pas pu être enregistré", de: 'Der Export konnte nicht gespeichert werden', es: 'No se pudo guardar la exportación', zh: '导出无法保存' },
 
   // XP, levels and badges (rewards.js)
   rwRank_tourist: { en: 'Tourist', fr: 'Touriste', de: 'Tourist', es: 'Turista', zh: '游客' },
@@ -706,8 +613,6 @@ const I18N = {
   rwLevelUpSub: { en: v => `Still a ${v.rank}, and getting better at it.`, fr: v => `Toujours ${v.rank}, et de mieux en mieux.`, de: v => `Immer noch ${v.rank}, und immer besser darin.`, es: v => `Sigues siendo ${v.rank}, y cada vez mejor.`, zh: v => `仍是${v.rank},而且越来越熟练了。` },
   rwNewRank: { en: 'New rank!', fr: 'Nouveau rang !', de: 'Neuer Rang!', es: '¡Nuevo rango!', zh: '新等级!' },
   rwBadgeUnlocked: { en: 'Badge unlocked', fr: 'Badge débloqué', de: 'Abzeichen freigeschaltet', es: 'Insignia desbloqueada', zh: '解锁徽章' },
-  rwBookDoneKicker: { en: 'Photobook finished!', fr: 'Album photo terminé !', de: 'Fotobuch fertig!', es: '¡Fotolibro terminado!', zh: '相册完成了!' },
-  rwBookDoneSub: { en: v => `+${v.xp} XP · you're level ${v.level}`, fr: v => `+${v.xp} XP · vous êtes au niveau ${v.level}`, de: v => `+${v.xp} XP · Sie sind auf Stufe ${v.level}`, es: v => `+${v.xp} XP · estás en el nivel ${v.level}`, zh: v => `+${v.xp} XP · 你现在是第 ${v.level} 级` },
   rwChipTitle: { en: v => `${v.xp} XP · ${v.next} to the next level. Click to see your journey.`, fr: v => `${v.xp} XP · encore ${v.next} pour le niveau suivant. Cliquez pour voir votre parcours.`, de: v => `${v.xp} XP · noch ${v.next} bis zur nächsten Stufe. Klicken für Ihre Reise.`, es: v => `${v.xp} XP · faltan ${v.next} para el siguiente nivel. Haz clic para ver tu viaje.`, zh: v => `${v.xp} XP · 距下一级还差 ${v.next}。点击查看你的旅程。` },
   rwMute: { en: 'Mute sounds', fr: 'Couper les sons', de: 'Töne aus', es: 'Silenciar sonidos', zh: '静音' },
   rwUnmute: { en: 'Turn sounds on', fr: 'Activer les sons', de: 'Töne an', es: 'Activar sonidos', zh: '开启声音' },
@@ -715,28 +620,11 @@ const I18N = {
   rwToNext: { en: v => `${v.xp} XP · ${v.next} more to level ${v.level}`, fr: v => `${v.xp} XP · encore ${v.next} pour le niveau ${v.level}`, de: v => `${v.xp} XP · noch ${v.next} bis Stufe ${v.level}`, es: v => `${v.xp} XP · faltan ${v.next} para el nivel ${v.level}`, zh: v => `${v.xp} XP · 距第 ${v.level} 级还差 ${v.next}` },
   rwNextRank: { en: v => `${v.rank} at level ${v.level}`, fr: v => `${v.rank} au niveau ${v.level}`, de: v => `${v.rank} ab Stufe ${v.level}`, es: v => `${v.rank} en el nivel ${v.level}`, zh: v => `第 ${v.level} 级成为${v.rank}` },
   rwWaysTitle: { en: 'How to earn XP', fr: 'Comment gagner des XP', de: 'So sammeln Sie XP', es: 'Cómo ganar XP', zh: '如何获得 XP' },
-  rwWayDuel: { en: 'Decide a duel', fr: 'Trancher un duel', de: 'Ein Duell entscheiden', es: 'Decidir un duelo', zh: '完成一次对决' },
-  rwWaySingle: { en: 'Keep or skip a single shot', fr: 'Garder ou passer une photo unique', de: 'Einzelaufnahme behalten oder überspringen', es: 'Guardar o saltar una foto única', zh: '保留或跳过单张照片' },
-  rwWayKept: { en: 'A photo goes into a photobook', fr: 'Une photo entre dans un album', de: 'Ein Foto kommt ins Fotobuch', es: 'Una foto entra en un fotolibro', zh: '照片加入相册' },
   rwWayDup: { en: 'Clear a duplicate', fr: 'Supprimer un doublon', de: 'Ein Duplikat entfernen', es: 'Eliminar un duplicado', zh: '清除一个重复项' },
   rwWayPerson: { en: 'Name a new person', fr: 'Nommer une nouvelle personne', de: 'Eine neue Person benennen', es: 'Poner nombre a una persona nueva', zh: '为新人物命名' },
-  rwWayBook: { en: 'Finish a trip\'s photobook', fr: 'Terminer l\'album d\'un voyage', de: 'Das Fotobuch einer Reise fertigstellen', es: 'Terminar el fotolibro de un viaje', zh: '完成一趟旅行的相册' },
   rwBadgesTitle: { en: v => `Badges (${v.n} / ${v.total})`, fr: v => `Badges (${v.n} / ${v.total})`, de: v => `Abzeichen (${v.n} / ${v.total})`, es: v => `Insignias (${v.n} / ${v.total})`, zh: v => `徽章(${v.n} / ${v.total})` },
-  rwStats: { en: v => `${v.duels} duels decided · ${v.kept} photos kept · ${v.dups} duplicates cleared · ${v.books} photobooks finished`, fr: v => `${v.duels} duels tranchés · ${v.kept} photos gardées · ${v.dups} doublons supprimés · ${v.books} albums terminés`, de: v => `${v.duels} Duelle entschieden · ${v.kept} Fotos behalten · ${v.dups} Duplikate entfernt · ${v.books} Fotobücher fertig`, es: v => `${v.duels} duelos decididos · ${v.kept} fotos guardadas · ${v.dups} duplicados eliminados · ${v.books} fotolibros terminados`, zh: v => `完成 ${v.duels} 次对决 · 保留 ${v.kept} 张照片 · 清除 ${v.dups} 个重复项 · 完成 ${v.books} 本相册` },
   rwSettingSounds: { en: 'Sounds', fr: 'Sons', de: 'Töne', es: 'Sonidos', zh: '声音' },
   rwSettingSoundsHint: { en: 'Soft pops and chimes when you pick photos, level up or earn a badge. Never while Trove is in the background.', fr: 'Petits sons doux quand vous choisissez des photos, montez de niveau ou gagnez un badge. Jamais quand Trove est en arrière-plan.', de: 'Sanfte Töne beim Auswählen von Fotos, Aufsteigen oder neuen Abzeichen. Nie, wenn Trove im Hintergrund ist.', es: 'Sonidos suaves al elegir fotos, subir de nivel o ganar una insignia. Nunca con Trove en segundo plano.', zh: '挑选照片、升级或获得徽章时播放轻柔的提示音。Trove 在后台时不会播放。' },
-  rwBadge_firstPick: { en: 'First pick', fr: 'Premier choix', de: 'Erste Wahl', es: 'Primera elección', zh: '初次挑选' },
-  rwBadgeHow_firstPick: { en: 'Decide your first duel', fr: 'Tranchez votre premier duel', de: 'Entscheiden Sie Ihr erstes Duell', es: 'Decide tu primer duelo', zh: '完成第一次对决' },
-  rwBadge_sharpEye: { en: 'Sharp eye', fr: 'Œil affûté', de: 'Scharfes Auge', es: 'Buen ojo', zh: '火眼金睛' },
-  rwBadgeHow_sharpEye: { en: 'Decide 100 duels', fr: 'Tranchez 100 duels', de: 'Entscheiden Sie 100 Duelle', es: 'Decide 100 duelos', zh: '完成 100 次对决' },
-  rwBadge_picky: { en: 'Picky', fr: 'Difficile', de: 'Wählerisch', es: 'Exigente', zh: '挑剔达人' },
-  rwBadgeHow_picky: { en: 'Decide 1,000 duels', fr: 'Tranchez 1 000 duels', de: 'Entscheiden Sie 1.000 Duelle', es: 'Decide 1.000 duelos', zh: '完成 1000 次对决' },
-  rwBadge_firstBook: { en: 'First trip done', fr: 'Premier voyage terminé', de: 'Erste Reise fertig', es: 'Primer viaje terminado', zh: '首趟旅行完成' },
-  rwBadgeHow_firstBook: { en: 'Finish a trip\'s photobook', fr: 'Terminez l\'album d\'un voyage', de: 'Stellen Sie das Fotobuch einer Reise fertig', es: 'Termina el fotolibro de un viaje', zh: '完成一趟旅行的相册' },
-  rwBadge_bookshelf: { en: 'Bookshelf', fr: 'Bibliothèque', de: 'Bücherregal', es: 'Estantería', zh: '书架' },
-  rwBadgeHow_bookshelf: { en: 'Finish 5 photobooks', fr: 'Terminez 5 albums photo', de: 'Stellen Sie 5 Fotobücher fertig', es: 'Termina 5 fotolibros', zh: '完成 5 本相册' },
-  rwBadge_curator: { en: 'Curator', fr: 'Conservateur', de: 'Kurator', es: 'Comisario', zh: '策展人' },
-  rwBadgeHow_curator: { en: 'Keep 250 photos in photobooks', fr: 'Gardez 250 photos dans vos albums', de: 'Behalten Sie 250 Fotos in Fotobüchern', es: 'Guarda 250 fotos en fotolibros', zh: '在相册中保留 250 张照片' },
   rwBadge_firstSweep: { en: 'Spring cleaning', fr: 'Grand ménage', de: 'Frühjahrsputz', es: 'Limpieza a fondo', zh: '大扫除' },
   rwBadgeHow_firstSweep: { en: 'Clear your first duplicate', fr: 'Supprimez votre premier doublon', de: 'Entfernen Sie Ihr erstes Duplikat', es: 'Elimina tu primer duplicado', zh: '清除第一个重复项' },
   rwBadge_cleanSweep: { en: 'Clean sweep', fr: 'Table rase', de: 'Reiner Tisch', es: 'Barrido total', zh: '一扫而空' },
@@ -760,7 +648,79 @@ const I18N = {
   // Photo preview: dragging the file out
   popupZoomHint: { en: '🔍 Scroll to zoom · Drag the photo out to another app · Zoomed in, drag to pan', fr: "🔍 Molette pour zoomer · Glissez la photo vers une autre application · En zoom, glissez pour vous déplacer", de: '🔍 Scrollen zum Zoomen · Foto in eine andere App ziehen · Gezoomt: ziehen zum Verschieben', es: '🔍 Rueda para hacer zoom · Arrastra la foto a otra aplicación · Con zoom, arrastra para moverte', zh: '🔍 滚动缩放 · 将照片拖到其他应用 · 放大后拖动可平移' },
   popupDragFile: { en: 'Drag file', fr: 'Glisser le fichier', de: 'Datei ziehen', es: 'Arrastrar archivo', zh: '拖出文件' },
-  popupDragTitle: { en: 'Drag this file into another app, an email or a folder, without closing the preview. You can also drag the photo itself.', fr: "Faites glisser ce fichier vers une autre application, un e-mail ou un dossier, sans fermer l'aperçu. Vous pouvez aussi faire glisser la photo elle-même.", de: 'Ziehen Sie diese Datei in eine andere App, eine E-Mail oder einen Ordner, ohne die Vorschau zu schließen. Sie können auch das Foto selbst ziehen.', es: 'Arrastra este archivo a otra aplicación, un correo o una carpeta sin cerrar la vista previa. También puedes arrastrar la propia foto.', zh: '无需关闭预览,即可将此文件拖到其他应用、邮件或文件夹中。也可以直接拖动照片本身。' }
+  popupDragTitle: { en: 'Drag this file into another app, an email or a folder, without closing the preview. You can also drag the photo itself.', fr: "Faites glisser ce fichier vers une autre application, un e-mail ou un dossier, sans fermer l'aperçu. Vous pouvez aussi faire glisser la photo elle-même.", de: 'Ziehen Sie diese Datei in eine andere App, eine E-Mail oder einen Ordner, ohne die Vorschau zu schließen. Sie können auch das Foto selbst ziehen.', es: 'Arrastra este archivo a otra aplicación, un correo o una carpeta sin cerrar la vista previa. También puedes arrastrar la propia foto.', zh: '无需关闭预览,即可将此文件拖到其他应用、邮件或文件夹中。也可以直接拖动照片本身。' },
+
+  // Flick through (flick.js)
+  flBannerLiked: { en: v => `${v.liked} liked of ${v.n} (${v.pct}%)`, fr: v => `${v.liked} coups de cœur sur ${v.n} (${v.pct} %)`, de: v => `${v.liked} von ${v.n} mit Gefällt mir (${v.pct} %)`, es: v => `${v.liked} de ${v.n} te gustan (${v.pct} %)`, zh: v => `${v.n} 个中喜欢 ${v.liked} 个(${v.pct}%)` },
+  flBannerResume: { en: v => `You stopped at ${v.i} / ${v.n}`, fr: v => `Vous vous êtes arrêté à ${v.i} / ${v.n}`, de: v => `Sie waren bei ${v.i} / ${v.n}`, es: v => `Te quedaste en ${v.i} / ${v.n}`, zh: v => `上次看到 ${v.i} / ${v.n}` },
+  flBannerHow: { en: 'Go through it one file at a time: scroll to move on, double-click what you love, swipe away the rest.', fr: "Parcourez-le fichier par fichier : faites défiler pour avancer, double-cliquez sur ce que vous aimez, balayez le reste.", de: 'Gehen Sie Datei für Datei durch: scrollen zum Weitergehen, Doppelklick auf das, was Sie lieben, den Rest wegwischen.', es: 'Recórrelo archivo a archivo: desplázate para avanzar, doble clic en lo que te encanta y desliza el resto.', zh: '一个一个地看:滚动前进,双击喜欢的,其余的滑走。' },
+  flStart: { en: 'Flick through', fr: 'Parcourir', de: 'Durchblättern', es: 'Recorrer', zh: '快速浏览' },
+  flContinue: { en: 'Continue', fr: 'Continuer', de: 'Weitermachen', es: 'Continuar', zh: '继续' },
+  flSelectLiked: { en: '❤ Select liked', fr: '❤ Sélectionner les coups de cœur', de: '❤ Gefällt mir auswählen', es: '❤ Seleccionar los que me gustan', zh: '❤ 选择喜欢的' },
+  flSelectedLiked: { en: v => `❤ ${v.n} liked files selected. Drag them into your photobook app or a folder.`, fr: v => `❤ ${v.n} coups de cœur sélectionnés. Faites-les glisser vers votre application d'album photo ou un dossier.`, de: v => `❤ ${v.n} Dateien mit Gefällt mir ausgewählt. Ziehen Sie sie in Ihre Fotobuch-App oder einen Ordner.`, es: v => `❤ ${v.n} archivos que te gustan seleccionados. Arrástralos a tu app de fotolibros o a una carpeta.`, zh: v => `❤ 已选择 ${v.n} 个喜欢的文件。可将它们拖到相册应用或文件夹中。` },
+  flEverythingElse: { en: 'Everything else', fr: 'Tout le reste', de: 'Alles andere', es: 'Todo lo demás', zh: '其余内容' },
+  flNothing: { en: 'Nothing to flick through here', fr: 'Rien à parcourir ici', de: 'Hier gibt es nichts durchzublättern', es: 'Aquí no hay nada que recorrer', zh: '这里没有可浏览的内容' },
+  flHint: { en: 'Scroll or ↓ next · ↑ back · Double-click or L to like · Swipe sideways or Delete for the Bin · Ctrl+Z undo · Esc close', fr: "Molette ou ↓ suivant · ↑ retour · Double-clic ou L pour aimer · Balayer sur le côté ou Suppr pour la Corbeille · Ctrl+Z annuler · Échap fermer", de: 'Scrollen oder ↓ weiter · ↑ zurück · Doppelklick oder L für Gefällt mir · Seitlich wischen oder Entf für den Papierkorb · Strg+Z rückgängig · Esc schließen', es: 'Rueda o ↓ siguiente · ↑ atrás · Doble clic o L para me gusta · Desliza a un lado o Supr para la Papelera · Ctrl+Z deshacer · Esc cerrar', zh: '滚动或 ↓ 下一个 · ↑ 返回 · 双击或 L 喜欢 · 侧滑或 Delete 放入回收站 · Ctrl+Z 撤销 · Esc 关闭' },
+  flResumed: { en: v => `Picking up where you stopped: ${v.i} / ${v.n} (Home to start over)`, fr: v => `Reprise là où vous vous étiez arrêté : ${v.i} / ${v.n} (Début pour recommencer)`, de: v => `Weiter, wo Sie aufgehört haben: ${v.i} / ${v.n} (Pos1 für den Anfang)`, es: v => `Sigues donde lo dejaste: ${v.i} / ${v.n} (Inicio para empezar de nuevo)`, zh: v => `从上次停下的地方继续:${v.i} / ${v.n}(按 Home 从头开始)` },
+  flToBin: { en: 'Bin', fr: 'Corbeille', de: 'Papierkorb', es: 'Papelera', zh: '回收站' },
+  flLikeTitle: { en: 'Like (double-click or L)', fr: "J'aime (double-clic ou L)", de: 'Gefällt mir (Doppelklick oder L)', es: 'Me gusta (doble clic o L)', zh: '喜欢(双击或 L)' },
+  flUndo: { en: 'Undo', fr: 'Annuler', de: 'Rückgängig', es: 'Deshacer', zh: '撤销' },
+  flUndoTitle: { en: 'Undo the last like or swipe (Ctrl+Z)', fr: "Annuler le dernier j'aime ou balayage (Ctrl+Z)", de: 'Letztes Gefällt mir oder Wischen rückgängig machen (Strg+Z)', es: 'Deshacer el último me gusta o deslizamiento (Ctrl+Z)', zh: '撤销上一次喜欢或滑动(Ctrl+Z)' },
+  flClose: { en: 'Close', fr: 'Fermer', de: 'Schließen', es: 'Cerrar', zh: '关闭' },
+  flDoneTitle: { en: v => `You went through all ${v.n}!`, fr: v => `Vous avez tout parcouru, les ${v.n} !`, de: v => `Sie haben alle ${v.n} durchgesehen!`, es: v => `¡Has recorrido los ${v.n}!`, zh: v => `全部 ${v.n} 个都看完了!` },
+  flDoneBody: { en: v => `${v.liked} liked (${v.pct}%). They now come first in this folder.`, fr: v => `${v.liked} coups de cœur (${v.pct} %). Ils apparaissent maintenant en premier dans ce dossier.`, de: v => `${v.liked} mit Gefällt mir (${v.pct} %). Sie stehen jetzt in diesem Ordner ganz oben.`, es: v => `${v.liked} te gustan (${v.pct} %). Ahora salen primero en esta carpeta.`, zh: v => `喜欢 ${v.liked} 个(${v.pct}%)。它们现在排在这个文件夹的最前面。` },
+  flDoneBinned: { en: v => `${v.n} went to the Bin, where they wait ${v.days} days.`, fr: v => `${v.n} sont partis dans la Corbeille, où ils attendent ${v.days} jours.`, de: v => `${v.n} sind im Papierkorb und warten dort ${v.days} Tage.`, es: v => `${v.n} han ido a la Papelera, donde esperan ${v.days} días.`, zh: v => `${v.n} 个已放入回收站,会在那里保留 ${v.days} 天。` },
+  flStartOver: { en: '↺ Start over', fr: '↺ Recommencer', de: '↺ Von vorn', es: '↺ Empezar de nuevo', zh: '↺ 从头开始' },
+  flOpenBin: { en: 'Open the Bin', fr: 'Ouvrir la Corbeille', de: 'Papierkorb öffnen', es: 'Abrir la Papelera', zh: '打开回收站' },
+  flBack: { en: 'Back to the folder', fr: 'Retour au dossier', de: 'Zurück zum Ordner', es: 'Volver a la carpeta', zh: '返回文件夹' },
+  frFirstFlickBody: { en: v => `Flick through <strong>${v.name}</strong>: scroll to move on, double-click what you love, swipe away the rest.`, fr: v => `Parcourez <strong>${v.name}</strong> : faites défiler pour avancer, double-cliquez sur ce que vous aimez, balayez le reste.`, de: v => `Blättern Sie durch <strong>${v.name}</strong>: scrollen zum Weitergehen, Doppelklick auf das, was Sie lieben, den Rest wegwischen.`, es: v => `Recorre <strong>${v.name}</strong>: desplázate para avanzar, doble clic en lo que te encanta y desliza el resto.`, zh: v => `快速浏览 <strong>${v.name}</strong>:滚动前进,双击喜欢的,其余的滑走。` },
+  frFirstFlickBtn: { en: '▶ Flick through my trip', fr: '▶ Parcourir mon voyage', de: '▶ Meine Reise durchblättern', es: '▶ Recorrer mi viaje', zh: '▶ 浏览我的旅行' },
+
+  // Bin (bin.js)
+  binTitle: { en: 'Bin', fr: 'Corbeille', de: 'Papierkorb', es: 'Papelera', zh: '回收站' },
+  binSidebarTitle: { en: 'Files you swiped away. They wait here 30 days before going to the Recycle Bin.', fr: 'Les fichiers que vous avez écartés. Ils attendent ici 30 jours avant de partir dans la Corbeille de votre ordinateur.', de: 'Dateien, die Sie weggewischt haben. Sie warten hier 30 Tage, bevor sie in den Papierkorb des Computers kommen.', es: 'Los archivos que has descartado. Esperan aquí 30 días antes de ir a la Papelera del ordenador.', zh: '你滑走的文件。它们会在这里保留 30 天,然后进入电脑的回收站。' },
+  binMoveTo: { en: 'Move to Bin', fr: 'Mettre dans la Corbeille', de: 'In den Papierkorb', es: 'Mover a la Papelera', zh: '移到回收站' },
+  binMovedN: { en: v => `🗑 ${v.n} moved to the Bin (30 days to change your mind)`, fr: v => `🗑 ${v.n} mis dans la Corbeille (30 jours pour changer d'avis)`, de: v => `🗑 ${v.n} in den Papierkorb verschoben (30 Tage Bedenkzeit)`, es: v => `🗑 ${v.n} a la Papelera (30 días para cambiar de opinión)`, zh: v => `🗑 已将 ${v.n} 个移到回收站(30 天内可以反悔)` },
+  binExplain: { en: v => `Files wait here ${v.days} days, then go to your computer's Recycle Bin. Until then they're untouched, and you can restore them.`, fr: v => `Les fichiers attendent ici ${v.days} jours, puis partent dans la Corbeille de votre ordinateur. D'ici là ils restent intacts et vous pouvez les restaurer.`, de: v => `Dateien warten hier ${v.days} Tage und kommen dann in den Papierkorb Ihres Computers. Bis dahin bleiben sie unberührt und lassen sich wiederherstellen.`, es: v => `Los archivos esperan aquí ${v.days} días y luego van a la Papelera del ordenador. Hasta entonces siguen intactos y puedes restaurarlos.`, zh: v => `文件会在这里保留 ${v.days} 天,然后进入电脑的回收站。在此之前文件不会被改动,可以随时恢复。` },
+  binExplainNoDelete: { en: v => `Deleting files from disk is turned off in Settings, so after ${v.days} days these simply leave Trove. The files themselves stay on your computer.`, fr: v => `La suppression de fichiers est désactivée dans les Paramètres : après ${v.days} jours, ils quittent simplement Trove. Les fichiers restent sur votre ordinateur.`, de: v => `Das Löschen von Dateien ist in den Einstellungen aus, daher verschwinden sie nach ${v.days} Tagen nur aus Trove. Die Dateien bleiben auf Ihrem Computer.`, es: v => `Borrar archivos está desactivado en Ajustes, así que tras ${v.days} días simplemente salen de Trove. Los archivos se quedan en tu ordenador.`, zh: v => `设置中已关闭从磁盘删除文件,因此 ${v.days} 天后它们只会从 Trove 中移除,文件本身仍保留在电脑上。` },
+  binRestoreSelected: { en: 'Restore selected', fr: 'Restaurer la sélection', de: 'Auswahl wiederherstellen', es: 'Restaurar selección', zh: '恢复所选' },
+  binDeleteSelected: { en: 'Delete selected now', fr: 'Supprimer la sélection maintenant', de: 'Auswahl jetzt löschen', es: 'Borrar selección ahora', zh: '立即删除所选' },
+  binEmpty: { en: 'Empty Bin', fr: 'Vider la Corbeille', de: 'Papierkorb leeren', es: 'Vaciar la Papelera', zh: '清空回收站' },
+  binEmptyState: { en: 'The Bin is empty', fr: 'La Corbeille est vide', de: 'Der Papierkorb ist leer', es: 'La Papelera está vacía', zh: '回收站是空的' },
+  binEmptyStateSub: { en: 'Swipe a file sideways in Flick through, or right-click it and Move to Bin.', fr: 'Balayez un fichier sur le côté dans Parcourir, ou faites un clic droit puis Mettre dans la Corbeille.', de: 'Wischen Sie eine Datei beim Durchblättern zur Seite, oder Rechtsklick und In den Papierkorb.', es: 'Desliza un archivo a un lado al recorrer, o clic derecho y Mover a la Papelera.', zh: '在快速浏览中把文件侧滑,或右键选择“移到回收站”。' },
+  binSelectFirst: { en: 'Select some files in the Bin first', fr: "Sélectionnez d'abord des fichiers dans la Corbeille", de: 'Wählen Sie zuerst Dateien im Papierkorb aus', es: 'Primero selecciona archivos en la Papelera', zh: '请先在回收站中选择文件' },
+  binRestoredN: { en: v => `↺ ${v.n} restored`, fr: v => `↺ ${v.n} restauré${v.n!==1?'s':''}`, de: v => `↺ ${v.n} wiederhergestellt`, es: v => `↺ ${v.n} restaurado${v.n!==1?'s':''}`, zh: v => `↺ 已恢复 ${v.n} 个` },
+  binForgetConfirm: { en: v => `Remove ${v.n} files from Trove? Deleting from disk is turned off, so the files themselves stay on your computer.`, fr: v => `Retirer ${v.n} fichiers de Trove ? La suppression est désactivée, les fichiers restent donc sur votre ordinateur.`, de: v => `${v.n} Dateien aus Trove entfernen? Löschen ist ausgeschaltet, die Dateien bleiben also auf Ihrem Computer.`, es: v => `¿Quitar ${v.n} archivos de Trove? Borrar está desactivado, así que los archivos se quedan en tu ordenador.`, zh: v => `要从 Trove 中移除 ${v.n} 个文件吗?已关闭删除功能,文件本身仍会保留在电脑上。` },
+  binDeleteTitle: { en: '🗑 Delete from your computer now?', fr: '🗑 Supprimer de votre ordinateur maintenant ?', de: '🗑 Jetzt vom Computer löschen?', es: '🗑 ¿Borrar del ordenador ahora?', zh: '🗑 立即从电脑中删除?' },
+  binDeleteSub: { en: 'No more waiting: these leave the Bin and the files themselves are deleted.', fr: "Sans attendre : ils quittent la Corbeille et les fichiers eux-mêmes sont supprimés.", de: 'Ohne zu warten: Sie verlassen den Papierkorb und die Dateien selbst werden gelöscht.', es: 'Sin esperar: salen de la Papelera y se borran los propios archivos.', zh: '不再等待:它们将离开回收站,文件本身也会被删除。' },
+  binDeleteBody: { en: v => `You are about to delete <strong style="color:var(--red)">${v.n} file${v.n!==1?'s':''}</strong> (${v.size}). They go to your computer's Recycle Bin unless you tick the box below.`, fr: v => `Vous allez supprimer <strong style="color:var(--red)">${v.n} fichier${v.n!==1?'s':''}</strong> (${v.size}). Ils vont dans la Corbeille de votre ordinateur, sauf si vous cochez la case ci-dessous.`, de: v => `Sie löschen gleich <strong style="color:var(--red)">${v.n} Datei${v.n!==1?'en':''}</strong> (${v.size}). Sie kommen in den Papierkorb des Computers, außer Sie setzen unten das Häkchen.`, es: v => `Vas a borrar <strong style="color:var(--red)">${v.n} archivo${v.n!==1?'s':''}</strong> (${v.size}). Irán a la Papelera del ordenador salvo que marques la casilla de abajo.`, zh: v => `即将删除 <strong style="color:var(--red)">${v.n} 个文件</strong>(${v.size})。除非勾选下方选项,否则它们会进入电脑的回收站。` },
+  binDeleteButton: { en: v => `🗑 Delete ${v.n}`, fr: v => `🗑 Supprimer ${v.n}`, de: v => `🗑 ${v.n} löschen`, es: v => `🗑 Borrar ${v.n}`, zh: v => `🗑 删除 ${v.n} 个` },
+  binDeleteFailed: { en: 'Deleting failed', fr: 'La suppression a échoué', de: 'Löschen fehlgeschlagen', es: 'No se pudo borrar', zh: '删除失败' },
+  binDeletedN: { en: v => `🗑 ${v.n} deleted (${v.size})`, fr: v => `🗑 ${v.n} supprimé${v.n!==1?'s':''} (${v.size})`, de: v => `🗑 ${v.n} gelöscht (${v.size})`, es: v => `🗑 ${v.n} borrado${v.n!==1?'s':''} (${v.size})`, zh: v => `🗑 已删除 ${v.n} 个(${v.size})` },
+  binUnreachable: { en: v => `${v.n} file${v.n!==1?'s are':' is'} on a drive that isn't connected, so they stay in the Bin for now.`, fr: v => `${v.n} fichier${v.n!==1?'s sont':' est'} sur un disque non connecté et reste${v.n!==1?'nt':''} dans la Corbeille pour l'instant.`, de: v => `${v.n} Datei${v.n!==1?'en liegen':' liegt'} auf einem nicht verbundenen Laufwerk und ${v.n!==1?'bleiben':'bleibt'} vorerst im Papierkorb.`, es: v => `${v.n} archivo${v.n!==1?'s están':' está'} en un disco no conectado y ${v.n!==1?'se quedan':'se queda'} en la Papelera por ahora.`, zh: v => `有 ${v.n} 个文件位于未连接的磁盘上,暂时留在回收站中。` },
+  binPurgedN: { en: v => `🗑 ${v.n} file${v.n!==1?'s':''} from Trove's Bin went to your computer's Recycle Bin (${v.days} days were up).`, fr: v => `🗑 ${v.n} fichier${v.n!==1?'s':''} de la Corbeille de Trove ${v.n!==1?'sont partis':'est parti'} dans celle de votre ordinateur (${v.days} jours écoulés).`, de: v => `🗑 ${v.n} Datei${v.n!==1?'en':''} aus dem Trove-Papierkorb ${v.n!==1?'sind':'ist'} im Papierkorb Ihres Computers (${v.days} Tage sind um).`, es: v => `🗑 ${v.n} archivo${v.n!==1?'s':''} de la Papelera de Trove ${v.n!==1?'han ido':'ha ido'} a la del ordenador (pasaron ${v.days} días).`, zh: v => `🗑 Trove 回收站中的 ${v.n} 个文件已满 ${v.days} 天,已移到电脑的回收站。` },
+  binDaysLeft: { en: v => `${v.n} day${v.n!==1?'s':''} left`, fr: v => `${v.n} jour${v.n!==1?'s':''} restant${v.n!==1?'s':''}`, de: v => `noch ${v.n} Tag${v.n!==1?'e':''}`, es: v => `quedan ${v.n} día${v.n!==1?'s':''}`, zh: v => `剩 ${v.n} 天` },
+
+  // XP (rewards.js), for Flick through
+  rwTripDoneKicker: { en: 'All the way through!', fr: "Jusqu'au bout !", de: 'Ganz durch!', es: '¡Hasta el final!', zh: '全部看完!' },
+  rwTripDoneSub: { en: v => `+${v.xp} XP · you're level ${v.level}`, fr: v => `+${v.xp} XP · vous êtes au niveau ${v.level}`, de: v => `+${v.xp} XP · Sie sind auf Stufe ${v.level}`, es: v => `+${v.xp} XP · estás en el nivel ${v.level}`, zh: v => `+${v.xp} XP · 你现在是第 ${v.level} 级` },
+  rwWaySeen: { en: 'Look at a file for the first time', fr: 'Regarder un fichier pour la première fois', de: 'Eine Datei zum ersten Mal ansehen', es: 'Ver un archivo por primera vez', zh: '第一次查看一个文件' },
+  rwWayLike: { en: 'Like a file', fr: 'Aimer un fichier', de: 'Eine Datei mit Gefällt mir markieren', es: 'Darle me gusta a un archivo', zh: '喜欢一个文件' },
+  rwWayBin: { en: 'Send a file to the Bin', fr: 'Mettre un fichier dans la Corbeille', de: 'Eine Datei in den Papierkorb legen', es: 'Mandar un archivo a la Papelera', zh: '把文件放入回收站' },
+  rwWayTrip: { en: 'Flick through a whole folder', fr: 'Parcourir tout un dossier', de: 'Einen ganzen Ordner durchblättern', es: 'Recorrer una carpeta entera', zh: '浏览完整个文件夹' },
+  rwStats: { en: v => `${v.seen} files looked at · ${v.likes} liked · ${v.binned} sent to the Bin · ${v.dups} duplicates cleared · ${v.trips} folders done`, fr: v => `${v.seen} fichiers vus · ${v.likes} coups de cœur · ${v.binned} dans la Corbeille · ${v.dups} doublons supprimés · ${v.trips} dossiers terminés`, de: v => `${v.seen} Dateien angesehen · ${v.likes} mit Gefällt mir · ${v.binned} im Papierkorb · ${v.dups} Duplikate entfernt · ${v.trips} Ordner fertig`, es: v => `${v.seen} archivos vistos · ${v.likes} me gusta · ${v.binned} a la Papelera · ${v.dups} duplicados eliminados · ${v.trips} carpetas terminadas`, zh: v => `看过 ${v.seen} 个文件 · 喜欢 ${v.likes} 个 · 放入回收站 ${v.binned} 个 · 清除 ${v.dups} 个重复项 · 完成 ${v.trips} 个文件夹` },
+  rwBadge_firstLike: { en: 'First like', fr: 'Premier coup de cœur', de: 'Erstes Gefällt mir', es: 'Primer me gusta', zh: '第一个喜欢' },
+  rwBadgeHow_firstLike: { en: 'Like your first file', fr: 'Aimez votre premier fichier', de: 'Markieren Sie Ihre erste Datei', es: 'Dale me gusta a tu primer archivo', zh: '喜欢你的第一个文件' },
+  rwBadge_sharpEye: { en: 'Sharp eye', fr: 'Œil affûté', de: 'Scharfes Auge', es: 'Buen ojo', zh: '火眼金睛' },
+  rwBadgeHow_sharpEye: { en: 'Look through 500 files', fr: 'Parcourez 500 fichiers', de: 'Sehen Sie 500 Dateien durch', es: 'Recorre 500 archivos', zh: '浏览 500 个文件' },
+  rwBadge_marathon: { en: 'Marathon', fr: 'Marathon', de: 'Marathon', es: 'Maratón', zh: '马拉松' },
+  rwBadgeHow_marathon: { en: 'Look through 5,000 files', fr: 'Parcourez 5 000 fichiers', de: 'Sehen Sie 5.000 Dateien durch', es: 'Recorre 5.000 archivos', zh: '浏览 5000 个文件' },
+  rwBadge_firstTrip: { en: 'First trip done', fr: 'Premier voyage terminé', de: 'Erste Reise fertig', es: 'Primer viaje terminado', zh: '首趟旅行完成' },
+  rwBadgeHow_firstTrip: { en: 'Flick through a whole folder', fr: 'Parcourez tout un dossier', de: 'Blättern Sie einen ganzen Ordner durch', es: 'Recorre una carpeta entera', zh: '浏览完整个文件夹' },
+  rwBadge_explorer: { en: 'Explorer', fr: 'Explorateur', de: 'Entdecker', es: 'Explorador', zh: '探险家' },
+  rwBadgeHow_explorer: { en: 'Flick through 5 whole folders', fr: 'Parcourez 5 dossiers entiers', de: 'Blättern Sie 5 ganze Ordner durch', es: 'Recorre 5 carpetas enteras', zh: '浏览完 5 个文件夹' },
+  rwBadge_tidyUp: { en: 'Tidy up', fr: 'Rangement', de: 'Aufgeräumt', es: 'Ordenado', zh: '整理达人' },
+  rwBadgeHow_tidyUp: { en: 'Send 100 files to the Bin', fr: 'Mettez 100 fichiers dans la Corbeille', de: 'Legen Sie 100 Dateien in den Papierkorb', es: 'Manda 100 archivos a la Papelera', zh: '把 100 个文件放入回收站' }
 };
 
 // A folder's icon is normally an emoji string, but folder.iconImage (a data URL, set via the
@@ -833,7 +793,7 @@ function makeThumbObserver() {
       obs.unobserve(el);
       const fileId = el.dataset.thumbFor;
       if (!fileId) return;
-      const file = appData.files.find(f => f.id === fileId);
+      const file = appData.files.find(f => f.id === fileId) || binEntries().find(f => f.id === fileId); // the Bin's cards too
       if (file) enqueueThumb(file, el);
     });
   }, { rootMargin: '600px 0px' });
@@ -1573,7 +1533,7 @@ function renderTravelSidebar() { renderSidebar(); } // kept for geocodeFiles cal
 const BURST_GAP_MS = 2000;  // max gap between consecutive shots to stay in the same burst
 const BURST_MIN_SIZE = 3;   // fewer than this isn't worth collapsing into a group
 let burstCoverMap = new Map(); // coverId -> { count, memberIds } - refreshed by getVisibleFiles() each render
-let photobookView = null; // { tripId, outCount } while a trip with a started photobook is showing (photobook.js) - refreshed by getVisibleFiles() the same way
+let likedView = null; // { scope, restCount } while a folder with liked files is showing (flick.js) - refreshed by getVisibleFiles() the same way
 let currentViewImages = []; // photos AND videos in the currently rendered view, for double-click "browse all" popup nav - refreshed by renderFilesInner() each render
 
 function burstFilenameNumber(name) {
@@ -2342,6 +2302,8 @@ async function init() {
   currentLang = resolveLanguage(appData.settings.language);
   applyI18n();
   rewardsRenderChip();
+  binStartPurgeTimer();
+  flickWireInput();
   applyTheme();
   applyDisplaySizes();
   // v2 migration: favorites become Best Of
@@ -2693,6 +2655,7 @@ function buildFolderFileCounts() {
 
 function renderSidebar() {
   document.getElementById('count-bestof').textContent = appData.files.filter(f => f.bestOf).length;
+  document.getElementById('count-bin').textContent = binEntries().length;
   document.getElementById('count-timeline').textContent = appData.files.filter(f => isMedia(f.ext)).length;
   // Same rule as computeVisibleFiles(): a Live Photo's .mov companion is hidden behind its still
   const fileIds = new Set(appData.files.map(f => f.id));
@@ -2829,6 +2792,7 @@ function selectFolder(folderId, el) {
 
   let title = 'Photo Library';
   if (folderId === 'best-of') title = `❤️ ${t('lkLiked')}`;
+  else if (folderId === 'bin') title = `🗑 ${t('binTitle')}`;
   else if (folderId === 'all') title = 'All Files';
   else if (folderId === 'timeline') title = 'Photo Library';
   else if (folderId === 'to-sort') title = 'To Sort';
@@ -2894,7 +2858,7 @@ function buildBreadcrumb(folderId) {
 
 function renderBreadcrumb() {
   const bc = document.getElementById('breadcrumb');
-  const specialFolders = ['all','timeline','to-sort','best-of','edited'];
+  const specialFolders = ['all','timeline','to-sort','best-of','edited','bin'];
   if (!currentFolder || specialFolders.includes(currentFolder) || currentFolder.startsWith('country:') || currentFolder.startsWith('region:')) { bc.style.display = 'none'; return; }
   const sysRootIds = new Set([...TRIP_LIKE_ROOT_IDS, appData.folders.find(f=>f.name==='Cameras'&&!f.parentId)?.id].filter(Boolean));
   const chain = buildBreadcrumb(currentFolder).filter(f => !sysRootIds.has(f.id));
@@ -3003,7 +2967,9 @@ function getVisibleFiles() {
 function computeVisibleFiles() {
   const q = getSearchQuery();
   const by = document.getElementById('sortSelect').value;
-  let files = [...appData.files];
+  // Binned files aren't in appData.files at all (see bin.js), so only the Bin itself lists them.
+  const inBinView = !q && currentFolder === 'bin';
+  let files = inBinView ? [...binEntries()] : [...appData.files];
 
   // Linked-version originals stay out of every normal view - only the edited file
   // they're attached to shows up; the original is still reachable from its 🌿 badge.
@@ -3022,6 +2988,8 @@ function computeVisibleFiles() {
 
   if (q) {
     // Global search ignores folder scope
+  } else if (inBinView) {
+    // already the Bin's own list
   } else if (currentFolder === 'best-of') {
     files = files.filter(f => f.bestOf);
   } else if (currentFolder === 'timeline') {
@@ -3121,18 +3089,18 @@ function computeVisibleFiles() {
     tripNameOf = f => f.folders?.map(id => m.get(id)).find(Boolean) || '~'; // '~' sorts last
   }
 
-  // A trip whose photobook has been started shows its photobook first, then everything else
-  // below a divider (see photobook.js). Grid and List only: the month timeline stays in order.
-  photobookView = null;
-  const bookTrip = !q && !inTimelineView && currentView !== 'timeline' && typeof photobookTripOfView === 'function' ? photobookTripOfView() : null;
-  if (bookTrip && files.some(isInPhotobook)) photobookView = { tripId: bookTrip.id, outCount: files.filter(f => !isInPhotobook(f)).length };
+  // A folder with liked files shows them first, then everything else below a line (see
+  // flick.js). Grid and List only: the month timeline stays in order.
+  likedView = null;
+  const likedScope = !q && !inTimelineView && currentView !== 'timeline' ? flickViewScope() : null;
+  if (likedScope && files.some(f => f.bestOf)) likedView = { scope: likedScope, restCount: files.filter(f => !f.bestOf).length };
 
   // Collapse burst sequences to one card - skipped for search (don't hide a
-  // specifically-searched-for frame) and Liked (an explicitly liked frame
-  // should never disappear behind a collapse). A photobook frame is kept out of
-  // the collapse for the same reason.
-  if (!q && !inBestOfView) {
-    const { coverMap, memberToCover } = computeBurstGroups(photobookView ? files.filter(f => !isInPhotobook(f)) : files);
+  // specifically-searched-for frame), the Bin, and Liked (an explicitly liked
+  // frame should never disappear behind a collapse - the same goes for liked
+  // frames inside any folder).
+  if (!q && !inBestOfView && !inBinView) {
+    const { coverMap, memberToCover } = computeBurstGroups(likedView ? files.filter(f => !f.bestOf) : files);
     burstCoverMap = coverMap;
     files = files.filter(f => { const cov = memberToCover.get(f.id); return !cov || cov === f.id; });
   } else {
@@ -3154,7 +3122,8 @@ function computeVisibleFiles() {
         ? (a.fileDate||0) - (b.fileDate||0)
         : (b.fileDate||0) - (a.fileDate||0);
     }
-    if (photobookView && isInPhotobook(a) !== isInPhotobook(b)) return isInPhotobook(a) ? -1 : 1;
+    if (inBinView) return (b.binnedAt || 0) - (a.binnedAt || 0); // most recently binned first
+    if (likedView && !!a.bestOf !== !!b.bestOf) return a.bestOf ? -1 : 1;
     // Pinned floats to the top of its folder - the one feature actually meant to override
     // the chosen sort, outside Best Of's and Photo Library's own views above.
     if (!!a.pinned !== !!b.pinned && !inTimelineView) return a.pinned ? -1 : 1;
@@ -3176,7 +3145,7 @@ function computeVisibleFiles() {
 }
 
 function getDirectChildren(folderId) {
-  if (!folderId || ['all','timeline','to-sort','best-of','edited'].includes(folderId) || folderId.startsWith('country:') || folderId.startsWith('region:')) return [];
+  if (!folderId || ['all','timeline','to-sort','best-of','edited','bin'].includes(folderId) || folderId.startsWith('country:') || folderId.startsWith('region:')) return [];
   const camRoot = appData.folders.find(f => f.name === 'Cameras' && !f.parentId);
   const vacRoot = appData.folders.find(f => f.id === 'vacations-root');
   const systemIds = new Set([
@@ -3212,6 +3181,8 @@ function renderFilesInner(area, renderedCount = 0) {
   const q = getSearchQuery();
   const files = getVisibleFiles();
   currentViewImages = files.filter(f => isMedia(f.ext));
+
+  if (!q && currentFolder === 'bin') { renderBinView(area, files); return; }
 
   // Timeline view
   if (!q && (currentView === 'timeline' || currentFolder === 'timeline')) {
@@ -3264,7 +3235,7 @@ function renderFilesInner(area, renderedCount = 0) {
   const children = getDirectChildren(currentFolder);
   if (children.length > 0) {
     area.innerHTML = '<div id="lasso"></div>';
-    appendTripBookBanner(area);
+    appendFlickBanner(area);
     const head = document.createElement('div');
     head.className = 'area-head';
     head.innerHTML = `<span class="subf-section-label" style="margin:0">📁 ${children.length} folder${children.length!==1?'s':''}</span>
@@ -3306,7 +3277,7 @@ function renderFilesInner(area, renderedCount = 0) {
   }
 
   area.innerHTML = '<div id="lasso"></div>';
-  appendTripBookBanner(area);
+  appendFlickBanner(area);
 
   if (currentFolder === 'to-sort') {
     const banner = document.createElement('div');
@@ -3654,7 +3625,7 @@ function renderGrid(files, area, minCount = 0) {
 function populateGridCard(card, file) {
   const searchOn = !!getSearchQuery();
   const isSel = selectedIds.has(file.id);
-  card.className = 'file-card' + (file._missing?' file-missing':'') + (isSel?' selected':'') + (photobookView && !isInPhotobook(file)?' not-in-book':'');
+  card.className = 'file-card' + (file._missing?' file-missing':'') + (isSel?' selected':'');
   const thumbContainer = `<div class="file-card-thumb${(isMedia(file.ext)&&!file._missing)?' thumb-loading':''}" data-thumb-for="${file.id}" id="th-${file.id}">
       <span class="thumb-icon${file._missing?' thumb-icon-missing':''}" title="${file._missing?'File not found on disk':''}">${file._missing?'🚫':getEmoji(file.ext)}</span>
       ${isVid(file.ext)?'<div class="video-badge">▶ VIDEO</div>':''}
@@ -3663,13 +3634,14 @@ function populateGridCard(card, file) {
     <div class="sel-check">✓</div>
     ${file._missing?'<div class="missing-badge">Missing</div>':''}
     ${burstCoverMap.has(file.id)?`<div class="burst-badge" title="Burst of ${burstCoverMap.get(file.id).count} - click to pick a favorite" onclick="event.stopPropagation();openBurstReview('${file.id}')">🎞 ${burstCoverMap.get(file.id).count}</div>`:''}
-    <button class="file-card-star ${file.bestOf?'starred':''}" title="${esc(file.bestOf?t('lkUnlike'):t('lkLike'))} (L)" onclick="toggleBestOf(event,'${file.id}')">${file.bestOf?'❤️':'♡'}</button>
+    <button class="file-card-star ${file.bestOf?'starred':''}${file.binnedAt?' bin-hidden':''}" title="${esc(file.bestOf?t('lkUnlike'):t('lkLike'))} (L)" onclick="toggleBestOf(event,'${file.id}')">${file.bestOf?'❤️':'♡'}</button>
     ${file.edits?'<div class="edited-badge" title="Edited">✏️</div>':''}
     ${searchOn&&semanticOnlyIds.has(file.id)?'<div class="semantic-badge" title="Matched by visual content, not filename/tags">🧠</div>':''}
     ${file.versionParentId?`<div class="version-badge" title="Has a linked original - click to view versions" onclick="event.stopPropagation();openVersionModal('${file.id}')">🌿</div>`:''}
     ${file.livePhotoVideoId?`<div class="live-badge" title="Live Photo - click to play the motion" onclick="event.stopPropagation();playLivePhoto('${file.id}')">◎ LIVE</div>`:''}
     ${file.gps?'<div class="gps-badge">📍</div>':''}
     ${file.pinned?'<div class="pin-badge">📌</div>':''}
+    ${file.binnedAt?`<div class="bin-days">${esc(t('binDaysLeft', { n: binDaysLeft(file) }))}</div>`:''}
     ${badge360Html(file)}
     ${thumbContainer}
     <div class="file-card-body">
@@ -3724,7 +3696,7 @@ function selectFilesOfType(key, additive) {
 
 function appendGridCards(fileSlice, container) {
   for (const file of fileSlice) {
-    maybeAppendBookDivider(file, container);
+    maybeAppendLikedDivider(file, container);
     maybeAppendTypeHeader(file, container);
     const card = document.createElement('div');
     card.dataset.fileId = file.id;
@@ -3761,7 +3733,7 @@ function renderList(files, area, minCount = 0) {
 function populateListRow(row, file) {
   const searchOn = !!getSearchQuery();
   const isSel = selectedIds.has(file.id);
-  row.className = 'file-row' + (file._missing?' file-missing':'') + (isSel?' selected':'') + (photobookView && !isInPhotobook(file)?' not-in-book':'');
+  row.className = 'file-row' + (file._missing?' file-missing':'') + (isSel?' selected':'');
   row.innerHTML = `
     <div class="file-row-thumb${(isMedia(file.ext)&&!file._missing)?' thumb-loading':''}" data-thumb-for="${file.id}" id="th-${file.id}"><span class="${file._missing?'thumb-icon-missing':''}" title="${file._missing?'File not found on disk':''}">${file._missing?'🚫':getEmoji(file.ext)}</span></div>
     <div class="file-row-info">
@@ -3771,7 +3743,7 @@ function populateListRow(row, file) {
     </div>
     <div class="file-row-date">${fmtDate(file.fileDate||file.addedAt)}</div>
     <div class="file-row-size">${fmtSize(file.size)}</div>
-    <button class="file-row-star ${file.bestOf?'starred':''}" title="${esc(file.bestOf?t('lkUnlike'):t('lkLike'))} (L)" onclick="toggleBestOf(event,'${file.id}')">${file.bestOf?'❤️':'♡'}</button>
+    <button class="file-row-star ${file.bestOf?'starred':''}${file.binnedAt?' bin-hidden':''}" title="${esc(file.bestOf?t('lkUnlike'):t('lkLike'))} (L)" onclick="toggleBestOf(event,'${file.id}')">${file.bestOf?'❤️':'♡'}</button>
     ${file.pinned?'<span class="file-row-pin pinned" style="pointer-events:none" title="Pinned">📌</span>':''}`;
   if (isMedia(file.ext)) {
     const thumbEl = row.querySelector('[data-thumb-for]');
@@ -3781,7 +3753,7 @@ function populateListRow(row, file) {
 
 function appendListRows(fileSlice, container) {
   for (const file of fileSlice) {
-    maybeAppendBookDivider(file, container);
+    maybeAppendLikedDivider(file, container);
     maybeAppendTypeHeader(file, container);
     const row = document.createElement('div');
     row.dataset.fileId = file.id;
@@ -4083,6 +4055,7 @@ function setupContextMenu() {
 
 function showCtxMenu(e, fileId) {
   e.preventDefault(); e.stopPropagation();
+  if (currentFolder === 'bin') return; // the Bin's own buttons are the actions there (see bin.js)
   hideFolderCtxMenu();
   ctxFileId = fileId;
   if (!selectedIds.has(fileId)) { clearSelection(); selectedIds.add(fileId); updateSelectionUI(); }
@@ -4090,9 +4063,6 @@ function showCtxMenu(e, fileId) {
   const best = file?.bestOf;
   document.getElementById('ctxBestIcon').textContent = best ? '❤️' : '♡';
   document.getElementById('ctxBestLabel').textContent = best ? t('lkUnlike') : t('lkLike');
-  const inTrip = file && photobookTripOf(file);
-  document.getElementById('ctxBookItem').style.display = inTrip ? '' : 'none';
-  if (inTrip) document.getElementById('ctxBookLabel').textContent = isInPhotobook(file) ? t('pbCtxRemove') : t('pbCtxAdd');
   const showLoc = file?.gps ? '' : 'none';
   document.getElementById('ctxClearLoc').style.display = showLoc;
   document.getElementById('ctxLocSep').style.display = showLoc;
@@ -4135,12 +4105,6 @@ async function ctxToggleBestOf() {
   ids.forEach(id => { const f=appData.files.find(f=>f.id===id); if(f) setLiked(f, newVal); });
   await saveData();
   toast(newVal ? t('lkLikedN', { n: ids.length }) : t('lkUnlikedN', { n: ids.length }));
-}
-function ctxTogglePhotobook() {
-  hideCtxMenu();
-  const ids = selectedIds.size > 0 ? [...selectedIds] : [ctxFileId];
-  const file = appData.files.find(f=>f.id===ids[0]);
-  if (file) setPhotobookMembership(ids, !isInPhotobook(file));
 }
 function ctxMoveToFolder() { hideCtxMenu(); if (selectedIds.size > 1) bulkAssignFolders(); else if (ctxFileId) showAssignModal(new Event('click'), ctxFileId); }
 function ctxEdit() { hideCtxMenu(); if (ctxFileId) showEditModal(ctxFileId); }
@@ -11514,21 +11478,21 @@ function frRenderDoneStep() {
     : `<li>${t('frTipToSort')}</li>
        <li>${t('frTipTagMore')}</li>
        <li>${t('frTipColors')}</li>`;
-  // The quickest win on offer: a first photobook duel on the biggest trip just added.
-  const duelTripId = frTripsThisSession.length ? photobookBestTrip(frTripsThisSession.map(trip => trip.id)) : null;
-  const duelTrip = duelTripId && appData.folders.find(f => f.id === duelTripId);
+  // The quickest win on offer: flicking through the biggest trip just added.
+  const flickTripId = frTripsThisSession.length ? flickBestTrip(frTripsThisSession.map(trip => trip.id)) : null;
+  const flickTrip = flickTripId && appData.folders.find(f => f.id === flickTripId);
   document.getElementById('frBody').innerHTML = `
     <div class="fr-hero">
       <div class="fr-hero-icon">🎉</div>
       <div class="gs-intro" style="max-width:440px"><strong>${t('frDoneTitle')}</strong><br>${t('frDoneBody', { n: files.length, tripPhrase, peoplePhrase, unlockPhrase })}</div>
-      ${duelTrip ? `<div class="fr-first-duel">
-        <div class="fr-first-duel-text">${t('frFirstDuelBody', { name: esc(duelTrip.name) })}</div>
-        <button class="fr-choice-btn fr-choice-primary fr-cta" onclick="frStartFirstDuel('${duelTrip.id}')">${t('frFirstDuelBtn')}</button>
+      ${flickTrip ? `<div class="fr-first-duel">
+        <div class="fr-first-duel-text">${t('frFirstFlickBody', { name: esc(flickTrip.name) })}</div>
+        <button class="fr-choice-btn fr-choice-primary fr-cta" onclick="frStartFirstFlick('${flickTrip.id}')">${t('frFirstFlickBtn')}</button>
       </div>` : ''}
       <div class="fr-choice-row">
         <button class="fr-choice-btn" onclick="frAddAnotherTrip()">${t('frAddAnotherTrip')}</button>
         <button class="fr-choice-btn" onclick="frFinish(true)">${frTripsThisSession.length ? t('frViewTrip') : t('frBrowseLibrary')}</button>
-        <button class="fr-choice-btn${duelTrip ? '' : ' fr-choice-primary fr-cta'}" onclick="frGoToSort()">${t('frFinishToSort')}</button>
+        <button class="fr-choice-btn${flickTrip ? '' : ' fr-choice-primary fr-cta'}" onclick="frGoToSort()">${t('frFinishToSort')}</button>
       </div>
       <div class="fr-tips">
         <div class="fr-tips-title">${t('frTipsTitle')}</div>
@@ -11564,10 +11528,10 @@ async function frGoTo(fnName) {
   await frFinish(false);
   if (typeof window[fnName] === 'function') window[fnName]();
 }
-async function frStartFirstDuel(tripId) {
+async function frStartFirstFlick(tripId) {
   await frFinish(false);
   selectFolder(tripId);
-  openPhotobook(tripId);
+  openFlick(tripId);
 }
 async function frGoToSort() {
   await frFinish(false);
@@ -17944,10 +17908,8 @@ function editPopupPhoto() {
 
 // ── KEYBOARD / CLICK-OUT ──────────────────────────────────────────────────────
 document.addEventListener('keydown', e=>{
-  // The photobook's presentation sits over its duels (photobook.js, presentation.js), and both
-  // cover the whole window, so they take the keyboard first.
-  if(pres){ presHandleKey(e); return; }
-  if(pb){ pbHandleKey(e); return; }
+  // Flick through (flick.js) covers the whole window, so it takes the keyboard first.
+  if(fl){ flickHandleKey(e); return; }
   // The 360 player takes every key while it's showing, unless a dialog (Remove, Edit Props...)
   // is open over the preview.
   if(v360.open && !document.querySelector('.modal-backdrop.open')){ v360HandleKey(e); return; }

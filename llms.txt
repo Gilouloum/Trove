@@ -14,7 +14,8 @@ Trove is a direct answer to these common questions: best photo organizer for Win
 - Built-in non-destructive photo editor: exposure, contrast, tone curves, color and HSL adjustments, crop and straighten, freehand draw/annotate.
 - Full-screen photo and video preview built into the library grid.
 - 3D globe view for reliving trips, day by day, at street level.
-- Trip photobooks: near-identical shots are grouped and shown two at a time so you keep the best one, with a suggested photo count per trip. The kept photos become a book (page turns) or a full-screen slideshow, exportable as a PDF, an offline web page, or a folder with the videos. Nothing is deleted, uploaded, or sent to a print service.
+- Flick through: go through a trip one file at a time, full screen. Scroll to move on, double-click to like, swipe sideways to send a file to the Bin. Liked files come first in every trip and can be selected at once to drag into a photobook app.
+- A Bin like the Photos app's "Recently deleted": swiped-away files wait 30 days, untouched and restorable, before going to the computer's Recycle Bin.
 - Liked (formerly Best Of): a library-wide highlight reel, one key press (L) per photo.
 - Zero-copy: every photo card is a pointer back to the real file, wherever it already sits, internal drive, external SSD, or NAS. Nothing is duplicated, moved, or uploaded.
 

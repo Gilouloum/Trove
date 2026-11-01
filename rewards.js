@@ -9,12 +9,12 @@
 // photo, person or trip pay out once, so undoing and redoing, or picking a group again, can't
 // farm XP.
 //
-// Loaded before renderer.js, like photobook.js; reads renderer.js's globals only when called.
+// Loaded before renderer.js, like flick.js; reads renderer.js's globals only when called.
 
-// The proposal (2026-10-31), tuned so a first duel pays at once, the first level-up comes after
-// about ten duels, and one fully picked 400-photo trip reaches the second rank.
-const REWARD_XP = { duel: 5, single: 2, kept: 3, dup: 10, personNew: 25, personMore: 5, bookDone: 150 };
-const REWARD_COUNTER = { duel: 'duels', single: 'singles', kept: 'kept', dup: 'dups', personNew: 'people', bookDone: 'books' };
+// Tuned so the first level-up comes within a minute of flicking through a trip, and going
+// through a whole 400-photo trip (liking and binning as you go) reaches the second rank.
+const REWARD_XP = { seen: 1, like: 3, bin: 2, dup: 10, personNew: 25, personMore: 5, tripDone: 150 };
+const REWARD_COUNTER = { seen: 'seen', like: 'likes', bin: 'binned', dup: 'dups', personNew: 'people', tripDone: 'trips' };
 // Level L starts at 25 * (L-1) * L XP: 50, 150, 300, 500... each level a little longer than the last.
 function rewardsXpForLevel(level) { return 25 * (level - 1) * level; }
 function rewardsLevelOf(xp) { let l = 1; while (rewardsXpForLevel(l + 1) <= xp) l++; return l; }
@@ -28,12 +28,12 @@ const REWARD_RANKS = [
 function rewardsRankOf(level) { return REWARD_RANKS.filter(r => level >= r.from).pop(); }
 // count() reads the live library for badges about it rather than about actions (Liked).
 const REWARD_BADGES = [
-  { id: 'firstPick', icon: '⚔️', counter: 'duels', at: 1 },
-  { id: 'sharpEye', icon: '🎯', counter: 'duels', at: 100 },
-  { id: 'picky', icon: '🧐', counter: 'duels', at: 1000 },
-  { id: 'firstBook', icon: '📖', counter: 'books', at: 1 },
-  { id: 'bookshelf', icon: '📚', counter: 'books', at: 5 },
-  { id: 'curator', icon: '🖼️', counter: 'kept', at: 250 },
+  { id: 'firstLike', icon: '💗', counter: 'likes', at: 1 },
+  { id: 'sharpEye', icon: '🎯', counter: 'seen', at: 500 },
+  { id: 'marathon', icon: '🏃', counter: 'seen', at: 5000 },
+  { id: 'firstTrip', icon: '🧳', counter: 'trips', at: 1 },
+  { id: 'explorer', icon: '🗺️', counter: 'trips', at: 5 },
+  { id: 'tidyUp', icon: '🧺', counter: 'binned', at: 100 },
   { id: 'firstSweep', icon: '🧹', counter: 'dups', at: 1 },
   { id: 'cleanSweep', icon: '✨', counter: 'dups', at: 100 },
   { id: 'familiarFaces', icon: '👋', counter: 'people', at: 5 },
@@ -161,25 +161,25 @@ function rewardsNextCard() {
   setTimeout(done, 3800);
 }
 
-// alongFinale: the photobook finale already brought the confetti and the music.
+// alongFinale: the end-of-trip finale already brought the confetti and the music.
 function rewardsLevelUp(level, newRank, alongFinale) {
   const rank = rewardsRankOf(level);
-  if (!alongFinale) photobookConfetti(document.body);
+  if (!alongFinale) celebrationConfetti(document.body);
   rewardsCard(rank.icon, newRank ? t('rwNewRank') : t('rwLevelUp'), newRank ? t('rwRank_' + rank.key) : t('rwLevelN', { n: level }),
     newRank ? t('rwRankSub_' + rank.key) : t('rwLevelUpSub', { rank: t('rwRank_' + rank.key) }), alongFinale ? null : newRank ? 'fanfare' : 'levelUp');
 }
 
-// The big moment when a trip's photobook is done: the book takes a bow, two bursts of confetti,
-// a fanfare, and any level or badge it brought follows as cards.
+// The big moment when a whole trip has been flicked through: the heart takes a bow, two bursts
+// of confetti, a fanfare, and any level or badge it brought follows as cards.
 function rewardsFinale({ host, tripName }) {
   host = host || document.body;
   host.classList.add('rw-finale');
   setTimeout(() => host.classList.remove('rw-finale'), 2600);
-  photobookConfetti(host);
-  setTimeout(() => photobookConfetti(host), 650);
+  celebrationConfetti(host);
+  setTimeout(() => celebrationConfetti(host), 650);
   sfxPlay('fanfare');
   const { xp } = rewardsState();
-  rewardsCard('📖', t('rwBookDoneKicker'), tripName, t('rwBookDoneSub', { xp: REWARD_XP.bookDone, level: rewardsLevelOf(xp) }));
+  rewardsCard('❤️', t('rwTripDoneKicker'), tripName, t('rwTripDoneSub', { xp: REWARD_XP.tripDone, level: rewardsLevelOf(xp) }));
 }
 
 // ── JOURNEY PANEL ────────────────────────────────────────────────────────────
@@ -188,7 +188,7 @@ function openJourney() {
   const level = rewardsLevelOf(xp), rank = rewardsRankOf(level);
   const from = rewardsXpForLevel(level), to = rewardsXpForLevel(level + 1);
   const nextRank = REWARD_RANKS.find(r => r.from > level);
-  const ways = [['duel', 'rwWayDuel'], ['single', 'rwWaySingle'], ['kept', 'rwWayKept'], ['dup', 'rwWayDup'], ['personNew', 'rwWayPerson'], ['bookDone', 'rwWayBook']]
+  const ways = [['seen', 'rwWaySeen'], ['like', 'rwWayLike'], ['bin', 'rwWayBin'], ['dup', 'rwWayDup'], ['personNew', 'rwWayPerson'], ['tripDone', 'rwWayTrip']]
     .map(([k, label]) => `<div class="jr-way"><span>${esc(t(label))}</span><strong>+${REWARD_XP[k]}</strong></div>`).join('');
   const badgeHtml = REWARD_BADGES.map(b => {
     const got = badges[b.id], n = Math.min(rewardsCount(b), b.at);
@@ -205,7 +205,7 @@ function openJourney() {
     <div class="modal-sub" style="margin:16px 0 6px">${esc(t('rwWaysTitle'))}</div><div class="jr-ways">${ways}</div>
     <div class="modal-sub" style="margin:16px 0 6px">${esc(t('rwBadgesTitle', { n: Object.keys(badges).length, total: REWARD_BADGES.length }))}</div>
     <div class="jr-badges">${badgeHtml}</div>
-    <div class="jr-sub" style="margin-top:12px">${esc(t('rwStats', { duels: counts.duels || 0, kept: counts.kept || 0, dups: counts.dups || 0, books: counts.books || 0 }))}</div>`;
+    <div class="jr-sub" style="margin-top:12px">${esc(t('rwStats', { seen: counts.seen || 0, likes: counts.likes || 0, binned: counts.binned || 0, dups: counts.dups || 0, trips: counts.trips || 0 }))}</div>`;
   document.getElementById('journeyModal').classList.add('open');
 }
 function closeJourney() { document.getElementById('journeyModal').classList.remove('open'); }

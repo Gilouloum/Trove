@@ -22,9 +22,9 @@ Manually dragging files into folders doesn't scale past a few hundred photos. Tr
 
 Click "Find Duplicates" and Trove scans the entire library for visual duplicates, not just files with identical bytes. It compares a structural fingerprint and color profile of every photo (and duration for videos), so it catches near-identical shots even after a resize, a re-save, or a rename. Every match is shown side by side for manual confirmation, with the better copy pre-suggested by resolution and metadata. Nothing is deleted automatically.
 
-### I take ten photos of the same view. How do I keep only the best one?
+### I have way too many photos. How do I keep only the ones that matter?
 
-Open a trip and click "Start picking". Trove groups shots that were taken moments apart and look almost the same, then shows them two at a time: click the better one and the winner meets the next. The photos you keep become the trip's photobook, which you can show as a book or a slideshow and export as a PDF or an offline web page. The others aren't deleted, they just move below a "Not in your photobook" line in the trip.
+Open a trip and click "Flick through". Trove shows its photos and videos full screen, one at a time: scroll to move on, double-click what you love, and swipe the rest to either side. Liked files come first in the trip from then on, and "Select liked" picks them all so you can drag them into a photobook app or a folder. Swiped files wait in Trove's Bin for 30 days, untouched and restorable, before going to your computer's Recycle Bin.
 
 ### How do I find the original version of an edited photo?
 

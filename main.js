@@ -5,11 +5,9 @@ const fs = require('fs');
 const https = require('https');
 const crypto = require('crypto');
 const os = require('os');
-const { pathToFileURL } = require('url');
 const { spawn } = require('child_process');
 const TroveMedia = require('./media-types');
 const { readHeifLayout } = require('./heif-layout');
-const SimilarShots = require('./similarShots');
 
 // Installed builds keep the library in the OS per-user profile (%APPDATA%/Trove),
 // stable across app uninstalls/upgrades. It used to live in a "data" folder next to the exe
@@ -1425,16 +1423,6 @@ function mergeClusters(clusters, mergeThreshold) {
   return merged;
 }
 
-// The photobook's duels compare shots of the same moment; see similarShots.js for the rule.
-// items: [{ id, t }] for one trip. A file not embedded yet simply stays a group of one.
-ipcMain.handle('group-similar-shots', (_, items, strictness) => {
-  const sim = (a, b) => {
-    const va = embeddingIndex.get(a), vb = embeddingIndex.get(b);
-    return va && vb ? cosine(va, vb) : null;
-  };
-  return SimilarShots.groupSimilarShots(items || [], sim, { strictness: +strictness || 0 });
-});
-
 // ── BACKUPS ──────────────────────────────────────────────────────────────────
 ipcMain.handle('list-backups', () => listBackupFiles().map(b => {
   let folders = 0, files = 0;
@@ -2415,75 +2403,6 @@ ipcMain.handle('export-best-of-album', async (_, files, title) => {
     shell.openPath(destDir);
     return { success: true, count: items.length, skipped: files.length - items.length, folderPath: destDir };
   } catch (e) { return { success: false }; }
-});
-
-// ── PHOTOBOOK EXPORT ─────────────────────────────────────────────────────────
-// A trip's photobook (presentation.js) as something to keep or share: a PDF, one offline web
-// page, or a "complete export" folder with both plus copies of the videos. Like the album
-// export above, the complete export copies files on purpose, and only the videos: the photos
-// already live inside the page and the PDF. The renderer builds the documents; their video
-// links are placeholders filled in here, once it's known where the videos will be.
-const PHOTOBOOK_VIDEO_TOKEN = /__TROVE_VIDEO_(\d+)__/g;
-function fillVideoLinks(html, urls) {
-  return String(html || '').replace(PHOTOBOOK_VIDEO_TOKEN, (_, i) => escapeHtmlAttr(urls[+i] || ''));
-}
-
-async function printHtmlToPdf(html, pdfPath) {
-  const tmp = path.join(os.tmpdir(), `trove-photobook-${process.pid}-${Date.now()}.html`);
-  await fs.promises.writeFile(tmp, html);
-  // Lays out a page Trove wrote itself, so it gets no scripts and no Node.
-  const win = new BrowserWindow({ show: false, webPreferences: { javascript: false, sandbox: true, contextIsolation: true } });
-  try {
-    await win.loadFile(tmp);
-    const pdf = await win.webContents.printToPDF({ printBackground: true, preferCSSPageSize: true, margins: { top: 0, bottom: 0, left: 0, right: 0 } });
-    await fs.promises.writeFile(pdfPath, pdf);
-  } finally {
-    win.destroy();
-    fs.promises.unlink(tmp).catch(() => {});
-  }
-}
-
-ipcMain.handle('export-photobook', async (_, kind, title, docs, videos) => {
-  try {
-    const safeTitle = String(title || 'Photobook').replace(/[\\/:*?"<>|]/g, '_').trim() || 'Photobook';
-    videos = Array.isArray(videos) ? videos : [];
-    if (kind === 'pdf' || kind === 'html') {
-      const r = await dialog.showSaveDialog(mainWindow, {
-        defaultPath: path.join(app.getPath('documents'), `${safeTitle}.${kind}`),
-        filters: [kind === 'pdf' ? { name: 'PDF', extensions: ['pdf'] } : { name: 'Web page', extensions: ['html'] }],
-      });
-      if (r.canceled || !r.filePath) return { success: false };
-      // A lone PDF can only point at the original videos, so its links work on this computer only.
-      if (kind === 'pdf') await printHtmlToPdf(fillVideoLinks(docs.print, videos.map(v => pathToFileURL(v.path).href)), r.filePath);
-      else await fs.promises.writeFile(r.filePath, docs.web);
-      shell.showItemInFolder(r.filePath);
-      return { success: true, path: r.filePath };
-    }
-    if (kind !== 'complete') return { success: false };
-    const r = await dialog.showOpenDialog(mainWindow, { properties: ['openDirectory', 'createDirectory'] });
-    if (r.canceled || !r.filePaths.length) return { success: false };
-    let destDir = path.join(r.filePaths[0], `${safeTitle} photobook`);
-    for (let n = 2; fs.existsSync(destDir); n++) destDir = path.join(r.filePaths[0], `${safeTitle} photobook (${n})`);
-    const videoDir = path.join(destDir, 'videos');
-    await fs.promises.mkdir(videos.length ? videoDir : destDir, { recursive: true });
-    const used = new Set(), relUrls = [], absUrls = [];
-    let skipped = 0;
-    for (const v of videos) {
-      const ext = path.extname(v.path);
-      let name = path.basename(v.path);
-      for (let n = 2; used.has(name.toLowerCase()); n++) name = `${path.basename(v.path, ext)} (${n})${ext}`;
-      used.add(name.toLowerCase());
-      try {
-        await fs.promises.copyFile(v.path, path.join(videoDir, name));
-        relUrls.push('videos/' + encodeURIComponent(name));
-        absUrls.push(pathToFileURL(path.join(videoDir, name)).href);
-      } catch (e) { skipped++; relUrls.push(''); absUrls.push(''); }
-    }
-    await fs.promises.writeFile(path.join(destDir, `${safeTitle}.html`), fillVideoLinks(docs.webComplete, relUrls));
-    await printHtmlToPdf(fillVideoLinks(docs.print, absUrls), path.join(destDir, `${safeTitle}.pdf`));
-    shell.openPath(destDir);
-    return { success: true, path: destDir, skipped };
-  } catch (e) { return { success: false, error: e.message }; }
 });
 
 ipcMain.handle('save-edited-thumb', async (_, fileId, base64) => {

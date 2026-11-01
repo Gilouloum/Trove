@@ -171,16 +171,14 @@ Every geotagged photo and video is plotted on a real-terrain 3D globe, zoomable 
   <img src="screenshots/globe-zoom.jpg" width="49%" alt="The globe zoomed into a single trip">
 </p>
 
-## A photobook for every trip
+## Keep what matters, let go of the rest
 
-Ten shots of the same view, and you never look at any of them? Each trip gets a photobook: the photos you choose to keep.
+Too many photos, and most of them never looked at again? Flick through a trip one file at a time and decide as you go.
 
-- **Duels.** Trove groups near-identical shots (taken moments apart and almost the same picture) and shows them two at a time. Click the better one, and the winner meets the next. A single shot is a quick keep or skip, and every choice can be undone. A small "Trove's pick" hint points at the shot that looks sharper or where faces look better, but you decide.
-- **A goal that fills up.** Each trip suggests a size (about 40 photos for a 400-photo trip, editable), shown as a book filling up. Going over is fine.
-- **Nothing is deleted.** In the trip, your photobook comes first, then everything else below a "Not in your photobook" line, slightly dimmed. Every photo stays where it is.
-- **Present it.** Show the book with page turns, or as a clean full-screen slideshow for the TV. Pages are laid out automatically (one to three photos each, in date order), with a cover, a map of the route, the trip in numbers, and captions you can edit. Shuffle the layout, swap photos, move pages.
-- **Levels and badges.** Picking shots, clearing duplicates, naming people and finishing a trip earn XP, from Tourist all the way to Legend, with badges along the way and a small celebration when a photobook is done. Soft sounds can be muted in one click. It's all stored on your computer, and there are no streaks to lose.
-- **Export it.** Save a PDF, a single web page that works offline, or a complete folder with both plus the videos. Everything stays on your computer: there is no upload and no print service.
+- **Flick through.** Full screen, one photo or video at a time. Scroll (or press an arrow key) to move on, double-click (or press L) to like, and swipe a file to either side to send it to the Bin. Your hand never has to aim. Trove remembers where you stopped, so a big trip can take several sittings, and Ctrl+Z undoes the last like or swipe.
+- **Liked comes first.** The files you like are the ones you never want to lose, silly ones included. In every trip and folder they come first, above everything else. "Select liked" picks them all at once, ready to drag into a photobook app or a folder.
+- **A Bin with 30 days to change your mind.** Swiped-away files leave every view at once and wait in Trove's Bin for 30 days, untouched, before going to your computer's Recycle Bin. Restore anything with one click, or delete it right away if you're sure.
+- **Levels and badges.** Looking through files, liking, clearing out, clearing duplicates and naming people earn XP, from Tourist all the way to Legend, with badges along the way and a small celebration when you finish a trip. Soft sounds can be muted in one click. It's all stored on your computer, and there are no streaks to lose.
 
 ## More worth knowing
 
