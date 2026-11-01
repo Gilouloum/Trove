@@ -1280,6 +1280,20 @@ body.win-chrome #flickMode{top:32px}
 .fl-heart-pop{position:absolute;left:50%;top:50%;font-size:120px;color:#ec4f7f;pointer-events:none;transform:translate(-50%,-50%) scale(.2);filter:drop-shadow(0 6px 24px rgba(0,0,0,.5));animation:fl-heart-pop .85s cubic-bezier(.2,1.5,.4,1) forwards}
 @keyframes fl-heart-pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.15)}}
 .fl-meta{font-size:12px;color:#8a8377;margin-top:8px;text-align:center;flex-shrink:0}
+/* Up/down arrows beside the photo (flickNavArrowsHtml): a slow blink, the down one drifting a
+   little downward, until scrolling has been learnt - then faint and still */
+.fl-nav{position:absolute;right:22px;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:10px}
+.fl-nav button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#ece7df;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;animation:fl-nav-blink 2.6s ease-in-out infinite}
+.fl-nav button svg{width:22px;height:22px}
+.fl-nav-up svg{transform:rotate(180deg)}
+.fl-nav-down svg{animation:fl-nav-drift 2.6s ease-in-out infinite}
+.fl-nav button:hover{background:rgba(255,255,255,.2);opacity:1;animation:none}
+.fl-nav button:disabled{visibility:hidden}
+.fl-nav.calm button,.fl-nav.calm button svg{animation:none}
+.fl-nav.calm button{opacity:.4}
+@keyframes fl-nav-blink{0%,100%{opacity:.25}50%{opacity:.95}}
+@keyframes fl-nav-drift{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.fl-nav button,.fl-nav button svg{animation:none}.fl-nav button{opacity:.7}}
 .fl-hint{font-size:11.5px;color:#8a8377;text-align:center;padding:4px 16px 12px;flex-shrink:0}
 .fl-done{margin:auto;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;max-width:480px}
 .fl-done-heart{font-size:64px;color:#ec4f7f}.fl-done-title{font-size:21px;font-weight:700}.fl-done-sub{font-size:13px;color:#a39c8e}

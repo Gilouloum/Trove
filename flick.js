@@ -139,7 +139,8 @@ function flickShow(dir) {
       <div class="fl-heart-badge${file.bestOf ? ' on' : ''}" id="flickHeartBadge" onclick="flickToggleLike()" title="${esc(t('flLikeTitle'))}">❤</div></div>
       <div class="fl-bin-label" id="flickBinLabel">🗑 ${esc(t('flToBin'))}</div>
     </div>
-    <div class="fl-meta">${esc(fmtDate(file.fileDate || file.addedAt))}${place ? ' · ' + esc(place) : ''} · ${esc(file.name)}</div>`;
+    <div class="fl-meta">${esc(fmtDate(file.fileDate || file.addedAt))}${place ? ' · ' + esc(place) : ''} · ${esc(file.name)}</div>
+    ${flickNavArrowsHtml()}`;
   flickLoadMedia(file, token);
   flickRenderTop();
   flickPrefetch();
@@ -179,14 +180,30 @@ function flickPrefetch() {
   fl.files.slice(fl.i + 1, fl.i + 3).forEach(f => { if (isImg(f.ext)) flickImageUrl(f); });
 }
 
+// Up/down arrows beside the photo, saying "this scrolls" to anyone who'd otherwise look for a
+// button: they blink slowly until FLICK_ARROWS_LEARNED moves have been made (ever, any way -
+// wheel, keys or the arrows themselves), then stay, faint and still. Clickable either way.
+const FLICK_ARROWS_LEARNED = 6;
+const FLICK_CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+function flickNavArrowsHtml() {
+  const calm = (appData.flickMoves || 0) >= FLICK_ARROWS_LEARNED ? ' calm' : '';
+  return `<div class="fl-nav${calm}">
+    <button class="fl-nav-up" onclick="flickPrev()" title="${esc(t('flNavPrev'))}"${fl.i > 0 ? '' : ' disabled'}>${FLICK_CHEVRON}</button>
+    <button class="fl-nav-down" onclick="flickNext()" title="${esc(t('flNavNext'))}">${FLICK_CHEVRON}</button>
+  </div>`;
+}
+function flickCountMove() { appData.flickMoves = (appData.flickMoves || 0) + 1; }
+
 function flickNext() {
   if (!fl || fl.i >= fl.files.length) return;
   fl.i++;
+  flickCountMove();
   flickShow(1);
 }
 function flickPrev() {
   if (!fl || fl.i <= 0) return;
   fl.i = Math.min(fl.i, fl.files.length) - 1;
+  flickCountMove();
   flickShow(-1);
 }
 function flickGo(i) {
