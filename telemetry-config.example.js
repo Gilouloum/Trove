@@ -8,8 +8,9 @@
 //
 // What gets sent, once when the app opens and once when it closes: a random per-install id
 // (not tied to a person - see installId in main.js's DEFAULT_DATA), how long the session was,
-// and rough counts (files/folders/favorites/pins). Never file names, paths, photos, or
-// anything else that could identify someone or their library.
+// rough counts (files/folders/favorites/pins), and how many times each main feature has been
+// used (featureUse). Never file names, paths, photos, or anything else that could identify
+// someone or their library.
 //
 // Setup (free - Firebase's Spark plan needs no billing/credit card for this level of usage):
 //   1. Create a Firebase project at https://console.firebase.google.com (or reuse one you
@@ -26,10 +27,19 @@
 //            match /telemetry_events/{eventId} {
 //              allow create: if request.resource.data.keys().hasOnly(['event', 'installId',
 //                                 'sessionDurationMs', 'fileCount', 'folderCount', 'bestOfCount',
-//                                 'pinnedCount', 'appVersion', 'platform', 'expireAt'])
+//                                 'pinnedCount', 'featureUse', 'appVersion', 'platform', 'expireAt'])
 //                            && request.resource.data.event in ['app_open', 'session_end']
 //                            && request.resource.data.installId is string
-//                            && request.resource.data.installId.size() == 36;
+//                            && request.resource.data.installId.size() == 36
+//                            && (!('featureUse' in request.resource.data)
+//                                || (request.resource.data.featureUse is map
+//                                    && request.resource.data.featureUse.keys().hasOnly(['onboarded',
+//                                         'guidedSort', 'guidedSortDone', 'located', 'flick', 'flickDone',
+//                                         'binned', 'globe', 'relive', 'editor', 'photomod', 'duplicates',
+//                                         'findPeople', 'search', 'exportLiked', 'nudgeShown', 'nudgeOpened'])));
+//      featureUse (added in 2026-11) is the running total of uses per feature - main.js's
+//      TELEMETRY_USAGE_KEYS. A build that sends it is REJECTED by the older rules above it, so
+//      publish these rules in the Firebase console before shipping that build.
 //              allow read, update, delete: if false;
 //            }
 //          }

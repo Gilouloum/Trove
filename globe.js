@@ -500,37 +500,6 @@ function buildFlightArcPositions(startLat, startLng, endLat, endLng, segments = 
   return positions;
 }
 
-// The locate mission's optics (controller.setSensor). Night vision: brightness as phosphor
-// green, boosted, with a little live grain. Thermal: brightness through an "ironbow" palette
-// (black, purple, red, orange, yellow, white), the classic FLIR look.
-const SENSOR_SHADERS = {
-  nvg: `uniform sampler2D colorTexture;
-    uniform float time;
-    in vec2 v_textureCoordinates;
-    float grain(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
-    void main() {
-      vec3 c = texture(colorTexture, v_textureCoordinates).rgb;
-      float l = pow(dot(c, vec3(0.299, 0.587, 0.114)), 0.75) * 1.4;
-      l += (grain(v_textureCoordinates * 900.0 + time) - 0.5) * 0.14;
-      out_FragColor = vec4(vec3(0.16, 1.0, 0.42) * clamp(l, 0.0, 1.2), 1.0);
-    }`,
-  flir: `uniform sampler2D colorTexture;
-    uniform float time;
-    in vec2 v_textureCoordinates;
-    vec3 ironbow(float t) {
-      t = clamp(t, 0.0, 1.0) * 5.0;
-      if (t < 1.0) return mix(vec3(0.0, 0.0, 0.06), vec3(0.32, 0.0, 0.52), t);
-      if (t < 2.0) return mix(vec3(0.32, 0.0, 0.52), vec3(0.86, 0.08, 0.26), t - 1.0);
-      if (t < 3.0) return mix(vec3(0.86, 0.08, 0.26), vec3(1.0, 0.55, 0.0), t - 2.0);
-      if (t < 4.0) return mix(vec3(1.0, 0.55, 0.0), vec3(1.0, 0.94, 0.5), t - 3.0);
-      return mix(vec3(1.0, 0.94, 0.5), vec3(1.0), t - 4.0);
-    }
-    void main() {
-      vec3 c = texture(colorTexture, v_textureCoordinates).rgb;
-      out_FragColor = vec4(ironbow(dot(c, vec3(0.299, 0.587, 0.114)) * 1.15), 1.0);
-    }`
-};
-
 function buildGlobe(canvas, gpsFiles, opts = {}) {
   if (typeof Cesium === 'undefined') { toast('⚠️ 3D library failed to load'); return { cleanup(){} }; }
 
@@ -1220,7 +1189,6 @@ function buildGlobe(canvas, gpsFiles, opts = {}) {
       });
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   }
-  let sensorStage = null;
 
   // A lat/lng box padded so a single point (or a tight cluster) isn't framed absurdly close.
   function paddedRect(bounds) {
@@ -1274,18 +1242,6 @@ function buildGlobe(canvas, gpsFiles, opts = {}) {
       if (!pendingPin) return;
       pendingPin.position = null;
       pendingPin.billboard.show = false;
-    },
-    // The locate mission's optics: 'nvg' (night vision), 'flir' (thermal), anything else plain.
-    // A full-screen post-process over the rendered globe, so it only changes the look.
-    setSensor(mode) {
-      if (sensorStage) { scene.postProcessStages.remove(sensorStage); sensorStage = null; }
-      if (SENSOR_SHADERS[mode]) {
-        sensorStage = scene.postProcessStages.add(new Cesium.PostProcessStage({
-          fragmentShader: SENSOR_SHADERS[mode],
-          uniforms: { time: () => (performance.now() / 1000) % 100 }
-        }));
-      }
-      scene.requestRender();
     },
     // Where a lat/lng is in the page right now ({x, y} in client pixels), or null when it's
     // on the far side of the globe - for effects drawn over the globe at a spot.

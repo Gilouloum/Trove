@@ -1329,74 +1329,6 @@ ipcMain.handle('suggest-groups', (_, fileIds) => {
   return { folderMatches: [...folderMatchesMap.values()], newClusters };
 });
 
-// Mirrors renderer.js's People/Vacations/Cameras root conventions (fixed ids for the first
-// two, name-matched for Cameras, since main.js has no import of renderer.js's constants) -
-// Smart Match should learn from any folder that represents a visual category (Categories, or
-// any plain custom folder - a made-up nickname, an inside joke, whatever), but not folders
-// whose organizing signal is something else entirely (who's in it, which trip, which device).
-// Same reasoning as getCategoryDescendantIds() above, just broadened beyond just "Categories".
-function getSmartMatchExcludedIds() {
-  const excluded = new Set();
-  const roots = [
-    appData.folders.find(f => f.id === 'people-root'),
-    appData.folders.find(f => f.id === 'vacations-root'),
-    appData.folders.find(f => f.id === 'adventures-root'),
-    appData.folders.find(f => f.name === 'Cameras' && !f.parentId),
-  ].filter(Boolean);
-  for (const root of roots) {
-    excluded.add(root.id);
-    const stack = appData.folders.filter(f => f.parentId === root.id).map(f => f.id);
-    while (stack.length) {
-      const id = stack.pop();
-      excluded.add(id);
-      appData.folders.filter(f => f.parentId === id).forEach(f => stack.push(f.id));
-    }
-  }
-  return excluded;
-}
-// Deliberately far stricter than CENTROID_MIN_SCORE (0.8, already ~99% pure) - Smart Match's
-// whole premise is the user doing almost nothing but confirming, so a wrong suggestion here
-// costs more trust than a missed one. Set at the user's explicit request for "only show
-// suggestions when 95% sure" - cosine similarity doesn't map linearly to a probability, so
-// this reads as "meaningfully stricter than the already-conservative 0.8 bar," not a literal
-// percentage; expect it to surface fewer, later, once folders have real history to learn from.
-const SMART_MATCH_MIN_SCORE = 0.95;
-
-// Smart Match: for each To Sort file, which already-established folders (any that clear
-// getSmartMatchExcludedIds()) does it confidently resemble? Unlike suggest-groups above (which
-// picks each file's single best-matching folder), a file can surface more than one suggestion
-// here - the review UI shows all of them as toggleable, since a photo can genuinely belong to
-// several categories. Files with zero qualifying suggestion are simply absent from the result,
-// not included with an empty list - the caller should never open a review screen for those.
-ipcMain.handle('smart-match-suggest', (_, fileIds) => {
-  const excluded = getSmartMatchExcludedIds();
-  const folderCentroids = [];
-  for (const folder of appData.folders) {
-    if (excluded.has(folder.id)) continue;
-    const memberVecs = appData.files
-      .filter(f => f.folders && f.folders.includes(folder.id))
-      .map(f => embeddingIndex.get(f.id))
-      .filter(Boolean);
-    if (memberVecs.length < MIN_FOLDER_MEMBERS_FOR_CENTROID) continue;
-    folderCentroids.push({ folderId: folder.id, folderName: folder.name, centroid: computeCentroid(memberVecs) });
-  }
-  const results = [];
-  for (const id of fileIds) {
-    const vec = embeddingIndex.get(id);
-    if (!vec) continue;
-    const suggestions = [];
-    for (const fc of folderCentroids) {
-      const score = cosine(vec, fc.centroid);
-      if (score >= SMART_MATCH_MIN_SCORE) suggestions.push({ folderId: fc.folderId, folderName: fc.folderName, score });
-    }
-    if (suggestions.length) {
-      suggestions.sort((a, b) => b.score - a.score);
-      results.push({ id, suggestions });
-    }
-  }
-  return results;
-});
-
 // Recombines clusters whose centroids are themselves near-identical - recovers some of the
 // single-pass pass above's over-fragmentation (the same real topic landing in several
 // separate clusters just because of processing order) without touching CLUSTER_MIN_SCORE's
@@ -1488,6 +1420,14 @@ ipcMain.handle('open-file-dialog', async () => {
   const r = await dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] });
   if (r.canceled) return [];
   return mapYielding(r.filePaths, buildFileEntry);
+});
+// The legal pages shown inside the app (renderer.js's openLegal): the copies shipped with this
+// version, so what's shown is exactly what this version's users agree to, online or not. Only
+// these four names - nothing else on disk can be read through here.
+const LEGAL_DOCS = ['TERMS.md', 'PRIVACY.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE'];
+ipcMain.handle('read-legal-doc', (_, name) => {
+  if (!LEGAL_DOCS.includes(name)) return null;
+  try { return fs.readFileSync(path.join(__dirname, name), 'utf8'); } catch (e) { return null; }
 });
 // Folders to import whole (the first-run wizard's "Choose a folder") - each one then goes through
 // process-dropped-folder, exactly like a folder dropped on the window.
@@ -2531,6 +2471,8 @@ function firestoreValue(v) {
   return { stringValue: String(v) };
 }
 
+const TELEMETRY_USAGE_KEYS = ['onboarded', 'guidedSort', 'guidedSortDone', 'located', 'flick', 'flickDone', 'binned', 'globe', 'relive',
+  'editor', 'photomod', 'duplicates', 'findPeople', 'search', 'exportLiked', 'nudgeShown', 'nudgeOpened'];
 ipcMain.on('send-telemetry', (_, payload) => {
   // Only packaged builds count as real users - running from source (npm start) never pings,
   // so contributors working on Trove don't show up in the usage numbers.
@@ -2541,6 +2483,15 @@ ipcMain.on('send-telemetry', (_, payload) => {
   for (const k of ['event', 'installId', 'sessionDurationMs', 'fileCount', 'folderCount', 'bestOfCount', 'pinnedCount']) {
     fields[k] = firestoreValue(payload[k]);
   }
+  // Feature usage totals (renderer.js's countUse): only these names, only whole numbers - whatever
+  // else the payload holds is dropped here. Must match the Firestore rules (telemetry-config.example.js).
+  const use = payload.featureUse && typeof payload.featureUse === 'object' ? payload.featureUse : {};
+  const useFields = {};
+  for (const k of TELEMETRY_USAGE_KEYS) {
+    const n = use[k];
+    if (Number.isFinite(n) && n > 0) useFields[k] = { integerValue: String(Math.min(Math.round(n), 1e9)) };
+  }
+  fields.featureUse = { mapValue: { fields: useFields } };
   fields.appVersion = firestoreValue(app.getVersion());
   fields.platform = firestoreValue(process.platform);
   fields.expireAt = { timestampValue: new Date(Date.now() + TELEMETRY_RETENTION_MS).toISOString() };

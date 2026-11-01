@@ -427,6 +427,32 @@ textarea.text-input{resize:vertical}
 /* SETTINGS */
 .settings-link{font-size:11.5px;color:var(--accent2);cursor:pointer;margin-bottom:14px}
 .settings-link:hover{text-decoration:underline}
+.settings-legal{display:flex;flex-wrap:wrap;gap:4px 16px;margin:-8px 0 14px}
+.settings-legal .settings-link{margin-bottom:0}
+/* The legal pages (openLegal): above Settings, which can open them */
+#legalModal{z-index:350}
+.legal-box{width:min(760px,94vw);height:min(80vh,820px);display:flex;flex-direction:column}
+.legal-tabs{display:flex;gap:4px;padding:12px 16px 0;border-bottom:1px solid var(--border2)}
+.legal-tab{font-family:inherit;font-size:12.5px;padding:8px 12px;border:none;border-bottom:2px solid transparent;background:none;color:var(--text2);cursor:pointer}
+.legal-tab.active{color:var(--text);border-bottom-color:var(--accent)}
+.legal-body{flex:1;overflow-y:auto;padding:8px 24px 20px;font-size:13px;line-height:1.6;color:var(--text2)}
+.legal-body h2{font-size:19px;color:var(--text);margin:18px 0 6px}
+.legal-body h3{font-size:14.5px;color:var(--text);margin:18px 0 4px}
+.legal-body h4{font-size:13px;color:var(--text);margin:14px 0 4px}
+.legal-body p{margin:6px 0}
+.legal-body b{color:var(--text)}
+.legal-body a{color:var(--accent2);cursor:pointer;text-decoration:underline}
+.legal-body ul{margin:6px 0;padding-left:20px}
+.legal-body hr{border:none;border-top:1px solid var(--border2);margin:24px 0}
+.legal-body code{font-family:'DM Mono',monospace;font-size:12px;background:var(--bg3);padding:1px 4px;border-radius:4px}
+.legal-body pre{white-space:pre-wrap;font-family:'DM Mono',monospace;font-size:11.5px}
+.legal-body table{border-collapse:collapse;width:100%;margin:8px 0;font-size:12px}
+.legal-body th,.legal-body td{border:1px solid var(--border2);padding:5px 8px;text-align:left;vertical-align:top}
+.legal-body th{color:var(--text);background:var(--bg3)}
+.legal-box .nfm-foot{padding:10px 16px;border-top:1px solid var(--border2)}
+/* The Welcome step's line accepting the Terms (frRenderWelcome) */
+.fr-legal{font-size:11.5px;color:var(--text3);max-width:440px;text-align:center;margin-top:6px}
+.fr-legal a{color:var(--accent2);cursor:pointer;text-decoration:underline}
 .settings-toggle-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text);cursor:pointer}
 .settings-toggle-row input{width:14px;height:14px;accent-color:var(--accent);cursor:pointer}
 .settings-hint{font-size:11px;color:var(--text3);line-height:1.5;margin-top:6px}
@@ -536,8 +562,6 @@ textarea.text-input{resize:vertical}
 /* The HUD over the globe */
 #globeMapArea.recon{--recon:#00d4ff}
 #globeMapArea.recon canvas{cursor:none}
-#globeMapArea[data-sensor="nvg"]{--recon:#5cff8a}
-#globeMapArea[data-sensor="flir"]{--recon:#ffb347}
 #reconHud{position:absolute;inset:0;pointer-events:none;z-index:2;color:var(--recon);font-size:11px}
 .recon-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%)}
 .recon-corner{position:absolute;width:26px;height:26px;border:2px solid var(--recon);opacity:.8}
@@ -551,11 +575,6 @@ textarea.text-input{resize:vertical}
 #reconStatus[data-state="marked"]{color:var(--recon)}
 #reconStatus[data-state="acquired"],#reconStatus[data-state="complete"]{color:#0b0f14;background:var(--recon);padding:1px 6px;align-self:flex-start}
 @keyframes reconBlink{50%{opacity:0}}
-.recon-tr{position:absolute;top:72px;left:52px;display:flex;align-items:center;gap:4px;pointer-events:auto}
-.recon-tr span{margin-right:4px;opacity:.7}
-.recon-tr button{font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;background:rgba(5,8,12,.7);border:1px solid rgba(255,255,255,.18);padding:4px 8px;cursor:pointer}
-.recon-tr button.active{border-color:var(--recon);box-shadow:inset 0 0 0 1px var(--recon),0 0 10px rgba(0,0,0,.4)}
-.recon-tr kbd{font:inherit;opacity:.55;margin-right:2px}
 .recon-readout{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);display:flex;gap:18px;padding:6px 14px;background:rgba(5,8,12,.72);border:1px solid rgba(255,255,255,.12);white-space:nowrap;color:#e8eaed}
 .recon-readout span{color:inherit}
 .recon-reticle{position:absolute;left:0;top:0;width:0;height:0;opacity:0;transition:opacity .15s}
@@ -809,20 +828,6 @@ textarea.text-input{resize:vertical}
 input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer}
 
 /* Smart Match */
-#smartMatch{position:absolute;inset:0;z-index:65;background:var(--bg);display:none;flex-direction:column}
-#smartMatch.open{display:flex}
-.sm-body{flex:1;overflow:hidden;display:flex}
-.sm-stage{flex:1;display:flex;align-items:center;justify-content:center;background:#000;position:relative;min-width:0}
-.sm-img{max-width:100%;max-height:100%;object-fit:contain}
-.sm-video-badge{position:absolute;top:16px;left:16px}
-.sm-panel{width:300px;flex-shrink:0;padding:22px;overflow-y:auto;border-left:1px solid var(--border);display:flex;flex-direction:column}
-.sm-filename{font-size:13px;font-weight:600;color:var(--text);word-break:break-word}
-.sm-sub{font-size:12px;color:var(--text2);line-height:1.5;margin:6px 0 14px}
-.sm-folder-list{display:flex;flex-direction:column;gap:8px}
-.sm-folder-chip{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rs);font-family:inherit;font-size:13px;color:var(--text2);cursor:pointer;text-align:left;transition:border-color .12s,background .12s,color .12s}
-.sm-folder-chip:hover{border-color:var(--accent)}
-.sm-folder-chip.checked{background:var(--aglow);border-color:var(--accent);color:var(--text)}
-.sm-ai-badge{opacity:.7}
 .gs-steps{font-size:12px;flex:1;display:flex;align-items:center;justify-content:flex-end;gap:2px}
 .gs-pct{font-size:11.5px;color:var(--text2);font-family:'DM Mono',monospace;margin-right:8px}
 .gs-step-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--border2);margin:0 3px}
@@ -1811,21 +1816,6 @@ body.win-chrome #flickMode{top:32px}
     <div class="gs-bar" id="frBar"></div>
   </div>
 
-  <!-- Smart Match: ML-suggested folder review, one confident match at a time. Separate from
-       Guided Sort's Auto-Group step (grid of suggestion cards, good for bulk-confirming many at
-       once) - this is deliberately slower and one-photo-at-a-time, for when the "I sorted all my
-       photos" feeling matters more than raw speed. Only ever shows files the backend (main.js's
-       smart-match-suggest) is very confident about - see SMART_MATCH_MIN_SCORE there. -->
-  <div id="smartMatch">
-    <div class="sort-topbar">
-      <span class="sort-title">✨ Smart Match</span>
-      <span class="sort-hint" id="smProgress"></span>
-      <button class="globe-close" onclick="exitSmartMatch()">✕ Exit</button>
-    </div>
-    <div class="sm-body" id="smBody"></div>
-    <div class="gs-bar" id="smBar"></div>
-  </div>
-
   <!-- Guided Sort wizard -->
   <div id="guidedSort">
     <div class="sort-topbar">
@@ -2554,8 +2544,12 @@ body.win-chrome #flickMode{top:32px}
         <input type="checkbox" id="setTelemetry"/>
         <span data-i18n="settingsTelemetry">Help improve Trove</span>
       </label>
-      <div class="settings-hint" style="margin:-8px 0 14px" data-i18n="settingsTelemetryHint">Sends a small anonymous ping when the app opens/closes: a random install id (not linked to your name or email, renewed every 13 months), session length, and rough counts (files, folders, favorites). Never your file names, paths, photos, or locations. Stored with Google Firebase and deleted after 25 months. Off any time, right here.</div>
-      <div class="settings-link" style="margin-top:-8px" onclick="openPrivacyPolicy()" data-i18n="privacyPolicyLink">Privacy policy →</div>
+      <div class="settings-hint" style="margin:-8px 0 14px" data-i18n="settingsTelemetryHint">Sends a small anonymous ping when the app opens/closes: a random install id (not linked to your name or email, renewed every 13 months), session length, rough counts (files, folders, favorites), and how many times each main feature has been used (for example how many times the Globe was opened). Never your file names, paths, photos, or locations. Stored with Google Firebase and deleted after 25 months. Off any time, right here.</div>
+      <div class="settings-legal">
+        <span class="settings-link" onclick="openLegal('TERMS.md')" data-i18n="legalTermsLink">Terms of use →</span>
+        <span class="settings-link" onclick="openPrivacyPolicy()" data-i18n="privacyPolicyLink">Privacy policy →</span>
+        <span class="settings-link" onclick="openLegal('THIRD_PARTY_NOTICES.md')" data-i18n="legalLicencesLink">Open-source licences →</span>
+      </div>
 
       <!-- Mapbox settings (token/routing/monthly cap) hidden from users for now, same as
            MAPBOX_ENABLED in renderer.js - not ready to offer yet. All the logic (fields,
@@ -2590,6 +2584,14 @@ body.win-chrome #flickMode{top:32px}
      fetched on demand the first time the user opens the Globe view. See ensureCesiumLoaded()
      in renderer.js. globe.js itself only touches the Cesium global inside buildGlobe(), never
      at parse time, so it's safe to load before Cesium is present. -->
+<!-- Terms of use, Privacy policy, open-source licences (openLegal in renderer.js) -->
+<div class="modal-backdrop" id="legalModal" onclick="if(event.target===this)closeLegal()">
+  <div class="modal-box legal-box">
+    <div class="legal-tabs" id="legalTabs"></div>
+    <div class="legal-body" id="legalBody" onclick="legalLinkClick(event)"></div>
+    <div class="nfm-foot"><button class="btn-cancel" onclick="closeLegal()" data-i18n="flClose">Close</button></div>
+  </div>
+</div>
 <!-- The guide (coachShow) and a face crop opened in its photo (facePeek) -->
 <div id="coach" role="status" aria-live="polite"></div>
 <div id="facePeek" onclick="closeFacePeek()"></div>

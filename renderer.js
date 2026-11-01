@@ -5,6 +5,8 @@
 // stays regardless of this flag now, since Settings also holds the delete toggle and the
 // telemetry toggle (see sendTelemetryPing() below). Everything else (straight-line routes, the
 // globe, pins, photo organizing) is unaffected either way.
+// Turning it on sends a day's photo coordinates to Mapbox: PRIVACY.md (and TERMS.md's
+// third-party services) must say so first - neither mentions Mapbox while this is off.
 const MAPBOX_ENABLED = false;
 // Temporary master switch: leg-based routes and transport-mode detection (drive/walk/
 // flight/ferry/train, see buildTripLegs/classifyLegMode above) are fully implemented but
@@ -390,11 +392,11 @@ const I18N = {
   },
   coachLocationTitle: { en: 'Mission: locate', fr: 'Mission : localiser', de: 'Mission: orten', es: 'Misión: localizar', zh: '任务:定位' },
   coachLocationBody: {
-    en: `Put each photo back where it was taken. Click the globe, then confirm (Enter); or, when there's a 📡 lead, use it: the next photo comes up by itself. Try the night vision and thermal optics (1, 2, 3). Don't remember a place? Skip it (S).`,
-    fr: `Remettez chaque photo là où elle a été prise. Cliquez sur le globe puis confirmez (Entrée) ; ou, s'il y a une piste 📡, utilisez-la : la photo suivante arrive toute seule. Essayez la vision nocturne et la thermique (1, 2, 3). Vous ne vous souvenez plus d'un endroit ? Passez (S).`,
-    de: `Bringen Sie jedes Foto dorthin zurück, wo es aufgenommen wurde. Klicken Sie auf den Globus und bestätigen Sie (Enter), oder nutzen Sie einen 📡-Hinweis, wenn es einen gibt: Das nächste Foto kommt von selbst. Probieren Sie Nachtsicht und Wärmebild (1, 2, 3). Ort vergessen? Überspringen (S).`,
-    es: `Devuelve cada foto al lugar donde se tomó. Haz clic en el globo y confirma (Intro); o, si hay una pista 📡, úsala: la siguiente foto aparece sola. Prueba la visión nocturna y la térmica (1, 2, 3). ¿No recuerdas un sitio? Sáltalo (S).`,
-    zh: `把每张照片放回拍摄地点。点击地球再确认(Enter);如果有 📡 线索,直接使用:下一张会自动出现。试试夜视和热成像(1、2、3)。记不清地点?跳过(S)。`
+    en: `Put each photo back where it was taken. Click the globe, then confirm (Enter); or, when there's a 📡 lead, use it: the next photo comes up by itself. Don't remember a place? Skip it (S).`,
+    fr: `Remettez chaque photo là où elle a été prise. Cliquez sur le globe puis confirmez (Entrée) ; ou, s'il y a une piste 📡, utilisez-la : la photo suivante arrive toute seule. Vous ne vous souvenez plus d'un endroit ? Passez (S).`,
+    de: `Bringen Sie jedes Foto dorthin zurück, wo es aufgenommen wurde. Klicken Sie auf den Globus und bestätigen Sie (Enter), oder nutzen Sie einen 📡-Hinweis, wenn es einen gibt: Das nächste Foto kommt von selbst. Ort vergessen? Überspringen (S).`,
+    es: `Devuelve cada foto al lugar donde se tomó. Haz clic en el globo y confirma (Intro); o, si hay una pista 📡, úsala: la siguiente foto aparece sola. ¿No recuerdas un sitio? Sáltalo (S).`,
+    zh: `把每张照片放回拍摄地点。点击地球再确认(Enter);如果有 📡 线索,直接使用:下一张会自动出现。记不清地点?跳过(S)。`
   },
   // The locate mission (renderGsLocatePanel / reconMount)
   reconKicker: { en: 'Trove // Recon', fr: 'Trove // Reconnaissance', de: 'Trove // Aufklärung', es: 'Trove // Reconocimiento', zh: 'Trove // 侦察' },
@@ -438,10 +440,6 @@ const I18N = {
     zh: v => `已定位 ${v.located} 张${v.skipped ? ` · 跳过 ${v.skipped} 张` : ''}`
   },
   reconRetrySkipped: { en: v => `Retry the ${v.n} skipped`, fr: v => `Reprendre les ${v.n} passées`, de: v => `Die ${v.n} übersprungenen erneut`, es: v => `Retomar las ${v.n} saltadas`, zh: v => `重试跳过的 ${v.n} 张` },
-  reconOptic: { en: 'Optics', fr: 'Optique', de: 'Optik', es: 'Óptica', zh: '光学' },
-  reconStd: { en: 'Normal', fr: 'Normal', de: 'Normal', es: 'Normal', zh: '标准' },
-  reconNvg: { en: 'Night vision', fr: 'Vision nocturne', de: 'Nachtsicht', es: 'Visión nocturna', zh: '夜视' },
-  reconFlir: { en: 'Thermal', fr: 'Thermique', de: 'Wärmebild', es: 'Térmica', zh: '热成像' },
   // North, south, east, west - one letter each, for the coordinates readout
   reconCompass: { en: 'NSEW', fr: 'NSEO', de: 'NSOW', es: 'NSEO', zh: 'NSEW' },
   coachDoneTitle: { en: 'All sorted!', fr: 'Tout est trié !', de: 'Alles sortiert!', es: '¡Todo ordenado!', zh: '全部整理好了!' },
@@ -560,21 +558,35 @@ const I18N = {
   },
   settingsTelemetry: { en: 'Help improve Trove', fr: 'Aider à améliorer Trove', de: 'Trove verbessern helfen', es: 'Ayudar a mejorar Trove', zh: '帮助改进 Trove' },
   settingsTelemetryHint: {
-    en: 'Sends a small anonymous ping when the app opens/closes: a random install id (not linked to your name or email, renewed every 13 months), session length, and rough counts (files, folders, favorites). Never your file names, paths, photos, or locations. Stored with Google Firebase and deleted after 25 months. Off any time, right here.',
-    fr: 'Envoie un petit signal anonyme à l\'ouverture/fermeture de l\'application : un identifiant d\'installation aléatoire (non lié à votre nom ni à votre e-mail, renouvelé tous les 13 mois), la durée de session, et des comptages approximatifs (fichiers, dossiers, favoris). Jamais vos noms de fichiers, chemins, photos ni lieux. Stocké chez Google Firebase et supprimé après 25 mois. Désactivable à tout moment, ici même.',
-    de: 'Sendet beim Öffnen/Schließen der App ein kleines anonymes Signal: eine zufällige Installations-ID (nicht mit Ihrem Namen oder Ihrer E-Mail verknüpft, alle 13 Monate erneuert), Sitzungsdauer und grobe Zählungen (Dateien, Ordner, Favoriten). Niemals Ihre Dateinamen, Pfade, Fotos oder Orte. Gespeichert bei Google Firebase und nach 25 Monaten gelöscht. Jederzeit hier deaktivierbar.',
-    es: 'Envía una pequeña señal anónima al abrir/cerrar la app: un id de instalación aleatorio (no vinculado a tu nombre ni a tu email, renovado cada 13 meses), la duración de la sesión y recuentos aproximados (archivos, carpetas, favoritos). Nunca tus nombres de archivo, rutas, fotos ni ubicaciones. Se guarda en Google Firebase y se borra a los 25 meses. Se puede desactivar aquí mismo en cualquier momento.',
-    zh: '在应用打开/关闭时发送一个小型匿名信号:一个随机的安装 ID(与你的姓名或邮箱无关,每 13 个月更换一次)、会话时长以及大致统计数据(文件数、文件夹数、收藏数)。绝不会包含你的文件名、路径、照片或位置。数据存储在 Google Firebase,25 个月后删除。可随时在此关闭。'
+    en: 'Sends a small anonymous ping when the app opens/closes: a random install id (not linked to your name or email, renewed every 13 months), session length, rough counts (files, folders, favorites), and how many times each main feature has been used (for example how many times the Globe was opened). Never your file names, paths, photos, or locations. Stored with Google Firebase and deleted after 25 months. Off any time, right here.',
+    fr: 'Envoie un petit signal anonyme à l\'ouverture/fermeture de l\'application : un identifiant d\'installation aléatoire (non lié à votre nom ni à votre e-mail, renouvelé tous les 13 mois), la durée de session, des comptages approximatifs (fichiers, dossiers, favoris) et le nombre d\'utilisations de chaque fonction principale (par exemple combien de fois le Globe a été ouvert). Jamais vos noms de fichiers, chemins, photos ni lieux. Stocké chez Google Firebase et supprimé après 25 mois. Désactivable à tout moment, ici même.',
+    de: 'Sendet beim Öffnen/Schließen der App ein kleines anonymes Signal: eine zufällige Installations-ID (nicht mit Ihrem Namen oder Ihrer E-Mail verknüpft, alle 13 Monate erneuert), Sitzungsdauer, grobe Zählungen (Dateien, Ordner, Favoriten) und wie oft jede Hauptfunktion genutzt wurde (zum Beispiel wie oft der Globus geöffnet wurde). Niemals Ihre Dateinamen, Pfade, Fotos oder Orte. Gespeichert bei Google Firebase und nach 25 Monaten gelöscht. Jederzeit hier deaktivierbar.',
+    es: 'Envía una pequeña señal anónima al abrir/cerrar la app: un id de instalación aleatorio (no vinculado a tu nombre ni a tu email, renovado cada 13 meses), la duración de la sesión, recuentos aproximados (archivos, carpetas, favoritos) y cuántas veces se ha usado cada función principal (por ejemplo cuántas veces se abrió el Globo). Nunca tus nombres de archivo, rutas, fotos ni ubicaciones. Se guarda en Google Firebase y se borra a los 25 meses. Se puede desactivar aquí mismo en cualquier momento.',
+    zh: '在应用打开/关闭时发送一个小型匿名信号:一个随机的安装 ID(与你的姓名或邮箱无关,每 13 个月更换一次)、会话时长、大致统计数据(文件数、文件夹数、收藏数),以及各主要功能的使用次数(例如地球被打开了几次)。绝不会包含你的文件名、路径、照片或位置。数据存储在 Google Firebase,25 个月后删除。可随时在此关闭。'
   },
   telemetryNotice: {
-    en: 'Help improve Trove? If you say yes, it sends an anonymous usage ping (a random install id, session length and library counts). Never your photos, file names or locations. Off unless you choose it, and you can change it any time in Settings.',
-    fr: 'Aider à améliorer Trove ? Si vous acceptez, il envoie un signal d\'utilisation anonyme (un identifiant d\'installation aléatoire, la durée de session et des comptages de la bibliothèque). Jamais vos photos, noms de fichiers ni lieux. Désactivé sauf si vous l\'activez, modifiable à tout moment dans les Paramètres.',
-    de: 'Trove verbessern helfen? Wenn Sie zustimmen, sendet es ein anonymes Nutzungssignal (eine zufällige Installations-ID, die Sitzungsdauer und Bibliothekszahlen). Niemals Ihre Fotos, Dateinamen oder Orte. Aus, solange Sie es nicht einschalten, jederzeit in den Einstellungen änderbar.',
-    es: '¿Ayudar a mejorar Trove? Si aceptas, envía una señal de uso anónima (un id de instalación aleatorio, la duración de la sesión y recuentos de la biblioteca). Nunca tus fotos, nombres de archivo ni ubicaciones. Desactivado salvo que lo elijas, y puedes cambiarlo cuando quieras en Ajustes.',
-    zh: '帮助改进 Trove?如果你同意,它会发送匿名使用信号(随机安装 ID、会话时长和照片库数量统计)。绝不包含你的照片、文件名或位置。除非你选择开启,否则保持关闭,可随时在设置中更改。'
+    en: 'Help improve Trove? If you say yes, it sends an anonymous usage ping (a random install id, session length, library counts and how many times each main feature has been used). Never your photos, file names or locations. Off unless you choose it, and you can change it any time in Settings.',
+    fr: 'Aider à améliorer Trove ? Si vous acceptez, il envoie un signal d\'utilisation anonyme (un identifiant d\'installation aléatoire, la durée de session, des comptages de la bibliothèque et le nombre d\'utilisations de chaque fonction principale). Jamais vos photos, noms de fichiers ni lieux. Désactivé sauf si vous l\'activez, modifiable à tout moment dans les Paramètres.',
+    de: 'Trove verbessern helfen? Wenn Sie zustimmen, sendet es ein anonymes Nutzungssignal (eine zufällige Installations-ID, die Sitzungsdauer, Bibliothekszahlen und wie oft jede Hauptfunktion genutzt wurde). Niemals Ihre Fotos, Dateinamen oder Orte. Aus, solange Sie es nicht einschalten, jederzeit in den Einstellungen änderbar.',
+    es: '¿Ayudar a mejorar Trove? Si aceptas, envía una señal de uso anónima (un id de instalación aleatorio, la duración de la sesión, recuentos de la biblioteca y cuántas veces se ha usado cada función principal). Nunca tus fotos, nombres de archivo ni ubicaciones. Desactivado salvo que lo elijas, y puedes cambiarlo cuando quieras en Ajustes.',
+    zh: '帮助改进 Trove?如果你同意,它会发送匿名使用信号(随机安装 ID、会话时长、照片库数量统计以及各主要功能的使用次数)。绝不包含你的照片、文件名或位置。除非你选择开启,否则保持关闭,可随时在设置中更改。'
   },
   telemetryNoticeOk: { en: 'Yes, share', fr: 'Oui, partager', de: 'Ja, teilen', es: 'Sí, compartir', zh: '好的,分享' },
   telemetryNoticeOff: { en: 'No thanks', fr: 'Non merci', de: 'Nein danke', es: 'No, gracias', zh: '不用了' },
+  // The legal pages (openLegal) and where they're offered
+  legalTerms: { en: 'Terms of use', fr: "Conditions d'utilisation", de: 'Nutzungsbedingungen', es: 'Condiciones de uso', zh: '使用条款' },
+  legalLicences: { en: 'Open-source licences', fr: 'Licences open source', de: 'Open-Source-Lizenzen', es: 'Licencias de código abierto', zh: '开源许可' },
+  legalTermsLink: { en: 'Terms of use →', fr: "Conditions d'utilisation →", de: 'Nutzungsbedingungen →', es: 'Condiciones de uso →', zh: '使用条款 →' },
+  legalLicencesLink: { en: 'Open-source licences →', fr: 'Licences open source →', de: 'Open-Source-Lizenzen →', es: 'Licencias de código abierto →', zh: '开源许可 →' },
+  legalUpdated: { en: 'The terms of use were updated on 1 November 2026.', fr: "Les conditions d'utilisation ont été mises à jour le 1er novembre 2026.", de: 'Die Nutzungsbedingungen wurden am 1. November 2026 aktualisiert.', es: 'Las condiciones de uso se actualizaron el 1 de noviembre de 2026.', zh: '使用条款已于 2026 年 11 月 1 日更新。' },
+  legalRead: { en: 'Read', fr: 'Lire', de: 'Lesen', es: 'Leer', zh: '查看' },
+  frWelcomeLegal: {
+    en: v => `By continuing, you accept the ${v.terms} and acknowledge the ${v.privacy}.`,
+    fr: v => `En continuant, vous acceptez les ${v.terms} et prenez connaissance de la ${v.privacy}.`,
+    de: v => `Wenn Sie fortfahren, akzeptieren Sie die ${v.terms} und nehmen die ${v.privacy} zur Kenntnis.`,
+    es: v => `Al continuar, aceptas las ${v.terms} y declaras conocer la ${v.privacy}.`,
+    zh: v => `继续即表示你接受${v.terms},并已知悉${v.privacy}。`
+  },
   privacyPolicy: { en: 'Privacy policy', fr: 'Politique de confidentialité', de: 'Datenschutzerklärung', es: 'Política de privacidad', zh: '隐私政策' },
   privacyPolicyLink: { en: 'Privacy policy →', fr: 'Politique de confidentialité →', de: 'Datenschutzerklärung →', es: 'Política de privacidad →', zh: '隐私政策 →' },
   settingsCancel: { en: 'Cancel', fr: 'Annuler', de: 'Abbrechen', es: 'Cancelar', zh: '取消' },
@@ -2448,7 +2460,11 @@ async function init() {
   setupPowerSaving();
   await hideSplash(splashStart);
   if (!appData.files.length && !appData.onboardingCompleted) openFirstRunWizard(true);
-  else setTimeout(discoverMaybeNudge, 5000); // once the library has settled
+  else { setTimeout(discoverMaybeNudge, 5000); legalNoticeOnce(); } // once the library has settled
+  if (appData.settings.telemetryEnabled && (appData.settings.telemetryConsentVersion || 1) < TELEMETRY_CONSENT_VERSION) {
+    appData.settings.telemetryEnabled = false; // a yes to an older version of the ping: asked again, nothing sent meanwhile
+    appData.settings.telemetryAsked = false;
+  }
   if (appData.settings.telemetryAsked) sendTelemetryPing('app_open');
   else showTelemetryNotice();
   // Flush any pending debounced save before the window closes
@@ -3308,8 +3324,7 @@ function renderFilesInner(area, renderedCount = 0) {
     const banner = document.createElement('div');
     banner.className = 'dump-banner';
     banner.innerHTML = `📥 <strong style="color:var(--gold)">${files.length} file${files.length!==1?'s':''} to review</strong> - camera folders shown on cards are <em>suggestions</em>. Reassign via Folders, then select all &amp; click <strong>✓ Sorted</strong>
-      <button class="dump-banner-btn dump-sort-btn" style="margin-left:0" onclick="enterGuidedSort()">🧭 Help me sort</button>
-      <button class="dump-banner-btn" onclick="enterSmartMatch()" title="Reviews only the photos it's very confident about, one at a time - learned from how you've already organized your own folders">✨ Smart Match</button>`;
+      <button class="dump-banner-btn dump-sort-btn" style="margin-left:0" onclick="enterGuidedSort()">🧭 Help me sort</button>`;
     area.appendChild(banner);
   }
 
@@ -3431,6 +3446,7 @@ function onBestOfFilterChange() {
 // main.js's export-best-of-album handler for why this is the one place Trove
 // deliberately copies files instead of just linking to them.
 async function exportBestOfAlbum() {
+  countUse('exportLiked');
   const files = getVisibleFiles();
   if (!files.length) { toast(t('lkNothingToExport')); return; }
   const trips = getTripLikeFolders();
@@ -3449,10 +3465,14 @@ async function exportBestOfAlbum() {
 }
 
 // ── SEARCH & FILTER CHIPS ────────────────────────────────────────────────────
+let searchCounted = false; // the current search is already counted (see countUse)
 function onSearchInput() {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => {
     searchTimer = null;
+    const searching = !!getSearchQuery().trim();
+    if (searching && !searchCounted) countUse('search');
+    searchCounted = searching;
     renderFiles();
     runSemanticSearch(getSearchQuery()); // resolves later and re-renders once results land - see semanticIndex.js
   }, 200);
@@ -5674,7 +5694,7 @@ function toggleGlobe() {
   globeOpen = !globeOpen;
   document.getElementById('globeView').classList.toggle('open', globeOpen);
   document.getElementById('globeToggle').classList.toggle('active', globeOpen);
-  if (globeOpen && !gsPickMode && !locateModeFileIds) discoverSeen('globe'); // the Globe itself - not the locate mission or "Set Location"
+  if (globeOpen && !gsPickMode && !locateModeFileIds) { discoverSeen('globe'); countUse('globe'); } // the Globe itself - not the locate mission or "Set Location"
   if (!globeOpen) discoverClosed('globe');
   if (globeOpen) {
     if (window.Cesium) {
@@ -6582,6 +6602,7 @@ function saveSettings() {
   appData.settings.allowDeleteFiles = document.getElementById('setAllowDelete').checked;
   appData.settings.telemetryEnabled = document.getElementById('setTelemetry').checked;
   appData.settings.telemetryAsked = true; // the Settings hint right under the toggle explains it in full
+  appData.settings.telemetryConsentVersion = TELEMETRY_CONSENT_VERSION;
   // Switching face recognition either way does real work (a scan, or deleting its data), so
   // it goes through its own function - which asks before deleting anything.
   const faceOn = document.getElementById('setFaceRecognition').checked;
@@ -6622,8 +6643,91 @@ function openMapboxSignup() { window.api.openExternal('https://www.mapbox.com/')
 // flipping it off there is a hard stop, not just a UI label. Nothing is sent unless the user
 // said yes to showTelemetryNotice() below (or turned it on in Settings). PRIVACY_URL is the
 // public policy.
-const PRIVACY_URL = 'https://github.com/Gilouloum/Trove/blob/main/PRIVACY.md';
-function openPrivacyPolicy() { window.api.openExternal(PRIVACY_URL); }
+// ── Legal pages ──────────────────────────────────────────────────────────────
+// The Terms of use, the Privacy policy and the open-source licences, read from the copies shipped
+// with this version (main.js's read-legal-doc) and shown in a modal, one tab each - offline, and
+// exactly the text this version's users agree to. The two policies hold an English then a French
+// version: French readers start on theirs. A small Markdown reader is all they need: headings,
+// paragraphs, lists, tables, bold/italic, inline code and links.
+const LEGAL_TABS = [{ doc: 'TERMS.md', label: 'legalTerms' }, { doc: 'PRIVACY.md', label: 'privacyPolicy' }, { doc: 'THIRD_PARTY_NOTICES.md', label: 'legalLicences' }];
+const LEGAL_REPO_URL = 'https://github.com/Gilouloum/Trove/blob/main/';
+// TERMS.md's date: bump it with any change that matters, and people who already use Trove are
+// told once (legalNoticeOnce); new ones accept the current version on the Welcome step.
+const TERMS_VERSION = '2026-11-01';
+function legalSlug(text) { return text.toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu, '').trim().replace(/\s/g, '-'); }
+function legalInline(s) {
+  return esc(s)
+    .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+    .replace(/(^|[^*\w])\*([^*\s][^*]*)\*/g, '$1<i>$2</i>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a data-href="$2">$1</a>');
+}
+function legalMarkdownHtml(md) {
+  const cells = l => l.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+  return md.replace(/\r/g, '').split(/\n{2,}/).map(block => {
+    const lines = block.split('\n').filter(l => l.trim());
+    if (!lines.length) return '';
+    const h = lines[0].match(/^(#{1,3})\s+(.*)$/);
+    if (h && lines.length === 1) return `<h${h[1].length + 1} id="${esc(legalSlug(h[2]))}">${legalInline(h[2])}</h${h[1].length + 1}>`;
+    if (lines.length === 1 && /^-{3,}$/.test(lines[0].trim())) return '<hr>';
+    if (lines.every(l => /^\s*[-*]\s+/.test(l))) return `<ul>${lines.map(l => `<li>${legalInline(l.replace(/^\s*[-*]\s+/, ''))}</li>`).join('')}</ul>`;
+    if (lines.every(l => l.trim().startsWith('|'))) {
+      const rows = lines.filter(l => !/^\s*\|[\s:|-]+\|\s*$/.test(l)).map(cells);
+      return `<table><thead><tr>${rows[0].map(c => `<th>${legalInline(c)}</th>`).join('')}</tr></thead><tbody>${rows.slice(1).map(r => `<tr>${r.map(c => `<td>${legalInline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    }
+    return `<p>${legalInline(lines.join(' '))}</p>`;
+  }).join('');
+}
+async function openLegal(doc = 'TERMS.md', anchor = null) {
+  const modal = document.getElementById('legalModal');
+  const body = document.getElementById('legalBody');
+  document.getElementById('legalTabs').innerHTML = LEGAL_TABS.map(tab =>
+    `<button class="legal-tab${tab.doc === doc ? ' active' : ''}" onclick="openLegal('${tab.doc}')">${t(tab.label)}</button>`).join('');
+  modal.classList.add('open');
+  const text = await window.api.readLegalDoc(doc).catch(() => null);
+  if (!text) { body.innerHTML = `<p><a data-href="${LEGAL_REPO_URL}${doc}">${LEGAL_REPO_URL}${doc}</a></p>`; return; }
+  body.innerHTML = doc === 'LICENSE' ? `<pre>${esc(text)}</pre>` : legalMarkdownHtml(text);
+  // French readers start on the French half of the two policies.
+  const target = anchor || (currentLang === 'fr' ? { 'TERMS.md': 'conditions-dutilisation-de-trove', 'PRIVACY.md': 'politique-de-confidentialité-de-trove' }[doc] : null);
+  const el = target && document.getElementById(target);
+  body.scrollTop = el ? el.offsetTop - body.offsetTop - 8 : 0;
+}
+function closeLegal() { document.getElementById('legalModal').classList.remove('open'); }
+// Links inside a legal page: to another part of it, to another legal page, or out to the web.
+function legalLinkClick(e) {
+  const a = e.target.closest('a[data-href]');
+  if (!a) return;
+  e.preventDefault();
+  const href = a.getAttribute('data-href');
+  const [file, hash] = href.split('#');
+  if (!file) { const el = document.getElementById(decodeURIComponent(hash)); const body = document.getElementById('legalBody'); if (el) body.scrollTop = el.offsetTop - body.offsetTop - 8; return; }
+  if (['TERMS.md', 'PRIVACY.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE'].includes(file)) { openLegal(file, hash ? decodeURIComponent(hash) : null); return; }
+  window.api.openExternal(/^(https?:|mailto:)/.test(href) ? href : LEGAL_REPO_URL + href);
+}
+function openPrivacyPolicy() { openLegal('PRIVACY.md'); }
+// Someone who already used Trove when the Terms changed in a way that matters: told once.
+function legalNoticeOnce() {
+  if (appData.termsVersion === TERMS_VERSION) return;
+  if (!appData.termsVersion && !appData.files.length) return; // a new install: accepted on the Welcome step (frAcceptTerms)
+  appData.termsVersion = TERMS_VERSION;
+  saveData();
+  const c = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = 'toast-item toast-undo';
+  const span = document.createElement('span');
+  span.textContent = t('legalUpdated');
+  const read = document.createElement('button');
+  read.className = 'toast-undo-btn';
+  read.textContent = t('legalRead');
+  read.onclick = () => { el.remove(); openLegal('TERMS.md'); };
+  const ok = document.createElement('button');
+  ok.className = 'toast-undo-btn';
+  ok.style.cssText = 'background:transparent;color:var(--text3)';
+  ok.textContent = t('coachGotIt');
+  ok.onclick = () => el.remove();
+  el.append(span, read, ok);
+  c.appendChild(el);
+}
 function sendTelemetryPing(event) {
   if (appData.settings?.telemetryEnabled !== true) return;
   if (!appData.settings?.telemetryAsked) return;
@@ -6635,11 +6739,29 @@ function sendTelemetryPing(event) {
     fileCount: appData.files.length,
     folderCount: appData.folders.length,
     bestOfCount: appData.files.filter(f => f.bestOf).length,
-    pinnedCount: appData.files.filter(f => f.pinned).length
+    pinnedCount: appData.files.filter(f => f.pinned).length,
+    featureUse: appData.usage || {}
     // appVersion/platform aren't collected here - main.js stamps those itself (it already
     // knows app.getVersion()/process.platform) when it receives this ping.
   });
 }
+
+// ── Feature usage counts ─────────────────────────────────────────────────────
+// How many times each main feature has been used: one plain running total per name in
+// USAGE_KEYS, nothing else (no dates, no what or where). It's how to tell which features people
+// actually use - what to improve and what to drop - from numbers rather than guesses. Kept on
+// this computer; it only ever leaves inside the opt-in ping above, and main.js passes on only
+// these names (the same list is repeated there, as the boundary that matters).
+const USAGE_KEYS = ['onboarded', 'guidedSort', 'guidedSortDone', 'located', 'flick', 'flickDone', 'binned', 'globe', 'relive',
+  'editor', 'photomod', 'duplicates', 'findPeople', 'search', 'exportLiked', 'nudgeShown', 'nudgeOpened'];
+function countUse(key, n = 1) {
+  if (!USAGE_KEYS.includes(key) || !(n > 0)) return;
+  const u = appData.usage || (appData.usage = {});
+  u[key] = (u[key] || 0) + n;
+}
+// Bumped when what the ping sends changes, so the people who said yes are asked again about
+// the new version (2: feature usage counts were added) - see init().
+const TELEMETRY_CONSENT_VERSION = 2;
 
 // One-time yes/no question about the ping, shown to new installs and upgraders alike. Stays up
 // until answered (no timeout), and nothing is sent before then: "Yes" starts the pings with
@@ -6655,6 +6777,7 @@ function showTelemetryNotice() {
   const answer = (enabled) => {
     appData.settings.telemetryAsked = true;
     appData.settings.telemetryEnabled = enabled;
+    appData.settings.telemetryConsentVersion = TELEMETRY_CONSENT_VERSION;
     saveData();
     el.remove();
     sendTelemetryPing('app_open');
@@ -6804,6 +6927,7 @@ function updateTerrainToggleBtn() {
 // routes instead. Skipped entirely if they've deliberately turned routing off.
 let mapboxHintShownThisSession = false;
 function startRelive(tripId) {
+  countUse('relive');
   hideTripMarkerPopup();
   document.getElementById('gsLocatePanel')?.classList.remove('open');
   const days = buildTripDays(tripId);
@@ -7910,6 +8034,7 @@ function enterDupDetection() {
   dupOpenGroupId = null;
   document.getElementById('dupMode').classList.add('open');
   discoverSeen('dups');
+  countUse('duplicates');
   scanForDuplicates();
 }
 
@@ -9282,6 +9407,7 @@ function updateSortButton() {
 function enterGuidedSort() {
   gsBatch = appData.files.filter(f => f.toSort && !f.isLivePhotoVideo).map(f => f.id);
   if (!gsBatch.length) { toast('📥 Nothing left to sort'); return; }
+  countUse('guidedSort');
   gsOpen = true;
   gsStep = 'start';
   gsKinds = { trip: false, adventure: false, everyday: false };
@@ -10497,13 +10623,11 @@ function renderGsLocationStep() {
 // ── The locate mission ───────────────────────────────────────────────────────
 // Putting photos back on the map, played as a recon mission: one target at a time (or a group,
 // Ctrl+click in the queue), its intel (when, which camera, a lead from nearby geotagged photos),
-// a HUD over the globe with live coordinates and switchable optics, and each placed photo
+// a HUD over the globe with live coordinates, and each placed photo
 // "acquired" with a lock-on sound and XP before the next one comes up by itself.
 let gslSkipped = new Set(); // targets passed over this mission - offered again only once the rest are done
 let gslLocated = 0;         // targets placed this mission, for the counter
 let gslTotal = 0;           // targets when the mission started
-let gslSensor = 'std';      // 'std' | 'nvg' | 'flir' - see setSensor in globe.js
-const GSL_SENSORS = [{ key: 'std', label: 'reconStd' }, { key: 'nvg', label: 'reconNvg' }, { key: 'flir', label: 'reconFlir' }];
 function gslStart() {
   gslSkipped = new Set();
   gslLocated = 0;
@@ -10621,6 +10745,7 @@ function gslRenderComplete(panel, skipped) {
 // the next target comes up on its own.
 function gslAcquired(count, lat, lng) {
   gslLocated += count;
+  countUse('located', count);
   rewardsGain('locate', count, { sound: 'lock' });
   const at = lat != null ? globeCtrl?.screenPosition(lat, lng) : null;
   if (at) {
@@ -10694,9 +10819,9 @@ function updateGslBar() {
 }
 
 // ── The HUD over the globe ──
-// Corner brackets, scanlines, the optics switch, the live coordinates under the pointer and a
-// reticle that follows it. Only ever during the locate mission; nothing in it takes clicks except
-// the optics buttons, so the globe underneath works exactly as usual.
+// Corner brackets, scanlines, the live coordinates under the pointer and a
+// reticle that follows it. Only ever during the locate mission; nothing in it takes clicks, so
+// the globe underneath works exactly as usual.
 function reconMount() {
   reconUnmount();
   const area = document.getElementById('globeMapArea');
@@ -10708,13 +10833,11 @@ function reconMount() {
     <div class="recon-scan"></div>
     <i class="recon-corner tl"></i><i class="recon-corner tr"></i><i class="recon-corner bl"></i><i class="recon-corner br"></i>
     <div class="recon-tl">${t('reconKicker')}<span id="reconStatus"></span></div>
-    <div class="recon-tr"><span>${t('reconOptic')}</span>${GSL_SENSORS.map((s, i) => `<button data-sensor="${s.key}" onclick="reconSetSensor('${s.key}')"><kbd>${i + 1}</kbd> ${t(s.label)}</button>`).join('')}</div>
     <div class="recon-readout" id="reconReadout"></div>
     <div class="recon-reticle" id="reconReticle"><i></i></div>`;
   area.appendChild(hud);
   area.addEventListener('mousemove', reconMoveReticle);
   area.addEventListener('mouseleave', reconHideReticle);
-  reconSetSensor(gslSensor);
   reconReadout(null);
 }
 function reconUnmount() {
@@ -10735,12 +10858,6 @@ function reconMoveReticle(e) {
 function reconHideReticle() {
   const r = document.getElementById('reconReticle');
   if (r) r.style.opacity = '0';
-}
-function reconSetSensor(mode) {
-  gslSensor = mode;
-  globeCtrl?.setSensor(mode);
-  document.querySelectorAll('#reconHud [data-sensor]').forEach(b => b.classList.toggle('active', b.dataset.sensor === mode));
-  document.getElementById('globeMapArea')?.setAttribute('data-sensor', mode);
 }
 function reconSetStatus(state) {
   const el = document.getElementById('reconStatus');
@@ -10799,6 +10916,7 @@ function renderGsDoneStep() {
 let frRatingAfterFlick = false;
 async function gsFinishMarkSorted(flickTripId) {
   gsBatch.forEach(id => { const f = appData.files.find(f => f.id === id); if (f) f.toSort = false; });
+  countUse('guidedSortDone');
   await saveData();
   toast('✅ Batch marked as sorted');
   if (flickTripId) {
@@ -10973,12 +11091,13 @@ function discoverMaybeNudge() {
   });
   if (!f) return;
   d.nudges[f.key] = { n: (d.nudges[f.key]?.n || 0) + 1, at: now };
+  countUse('nudgeShown');
   d.lastNudgeAt = now;
   saveData();
   coachShow('nudge:' + f.key, {
     icon: f.icon, title: t('nudgeTitle_' + f.key), body: t('nudgeBody_' + f.key), pulse: f.target,
     actions: [
-      { label: t('discoverShowMe'), primary: true, onclick: () => { coachHide(); f.open(); } },
+      { label: t('discoverShowMe'), primary: true, onclick: () => { coachHide(); countUse('nudgeOpened'); f.open(); } },
       { label: t('discoverLater'), onclick: coachHide }
     ]
   });
@@ -11077,16 +11196,24 @@ function frRenderLanguage() {
     <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frAdvance('welcome')">${t('continueArrow')}</button>`;
 }
 
+// Going on from Welcome, either way, is accepting the Terms its last line names and links.
 function frRenderWelcome() {
   document.getElementById('frBody').innerHTML = `
     <div class="fr-hero">
       <div class="fr-hero-icon">🔗</div>
       <div class="gs-intro" style="max-width:440px">${t('frWelcomeBody')}</div>
+      <div class="fr-legal">${t('frWelcomeLegal', {
+        terms: `<a onclick="openLegal('TERMS.md')">${t('legalTerms')}</a>`,
+        privacy: `<a onclick="openLegal('PRIVACY.md')">${t('privacyPolicy')}</a>` })}</div>
     </div>`;
   document.getElementById('frBar').innerHTML = `
     <span class="gs-bar-info"></span>
-    <button class="dump-banner-btn" onclick="frSkipAll()">${t('frWelcomeSkip')}</button>
-    <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frAdvance('addfiles')">${t('frWelcomeGo')}</button>`;
+    <button class="dump-banner-btn" onclick="frAcceptTerms(); frSkipAll()">${t('frWelcomeSkip')}</button>
+    <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frAcceptTerms(); frAdvance('addfiles')">${t('frWelcomeGo')}</button>`;
+}
+function frAcceptTerms() {
+  appData.termsVersion = TERMS_VERSION;
+  appData.termsAcceptedAt = Date.now();
 }
 
 // ── Add files step ───────────────────────────────────────────────────────────
@@ -11180,6 +11307,7 @@ async function frAddProcessedFiles(newFiles) {
 }
 // Done adding: into the real To Sort folder, with the guide explaining what to do there.
 async function frGoToToSort() {
+  countUse('onboarded');
   await frFinish();
   selectFolder('to-sort', document.querySelector('[data-folder="to-sort"]'));
   coachToSort();
@@ -11253,113 +11381,6 @@ function frSubmitFeedback() {
   saveData();
   toast(t('frFeedbackThanksToast'));
   frFinish();
-}
-
-// ── SMART MATCH ──────────────────────────────────────────────────────────────
-// A separate, deliberately slower companion to Guided Sort's Auto-Group step: instead of a
-// grid of suggestion cards for bulk-confirming many at once, this reviews one file at a time,
-// shown large, only for files main.js's smart-match-suggest is very confident about (see
-// SMART_MATCH_MIN_SCORE there - much stricter than Auto-Group's already-conservative bar,
-// on purpose: the whole point is the user doing almost nothing but confirming, so a wrong
-// suggestion here costs more trust than a missed one). Always user-initiated from the To Sort
-// banner - never a popup, never automatic - and every suggestion is toggleable, never applied
-// until "Confirm & Next."
-let smOpen = false;
-let smQueue = []; // [{file, suggestions:[{folderId,folderName,score}]}] - only files with >=1 confident match
-let smIndex = 0;
-let smChecked = new Set(); // folder ids currently checked for the file on screen
-let smConfirmedCount = 0;
-
-async function enterSmartMatch() {
-  const toSortFiles = appData.files.filter(f => f.toSort && isMedia(f.ext) && !f._missing && !f.isLivePhotoVideo);
-  if (!toSortFiles.length) { toast('📥 Nothing in To Sort right now'); return; }
-  toast('✨ Checking for confident matches…', 2000);
-  await embedBatchNow(toSortFiles); // usually already embedded via the background pass - this just covers anything that isn't yet
-  const results = await window.api.smartMatchSuggest(toSortFiles.map(f => f.id)).catch(() => []);
-  if (!results.length) { toast('🤷 No confident matches yet - the more you sort, the smarter this gets'); return; }
-  smQueue = results.map(r => ({ file: appData.files.find(f => f.id === r.id), suggestions: r.suggestions })).filter(e => e.file);
-  smIndex = 0;
-  smConfirmedCount = 0;
-  smOpen = true;
-  document.getElementById('smartMatch').classList.add('open');
-  renderSmartMatchStep();
-}
-
-function renderSmartMatchStep() {
-  const entry = smQueue[smIndex];
-  if (!entry) { smFinish(); return; }
-  const { file, suggestions } = entry;
-  smChecked = new Set(file.folders || []);
-  suggestions.forEach(s => smChecked.add(s.folderId)); // confident suggestions start pre-checked
-  document.getElementById('smProgress').textContent = `${smIndex + 1} of ${smQueue.length}`;
-  document.getElementById('smBody').innerHTML = `
-    <div class="sm-stage">
-      <img class="sm-img" id="smImg" alt="${esc(file.name)}"/>
-      ${isVid(file.ext) ? '<div class="video-badge sm-video-badge">▶ VIDEO</div>' : ''}
-    </div>
-    <div class="sm-panel">
-      <div class="sm-filename">${esc(file.name)}</div>
-      <div class="sm-sub">✨ Suggested from how you've already sorted similar photos - tap to add or remove.</div>
-      <div class="sm-folder-list" id="smFolderList"></div>
-    </div>`;
-  loadSmartMatchImage(file);
-  renderSmFolderList();
-  document.getElementById('smBar').innerHTML = `
-    <span class="gs-bar-info">${suggestions.length} suggestion${suggestions.length!==1?'s':''}</span>
-    <button class="dump-banner-btn" onclick="smSkip()">Skip</button>
-    <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="smConfirmNext()">✓ Confirm & Next →</button>`;
-}
-// Guards against a slow image load landing after the user has already moved to a different
-// file (Next/Skip clicked before the previous photo's preview finished fetching).
-async function loadSmartMatchImage(file) {
-  const requestedId = file.id;
-  const url = isVid(file.ext) ? await getThumb(file) : ((await getPreviewImage(file)) || await getThumb(file));
-  if (!smOpen || smQueue[smIndex]?.file.id !== requestedId) return;
-  const img = document.getElementById('smImg');
-  if (img) img.src = url || '';
-}
-function renderSmFolderList() {
-  const entry = smQueue[smIndex];
-  const list = document.getElementById('smFolderList');
-  if (!entry || !list) return;
-  list.innerHTML = '';
-  const byId = new Map();
-  (entry.file.folders || []).forEach(id => { const f = appData.folders.find(x => x.id === id); if (f) byId.set(id, { folder: f, suggested: false }); });
-  entry.suggestions.forEach(s => { const f = appData.folders.find(x => x.id === s.folderId); if (f) byId.set(s.folderId, { folder: f, suggested: true }); });
-  byId.forEach(({ folder, suggested }, id) => {
-    const chip = document.createElement('button');
-    const checked = smChecked.has(id);
-    chip.className = 'sm-folder-chip' + (checked ? ' checked' : '');
-    chip.innerHTML = `${checked ? '✓ ' : ''}${esc(folderEmojiPrefix(folder))}${esc(folder.name)}${suggested ? ' <span class="sm-ai-badge">✨</span>' : ''}`;
-    chip.onclick = () => { checked ? smChecked.delete(id) : smChecked.add(id); renderSmFolderList(); };
-    list.appendChild(chip);
-  });
-}
-async function smConfirmNext() {
-  const entry = smQueue[smIndex];
-  entry.file.folders = [...smChecked];
-  await saveData();
-  smConfirmedCount++;
-  smAdvance();
-}
-function smSkip() { smAdvance(); }
-function smAdvance() {
-  smIndex++;
-  if (smIndex >= smQueue.length) smFinish();
-  else renderSmartMatchStep();
-}
-function smFinish() {
-  document.getElementById('smartMatch').classList.remove('open');
-  smOpen = false;
-  toast(smConfirmedCount ? `🎉 Sorted ${smConfirmedCount} photo${smConfirmedCount !== 1 ? 's' : ''}!` : 'Done reviewing');
-  renderSidebar();
-  renderFiles();
-}
-function exitSmartMatch() {
-  document.getElementById('smartMatch').classList.remove('open');
-  smOpen = false;
-  renderSidebar();
-  renderFiles();
 }
 
 // ── PHOTO EDITOR ─────────────────────────────────────────────────────────────
@@ -13181,6 +13202,7 @@ function peSyncModeChrome() {
 }
 
 async function openPhotoMod(fileId) {
+  countUse('photomod');
   if (fileId) { await openPhotoEditor(fileId, 'pro'); return; }
   // Opening PhotoMod from the sidebar is the one moment where "blank canvas" and "a photo I
   // already have" are equally likely, so it asks rather than assuming the library.
@@ -14719,7 +14741,7 @@ function pmToggleAdjustPanel(force) {
 async function openPhotoEditor(fileId, mode) {
   const file = appData.files.find(f => f.id === fileId);
   if (!file || !isEditable(file.ext)) return;
-  if (mode !== 'pro') discoverSeen('editor');
+  if (mode !== 'pro') { discoverSeen('editor'); countUse('editor'); }
   peOpen = true;
   peMode = mode === 'pro' ? 'pro' : 'simple';
   peFileId = fileId;
@@ -17617,6 +17639,11 @@ document.addEventListener('keydown', e=>{
     if(e.key==='Escape'){ e.preventDefault(); closeFacePeek(); }
     return;
   }
+  // A legal page sits over everything else it can be opened from (Settings, the Welcome step).
+  if(document.getElementById('legalModal')?.classList.contains('open')){
+    if(e.key==='Escape'){ e.preventDefault(); closeLegal(); }
+    return;
+  }
   // Flick through (flick.js) covers the whole window, so it takes the keyboard first.
   if(fl){ flickHandleKey(e); return; }
   // The 360 player takes every key while it's showing, unless a dialog (Remove, Edit Props...)
@@ -17652,12 +17679,10 @@ document.addEventListener('keydown', e=>{
     return;
   }
   // The locate mission (Guided Sort's last step, on the Globe): Enter confirms the pin, S skips
-  // the target, 1-3 switch the optics.
+  // the target.
   if(gsPickMode && globeOpen && !document.querySelector('.modal-backdrop.open') && !document.getElementById('photoPopup').classList.contains('open') && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName || '')){
     if(e.key==='Enter'){ e.preventDefault(); confirmLocatePick(); return; }
     if(e.key==='s' || e.key==='S'){ e.preventDefault(); gslSkipTarget(); return; }
-    const sensor = GSL_SENSORS[Number(e.key) - 1];
-    if(sensor){ e.preventDefault(); reconSetSensor(sensor.key); return; }
   }
   if(gsOpen){
     if(e.key==='Escape'){

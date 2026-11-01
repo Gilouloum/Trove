@@ -67,6 +67,7 @@ async function ctxMoveToBin() {
 // XP (rewards.js) for clearing things out: each file pays once, however often it comes and goes.
 function binAndReward(ids) {
   const moved = moveToBin(ids);
+  countUse('binned', moved.length);
   const receipt = rewardsBegin();
   ids.forEach(id => { if (rewardsClaim(receipt, 'binned', id)) rewardsAdd(receipt, 'bin'); });
   rewardsCommit(receipt, { sound: 'tick' });

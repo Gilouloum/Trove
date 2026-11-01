@@ -1,6 +1,6 @@
 # Trove Privacy Policy
 
-*Last updated: 31 October 2026* · [Version française plus bas](#politique-de-confidentialité-de-trove)
+*Last updated: 1 November 2026* · [Version française plus bas](#politique-de-confidentialité-de-trove)
 
 Trove runs on your computer. Your photos, videos, file names, folders, faces, people's names and edits never leave it. There are no accounts, no ads and no cookies, and nothing is ever sold.
 
@@ -19,11 +19,12 @@ Contact: **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 - a random install ID (generated on your computer, not linked to your name or email, and replaced every 13 months)
 - the event type (app opened or session ended) and the session length
 - the number of files, folders, Liked photos and pinned photos in your library
+- how many times each main feature has been used: for example how many guided sorts were started and finished, how many times the Globe, the photo editor or Flick through was opened, how many photos were placed on the map or moved to the Bin, and how many searches were made. These are running totals only: never what was searched, sorted, edited or placed, nor where or when
 - the Trove version and operating system (Windows or macOS)
 
 **What is never sent.** Photos, videos, thumbnails, file names, folder names, paths, locations, faces, people's names, search queries, or anything else from your library.
 
-**Why.** To know how many people use Trove and roughly how, so I can decide what to fix and build next. It is used only for these statistics: never for advertising, never combined with other data, never shared or sold.
+**Why.** To know how many people use Trove and which features they actually use, so I can decide what to fix, what to build next and what to remove. It is used only for these statistics: never for advertising, never combined with other data, never shared or sold.
 
 **Legal basis.** Your consent (Article 6(1)(a) GDPR, and Article 82 of the French Data Protection Act for the install ID stored on your computer). The ping is off unless you say yes, and you can withdraw your consent at any time.
 
@@ -31,7 +32,7 @@ Contact: **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 
 **How long.** Each event is deleted 25 months after it is sent.
 
-**Your choice.** Trove asks you once, on first launch, whether to share these statistics, and nothing is sent unless you say yes. You can change your answer at any time in **Settings → Help improve Trove**. Once it is off, nothing more is sent.
+**Your choice.** Trove asks you on first launch whether to share these statistics, and nothing is sent unless you say yes. If what is sent changes, Trove asks you again. You can change your answer at any time in **Settings → Help improve Trove**. Once it is off, nothing more is sent.
 
 ## 2. Place names for your photos (OpenStreetMap)
 
@@ -65,7 +66,7 @@ If this policy changes, the new version will be published here with a new date a
 
 # Politique de confidentialité de Trove
 
-*Dernière mise à jour : 31 octobre 2026*
+*Dernière mise à jour : 1er novembre 2026*
 
 Trove fonctionne sur votre ordinateur. Vos photos, vidéos, noms de fichiers, dossiers, visages, noms de personnes et retouches n'en sortent jamais. Il n'y a ni compte, ni publicité, ni cookie, et rien n'est jamais vendu.
 
@@ -84,11 +85,12 @@ Contact : **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 - un identifiant d'installation aléatoire (généré sur votre ordinateur, non lié à votre nom ni à votre e-mail, et renouvelé tous les 13 mois)
 - le type d'événement (ouverture ou fin de session) et la durée de la session
 - le nombre de fichiers, de dossiers, de coups de cœur et de photos épinglées de votre bibliothèque
+- le nombre d'utilisations de chaque fonction principale : par exemple combien de tris guidés ont été commencés et terminés, combien de fois le Globe, l'éditeur photo ou le mode Parcourir ont été ouverts, combien de photos ont été placées sur la carte ou mises à la Corbeille, et combien de recherches ont été faites. Ce ne sont que des totaux : jamais ce qui a été recherché, trié, retouché ou placé, ni où ni quand
 - la version de Trove et le système d'exploitation (Windows ou macOS)
 
 **Ce qui n'est jamais envoyé.** Photos, vidéos, miniatures, noms de fichiers, noms de dossiers, chemins, lieux, visages, noms de personnes, recherches, ni quoi que ce soit d'autre provenant de votre bibliothèque.
 
-**Pourquoi.** Pour savoir combien de personnes utilisent Trove et, en gros, comment, afin de décider quoi corriger et développer ensuite. Ces données servent uniquement à ces statistiques : jamais à la publicité, jamais croisées avec d'autres données, jamais partagées ni vendues.
+**Pourquoi.** Pour savoir combien de personnes utilisent Trove et quelles fonctions elles utilisent vraiment, afin de décider quoi corriger, quoi développer ensuite et quoi retirer. Ces données servent uniquement à ces statistiques : jamais à la publicité, jamais croisées avec d'autres données, jamais partagées ni vendues.
 
 **Base légale.** Votre consentement (article 6.1.a du RGPD, et article 82 de la loi Informatique et Libertés pour l'identifiant stocké sur votre ordinateur). Ce signal est désactivé sauf si vous l'acceptez, et vous pouvez retirer votre consentement à tout moment.
 
@@ -96,7 +98,7 @@ Contact : **[trovephotos@gmail.com](mailto:trovephotos@gmail.com)**
 
 **Durée de conservation.** Chaque événement est supprimé 25 mois après son envoi.
 
-**Votre choix.** Trove vous demande une fois, au premier lancement, si vous souhaitez partager ces statistiques, et rien n'est envoyé si vous ne l'acceptez pas. Vous pouvez changer d'avis à tout moment dans **Paramètres → Aider à améliorer Trove**. Une fois désactivé, plus rien n'est envoyé.
+**Votre choix.** Trove vous demande au premier lancement si vous souhaitez partager ces statistiques, et rien n'est envoyé si vous ne l'acceptez pas. Si ce qui est envoyé change, Trove vous redemande. Vous pouvez changer d'avis à tout moment dans **Paramètres → Aider à améliorer Trove**. Une fois désactivé, plus rien n'est envoyé.
 
 ## 2. Noms de lieux pour vos photos (OpenStreetMap)
 

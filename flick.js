@@ -98,6 +98,7 @@ let fl = null; // the open session, or null
 function openFlick(scopeId) {
   const files = flickScopeFiles(scopeId);
   if (!files.length) { toast(t('flNothing')); return; }
+  countUse('flick');
   const saved = files.findIndex(f => f.id === appData.flickPos?.[scopeId]);
   fl = { scopeId, files, i: Math.max(0, saved), undo: [], binned: 0, wheel: { accY: 0, accX: 0, last: 0, step: 0 }, drag: null, token: 0, done: false };
   document.getElementById('flickMode').classList.add('open');
@@ -283,6 +284,7 @@ function flickRenderDone() {
   const liked = flickLikedCount();
   const scope = fl.scopeId;
   fl.done = true;
+  countUse('flickDone');
   if (appData.flickPos) delete appData.flickPos[scope];
   document.getElementById('flickStage').innerHTML = `<div class="fl-done">
     <div class="fl-done-heart">❤</div>

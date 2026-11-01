@@ -810,6 +810,7 @@ function faceUpdateProgressUi() {
 
 // ── Review screen ────────────────────────────────────────────────────────────
 async function openFacesMode() {
+  countUse('findPeople');
   document.getElementById('facesMode').classList.add('open');
   faceModeLimit = 40;
   faceModeShowSingles = false;
