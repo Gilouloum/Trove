@@ -1167,6 +1167,8 @@ input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:po
 .liked-divider-count{font-weight:500;background:var(--bg3);border-radius:8px;padding:1px 7px;letter-spacing:0}
 #flickMode{position:fixed;inset:0;z-index:300;background:#0d0c0b;color:#ece7df;display:none;flex-direction:column;overflow:hidden;user-select:none}
 #flickMode.open{display:flex}
+/* On Windows the window buttons live in a 32px strip at the top (see body.win-chrome): start below it, like everything else */
+body.win-chrome #flickMode{top:32px}
 .fl-top{display:flex;align-items:center;gap:12px;padding:12px 18px;flex-shrink:0}
 .fl-title{font-size:14px;font-weight:600}.fl-progress{font-size:12.5px;color:#a39c8e;font-family:'DM Mono',monospace}.fl-liked-count{color:#ec6f92}
 .fl-top .globe-close{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#ece7df}.fl-top .globe-close:disabled{opacity:.35;cursor:default}
