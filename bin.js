@@ -112,8 +112,8 @@ function binEmpty() { if (binEntries().length) binDeleteNow(binEntries().map(f =
 // by default, permanent if ticked). With deleting switched off it only takes them out of Trove.
 function binDeleteNow(ids) {
   const set = new Set(ids);
-  const files = binEntries().filter(f => set.has(f.id));
-  if (!files.length) return;
+  const files = binDropReimported(binEntries().filter(f => set.has(f.id)));
+  if (!files.length) { saveData(); return; }
   if (!canDeleteFiles()) {
     if (!confirm(t('binForgetConfirm', { n: files.length }))) return;
     binForget(files.map(f => f.id));
@@ -150,6 +150,15 @@ function binDeleteNow(ids) {
   });
 }
 
+// Bin entries whose file has been added to the library again since (the same folder imported
+// once more): the file is in use, so it must never be deleted from here. They're let go instead.
+function binDropReimported(entries) {
+  const inLibrary = new Set(appData.files.map(f => f.path));
+  const back = entries.filter(f => inLibrary.has(f.path));
+  if (back.length) binForget(back.map(f => f.id));
+  return entries.filter(f => !inLibrary.has(f.path));
+}
+
 function binForget(ids) {
   const set = new Set(ids);
   appData.bin = binEntries().filter(f => !set.has(f.id));
@@ -162,8 +171,10 @@ function binForget(ids) {
 // left for next time; after 30 more days of not finding them, Trove lets the entry go.
 async function binPurgeExpired() {
   const now = Date.now();
-  const expired = binEntries().filter(f => now - (f.binnedAt || now) >= BIN_DAYS * BIN_DAY_MS);
-  if (!expired.length) return;
+  const due = binEntries().filter(f => now - (f.binnedAt || now) >= BIN_DAYS * BIN_DAY_MS);
+  if (!due.length) return;
+  const expired = binDropReimported(due);
+  if (!expired.length) { persistQuiet(); renderAfterChange(); return; }
   if (!canDeleteFiles()) {
     binForget(expired.map(f => f.id));
     persistQuiet();

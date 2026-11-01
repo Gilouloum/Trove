@@ -294,9 +294,11 @@ function flickRenderDone() {
       ${liked ? `<button class="fl-btn fl-btn-primary" onclick="closeFlick();flickSelectLiked('${scope}')">${t('flSelectLiked')}</button>` : `<button class="fl-btn fl-btn-primary" onclick="closeFlick()">${t('flBack')}</button>`}
     </div></div>`;
   flickRenderTop();
-  // Going all the way through a folder once pays, with the finale (rewards.js).
+  // Going all the way through a trip or adventure once pays, with the finale (rewards.js) - not
+  // To Sort or a category, which would count towards the trip badges without being one.
   const receipt = rewardsBegin();
-  if (rewardsClaim(receipt, 'trips', scope)) {
+  const folder = appData.folders.find(f => f.id === scope);
+  if (folder && isTripLikeRootId(folder.parentId) && rewardsClaim(receipt, 'trips', scope)) {
     rewardsAdd(receipt, 'tripDone');
     rewardsCommit(receipt, { finale: { host: document.getElementById('flickMode'), tripName: flickScopeName(scope) } });
   } else celebrationConfetti(document.getElementById('flickMode'));

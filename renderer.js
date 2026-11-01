@@ -1553,6 +1553,10 @@ function computeBurstGroups(files) {
   const byKey = new Map();
   for (const f of files) {
     if (!isImg(f.ext) || !f.fileDate || f.burstDismissed) continue;
+    // A real burst always carries its camera's EXIF. Without it fileDate is only the file's copy
+    // date, which a whole folder of screenshots or messaging-app photos can share to the second -
+    // and would collapse into one "burst".
+    if (!f.cameraMake && !f.cameraModel) continue;
     const key = (f.cameraMake || f.cameraFolder || '?') + '|' + f.ext.toLowerCase() + '|' + pathDirname(f.path);
     if (!byKey.has(key)) byKey.set(key, []);
     byKey.get(key).push(f);
@@ -4612,7 +4616,7 @@ function bulkDelete(e) {
 async function dumpFiles() {
   const newFiles = await window.api.openFileDialog();
   if (!newFiles.length) return;
-  const toAdd = newFiles.filter(nf => !appData.files.find(f => f.path === nf.path));
+  const toAdd = filesNotInLibrary(newFiles);
   if (!toAdd.length) { toast('ℹ️ All files already in library'); return; }
   await processDump(toAdd);
 }
@@ -4659,22 +4663,28 @@ async function bulkMarkSorted() {
 }
 
 // ── ADD FILES ─────────────────────────────────────────────────────────────────
+// The files of an import that aren't in the library yet (nor twice in the import itself): one
+// lookup set, not a scan of the whole library per file - a few thousand photos into a big
+// library used to freeze the window for seconds.
+function filesNotInLibrary(newFiles) {
+  const known = new Set(appData.files.map(f => f.path));
+  return newFiles.filter(nf => !known.has(nf.path) && known.add(nf.path));
+}
+
 async function addFiles() {
   if (currentFolder === 'to-sort') { await dumpFiles(); return; }
   const newFiles = await window.api.openFileDialog();
   if (!newFiles.length) return;
-  let added = 0;
-  newFiles.forEach(nf => {
-    if (!appData.files.find(f=>f.path===nf.path)) {
-      if (isAssignableFolder(currentFolder))
-        nf.folders = [currentFolder];
-      appData.files.push(nf); added++;
-    }
+  const toAdd = filesNotInLibrary(newFiles);
+  const added = toAdd.length;
+  toAdd.forEach(nf => {
+    if (isAssignableFolder(currentFolder)) nf.folders = [currentFolder];
+    appData.files.push(nf);
   });
   if (added > 0) {
-    await autoCreateCameraFolders(newFiles.filter(f => appData.files.includes(f) || true));
+    await autoCreateCameraFolders(toAdd);
     await saveData();
-    queueForIndexing(newFiles);
+    queueForIndexing(toAdd);
     toast(`✅ Added ${added} file${added>1?'s':''}`);
     setTimeout(() => geocodeFiles(), 1000);
   } else toast('ℹ️ Already in library');
@@ -5592,7 +5602,7 @@ function setupDragDrop() {
     if (!flat.length) return;
 
     const newFiles = await window.api.processDroppedPaths(flat);
-    const toAdd = newFiles.filter(nf => !appData.files.find(f=>f.path===nf.path));
+    const toAdd = filesNotInLibrary(newFiles);
     if (!toAdd.length) { toast('ℹ️ Already in library'); return; }
     if (currentFolder === 'to-sort') {
       await processDump(toAdd);
@@ -5625,7 +5635,7 @@ async function importDroppedFolder(dirPath) {
     name: res.name, color: '#06b6d4', parentId: vacRoot.id
   };
   appData.folders.push(trip);
-  const toAdd = res.files.filter(nf => !appData.files.find(f => f.path === nf.path));
+  const toAdd = filesNotInLibrary(res.files);
   toAdd.forEach(nf => { nf.folders = [trip.id]; nf.toSort = true; appData.files.push(nf); });
   await autoCreateCameraFolders(toAdd);
   await saveData();
@@ -9301,8 +9311,19 @@ function exitGuidedSort() {
   if (gsCoachRunDone) { gsCoachRunDone = false; frAskRatingOnce(); return; } // the first guided sort, seen through
   setTimeout(discoverMaybeNudge, 1500);
 }
+// appData.files by id, rebuilt only when the list itself changes (a different array, or files
+// added, removed or binned - nothing replaces an entry in place). gsFiles() runs several times per
+// click in Guided Sort, and finding each photo of a big batch by scanning the whole library
+// slowed every click down as the library grew.
+let fileIndexCache = { arr: null, len: -1, map: null };
+function fileIndex() {
+  const files = appData.files;
+  if (fileIndexCache.arr !== files || fileIndexCache.len !== files.length) fileIndexCache = { arr: files, len: files.length, map: new Map(files.map(f => [f.id, f])) };
+  return fileIndexCache.map;
+}
 function gsFiles() {
-  return gsBatch.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
+  const byId = fileIndex();
+  return gsBatch.map(id => byId.get(id)).filter(Boolean);
 }
 function gsAdvanceStep(next) {
   gsFlushSave();
@@ -10298,9 +10319,10 @@ async function gsLoadFolderSuggestions() {
 }
 // What's still worth suggesting: photos not already in that folder, folders still there.
 function gsFolderSuggestions() {
+  const byId = fileIndex();
   return (gsContentSuggestions?.folderMatches || [])
     .filter(g => !gsFolderSuggestDismissed.has(g.folderId) && appData.folders.some(f => f.id === g.folderId))
-    .map(g => ({ folderId: g.folderId, fileIds: g.fileIds.filter(id => !appData.files.find(f => f.id === id)?.folders?.includes(g.folderId)) }))
+    .map(g => ({ folderId: g.folderId, fileIds: g.fileIds.filter(id => byId.has(id) && !byId.get(id).folders?.includes(g.folderId)) }))
     .filter(g => g.fileIds.length)
     .sort((a, b) => b.fileIds.length - a.fileIds.length)
     .slice(0, GS_FOLDER_SUGGEST_MAX);
@@ -10331,7 +10353,7 @@ async function gsSuggestAccept(folderId) {
   const g = gsFolderSuggestions().find(g => g.folderId === folderId);
   const folder = appData.folders.find(f => f.id === folderId);
   if (!g || !folder) return;
-  g.fileIds.forEach(id => { const f = appData.files.find(f => f.id === id); if (f) gsSetFileIn(f, folderId, true); });
+  g.fileIds.forEach(id => { const f = fileIndex().get(id); if (f) gsSetFileIn(f, folderId, true); });
   await saveData();
   toast(`📁 Added ${g.fileIds.length} photo${g.fileIds.length !== 1 ? 's' : ''} to ${folder.name}`);
   gsSuggestHint(folderId, false);
@@ -10416,13 +10438,24 @@ function gsLocationRemaining() { return gsFiles().filter(f => !f.gps); }
 // photo's real GPS, so callers should present it as a suggestion to confirm, never
 // silently auto-apply it.
 const GS_LOCATION_SUGGEST_TIERS_MIN = [30, 60];
+// Geotagged files sorted by date, so each lookup is a binary search instead of a pass over the
+// whole library. The locate mission asks for every photo in its queue on every refresh, so
+// renderGsLocatePanel builds one for the whole refresh (leadIndexCache); elsewhere it's built
+// on demand - GPS is written in too many places to keep a long-lived one honest.
+let leadIndexCache = null;
+function buildLeadIndex() {
+  const list = appData.files.filter(f => f.gps && f.fileDate).sort((a, b) => a.fileDate - b.fileDate);
+  return { list, dates: list.map(f => f.fileDate) };
+}
 function suggestLocationFor(file) {
   if (!file.fileDate) return null;
+  const { list, dates } = leadIndexCache || buildLeadIndex();
   for (const minutes of GS_LOCATION_SUGGEST_TIERS_MIN) {
     const windowMs = minutes * 60 * 1000;
-    const matches = appData.files.filter(f =>
-      f.id !== file.id && f.gps && f.fileDate && Math.abs(f.fileDate - file.fileDate) <= windowMs
-    );
+    let lo = 0, hi = dates.length;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (dates[mid] < file.fileDate - windowMs) lo = mid + 1; else hi = mid; }
+    const matches = [];
+    for (let i = lo; i < list.length && dates[i] <= file.fileDate + windowMs; i++) if (list[i].id !== file.id) matches.push(list[i]);
     if (matches.length) {
       const lat = matches.reduce((s, m) => s + m.gps.lat, 0) / matches.length;
       const lng = matches.reduce((s, m) => s + m.gps.lng, 0) / matches.length;
@@ -10496,6 +10529,10 @@ function gslSkipTarget() {
   renderGsLocatePanel();
 }
 function renderGsLocatePanel() {
+  leadIndexCache = buildLeadIndex(); // one index for every lead looked up in this refresh
+  try { gslRenderPanel(); } finally { leadIndexCache = null; }
+}
+function gslRenderPanel() {
   const panel = document.getElementById('gsLocatePanel');
   if (!panel) return;
   panel.classList.add('open');
@@ -11129,8 +11166,7 @@ async function frHandleDrop(e) {
   await frImport(dirs, flat);
 }
 async function frAddProcessedFiles(newFiles) {
-  const known = new Set(appData.files.map(f => f.path));
-  const toAdd = newFiles.filter(nf => !known.has(nf.path));
+  const toAdd = filesNotInLibrary(newFiles);
   if (!toAdd.length) { toast(t('frToastAlreadyInLibrary')); if (frOpen && frStep === 'addfiles') frRenderAddFiles(); return; }
   // toSort, like every other import: the wizard hands them to To Sort and Guided Sort.
   toAdd.forEach(nf => { nf.toSort = true; appData.files.push(nf); });
