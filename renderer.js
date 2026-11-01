@@ -328,11 +328,25 @@ const I18N = {
     zh: v => `${v.n} 张照片${v.match?` · 看起来像是「${v.match}」`:''}`
   },
   frClusterBreakdownIntro: {
-    en: v => `These look like ${v.n} separate groups by date. Answering "Yes" only asks about <strong>one trip at a time</strong> - enter that trip's dates and only the matching photos get filed; you'll be asked again for the rest right after, as many times as needed.`,
-    fr: v => `Cela ressemble à ${v.n} groupes distincts par date. Répondre « Oui » ne concerne qu'<strong>un voyage à la fois</strong> - indiquez les dates de ce voyage et seules les photos correspondantes seront classées ; on vous reposera la question pour le reste juste après, autant de fois que nécessaire.`,
-    de: v => `Das sieht nach ${v.n} unterschiedlichen Gruppen nach Datum aus. Mit „Ja" wird immer nur <strong>eine Reise auf einmal</strong> abgefragt - geben Sie die Daten dieser Reise ein, und nur die passenden Fotos werden einsortiert; direkt danach werden Sie für den Rest erneut gefragt, so oft wie nötig.`,
-    es: v => `Esto parece ${v.n} grupos distintos por fecha. Responder "Sí" solo pregunta por <strong>un viaje a la vez</strong> - introduce las fechas de ese viaje y solo se archivarán las fotos que coincidan; se te volverá a preguntar por el resto justo después, tantas veces como haga falta.`,
-    zh: v => `这些照片看起来分成了 ${v.n} 个不同的日期组。选择"是"每次只会询问<strong>一趟旅行</strong>——输入该趟旅行的日期后,只有匹配的照片会被归档;之后会针对剩余照片再次询问,直到全部处理完。`
+    en: v => `These look like ${v.n} separate groups by date. "Yes" covers <strong>one trip at a time</strong>, starting with the biggest group: its dates are filled in for you, and you'll be asked about the rest right after.`,
+    fr: v => `Cela ressemble à ${v.n} groupes distincts par date. « Oui » traite <strong>un voyage à la fois</strong>, en commençant par le plus grand groupe : ses dates sont remplies pour vous, et on vous demandera pour le reste juste après.`,
+    de: v => `Das sieht nach ${v.n} getrennten Gruppen nach Datum aus. „Ja" behandelt <strong>eine Reise auf einmal</strong>, beginnend mit der größten Gruppe: Ihre Daten werden für Sie eingetragen, und zum Rest werden Sie direkt danach gefragt.`,
+    es: v => `Esto parece ${v.n} grupos distintos por fecha. "Sí" trata <strong>un viaje a la vez</strong>, empezando por el grupo más grande: sus fechas se rellenan solas y justo después se te pregunta por el resto.`,
+    zh: v => `这些照片看起来按日期分成了 ${v.n} 组。选择"是"每次处理<strong>一趟旅行</strong>,从最大的一组开始:日期会自动填好,剩下的照片随后再问你。`
+  },
+  frTripAskFollowupStray: {
+    en: v => v.n === 1 ? ` If it was copied from another phone, its date is the day of the copy: it probably belongs to ${v.name}.` : ` If they were copied from another phone, their date is the day of the copy: they probably belong to ${v.name}.`,
+    fr: v => v.n === 1 ? ` Si elle a été copiée depuis un autre téléphone, sa date est celle de la copie : elle fait sûrement partie de ${v.name}.` : ` Si elles ont été copiées depuis un autre téléphone, leur date est celle de la copie : elles font sûrement partie de ${v.name}.`,
+    de: v => v.n === 1 ? ` Wurde es von einem anderen Handy kopiert, ist sein Datum der Tag des Kopierens: Dann gehört es wohl zu ${v.name}.` : ` Wurden sie von einem anderen Handy kopiert, ist ihr Datum der Tag des Kopierens: Dann gehören sie wohl zu ${v.name}.`,
+    es: v => v.n === 1 ? ` Si se copió desde otro móvil, su fecha es la del día de la copia: seguramente es de ${v.name}.` : ` Si se copiaron desde otro móvil, su fecha es la del día de la copia: seguramente son de ${v.name}.`,
+    zh: v => ` 如果是从其他手机复制来的,日期就是复制当天:很可能属于「${v.name}」。`
+  },
+  frTripAddToLast: {
+    en: v => `➕ Add ${v.n === 1 ? 'it' : 'them'} to ${v.name}`,
+    fr: v => `➕ ${v.n === 1 ? "L'ajouter" : 'Les ajouter'} à ${v.name}`,
+    de: v => `➕ Zu ${v.name} hinzufügen`,
+    es: v => `➕ ${v.n === 1 ? 'Añadirla' : 'Añadirlas'} a ${v.name}`,
+    zh: v => `➕ 加入「${v.name}」`
   },
   frTripAskTitle: { en: 'Are these from a specific trip?', fr: "Ces photos viennent-elles d'un voyage particulier ?", de: 'Stammen diese Fotos von einer bestimmten Reise?', es: '¿Son de un viaje concreto?', zh: '这些照片来自某次特定的旅行吗?' },
   frTripYes: { en: '✈️ Yes, name one trip', fr: '✈️ Oui, nommer un voyage', de: '✈️ Ja, eine Reise benennen', es: '✈️ Sí, nombrar un viaje', zh: '✈️ 是的,为这趟旅行命名' },
@@ -347,6 +361,29 @@ const I18N = {
   },
   frTripNamePlaceholder: { en: "e.g. Iceland, Grandma's house, Ski week…", fr: 'ex. Islande, Chez mamie, Semaine au ski…', de: 'z. B. Island, Omas Haus, Skiwoche…', es: 'p. ej. Islandia, Casa de la abuela, Semana de esquí…', zh: '例如:冰岛、奶奶家、滑雪周……' },
   frTripDatesSub: { en: 'When was this trip? (optional - future photo dumps auto-file here if the dates match)', fr: 'Quand a eu lieu ce voyage ? (facultatif - les futurs imports de photos seront classés ici automatiquement si les dates correspondent)', de: 'Wann fand diese Reise statt? (optional - künftige Fotoimporte werden hier automatisch einsortiert, wenn die Daten übereinstimmen)', es: 'Cuándo fue este viaje? (opcional - las futuras importaciones de fotos se archivarán aquí automáticamente si las fechas coinciden)', zh: '这趟旅行是什么时候?(可选——如果日期匹配,以后导入的照片会自动归入此处)' },
+  frTripDatesSubFilled: { en: 'When was this trip? The dates come from your photos: check them and continue.', fr: 'Quand a eu lieu ce voyage ? Les dates viennent de vos photos : vérifiez-les et continuez.', de: 'Wann war diese Reise? Die Daten stammen aus Ihren Fotos: kurz prüfen und weiter.', es: '¿Cuándo fue este viaje? Las fechas salen de tus fotos: compruébalas y continúa.', zh: '这趟旅行是什么时候?日期取自你的照片:确认无误后继续即可。' },
+  // Shared by the wizard's trip step (next: true) and Guided Sort's new trip/adventure prompt - see guessTripDates
+  tripDatesLeftOut: {
+    en: v => (v.n === 1 ? "1 photo is 2+ days away from the others, so it doesn't stretch these dates: it's probably a copy from another phone or app, dated the day it was copied. " : `${v.n} photos are 2+ days away from the others, so they don't stretch these dates: they're probably copies from another phone or app, dated the day they were copied. `) + (v.next ? (v.n === 1 ? "You'll choose where it goes right after." : "You'll choose where they go right after.") : (v.n === 1 ? 'You can still add it by hand.' : 'You can still add them by hand.')),
+    fr: v => (v.n === 1 ? "1 photo est à 2 jours ou plus des autres, elle ne rallonge donc pas ces dates : c'est sûrement une copie venue d'un autre téléphone ou d'une appli, datée du jour de la copie. " : `${v.n} photos sont à 2 jours ou plus des autres, elles ne rallongent donc pas ces dates : ce sont sûrement des copies venues d'un autre téléphone ou d'une appli, datées du jour de la copie. `) + (v.next ? (v.n === 1 ? 'Vous choisirez où la ranger juste après.' : 'Vous choisirez où les ranger juste après.') : (v.n === 1 ? "Vous pouvez quand même l'ajouter à la main." : 'Vous pouvez quand même les ajouter à la main.')),
+    de: v => (v.n === 1 ? '1 Foto liegt 2 oder mehr Tage von den anderen entfernt und verlängert diese Daten daher nicht: Wahrscheinlich ist es eine Kopie von einem anderen Handy oder einer App, datiert auf den Tag des Kopierens. ' : `${v.n} Fotos liegen 2 oder mehr Tage von den anderen entfernt und verlängern diese Daten daher nicht: Wahrscheinlich sind es Kopien von einem anderen Handy oder einer App, datiert auf den Tag des Kopierens. `) + (v.next ? (v.n === 1 ? 'Gleich danach wählen Sie, wohin es gehört.' : 'Gleich danach wählen Sie, wohin sie gehören.') : (v.n === 1 ? 'Sie können es trotzdem von Hand hinzufügen.' : 'Sie können sie trotzdem von Hand hinzufügen.')),
+    es: v => (v.n === 1 ? '1 foto está a 2 días o más de las demás, así que no alarga estas fechas: seguramente es una copia de otro móvil o de una app, con la fecha del día en que se copió. ' : `${v.n} fotos están a 2 días o más de las demás, así que no alargan estas fechas: seguramente son copias de otro móvil o de una app, con la fecha del día en que se copiaron. `) + (v.next ? (v.n === 1 ? 'Justo después eliges dónde va.' : 'Justo después eliges dónde van.') : (v.n === 1 ? 'Aun así puedes añadirla a mano.' : 'Aun así puedes añadirlas a mano.')),
+    zh: v => `有 ${v.n} 张照片与其他照片相隔 2 天或更久,因此不计入这些日期:它们很可能是从其他手机或应用复制来的,日期是复制当天。` + (v.next ? '接下来你可以决定它们放在哪里。' : '你仍然可以手动添加它们。')
+  },
+  gsTripDatesLabel: {
+    en: v => 'When was this trip? ' + (v.filled ? "The dates come from the photos: check them and you're done. " : '') + 'Photos taken in these dates are added automatically.',
+    fr: v => 'Quand a eu lieu ce voyage ? ' + (v.filled ? "Les dates viennent des photos : vérifiez-les, c'est tout. " : '') + 'Les photos prises à ces dates sont ajoutées automatiquement.',
+    de: v => 'Wann war diese Reise? ' + (v.filled ? 'Die Daten stammen aus den Fotos: kurz prüfen, fertig. ' : '') + 'Fotos aus diesem Zeitraum werden automatisch hinzugefügt.',
+    es: v => '¿Cuándo fue este viaje? ' + (v.filled ? 'Las fechas salen de las fotos: compruébalas y listo. ' : '') + 'Las fotos tomadas en estas fechas se añaden automáticamente.',
+    zh: v => '这趟旅行是什么时候?' + (v.filled ? '日期取自照片:确认一下就好。' : '') + '在这些日期拍摄的照片会自动加入。'
+  },
+  gsAdventureDatesLabel: {
+    en: v => 'When was this adventure? ' + (v.filled ? "The dates come from the photos: check them and you're done. " : '') + 'Photos taken in these dates are added automatically.',
+    fr: v => 'Quand a eu lieu cette aventure ? ' + (v.filled ? "Les dates viennent des photos : vérifiez-les, c'est tout. " : '') + 'Les photos prises à ces dates sont ajoutées automatiquement.',
+    de: v => 'Wann war dieses Abenteuer? ' + (v.filled ? 'Die Daten stammen aus den Fotos: kurz prüfen, fertig. ' : '') + 'Fotos aus diesem Zeitraum werden automatisch hinzugefügt.',
+    es: v => '¿Cuándo fue esta aventura? ' + (v.filled ? 'Las fechas salen de las fotos: compruébalas y listo. ' : '') + 'Las fotos tomadas en estas fechas se añaden automáticamente.',
+    zh: v => '这次探险是什么时候?' + (v.filled ? '日期取自照片:确认一下就好。' : '') + '在这些日期拍摄的照片会自动加入。'
+  },
   frTripColorSub: { en: "Color - pick one that's easy to spot in the sidebar and on the Globe", fr: 'Couleur - choisissez-en une facile à repérer dans la barre latérale et sur le Globe', de: 'Farbe - wählen Sie eine, die in der Seitenleiste und auf dem Globus leicht zu erkennen ist', es: 'Color - elige uno fácil de distinguir en la barra lateral y en el Globo', zh: '颜色——选一个在侧边栏和地球视图中容易辨认的颜色' },
   frDateRangeTo: { en: 'to', fr: 'à', de: 'bis', es: 'a', zh: '至' },
   frSkipTrip: { en: 'Skip trip', fr: 'Passer le voyage', de: 'Reise überspringen', es: 'Omitir viaje', zh: '跳过此旅行' },
@@ -5312,8 +5349,8 @@ async function deleteFolderClick(e, id) {
 function toggleNfmDatesRow(show, start, end) {
   document.getElementById('nfmDatesLabel').style.display = show ? '' : 'none';
   document.getElementById('nfmDatesRow').style.display = show ? '' : 'none';
-  document.getElementById('nfmDateStart').value = start ? new Date(start).toISOString().slice(0, 10) : '';
-  document.getElementById('nfmDateEnd').value = end ? new Date(end).toISOString().slice(0, 10) : '';
+  document.getElementById('nfmDateStart').value = start ? dateInputValue(start) : '';
+  document.getElementById('nfmDateEnd').value = end ? dateInputValue(end) : '';
 }
 // Reads the date row back as epoch-ms, or nulls if left blank - used by createFolder().
 function readNfmDates() {
@@ -9440,17 +9477,24 @@ function gsOpenNamePrompt(kind, context) {
   input.value = '';
   input.placeholder = placeholders[kind];
   const dated = kind === 'trip' || kind === 'adventure';
+  // Pre-filled from the photos it's being made for: the ones selected, else the ones not in a
+  // trip or adventure yet - see guessTripDates for why it isn't simply their first-to-last range.
+  const source = !dated || !gsOpen ? [] : selectedIds.size ? gsSelectedFiles() : gsOutsideFiles().length ? gsOutsideFiles() : gsFiles();
+  const range = source.length ? guessTripDates(source.map(f => f.id)) : null;
   const label = document.getElementById('gsNameDatesLabel');
   label.style.display = dated ? '' : 'none';
-  label.textContent = `When was this ${kind}? Photos taken in these dates get added automatically.`;
+  label.textContent = t(kind === 'adventure' ? 'gsAdventureDatesLabel' : 'gsTripDatesLabel', { filled: !!range });
   document.getElementById('gsNameDatesRow').style.display = dated ? '' : 'none';
-  // Pre-filled with the batch's own date range - usually exactly the trip, and easy to trim.
-  const range = dated && gsOpen ? gsBatchDateRange() : null;
-  const ymd = ms => { const d = new Date(ms); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
-  document.getElementById('gsNameDateStart').value = range ? ymd(range.start) : '';
-  document.getElementById('gsNameDateEnd').value = range ? ymd(range.end) : '';
+  document.getElementById('gsNameDateStart').value = range ? dateInputValue(range.start) : '';
+  document.getElementById('gsNameDateEnd').value = range ? dateInputValue(range.end) : '';
+  const note = document.getElementById('gsNameDatesNote');
+  note.style.display = range?.leftOut ? '' : 'none';
+  note.textContent = range?.leftOut ? t('tripDatesLeftOut', { n: range.leftOut, next: false }) : '';
   document.getElementById('gsNameModal').classList.add('open');
   setTimeout(() => input.focus(), 60);
+  if (kind === 'trip' && source.length) suggestTripName(source).then(name => {
+    if (name && !input.value.trim() && gsNamePromptKind === 'trip' && document.getElementById('gsNameModal').classList.contains('open')) { input.value = name; input.select(); }
+  });
 }
 function gsCancelNamePrompt() {
   document.getElementById('gsNameModal').classList.remove('open');
@@ -9514,7 +9558,7 @@ async function gsSubmitNamePrompt() {
 // 4. People and 5. Folders - pick a target, then click photos to toggle them in or out of it
 //    ("paint" mode); or select photos first, then pick the target. Same gesture in both steps.
 // Auto-Group, Cameras and Location are unchanged and follow.
-const GS_TRIP_CLUSTER_GAP_MS = 40 * 60 * 60 * 1000; // >40h between consecutive photos starts a new cluster
+const GS_TRIP_CLUSTER_GAP_MS = 48 * 60 * 60 * 1000; // 2+ days between consecutive photos starts a new cluster
 const GS_TRIP_CLUSTER_SLACK_MS = 36 * 60 * 60 * 1000; // slack around a trip's stored date range, for timezone/EXIF drift
 
 // Shared with the first-run wizard's "is this a trip?" step (frRenderTripAsk) - takes any array
@@ -9526,7 +9570,7 @@ function buildDateClusters(fileIds) {
   const clusters = [];
   let current = [dated[0]];
   for (let i = 1; i < dated.length; i++) {
-    if (dated[i].fileDate - dated[i - 1].fileDate > GS_TRIP_CLUSTER_GAP_MS) { clusters.push(current); current = []; }
+    if (dated[i].fileDate - dated[i - 1].fileDate >= GS_TRIP_CLUSTER_GAP_MS) { clusters.push(current); current = []; }
     current.push(dated[i]);
   }
   clusters.push(current);
@@ -9535,6 +9579,38 @@ function buildDateClusters(fileIds) {
     const match = trips.find(t => t.dateStart && start >= t.dateStart - GS_TRIP_CLUSTER_SLACK_MS && end <= (t.dateEnd || t.dateStart) + GS_TRIP_CLUSTER_SLACK_MS);
     return { fileIds: files.map(f => f.id), start, end, match: match || null };
   });
+}
+// The dates a set of photos most likely spans as one trip, pre-filled wherever a trip is created
+// from photos so the user only has to confirm them: the biggest run with no 2+ day gap in it.
+// Photos on the far side of such a gap don't stretch the trip - they're usually copies from
+// another phone or app, dated the day they were copied rather than taken - so they're counted in
+// leftOut instead, and can still be added to the trip by hand.
+function guessTripDates(fileIds) {
+  const clusters = buildDateClusters(fileIds);
+  if (!clusters.length) return null;
+  const core = clusters.reduce((best, c) => c.fileIds.length > best.fileIds.length ? c : best);
+  const dated = clusters.reduce((n, c) => n + c.fileIds.length, 0);
+  return { start: core.start, end: core.end, leftOut: dated - core.fileIds.length };
+}
+// Epoch-ms → an <input type="date"> value, in local time (toISOString() is UTC, which shows the
+// day before for any date stored as local midnight east of Greenwich).
+function dateInputValue(ms) {
+  const d = new Date(ms);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+// Where most of these photos were taken, as a trip name - instant if they're already geocoded,
+// otherwise one on-demand lookup for a single representative GPS point (routed through the same
+// rate-limited queue as everything else, see main.js's runGeocodeQueue) rather than leaving the
+// field blank just because the background pass hasn't reached these files yet.
+async function suggestTripName(files) {
+  const counts = {};
+  files.forEach(f => { if (f.country) counts[f.country] = (counts[f.country] || 0) + 1; });
+  const best = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  if (best) return best[0];
+  const withGps = files.find(f => f.gps);
+  if (!withGps) return null;
+  try { return (await window.api.geocode(withGps.gps.lat, withGps.gps.lng))?.country || null; }
+  catch (e) { return null; }
 }
 
 const tripLikeCoversDate = (t, d) => !!(t.dateStart && d && d >= t.dateStart - GS_TRIP_CLUSTER_SLACK_MS && d <= (t.dateEnd || t.dateStart) + GS_TRIP_CLUSTER_SLACK_MS);
@@ -10975,8 +11051,11 @@ async function frAddProcessedFiles(newFiles) {
 function frRenderTripAsk() {
   const files = frTripQueue.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
   const clusters = buildDateClusters(frTripQueue);
+  // Leftovers from a trip just created are often that trip's own photos with a wrong date
+  // (copied from another phone, see guessTripDates) - so they can go straight into it, dates unchanged.
+  const lastTrip = frTripAskFollowup && frTripsThisSession.find(trip => trip.id === frCurrentTripId);
   const explain = frTripAskFollowup
-    ? t('frTripAskFollowupText', { n: files.length })
+    ? t('frTripAskFollowupText', { n: files.length }) + (lastTrip ? t('frTripAskFollowupStray', { n: files.length, name: esc(lastTrip.name) }) : '')
     : t('frTripAskDefaultText', { n: files.length });
   // A batch spanning more than one distinct date range (several trips, or trips + everyday
   // photos mixed together) makes a blind yes/no ambiguous - "yes" only asks for ONE trip's
@@ -10994,10 +11073,19 @@ function frRenderTripAsk() {
       ${breakdown}
       <div class="fr-choice-row">
         <button class="fr-choice-btn fr-choice-primary fr-cta" onclick="frAdvance('tripcreate')">${t('frTripYes')}</button>
+        ${lastTrip ? `<button class="fr-choice-btn" onclick="frTripAddLeftoversToLast()">${t('frTripAddToLast', { n: files.length, name: esc(lastTrip.name) })}</button>` : ''}
         <button class="fr-choice-btn" onclick="frTripAskNo()">${t('frTripNo')}</button>
       </div>
     </div>`;
   document.getElementById('frBar').innerHTML = `<span class="gs-bar-info"></span>`;
+}
+async function frTripAddLeftoversToLast() {
+  const trip = frTripsThisSession.find(trip => trip.id === frCurrentTripId);
+  if (!trip) return;
+  await assignFilesToFolderAdditive(frTripQueue, trip.id);
+  trip.count += frTripQueue.length;
+  frTripQueue = [];
+  frEnterTagging();
 }
 // "No" resolves the *entire* current queue as non-trip in one go - there's no further
 // date-splitting to offer once the answer is "none of these are a trip."
@@ -11013,35 +11101,22 @@ function frRenderColorSwatches() {
   if (!row) return;
   row.innerHTML = COLORS.map(c => `<div class="color-swatch${c===frSelectedColor?' selected':''}" style="background:${c}" onclick="frSelectedColor='${c}';frRenderColorSwatches()"></div>`).join('');
 }
-// Suggests a trip name from wherever most of the current queue's photos already have a known
-// country - instant if they're already geocoded, otherwise one on-demand lookup for a single
-// representative GPS point (routed through the same rate-limited queue as everything else,
-// see main.js's runGeocodeQueue) rather than leaving the field blank just because the
-// background pass hasn't reached these files yet. Never overwrites something the user typed.
-async function frSuggestTripName() {
-  const files = frTripQueue.map(id => appData.files.find(f => f.id === id)).filter(Boolean);
-  const counts = {};
-  files.forEach(f => { if (f.country) counts[f.country] = (counts[f.country] || 0) + 1; });
-  const best = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-  if (best) return best[0];
-  const withGps = files.find(f => f.gps);
-  if (!withGps) return null;
-  try { return (await window.api.geocode(withGps.gps.lat, withGps.gps.lng))?.country || null; }
-  catch (e) { return null; }
-}
 function frRenderTripCreate() {
   frSelectedColor = COLORS[frTripsThisSession.length % COLORS.length]; // cycles through the palette so trips created back-to-back this session don't default to the same color
+  // Dates come from the photos themselves (see guessTripDates), so this step is name + confirm.
+  const range = guessTripDates(frTripQueue);
   document.getElementById('frBody').innerHTML = `
     <div class="gs-intro">${t('frTripCreateIntro')}</div>
     <div class="input-row">
       <input class="text-input" id="frTripName" type="text" placeholder="${t('frTripNamePlaceholder')}" onkeydown="if(event.key==='Enter')frSubmitTripCreate()"/>
     </div>
-    <div class="modal-sub" style="margin-bottom:6px">${t('frTripDatesSub')}</div>
+    <div class="modal-sub" style="margin-bottom:6px">${range ? t('frTripDatesSubFilled') : t('frTripDatesSub')}</div>
     <div class="input-row">
-      <input class="text-input" id="frTripDateStart" type="date"/>
+      <input class="text-input" id="frTripDateStart" type="date" value="${range ? dateInputValue(range.start) : ''}"/>
       <span style="align-self:center;color:var(--text3);font-size:12px">${t('frDateRangeTo')}</span>
-      <input class="text-input" id="frTripDateEnd" type="date"/>
+      <input class="text-input" id="frTripDateEnd" type="date" value="${range ? dateInputValue(range.end) : ''}"/>
     </div>
+    ${range?.leftOut ? `<div class="modal-sub" style="margin:-4px 0 10px">${t('tripDatesLeftOut', { n: range.leftOut, next: true })}</div>` : ''}
     <div class="modal-sub" style="margin-bottom:6px">${t('frTripColorSub')}</div>
     <div class="color-row" id="frColorSwatches"></div>`;
   frRenderColorSwatches();
@@ -11050,7 +11125,7 @@ function frRenderTripCreate() {
     <button class="dump-banner-btn" onclick="frTripAskNo()">${t('frSkipTrip')}</button>
     <button class="dump-banner-btn dump-sort-btn fr-cta" onclick="frSubmitTripCreate()">${t('frCreateTripContinue')}</button>`;
   setTimeout(() => document.getElementById('frTripName')?.focus(), 60);
-  frSuggestTripName().then(name => {
+  suggestTripName(frTripQueue.map(id => appData.files.find(f => f.id === id)).filter(Boolean)).then(name => {
     const input = document.getElementById('frTripName');
     if (name && input && !input.value.trim() && frStep === 'tripcreate') { input.value = name; input.select(); }
   });
