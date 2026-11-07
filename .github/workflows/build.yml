@@ -11,6 +11,9 @@ on:
       - 'llms.txt'
       - 'structured-data.json'
       - 'LICENSE'
+      - 'site/**'
+      - '.github/workflows/pages.yml'
+      - '.github/workflows/build.yml'
   workflow_dispatch: {}
 
 # write: the publish steps below update this repo's own "latest-build" release.

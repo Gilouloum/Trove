@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#18181C">
+<title>Privacy Policy | Trove</title>
+<meta name="description" content="What Trove sends, to whom and why: nothing from your library ever leaves your computer.">
+<link rel="canonical" href="https://trovesort.com/privacy.html">
+<link rel="icon" href="img/icon.png">
+<link rel="stylesheet" href="legal.css">
+</head>
+<body>
+<header class="lh"><div class="wrap">
+  <a class="brand" href="./"><img src="img/icon.png" alt="">Trove</a>
+  <a class="back" href="./">Back to home</a>
+</div></header>
+<main class="doc"><div class="wrap narrow">
+  <div class="lang" role="group" aria-label="Language"><button type="button" data-l="en" aria-pressed="true">English</button><button type="button" data-l="fr" aria-pressed="false">Fran&ccedil;ais</button></div>
+  <article lang="en" id="en">
+    <h1>Trove Privacy Policy</h1>
+    <p class="upd">Last updated: 7 November 2026</p>
+<p>Trove runs on your computer. Your photos, videos, file names, folders, faces, people's names and edits never leave it. There are no accounts, no ads and no cookies, and nothing is ever sold.</p>
+<p>A few features do talk to outside services. This page lists every one of them, what they receive, and how to turn them off. Trove is open source, so you can check each of them in <a href="https://github.com/Gilouloum/Trove#open-source" rel="noopener">its code</a>.</p>
+<h2>Who is responsible</h2>
+<p>Trove is made by Gilouloum, an individual developer based in France, who is the data controller for the processing described here.</p>
+<p>Contact: <strong><a href="mailto:trovephotos@gmail.com">trovephotos@gmail.com</a></strong></p>
+<h2>1. Anonymous usage statistics ("Help improve Trove")</h2>
+<p><strong>What is sent.</strong> When the app opens and when it closes, Trove sends one small message containing:</p>
+<ul><li>a random install ID (generated on your computer, not linked to your name or email, and replaced every 13 months)</li><li>the event type (app opened or session ended) and the session length</li><li>the number of files, folders, Liked photos and pinned photos in your library</li><li>how many times each main feature has been used: for example how many guided sorts were started and finished, how many times the Globe, the photo editor or Flick through was opened, how many photos were placed on the map or moved to the Bin, and how many searches were made. These are running totals only: never what was searched, sorted, edited or placed, nor where or when</li><li>the Trove version and operating system (Windows or macOS)</li></ul>
+<p><strong>What is never sent.</strong> Photos, videos, thumbnails, file names, folder names, paths, locations, faces, people's names, search queries, or anything else from your library.</p>
+<p><strong>Why.</strong> To know how many people use Trove and which features they actually use, so I can decide what to fix, what to build next and what to remove. It is used only for these statistics: never for advertising, never combined with other data, never shared or sold.</p>
+<p><strong>Legal basis.</strong> Your consent (Article 6(1)(a) GDPR, and Article 82 of the French Data Protection Act for the install ID stored on your computer). The ping is off unless you say yes, and you can withdraw your consent at any time.</p>
+<p><strong>Where it is stored.</strong> In Google Firebase (Cloud Firestore), with Google acting as a processor on my behalf. Google may process data outside the European Union. Those transfers are covered by the EU-US Data Privacy Framework and Google's Standard Contractual Clauses. Like any internet request, the message reveals your IP address to Google when it is sent. Trove does not record it.</p>
+<p><strong>How long.</strong> Each event is deleted 25 months after it is sent.</p>
+<p><strong>Your choice.</strong> Trove asks you on first launch whether to share these statistics, and nothing is sent unless you say yes. If what is sent changes, Trove asks you again. You can change your answer at any time in <strong>Settings → Help improve Trove</strong>. Once it is off, nothing more is sent.</p>
+<h2>2. Place names for your photos (OpenStreetMap)</h2>
+<p>When a photo or video has GPS coordinates, Trove looks up its country, region and city using OpenStreetMap's Nominatim service. Only the coordinates are sent, rounded to about 1 km, never the photo itself. Results are saved on your computer, so each area is looked up only once.</p>
+<p>This is needed for the location folders to work. The service is run by the OpenStreetMap Foundation (<a href="https://osmfoundation.org/wiki/Privacy_Policy" rel="noopener">privacy policy</a>).</p>
+<h2>3. The Globe's map imagery (Esri)</h2>
+<p>When you open the Globe, the satellite imagery, place labels and, if you turn on 3D terrain, elevation data are downloaded from Esri's ArcGIS servers. Esri receives your IP address and the map tiles requested, meaning the area you are looking at, but no photo data (<a href="https://www.esri.com/en-us/privacy/privacy-statements/privacy-statement" rel="noopener">Esri privacy statement</a>).</p>
+<h2>4. Updates (GitHub)</h2>
+<p>Trove checks <a href="https://github.com/Gilouloum/Trove" rel="noopener">GitHub</a> for new versions and downloads them from there. GitHub receives your IP address and the app version (<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub privacy statement</a>).</p>
+<h2>5. This website</h2>
+<p>This website is hosted on GitHub Pages. It uses no cookies, no analytics, no tracking and no outside fonts or scripts. Like any web host, GitHub receives your IP address and the pages you request when you visit it, and again when you download Trove from GitHub (<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub privacy statement</a>).</p>
+<h2>Everything else stays on your computer</h2>
+<p>Face recognition, AI search, duplicate detection, the photo editor and PhotoMod all run entirely on your machine, using models that ship inside the app. Your library data is stored in your user profile (<code>%APPDATA%\Trove</code> on Windows, <code>~/Library/Application Support/Trove</code> on macOS) and nowhere else.</p>
+<h2>Your rights</h2>
+<p>Under the GDPR you have the right to access, correct and delete your data, to object to its processing and to restrict it. Because the statistics carry no name or email, I cannot tell which events are yours on my own. To have yours deleted, send me your install ID: it is the <code>installId</code> field in the <code>filelinker-data.json</code> file in the folder above.</p>
+<p>You can also lodge a complaint with the CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>) or with the data protection authority of your country.</p>
+<h2>Changes</h2>
+<p>If this policy changes, the new version will be published here with a new date at the top.</p>
+  </article>
+  <article lang="fr" id="fr" hidden>
+    <h1>Politique de confidentialité de Trove</h1>
+    <p class="upd">Dernière mise à jour : 7 novembre 2026</p>
+<p>Trove fonctionne sur votre ordinateur. Vos photos, vidéos, noms de fichiers, dossiers, visages, noms de personnes et retouches n'en sortent jamais. Il n'y a ni compte, ni publicité, ni cookie, et rien n'est jamais vendu.</p>
+<p>Certaines fonctions communiquent toutefois avec des services extérieurs. Cette page les liste toutes, indique ce qu'ils reçoivent et comment les désactiver. Trove est open source : vous pouvez vérifier chacune d'elles dans <a href="https://github.com/Gilouloum/Trove#open-source" rel="noopener">son code</a>.</p>
+<h2>Responsable du traitement</h2>
+<p>Trove est développé par Gilouloum, développeur indépendant basé en France, responsable des traitements décrits ici.</p>
+<p>Contact : <strong><a href="mailto:trovephotos@gmail.com">trovephotos@gmail.com</a></strong></p>
+<h2>1. Statistiques d'utilisation anonymes (« Aider à améliorer Trove »)</h2>
+<p><strong>Ce qui est envoyé.</strong> À l'ouverture et à la fermeture de l'application, Trove envoie un petit message contenant :</p>
+<ul><li>un identifiant d'installation aléatoire (généré sur votre ordinateur, non lié à votre nom ni à votre e-mail, et renouvelé tous les 13 mois)</li><li>le type d'événement (ouverture ou fin de session) et la durée de la session</li><li>le nombre de fichiers, de dossiers, de coups de cœur et de photos épinglées de votre bibliothèque</li><li>le nombre d'utilisations de chaque fonction principale : par exemple combien de tris guidés ont été commencés et terminés, combien de fois le Globe, l'éditeur photo ou le mode Parcourir ont été ouverts, combien de photos ont été placées sur la carte ou mises à la Corbeille, et combien de recherches ont été faites. Ce ne sont que des totaux : jamais ce qui a été recherché, trié, retouché ou placé, ni où ni quand</li><li>la version de Trove et le système d'exploitation (Windows ou macOS)</li></ul>
+<p><strong>Ce qui n'est jamais envoyé.</strong> Photos, vidéos, miniatures, noms de fichiers, noms de dossiers, chemins, lieux, visages, noms de personnes, recherches, ni quoi que ce soit d'autre provenant de votre bibliothèque.</p>
+<p><strong>Pourquoi.</strong> Pour savoir combien de personnes utilisent Trove et quelles fonctions elles utilisent vraiment, afin de décider quoi corriger, quoi développer ensuite et quoi retirer. Ces données servent uniquement à ces statistiques : jamais à la publicité, jamais croisées avec d'autres données, jamais partagées ni vendues.</p>
+<p><strong>Base légale.</strong> Votre consentement (article 6.1.a du RGPD, et article 82 de la loi Informatique et Libertés pour l'identifiant stocké sur votre ordinateur). Ce signal est désactivé sauf si vous l'acceptez, et vous pouvez retirer votre consentement à tout moment.</p>
+<p><strong>Où sont stockées les données.</strong> Chez Google Firebase (Cloud Firestore), Google agissant en tant que sous-traitant pour mon compte. Google peut traiter les données hors de l'Union européenne. Ces transferts sont encadrés par le Data Privacy Framework UE-États-Unis et les clauses contractuelles types de Google. Comme toute requête sur Internet, l'envoi révèle votre adresse IP à Google. Trove ne l'enregistre pas.</p>
+<p><strong>Durée de conservation.</strong> Chaque événement est supprimé 25 mois après son envoi.</p>
+<p><strong>Votre choix.</strong> Trove vous demande au premier lancement si vous souhaitez partager ces statistiques, et rien n'est envoyé si vous ne l'acceptez pas. Si ce qui est envoyé change, Trove vous redemande. Vous pouvez changer d'avis à tout moment dans <strong>Paramètres → Aider à améliorer Trove</strong>. Une fois désactivé, plus rien n'est envoyé.</p>
+<h2>2. Noms de lieux pour vos photos (OpenStreetMap)</h2>
+<p>Quand une photo ou une vidéo contient des coordonnées GPS, Trove retrouve le pays, la région et la ville grâce au service Nominatim d'OpenStreetMap. Seules les coordonnées sont envoyées, arrondies à environ 1 km, jamais la photo elle-même. Les résultats sont enregistrés sur votre ordinateur, chaque zone n'est donc recherchée qu'une fois.</p>
+<p>C'est nécessaire au fonctionnement des dossiers de lieux. Le service est exploité par l'OpenStreetMap Foundation (<a href="https://osmfoundation.org/wiki/Privacy_Policy" rel="noopener">politique de confidentialité</a>).</p>
+<h2>3. Les images du Globe (Esri)</h2>
+<p>Quand vous ouvrez le Globe, l'imagerie satellite, les noms de lieux et, si vous activez le relief 3D, les données d'altitude sont téléchargés depuis les serveurs ArcGIS d'Esri. Esri reçoit votre adresse IP et les tuiles de carte demandées, c'est-à-dire la zone que vous regardez, mais aucune donnée de vos photos (<a href="https://www.esri.com/en-us/privacy/privacy-statements/privacy-statement" rel="noopener">déclaration de confidentialité d'Esri</a>).</p>
+<h2>4. Mises à jour (GitHub)</h2>
+<p>Trove vérifie sur <a href="https://github.com/Gilouloum/Trove" rel="noopener">GitHub</a> si une nouvelle version existe et la télécharge depuis ce site. GitHub reçoit votre adresse IP et la version de l'application (<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">déclaration de confidentialité de GitHub</a>).</p>
+<h2>5. Ce site web</h2>
+<p>Ce site est hébergé sur GitHub Pages. Il n'utilise ni cookie, ni outil de mesure d'audience, ni traceur, ni police ou script externe. Comme tout hébergeur, GitHub reçoit votre adresse IP et les pages que vous demandez lorsque vous le visitez, puis à nouveau lorsque vous téléchargez Trove depuis GitHub (<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">déclaration de confidentialité de GitHub</a>).</p>
+<h2>Tout le reste reste sur votre ordinateur</h2>
+<p>La reconnaissance faciale, la recherche par IA, la détection de doublons, l'éditeur photo et PhotoMod fonctionnent entièrement sur votre machine, avec des modèles inclus dans l'application. Les données de votre bibliothèque sont stockées dans votre profil utilisateur (<code>%APPDATA%\Trove</code> sous Windows, <code>~/Library/Application Support/Trove</code> sous macOS) et nulle part ailleurs.</p>
+<h2>Vos droits</h2>
+<p>Le RGPD vous donne un droit d'accès, de rectification, d'effacement, d'opposition et de limitation. Comme les statistiques ne contiennent ni nom ni e-mail, je ne peux pas savoir seul quels événements sont les vôtres. Pour faire supprimer les vôtres, envoyez-moi votre identifiant d'installation : c'est le champ <code>installId</code> du fichier <code>filelinker-data.json</code>, dans le dossier indiqué ci-dessus.</p>
+<p>Vous pouvez aussi introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).</p>
+<h2>Modifications</h2>
+<p>Si cette politique change, la nouvelle version sera publiée ici avec une nouvelle date en haut de page.</p>
+  </article>
+</div></main>
+<footer><div class="wrap">
+  <nav class="fbtns" aria-label="Legal"><a class="fbtn" href="terms.html">Terms of Use</a><a class="fbtn" href="privacy.html">Privacy</a></nav>
+  <p class="copy">&copy; 2026 Gilouloum. Trove is free and open source (<a href="https://github.com/Gilouloum/Trove/blob/main/LICENSE">GPL-3.0</a>) &middot; <a href="https://github.com/Gilouloum/Trove">Source on GitHub</a></p>
+</div></footer>
+<script>
+(function(){
+  var en=document.getElementById('en'),fr=document.getElementById('fr'),btns=document.querySelectorAll('.lang button'),titles={en:"Privacy Policy | Trove",fr:"Politique de confidentialité | Trove"};
+  function set(l){en.hidden=l!=='en';fr.hidden=l!=='fr';document.documentElement.lang=l;document.title=titles[l];
+    for(var i=0;i<btns.length;i++)btns[i].setAttribute('aria-pressed',btns[i].getAttribute('data-l')===l?'true':'false');}
+  function pick(){var h=location.hash.replace('#','');return (h==='fr'||h==='en')?h:((navigator.language||'').slice(0,2)==='fr'?'fr':'en');}
+  set(pick());
+  for(var i=0;i<btns.length;i++)btns[i].addEventListener('click',function(){var l=this.getAttribute('data-l');set(l);history.replaceState(null,'','#'+l);window.scrollTo(0,0);});
+  window.addEventListener('hashchange',function(){set(pick());});
+})();
+</script>
+</body>
+</html>

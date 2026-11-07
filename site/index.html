@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#18181C">
+<title>Trove: free photo organizer for Windows and Mac</title>
+<meta name="description" content="Trove is a free, open-source photo organizer for Windows and Mac. Put the same photos in as many folders as you like, by trip, person, camera or place, then find any file fast. Nothing is uploaded or moved.">
+<link rel="canonical" href="https://trovesort.com/">
+<link rel="icon" href="img/icon.png">
+<link rel="preload" as="image" href="img/earth.jpg">
+<link rel="preload" as="font" type="font/woff2" href="fonts/poppins-500.woff2" crossorigin>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Trove: free photo organizer for Windows and Mac">
+<meta property="og:description" content="Your photos, your folders: the same file in as many folders as you like, by trip, person, camera or place. Nothing leaves your computer.">
+<meta property="og:image" content="https://trovesort.com/img/globe-overview.jpg">
+<meta property="og:url" content="https://trovesort.com/">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Trove","alternateName":"Trove photo organizer","applicationCategory":"PhotoApplication","operatingSystem":"Windows 10, Windows 11, macOS (Apple Silicon)","description":"Free, open-source, local-first photo and video organizer for Windows and macOS. Never uploads, copies or moves your files.","url":"https://trovesort.com/","license":"https://www.gnu.org/licenses/gpl-3.0.html","isAccessibleForFree":true,"codeRepository":"https://github.com/Gilouloum/Trove","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<style>
+/* Font 1: Cubao (display). Put the font file in site/fonts/ as Cubao.woff2 (or .woff / .ttf / .otf).
+   Until it is there, headings fall back to DM Sans Black. */
+@font-face{font-family:'Cubao';font-weight:100 900;font-style:normal;font-display:swap;
+  src:local('Cubao'),local('Cubao Free'),url(fonts/Cubao.woff2) format('woff2'),url(fonts/Cubao.woff) format('woff'),url(fonts/Cubao.ttf) format('truetype'),url(fonts/Cubao.otf) format('opentype')}
+@font-face{font-family:'DM Sans';font-weight:100 1000;font-display:swap;src:url(fonts/dmsans-latin-var.woff2) format('woff2')}
+/* Font 2: Poppins (text) */
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url(fonts/poppins-400.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:500;font-display:swap;src:url(fonts/poppins-500.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url(fonts/poppins-600.woff2) format('woff2')}
+:root{
+  --charcoal:#18181C;--charcoal2:#202026;--charcoal3:#2a2a33;--border:#35353f;
+  --violet:#723BFA;--violet-soft:#a98bff;--lime:#B9F500;
+  --text:#f4f3f8;--text2:#b0afbf;
+  --display:'Cubao','DM Sans',system-ui,sans-serif;
+  --body:'Poppins',system-ui,sans-serif;
+  --G:min(104vw,94vh);                 /* diameter of the globe */
+  --lift:calc(var(--G) * .21);         /* room above the globe for the arched word */
+}
+@media (max-aspect-ratio:4/5){:root{--G:158vw;--lift:calc(var(--G) * .125)}}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--charcoal);color:var(--text);font:400 16px/1.65 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--violet-soft)}
+h1,h2,h3{font-family:var(--display);font-weight:900}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* header */
+header{position:absolute;top:0;left:0;right:0;z-index:10;padding:18px 0}
+header .wrap{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font:900 24px var(--display);color:var(--text);text-decoration:none;letter-spacing:.01em}
+.brand img{width:34px;height:34px;border-radius:10px}
+header nav a{color:var(--text2);text-decoration:none;font-size:14px;font-weight:500;margin-left:22px}
+header nav a:hover{color:var(--lime)}
+
+/* hero: giant word behind the globe, intro in front */
+.backdrop{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.stars{position:absolute;left:0;top:0;width:100%;pointer-events:none;will-change:transform}
+.orb{position:absolute;left:50%;top:calc(var(--lift) + 56px + var(--G) * .05);width:var(--G);aspect-ratio:1;transform:translateX(-50%);will-change:transform,filter}
+.shade{position:absolute;inset:0;background:var(--charcoal);opacity:0}
+main{position:relative;z-index:2;pointer-events:none}
+.content{pointer-events:auto}
+.stage{position:relative;height:100svh;min-height:620px;pointer-events:none}   /* clicks fall through to the globe's pins */
+.intro{pointer-events:none}
+.intro .btn,.intro a,.intro button{pointer-events:auto}
+.orb canvas{pointer-events:auto}
+.has-card .intro{opacity:0!important;pointer-events:none!important}
+.word{position:absolute;left:0;right:0;top:-5%;height:100%;z-index:0;margin:0;pointer-events:none}  /* the word stays put while the globe sits 5% lower */
+.content{position:relative;z-index:3;will-change:transform}
+
+/* trip card opened from a pin */
+.tcard{position:fixed;z-index:30;width:320px;padding:20px 20px 14px;border-radius:22px;background:rgba(32,32,38,.84);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border:1px solid rgba(169,139,255,.38);box-shadow:0 24px 60px rgba(0,0,0,.5);color:var(--text);
+  visibility:hidden;opacity:0;transform:translateY(10px) scale(.97);pointer-events:none;transition:opacity .25s,transform .25s,visibility 0s .25s}
+.tcard.on{visibility:visible;opacity:1;transform:none;pointer-events:auto;transition-delay:0s}
+.tc-x{position:absolute;z-index:2;top:12px;right:14px;width:30px;height:30px;border:0;border-radius:50%;background:rgba(24,24,28,.72);color:var(--text2);font-size:22px;line-height:1;cursor:pointer}
+.tc-x:hover{color:var(--lime)}
+.tc-media{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--charcoal3)}
+.tc-media img{display:block;width:100%;height:100%;object-fit:cover}
+.tc-num{position:absolute;top:10px;left:10px;z-index:1;padding:2px 11px;border-radius:99px;background:var(--lime);color:var(--charcoal);font:600 12px var(--body)}
+.tc-art{display:grid;place-items:center;color:var(--lime);background:linear-gradient(135deg,rgba(114,59,250,.6),rgba(185,245,0,.16))}
+.tc-art svg{width:54px;height:54px}
+.tcard h3{font-size:25px;line-height:1.1;margin:14px 0 0}
+.tcard{cursor:pointer}
+.tc-more{display:block;width:100%;margin-top:14px;padding:9px 12px;border:0;border-radius:12px;background:rgba(185,245,0,.1);color:var(--lime);font:600 14px var(--body);cursor:pointer;transition:background .15s}
+.tc-more:hover{background:rgba(185,245,0,.18)}
+.tc-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.tc-tags span{padding:4px 13px;border-radius:99px;background:rgba(114,59,250,.18);border:1px solid rgba(169,139,255,.3);font-size:14px;font-weight:500;color:#ece9ff}
+.tc-cta{display:block;margin-top:16px;padding:12px 18px;border-radius:99px;background:var(--lime);color:var(--charcoal);font:600 15px var(--body);text-align:center;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.tc-cta:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(185,245,0,.3)}
+.tc-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.tc-nav button{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text);font-size:16px;cursor:pointer}
+.tc-nav button:hover{border-color:var(--lime);color:var(--lime)}
+.tc-nav span{font-size:13px;color:var(--text2)}
+@media (max-width:700px){.tcard{left:12px!important;right:12px;top:auto!important;bottom:12px;width:auto;max-height:calc(100svh - 24px);overflow:auto}.tc-media{aspect-ratio:21/9}}
+.word svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.word text{font-family:var(--display);font-weight:900;text-transform:uppercase}
+.arc-m{display:none}
+@media (max-aspect-ratio:4/5){.arc-d{display:none}.arc-m{display:block}.word{top:.5%}}   /* on phones the word sits lower, so the globe covers the bottom of the letters */
+.orb canvas{position:relative;z-index:1;display:block;width:100%;height:100%}
+.orb .scrim{position:absolute;z-index:2;inset:0;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side at 50% 36%,rgba(24,24,28,.72) 0%,rgba(24,24,28,.5) 55%,rgba(24,24,28,0) 100%)}
+.intro{position:absolute;z-index:3;left:50%;top:calc(var(--lift) + 56px + var(--G) * .31);transform:translateX(-50%);width:min(40em,calc(100vw - 40px));text-align:center}
+.intro .lead{font:600 clamp(24px,3.4vw,42px)/1.18 var(--body);letter-spacing:-.01em;text-wrap:balance;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.65)}
+.intro .lead b{color:var(--lime);font-weight:600}
+.intro .sub{margin-top:10px;font:500 clamp(15px,1.7vw,19px)/1.5 var(--body);color:#e8e7f1;text-shadow:0 2px 14px rgba(0,0,0,.7)}
+.cta{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:99px;font:600 15px var(--body);text-decoration:none;border:2px solid var(--violet);color:#fff;background:var(--violet);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(114,59,250,.45)}
+.btn.primary{background:var(--lime);border-color:var(--lime);color:var(--charcoal)}
+.btn.primary:hover{box-shadow:0 10px 30px rgba(185,245,0,.35)}
+.small{color:#d9d8e4;font-size:13px;text-shadow:0 1px 10px rgba(0,0,0,.7)}
+.mobile-only{display:none}
+.is-mobile .mobile-only{display:flex}
+.is-mobile .desk-only{display:none}
+
+/* sections */
+section{padding:72px 0}
+section h2{font-size:clamp(28px,5vw,46px);line-height:1.1;text-align:center;margin-bottom:14px}
+section h2 em{font-style:normal;color:var(--lime)}
+section p.lead{text-wrap:balance;color:var(--text2);text-align:center;max-width:36em;margin:0 auto 34px}
+.shot{margin:0 auto 10px;border-radius:22px;overflow:hidden;border:1px solid var(--border);max-width:940px}
+.shot img{display:block;width:100%;height:auto}
+.about{max-width:1000px;margin:52px auto 0;text-align:center}
+.about-tag{display:inline-block;padding:4px 14px;border-radius:99px;background:rgba(185,245,0,.1);border:1px solid rgba(185,245,0,.35);color:var(--lime);font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase}
+.about-main{margin-top:16px;font:500 clamp(18px,2.3vw,26px)/1.4 var(--body);letter-spacing:-.01em;color:#fff;text-wrap:balance}
+.about-main b{color:var(--lime);font-weight:600}
+.about-sub{margin-top:12px;color:var(--text2);font-size:15px}
+/* the cards break out of the narrow text column: 75% of the screen, one under another, folded */
+.feats{--fw:min(75vw,1700px);display:flex;flex-direction:column;gap:12px;margin-top:56px;width:var(--fw);margin-left:calc((100% - var(--fw)) / 2)}
+.feat{background:rgba(32,32,38,.84);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:border-color .2s}
+.feat.open{border-color:rgba(185,245,0,.45)}
+.fh{display:flex;align-items:center;gap:14px;padding:16px 22px}
+.fold .fh{cursor:pointer}
+.fold .fh:hover h3{color:var(--lime)}
+.feat .num{flex:none;min-width:44px;text-align:center;padding:2px 0;border-radius:99px;background:var(--lime);color:var(--charcoal);font:600 13px var(--body)}
+.feat .kick{flex:none;width:96px;color:var(--lime);font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase}
+.feat h3{flex:1;margin:0;font-size:clamp(18px,1.9vw,24px);line-height:1.15;transition:color .15s}
+.fw{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px}
+.fw span{white-space:nowrap;padding:3px 12px;border-radius:99px;background:rgba(114,59,250,.18);border:1px solid rgba(169,139,255,.3);font-size:13px;font-weight:500;color:#ece9ff}
+.fold-toggle{display:none;flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--lime);font:500 22px/1 var(--body);cursor:pointer}
+.fold .fold-toggle{display:block}
+.fold .fold-toggle::before{content:"+"}
+.fold .feat.open .fold-toggle::before{content:"−"}
+.fb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center;padding:6px 22px 24px}
+.fold .feat:not(.open) .fb{display:none}
+.feat.open .fb{animation:fbin .25s ease}
+@keyframes fbin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ft p.d{color:#d7d6e2;font-size:16px;line-height:1.65}
+.ft ul{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.ft li{position:relative;padding-left:22px;font-size:15px;line-height:1.4;color:var(--text)}
+.ft li::before{content:"";position:absolute;left:3px;top:.5em;width:8px;height:8px;border-radius:50%;background:var(--lime)}
+.fb .img{border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+.fb .img img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.fb .art{aspect-ratio:16/9;display:grid;place-items:center;color:var(--lime);background:linear-gradient(135deg,rgba(114,59,250,.6),rgba(185,245,0,.16))}
+.fb .art svg{width:72px;height:72px}
+.feat-cta{display:flex;align-items:center;justify-content:space-between;gap:10px 20px;flex-wrap:wrap;padding:20px 24px;background:var(--lime);border-color:var(--lime)}
+.feat-cta h3{flex:none;color:var(--charcoal);font-size:clamp(22px,2.2vw,28px)}
+.feat-cta p{flex:1;margin:0;font-size:15px;color:rgba(24,24,28,.75)}
+.feat-cta .btn{background:var(--charcoal);border-color:var(--charcoal);color:#fff}
+@media(max-width:1199px){.fw{display:none}}
+@media(max-width:700px){
+  .feats{width:100%;margin-left:0;margin-top:36px;gap:10px}
+  .fh{padding:12px 14px;gap:10px}
+  .feat .kick{display:none}
+  .feat h3{font-size:18px}
+  .fb{grid-template-columns:1fr;gap:16px;padding:4px 16px 20px}
+  .fb .img{order:-1}
+  .feat-cta{padding:22px 16px;justify-content:center;text-align:center}
+  .feat-cta p{flex-basis:100%}
+}
+
+.trust{background:none}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:rgba(24,24,28,.7);border:1px solid var(--border);border-radius:20px;padding:22px}
+.card b{display:block;font:900 20px var(--display);margin-bottom:6px;color:var(--lime)}
+.card span{color:var(--text2);font-size:15px}
+
+.faq details{border-bottom:1px solid var(--border);padding:18px 0;max-width:720px;margin:0 auto}
+.faq summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--lime);font-size:26px;font-weight:500;line-height:1}
+.faq details[open] summary::after{content:"\2212"}
+.faq p{color:var(--text2);margin-top:10px}
+
+.final .box{background:radial-gradient(500px 300px at 15% 0%,rgba(114,59,250,.7),transparent 70%),radial-gradient(400px 260px at 95% 100%,rgba(185,245,0,.3),transparent 70%),var(--charcoal2);border:1px solid rgba(169,139,255,.3);border-radius:32px;padding:56px 24px;text-align:center}
+.final .box p.lead{margin-bottom:26px}
+footer{position:relative;z-index:3;padding:40px 0 54px;color:var(--text2);font-size:14px;text-align:center}
+.fbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.fbtn{padding:10px 24px;border-radius:99px;border:1px solid var(--border);background:var(--charcoal2);color:var(--text);font:500 14px var(--body);text-decoration:none;transition:border-color .15s,color .15s}
+.fbtn:hover{border-color:var(--lime);color:var(--lime)}
+.copy{margin-top:18px}
+footer a{color:var(--text2)}
+footer a:hover{color:var(--lime)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="brand" href="./"><img src="img/icon.png" alt="">Trove</a>
+  <nav><a href="#features">Features</a><a href="#faq">FAQ</a><a href="https://github.com/Gilouloum/Trove">GitHub</a></nav>
+</div></header>
+
+<!-- fixed background: the globe, zoomed and blurred by the scroll script -->
+<div class="backdrop">
+  <canvas class="stars" id="starsFar" aria-hidden="true"></canvas>
+  <canvas class="stars" id="starsMid" aria-hidden="true"></canvas>
+  <div class="orb" id="orb">
+    <h1 class="word">
+      <!-- wide screens: the word follows the top of the globe (gentle arc) -->
+      <svg class="arc-d" viewBox="0 0 1000 1000" aria-hidden="true">
+        <defs><linearGradient id="vgd" gradientUnits="userSpaceOnUse" x1="0" y1="-150" x2="0" y2="210"><stop offset="0" stop-color="#9d73ff"/><stop offset=".55" stop-color="#723BFA"/><stop offset="1" stop-color="#4a22b4"/></linearGradient></defs>
+        <path id="pd" d="M102.5 177.1 A733.3 733.3 0 0 1 897.5 177.1" fill="none"/>
+        <text fill="url(#vgd)" font-size="300" data-len="840"><textPath href="#pd" startOffset="50%" text-anchor="middle">Trove</textPath></text>
+      </svg>
+      <!-- portrait phones: tighter arc so the word fits the screen -->
+      <svg class="arc-m" viewBox="0 0 1000 1000" aria-hidden="true">
+        <defs><linearGradient id="vgm" gradientUnits="userSpaceOnUse" x1="0" y1="-110" x2="0" y2="120"><stop offset="0" stop-color="#9d73ff"/><stop offset=".55" stop-color="#723BFA"/><stop offset="1" stop-color="#4a22b4"/></linearGradient></defs>
+        <path id="pm" d="M225.5 63 A808.3 808.3 0 0 1 774.5 63" fill="none"/>
+        <text fill="url(#vgm)" font-size="190" data-len="520"><textPath href="#pm" startOffset="50%" text-anchor="middle">Trove</textPath></text>
+      </svg>
+      <span class="sr">Trove: free photo organizer for Windows and Mac</span>
+    </h1>
+    <canvas id="globe" width="720" height="720" role="img" aria-label="A slowly turning globe with trips pinned on it"></canvas>
+    <div class="scrim"></div>
+  </div>
+  <div class="shade" id="shade"></div>
+</div>
+
+<main>
+<div class="stage">
+    <div class="intro">
+      <p class="lead"><b>Sort</b>, <b>relive</b> and <b>edit</b> everything in one place.</p>
+      <div class="cta" id="download">
+        <div class="btns desk-only">
+          <a class="btn primary" id="btn-win" href="https://github.com/Gilouloum/Trove/releases/download/latest-build/Trove-Setup.exe">Download for Windows</a>
+          <a class="btn" id="btn-mac" href="https://github.com/Gilouloum/Trove/releases/download/latest-build/Trove-arm64.dmg">Download for Mac</a>
+        </div>
+        <div class="btns mobile-only">
+          <button class="btn primary" id="share" type="button">Send me the link</button>
+          <a class="btn" id="mail" href="#">Email it to myself</a>
+        </div>
+        <p class="small desk-only">Free and open source · Windows 10/11 · Mac (Apple Silicon)</p>
+        <p class="small mobile-only">Trove runs on a computer, so send yourself the link.</p>
+      </div>
+    </div>
+</div>
+
+<div class="content" id="content">
+<section id="features"><div class="wrap">
+  <h2>Make watching your photos <em>fun again</em></h2>
+  <p class="lead">Stop wasting your time scrolling through other people's stories. Scroll through yours.</p>
+  <div class="shot"><img loading="lazy" src="img/library-grid.jpg" alt="Trove's library grid with every photo and video in one timeline" width="1600" height="900"></div>
+  <div class="about">
+    <span class="about-tag">What is Trove?</span>
+    <p class="about-main">Trove lets the same files live in as many folders as you want, without copying anything. Find any file by <b>camera</b>, <b>person</b>, <b>place</b> or <b>date</b>, and <b>relive</b> your trips.</p>
+    <p class="about-sub">Preview, edit and watch it all in one app. Free for Windows and Mac. Your files never move.</p>
+  </div>
+  <div class="feats">
+    <div class="feat" id="f1"><div class="fh"><span class="num">01</span><span class="kick">Organize</span><h3>Folders your way</h3><span class="fw"><span>Many folders</span><span>No copies</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb1" aria-label="Show details"></button></div><div class="fb" id="fb1"><div class="ft"><p class="d">Put the same photo in as many folders as you like: a trip, a person, a camera, a place. Nothing is copied or moved.</p><ul><li>One file, many folders</li><li>Trips, people, cameras and locations</li><li>Your files never move</li></ul></div><div class="img"><img loading="lazy" src="img/row-sidebar.jpg" alt="Trove's sidebar with folders for trips, people, cameras and locations" width="960" height="540"></div></div></div>
+    <div class="feat" id="f2"><div class="fh"><span class="num">02</span><span class="kick">Find</span><h3>Search by what's in the photo</h3><span class="fw"><span>“mountain lake”</span><span>Works offline</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb2" aria-label="Show details"></button></div><div class="fb" id="fb2"><div class="ft"><p class="d">Type &quot;mountain lake&quot; or &quot;dog on a hike&quot; and Trove finds it, even if the file is called IMG_4021.heic.</p><ul><li>Runs entirely on your computer</li><li>No photo or search is sent anywhere</li><li>Results found by content get a badge</li></ul></div><div class="img"><img loading="lazy" src="img/row-smart-search.jpg" alt="Searching photos by what is in them" width="960" height="540"></div></div></div>
+    <div class="feat" id="f3"><div class="fh"><span class="num">03</span><span class="kick">Clean up</span><h3>Clean up your library</h3><span class="fw"><span>Guided Sort</span><span>Duplicates</span><span>Edited copies</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb3" aria-label="Show details"></button></div><div class="fb" id="fb3"><div class="ft"><p class="d">Three tools that clear out a messy library. Guided Sort walks your To Sort pile one cluster at a time, Find duplicates catches visual copies even after a resize or a rename, and Find edited links each edit back to its untouched original.</p><ul><li>Guided Sort: one question per cluster, not per photo</li><li>Find duplicates: every group shown side by side</li><li>Find edited: an Original badge on every linked edit</li></ul></div><div class="img"><img loading="lazy" src="img/row-find-duplicates.jpg" alt="Find duplicates showing two near-identical photos side by side" width="960" height="540"></div></div></div>
+    <div class="feat" id="f4"><div class="fh"><span class="num">04</span><span class="kick">People</span><h3>Faces, kept private</h3><span class="fw"><span>Optional</span><span>On your computer</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb4" aria-label="Show details"></button></div><div class="fb" id="fb4"><div class="ft"><p class="d">Optional face recognition gives everyone a folder with a real photo of their face.</p><ul><li>Off until you turn it on</li><li>Runs on your computer</li><li>Turning it off deletes the face data</li></ul></div><div class="img"><img loading="lazy" src="img/row-faces.jpg" alt="Trove scanning a library for faces, entirely on the computer" width="960" height="540"></div></div></div>
+    <div class="feat" id="f5"><div class="fh"><span class="num">05</span><span class="kick">Relive</span><h3>Your trips on a 3D globe</h3><span class="fw"><span>Day by day</span><span>Street level</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb5" aria-label="Show details"></button></div><div class="fb" id="fb5"><div class="ft"><p class="d">Every geotagged photo lands on a real-terrain globe. Open a trip and step through it day by day.</p><ul><li>Zoom down to street level</li><li>Relive Trip walks through each day</li></ul></div><div class="img"><img loading="lazy" src="img/row-globe-overview.jpg" alt="Trove's 3D globe with trips around the world" width="960" height="540"></div></div></div>
+    <div class="feat" id="f6"><div class="fh"><span class="num">06</span><span class="kick">Edit</span><h3>A photo editor, built in</h3><span class="fw"><span>Non-destructive</span><span>Smart eraser</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb6" aria-label="Show details"></button></div><div class="fb" id="fb6"><div class="ft"><p class="d">Quick non-destructive edits from your library, and PhotoMod, a layer-based editor, for bigger jobs.</p><ul><li>Your original is never overwritten</li><li>Smart eraser removes what you don't want</li><li>Auto select picks whole objects in one click</li></ul></div><div class="img"><img loading="lazy" src="img/row-photo-editor.jpg" alt="Trove's photo editor with sliders and a tone curve" width="960" height="540"></div></div></div>
+    <div class="feat" id="f7"><div class="fh"><span class="num">07</span><span class="kick">Sort</span><h3>Stop scrolling others. Scroll yours.</h3><span class="fw"><span>Easy sorting</span><span>Photos and videos</span><span>Swipe to bin</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb7" aria-label="Show details"></button></div><div class="fb" id="fb7"><div class="ft"><p class="d">Stop scrolling other people's content and scroll your own. Flick through a trip full screen, one photo or video at a time, and sort as you go. It is the easiest way to sort your photos and videos.</p><ul><li>Scroll to move on, double-click to like</li><li>Swipe sideways to send a file to the Bin</li><li>Photos and videos, one decision at a time</li></ul></div><div class="img art"><svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 22l12-12 12 12"/><path d="M20 42l12 12 12-12"/><path d="M32 18v28"/></svg></div></div></div>
+    <div class="feat" id="f8"><div class="fh"><span class="num">08</span><span class="kick">Formats</span><h3>Almost every format</h3><span class="fw"><span>HEIC</span><span>RAW</span><span>360</span><span>Video</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb8" aria-label="Show details"></button></div><div class="fb" id="fb8"><div class="ft"><p class="d">Around 70 photo and video formats, including the ones most organizers skip.</p><ul><li>HEIC, plus RAW from Canon, Nikon, Sony and more</li><li>MP4, MOV, MKV and 360 camera files</li><li>Your files stay exactly where they are</li></ul></div><div class="img"><img loading="lazy" src="img/row-formats-by-type.jpg" alt="The library sorted by type: RAW, photos and videos" width="960" height="540"></div></div></div>
+    <div class="feat" id="f9"><div class="fh"><span class="num">09</span><span class="kick">Private</span><h3>Your photos stay yours</h3><span class="fw"><span>No cloud</span><span>Open source</span><span>Free</span></span><button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fb9" aria-label="Show details"></button></div><div class="fb" id="fb9"><div class="ft"><p class="d">Trove never copies, moves or uploads a file. It keeps organized links to the originals, right where they already are.</p><ul><li>No account, no cloud, no subscription</li><li>Free and open source (GPL-3.0)</li><li>Windows 10/11 and Mac (Apple Silicon)</li></ul></div><div class="img art"><svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="28" width="36" height="26" rx="6"/><path d="M22 28v-8a10 10 0 0 1 20 0v8"/><circle cx="32" cy="41" r="3" fill="currentColor" stroke="none"/></svg></div></div></div>
+    <div class="feat feat-cta"><h3>Try it free</h3><p>Windows and Mac</p><a class="btn" id="fcCta" href="#">Download</a></div>
+  </div>
+</div></section>
+
+<section class="trust"><div class="wrap">
+  <h2>Your photos <em>stay yours</em></h2>
+  <p class="lead">Trove never copies, moves or uploads a file. It keeps organized links to the originals, right where they already are.</p>
+  <div class="cards">
+    <div class="card"><b>No cloud</b><span>No account, no subscription, no storage plan. Works offline.</span></div>
+    <div class="card"><b>Zero-copy</b><span>Internal drive, external SSD or NAS. Your files are never duplicated or moved.</span></div>
+    <div class="card"><b>Open source</b><span>GPL-3.0. Every line that touches the network is public for you to read.</span></div>
+    <div class="card"><b>Free</b><span>Not a trial. Not "free with limits".</span></div>
+  </div>
+</div></section>
+
+<section class="faq" id="faq"><div class="wrap">
+  <h2>Questions</h2>
+  <p class="lead"></p>
+  <details><summary>Is Trove really free?</summary><p>Yes. It's open source under the GPL-3.0 license, with no account, no ads and no paid tier.</p></details>
+  <details><summary>Does it upload my photos?</summary><p>No. Nothing is uploaded and no file is copied or moved. Photo search and face recognition run on your own computer. The source code is public, so you can check.</p></details>
+  <details><summary>Does Trove store my photos?</summary><p>No, and that's the point. Your files stay exactly where they are. Trove organizes links to them, so you can stop using it at any time and lose nothing.</p></details>
+  <details><summary>Is there a phone version?</summary><p>Not yet. Trove is for Windows and Mac (Apple Silicon). Send yourself the link and install it on your computer.</p></details>
+  <details><summary>Is it the same as the other apps called Trove?</summary><p>No. This is Trove the photo organizer for Windows and Mac, made by Gilouloum. It is not related to the Trove game or to other products that share the name.</p></details>
+  <details><summary>Which formats does it support?</summary><p>Almost every common photo and video format, including HEIC, RAW, JPEG, PNG and MP4, plus 360 photos and videos.</p></details>
+</div></section>
+
+<section class="final"><div class="wrap"><div class="box">
+  <h2>Try Trove <em>today</em></h2>
+  <p class="lead">Free, private, and ready in a couple of minutes.</p>
+  <div class="btns desk-only" style="justify-content:center">
+    <a class="btn primary" href="https://github.com/Gilouloum/Trove/releases/download/latest-build/Trove-Setup.exe">Download for Windows</a>
+    <a class="btn" href="https://github.com/Gilouloum/Trove/releases/download/latest-build/Trove-arm64.dmg">Download for Mac</a>
+  </div>
+  <div class="btns mobile-only" style="justify-content:center"><button class="btn primary" id="share2" type="button">Send me the link</button></div>
+</div></div></section>
+</div>
+</main>
+
+<aside class="tcard" id="tcard" role="dialog" aria-labelledby="tcTitle" aria-hidden="true">
+  <button class="tc-x" id="tcClose" type="button" aria-label="Close">&times;</button>
+  <div class="tc-media" id="tcMedia"></div>
+  <h3 id="tcTitle"></h3>
+  <p class="tc-tags" id="tcTags"></p>
+  <button class="tc-more" id="tcMore" type="button">See the details &darr;</button>
+  <a class="tc-cta" id="tcCta" href="#">Download</a>
+  <div class="tc-nav"><button type="button" id="tcPrev" aria-label="Previous">&larr;</button><span id="tcCount"></span><button type="button" id="tcNext" aria-label="Next">&rarr;</button></div>
+</aside>
+
+<footer><div class="wrap">
+  <nav class="fbtns" aria-label="Legal"><a class="fbtn" href="terms.html">Terms of Use</a><a class="fbtn" href="privacy.html">Privacy</a></nav>
+  <p class="copy">&copy; 2026 Gilouloum. Trove is free and open source (<a href="https://github.com/Gilouloum/Trove/blob/main/LICENSE">GPL-3.0</a>) &middot; <a href="https://github.com/Gilouloum/Trove">Source on GitHub</a></p>
+</div></footer>
+
+<script>
+(function(){
+  /* ---- device handling ---- */
+  var ua=navigator.userAgent||'';
+  var mobile=/Android|iPhone|iPad|iPod|Mobile/i.test(ua)||(navigator.maxTouchPoints>1&&/Macintosh/.test(ua));
+  if(mobile)document.documentElement.classList.add('is-mobile');
+  else if(/Mac/.test(ua)){
+    var w=document.getElementById('btn-win'),m=document.getElementById('btn-mac');
+    w.classList.remove('primary');m.classList.add('primary');w.parentNode.insertBefore(m,w);
+  }
+  var url=location.href.split('#')[0],text='Trove: free photo organizer for Windows and Mac';
+  function send(){
+    if(navigator.share){navigator.share({title:text,url:url}).catch(function(){});}
+    else if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){alert('Link copied. Open it on your computer.');});}
+  }
+  ['share','share2'].forEach(function(id){var b=document.getElementById(id);if(b)b.addEventListener('click',send);});
+  var mail=document.getElementById('mail');
+  if(mail)mail.href='mailto:?subject='+encodeURIComponent(text)+'&body='+encodeURIComponent('Install Trove on my computer: '+url);
+
+  /* ---- fit the arched word to its arc whatever font ends up loaded (Cubao or the fallback) ---- */
+  function fitWord(){
+    var ts=document.querySelectorAll('.word text');
+    for(var i=0;i<ts.length;i++){
+      var t=ts[i],L=+t.getAttribute('data-len'),fs=300;
+      t.setAttribute('font-size',fs);
+      var len=0;try{len=t.getComputedTextLength();}catch(e){}
+      if(len>0)t.setAttribute('font-size',(fs*L/len).toFixed(1));
+    }
+  }
+  fitWord();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitWord);
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(fitWord,120);});
+
+  /* ---- the in-depth cards: all folded, one open at a time; the globe's cards jump straight to them ---- */
+  var detBox=document.querySelector('.feats'),detCards=detBox?[].slice.call(detBox.querySelectorAll('.feat:not(.feat-cta)')):[];
+  function detSet(c,open){
+    c.classList.toggle('open',open);
+    var b=c.querySelector('.fold-toggle');
+    if(b){b.setAttribute('aria-expanded',open?'true':'false');b.setAttribute('aria-label',(open?'Hide':'Show')+' details');}
+  }
+  function detOpenOnly(c,keepOpen){               /* opening one closes the others, and the card you pressed stays where it is on screen */
+    var before=c.getBoundingClientRect().top,wasOpen=c.classList.contains('open');
+    detCards.forEach(function(x){detSet(x,x===c&&(keepOpen||!wasOpen));});
+    var after=c.getBoundingClientRect().top;
+    if(after!==before)window.scrollTo({top:(window.scrollY||0)+(after-before),behavior:'instant'});
+  }
+  function detCenter(c){                           /* put the opened card in the middle of the screen (top-aligned if it is taller than the screen) */
+    var r=c.getBoundingClientRect(),vh=window.innerHeight;
+    var shift=geo.D?geo.D*(1-rush(sy/geo.S)):0;     /* near the top the page's rush animation still offsets the content */
+    var gap=r.height<=vh-48?(vh-r.height)/2:24;
+    window.scrollTo({top:Math.max(0,r.top+(window.scrollY||0)-shift-gap),behavior:'smooth'});
+  }
+  function showDetails(i){                         /* open card i and scroll down to it */
+    var c=detCards[i];if(!c)return;
+    detOpenOnly(c,true);
+    detCenter(c);
+  }
+  if(detBox){
+    detBox.classList.add('fold');
+    detCards.forEach(function(c){c.querySelector('.fh').addEventListener('click',function(){var opening=!c.classList.contains('open');detOpenOnly(c,false);if(opening)detCenter(c);});});
+  }
+
+  /* ---- stars: two soft, distant layers, drawn once and nudged very slowly by scroll ---- */
+  var starLayers=[
+    {el:document.getElementById('starsFar'),per:4800,r:[.55,1.1],a:[.22,.55],speed:.02},   /* many tiny, faint, almost still */
+    {el:document.getElementById('starsMid'),per:26000,r:[1.6,3.2],a:[.10,.26],speed:.06}   /* few larger, out-of-focus, drift a bit more */
+  ];
+  var tints=[[225,220,255],[255,255,255],[205,218,255],[255,238,220]];
+  function rand(seed){return function(){seed=(seed+0x6D2B79F5)|0;var t=Math.imul(seed^seed>>>15,1|seed);t=(t+Math.imul(t^t>>>7,61|t))^t;return((t^t>>>14)>>>0)/4294967296;};}
+  function drawStars(){
+    var W=window.innerWidth,H=window.innerHeight+160;
+    starLayers.forEach(function(L,li){
+      var c=L.el;if(!c||!c.getContext)return;
+      c.width=W;c.height=H;c.style.height=H+'px';
+      var x=c.getContext('2d'),rnd=rand(1234+li*77),n=Math.round(W*H/L.per);
+      x.clearRect(0,0,W,H);
+      for(var i=0;i<n;i++){
+        var px=rnd()*W,py=rnd()*H,r=L.r[0]+rnd()*(L.r[1]-L.r[0]),a=L.a[0]+rnd()*(L.a[1]-L.a[0]),t=tints[(rnd()*tints.length)|0];
+        var g=x.createRadialGradient(px,py,0,px,py,r*2.6);   /* soft edges: out-of-focus, never a sharp dot */
+        g.addColorStop(0,'rgba('+t+','+a+')');g.addColorStop(.4,'rgba('+t+','+(a*.45)+')');g.addColorStop(1,'rgba('+t+',0)');
+        x.fillStyle=g;x.beginPath();x.arc(px,py,r*2.6,0,7);x.fill();
+      }
+    });
+  }
+  drawStars();
+  var st2;window.addEventListener('resize',function(){clearTimeout(st2);st2=setTimeout(drawStars,200);});
+
+  /* ---- scroll: the globe grows into the page background and stays lightly blurred ---- */
+  var earthVis=1,pinVis=1,sy=window.scrollY||0,orb=document.getElementById('orb'),shadeEl=document.getElementById('shade'),
+      introEl=document.querySelector('.intro'),wordEl=document.querySelector('.word'),
+      contentEl=document.getElementById('content'),headEl=document.querySelector('#features h2'),trustEl=document.querySelector('.trust'),
+      calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,geo={H:window.innerHeight,c0:0,S:1,D:0},tick=false;
+  /* The content below the intro rushes up faster than the scroll: slow at first, then exponentially quicker,
+     and settles softly once it is the main subject. gTab holds that speed profile as a running total (0..1). */
+  var gTab=(function(){var n=240,a=.72,k=4,cum=[0],tot=0,i,x,t,v;
+    for(i=1;i<=n;i++){x=i/n;t=x<a?0:(x-a)/(1-a);v=Math.exp(k*x)*(1-t)*(1-t);tot+=v;cum.push(tot);}
+    for(i=0;i<=n;i++)cum[i]/=tot;return cum;})();
+  function rush(x){x=Math.min(1,Math.max(0,x));var f=x*240,i=Math.floor(f);if(i>=240)return 1;return gTab[i]+(gTab[i+1]-gTab[i])*(f-i);}
+  function measure(){
+    geo.H=window.innerHeight;geo.c0=orb.offsetTop+orb.offsetHeight/2;
+    contentEl.style.marginTop='0px';contentEl.style.transform='none';
+    var hOrig=headEl.getBoundingClientRect().top+(window.scrollY||0);   /* where the section heading naturally sits */
+    geo.S=geo.H*.5;                                                      /* scroll distance of the rush */
+    geo.D=calm?0:Math.max(0,hOrig-geo.S-110);                            /* extra travel so the heading ends up near the top */
+    contentEl.style.marginTop=(-geo.D)+'px';
+  }
+  function ease(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;}
+  function applyScroll(){
+    tick=false;sy=window.scrollY||0;
+    if(sy>40&&sel>=0)closeCard();                                      /* scrolling away closes an open trip card */
+    var P=Math.min(1,Math.max(0,sy/(geo.H*.75))),e=ease(P),es=ease(Math.min(1,sy/geo.S));
+    var tt=trustEl.getBoundingClientRect().top,                        /* where the "Your photos stay yours" banner is on screen */
+        ef=Math.min(1,Math.max(0,(tt-geo.H*.2)/(geo.H*.45)));         /* 1 above it, 0 once it reaches the upper part of the screen */
+    earthVis=ef;orb.style.opacity=ef.toFixed(3);                       /* from there down the page is plain dark with stars */
+    contentEl.style.transform=geo.D?'translate3d(0,'+(geo.D*(1-rush(sy/geo.S))).toFixed(1)+'px,0)':'none';
+    wordEl.style.opacity=(1-Math.min(1,P*2.2)).toFixed(3);
+    var fade=1-Math.min(1,sy/(geo.S*.5));                              /* the intro is gone before the content arrives */
+    introEl.style.opacity=fade.toFixed(3);introEl.style.pointerEvents=fade<.3?'none':'';
+    if(calm){shadeEl.style.opacity=(.9*es*ef).toFixed(3);return;}      /* reduced motion: fade instead of zoom */
+    for(var k=0;k<starLayers.length;k++){var se=starLayers[k].el;if(se)se.style.transform='translate3d(0,'+(-Math.min(150,sy*starLayers[k].speed)).toFixed(1)+'px,0)';}
+    var s=1+1.7*e,ty=(geo.H*.6-geo.c0)*e,b=Math.min(1,sy/90)*2;     /* grows ~2.7x and slides to fill the screen */
+    orb.style.transform='translate3d(-50%,'+ty.toFixed(1)+'px,0) scale('+s.toFixed(3)+')';
+    orb.style.filter=b>.05?'blur('+b.toFixed(2)+'px)':'none';       /* light blur from the first scroll on */
+    shadeEl.style.opacity=(.58*es*ef).toFixed(3);                       /* dims the globe by the time the content arrives, so text stays readable */
+    pinVis=1-Math.min(1,P*1.3);                                      /* pins fade out as the globe zooms past them */
+  }
+  function onScroll(){if(!tick){tick=true;requestAnimationFrame(applyScroll);}}
+  measure();applyScroll();
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',function(){measure();applyScroll();});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measure();applyScroll();});
+
+  /* ---- globe: orthographic sphere sampled from an equirectangular earth image ---- */
+  var cv=document.getElementById('globe');
+  if(!cv||!cv.getContext)return;
+  var ctx=cv.getContext('2d'),S=cv.width,DEG=Math.PI/180;
+  var TILT=-18*DEG;                       /* lean the north pole toward the viewer a little */
+  /* The pins are the main points. Each one opens a SHORT card (s = title, w = key words) with a small picture.
+     The long explanation (t = text, b = points) is shown in the scroll section below the explainer.
+     lat / lon = where the pin sits on the globe; img = a file in site/img/card-*.jpg; art = icon when there is no picture. */
+    var feats=[
+    {k:"Organize",n:"Folders your way",s:"Folders your way",w:["Many folders","No copies"],lat:47,lon:8,img:"sidebar",
+     t:"Put the same photo in as many folders as you like: a trip, a person, a camera, a place. Nothing is copied or moved.",
+     b:["One file, many folders","Trips, people, cameras and locations","Your files never move"]},
+    {k:"Find",n:"Search by what's in the photo",s:"Search by content",w:["“mountain lake”","Works offline"],lat:30,lon:52,img:"smart-search",
+     t:"Type \"mountain lake\" or \"dog on a hike\" and Trove finds it, even if the file is called IMG_4021.heic.",
+     b:["Runs entirely on your computer","No photo or search is sent anywhere","Results found by content get a badge"]},
+    {k:"Clean up",n:"Clean up your library",s:"Clean up",w:["Guided Sort","Duplicates","Edited copies"],lat:56,lon:92,img:"find-duplicates",
+     t:"Three tools that clear out a messy library. Guided Sort walks your To Sort pile one cluster at a time, Find duplicates catches visual copies even after a resize or a rename, and Find edited links each edit back to its untouched original.",
+     b:["Guided Sort: one question per cluster, not per photo","Find duplicates: every group shown side by side","Find edited: an Original badge on every linked edit"]},
+    {k:"People",n:"Faces, kept private",s:"Faces, kept private",w:["Optional","On your computer"],lat:21,lon:-157,img:"faces",
+     t:"Optional face recognition gives everyone a folder with a real photo of their face.",
+     b:["Off until you turn it on","Runs on your computer","Turning it off deletes the face data"]},
+    {k:"Relive",n:"Your trips on a 3D globe",s:"3D globe",w:["Day by day","Street level"],lat:39,lon:-100,img:"globe-overview",
+     t:"Every geotagged photo lands on a real-terrain globe. Open a trip and step through it day by day.",
+     b:["Zoom down to street level","Relive Trip walks through each day"]},
+    {k:"Edit",n:"A photo editor, built in",s:"Built-in editor",w:["Non-destructive","Smart eraser"],lat:22,lon:-60,img:"photo-editor",
+     t:"Quick non-destructive edits from your library, and PhotoMod, a layer-based editor, for bigger jobs.",
+     b:["Your original is never overwritten","Smart eraser removes what you don't want","Auto select picks whole objects in one click"]},
+    {k:"Sort",n:"Stop scrolling others. Scroll yours.",s:"Scroll your own content",w:["Easy sorting","Photos and videos","Swipe to bin"],lat:16,lon:-14,img:null,art:"flick",
+     t:"Stop scrolling other people's content and scroll your own. Flick through a trip full screen, one photo or video at a time, and sort as you go. It is the easiest way to sort your photos and videos.",
+     b:["Scroll to move on, double-click to like","Swipe sideways to send a file to the Bin","Photos and videos, one decision at a time"]},
+    {k:"Formats",n:"Almost every format",s:"70 formats",w:["HEIC","RAW","360","Video"],lat:18,lon:24,img:"formats-by-type",
+     t:"Around 70 photo and video formats, including the ones most organizers skip.",
+     b:["HEIC, plus RAW from Canon, Nikon, Sony and more","MP4, MOV, MKV and 360 camera files","Your files stay exactly where they are"]},
+    {k:"Private",n:"Your photos stay yours",s:"Private and free",w:["No cloud","Open source","Free"],lat:64,lon:-18,img:null,art:"lock",
+     t:"Trove never copies, moves or uploads a file. It keeps organized links to the originals, right where they already are.",
+     b:["No account, no cloud, no subscription","Free and open source (GPL-3.0)","Windows 10/11 and Mac (Apple Silicon)"]}
+  ];
+  var pinPos=[],sel=-1,hover=-1,tw=null,auto=0,off=0,lastNow=null;
+  var tex,TW,TH,N=S*S;
+  var rowOff=new Uint32Array(N),colF=new Float32Array(N),shade=new Uint8Array(N),alpha=new Uint8Array(N);
+  var out=ctx.createImageData(S,S),od=out.data;
+  var ct=Math.cos(TILT),st=Math.sin(TILT);
+
+  function build(){
+    var L=[-.55,.45,.70],ll=Math.sqrt(L[0]*L[0]+L[1]*L[1]+L[2]*L[2]);L=[L[0]/ll,L[1]/ll,L[2]/ll];
+    for(var j=0;j<S;j++)for(var i=0;i<S;i++){
+      var p=j*S+i,x=(i+.5)/S*2-1,y=1-(j+.5)/S*2,r2=x*x+y*y;
+      if(r2>=1){alpha[p]=0;continue;}
+      var z=Math.sqrt(1-r2),r=Math.sqrt(r2);
+      alpha[p]=Math.max(0,Math.min(255,(1-r)*S*.5*255));
+      var yt=y*ct-z*st,zt=y*st+z*ct;
+      var lat=Math.asin(Math.max(-1,Math.min(1,yt))),lon=Math.atan2(x,zt);
+      rowOff[p]=Math.min(TH-1,Math.max(0,((.5-lat/Math.PI)*(TH-1))|0))*TW*4;
+      colF[p]=(lon/(2*Math.PI)+.5)*TW;
+      var lam=Math.max(0,x*L[0]+y*L[1]+z*L[2]);
+      var b=.30+.80*Math.pow(lam,.85);
+      b*=.55+.45*z;
+      shade[p]=Math.min(255,b*190)|0;      /* 0..255, 190 = neutral */
+    }
+  }
+
+  var spin0=14*DEG,last=0;
+  function frame(now){
+    var dt=lastNow===null?0:Math.min(.1,(now-lastNow)/1000);lastNow=now;
+    if(sel<0&&!tw)auto+=dt*.10;                       /* turns west to east, one turn per ~63 s; paused while a card is open */
+    if(tw){var kk=Math.min(1,(now-tw.t0)/tw.d);off=tw.from+(tw.to-tw.from)*(1-Math.pow(1-kk,3));if(kk>=1)tw=null;}
+    var spin=spin0-auto-sy*.0012+off;                 /* faster while you scroll */
+    var sc=((spin/(2*Math.PI))%1+1)%1*TW;
+    for(var p=0;p<N;p++){
+      var a=alpha[p],q=p*4;
+      if(!a){od[q+3]=0;continue;}
+      var c=((colF[p]+sc)%TW)|0,idx=rowOff[p]+c*4,s=shade[p];
+      od[q]=Math.min(255,tex[idx]*s/190);od[q+1]=Math.min(255,tex[idx+1]*s/190);od[q+2]=Math.min(255,tex[idx+2]*s/190);od[q+3]=a;
+    }
+    ctx.putImageData(out,0,0);
+    /* trip pins: each is clickable; the position is remembered for hit-testing */
+    for(var k=0;k<feats.length;k++){
+      var lat=feats[k].lat*DEG,mu=feats[k].lon*DEG-spin;
+      var X=Math.cos(lat)*Math.sin(mu),Yt=Math.sin(lat),Zt=Math.cos(lat)*Math.cos(mu);
+      var Y=Yt*ct+Zt*st,Z=-Yt*st+Zt*ct;
+      if(Z<.12){pinPos[k]=null;continue;}
+      var px=(X+1)/2*S,py=(1-Y)/2*S,f=Math.min(1,(Z-.12)/.3),u=S/720;
+      pinPos[k]={x:px,y:py,f:f};
+      var isSel=k===sel,isHov=k===hover,ph=((now/1000)/2.6+k*.17)%1;
+      ctx.globalAlpha=f*pinVis;
+      ctx.beginPath();ctx.arc(px,py,(11+ph*22)*u,0,7);ctx.lineWidth=2*u;ctx.strokeStyle='rgba(185,245,0,'+(.5*(1-ph)).toFixed(3)+')';ctx.stroke();   /* soft pulse: "click me" */
+      ctx.beginPath();ctx.arc(px,py,(isSel?24:isHov?20:16)*u,0,7);ctx.fillStyle='rgba(185,245,0,.28)';ctx.fill();
+      ctx.beginPath();ctx.arc(px,py,(isSel?11:isHov?10:8.5)*u,0,7);ctx.fillStyle='#B9F500';ctx.fill();
+      ctx.lineWidth=3*u;ctx.strokeStyle='#18181C';ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+  var running=false,reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function loop(now){
+    if(!running)return;
+    if(earthVis>.01&&now-last>(sy>geo.H?64:32)){last=now;frame(now);}   /* nothing to draw once the Earth has faded out */
+    requestAnimationFrame(loop);
+  }
+
+  /* ---- clickable pins: turn the pin to the front and open its card ---- */
+  var card=document.getElementById('tcard'),cTitle=document.getElementById('tcTitle'),cMedia=document.getElementById('tcMedia'),
+      cTags=document.getElementById('tcTags'),cCount=document.getElementById('tcCount'),cCta=document.getElementById('tcCta'),showT=null;
+  /* the card's button does the same job as the hero buttons */
+  if(mobile){cCta.textContent='Send me the link';cCta.href='#';cCta.addEventListener('click',function(e){e.preventDefault();send();});}
+  else if(/Mac/.test(ua)){cCta.textContent='Download for Mac';cCta.href=document.getElementById('btn-mac').href;}
+  else{cCta.textContent='Download for Windows';cCta.href=document.getElementById('btn-win').href;}
+  var gCta=document.getElementById('fcCta');                              /* the last card in the scroll section */
+  if(gCta){gCta.textContent=cCta.textContent;gCta.href=cCta.href;if(mobile)gCta.addEventListener('click',function(e){e.preventDefault();send();});}
+  function redraw(){if(reduce||!running)frame(performance.now());}
+  function pinAt(cx,cy){                                   /* nearest visible pin within ~26 screen px of the pointer */
+    if(pinVis<.6)return -1;
+    var r=cv.getBoundingClientRect(),best=-1,bd=26*26;
+    for(var k=0;k<feats.length;k++){
+      var p=pinPos[k];if(!p||p.f<.25)continue;
+      var dx=cx-(r.left+p.x/S*r.width),dy=cy-(r.top+p.y/S*r.height),d=dx*dx+dy*dy;
+      if(d<bd){bd=d;best=k;}
+    }
+    return best;
+  }
+  var ART={flick:"<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 22l12-12 12 12\"/><path d=\"M20 42l12 12 12-12\"/><path d=\"M32 18v28\"/></svg>",lock:"<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"14\" y=\"28\" width=\"36\" height=\"26\" rx=\"6\"/><path d=\"M22 28v-8a10 10 0 0 1 20 0v8\"/><circle cx=\"32\" cy=\"41\" r=\"3\" fill=\"currentColor\" stroke=\"none\"/></svg>"};
+  function fillCard(i){
+    var t=feats[i],n=(i<9?'0':'')+(i+1),h='';
+    cTitle.textContent=t.s;
+    cMedia.className='tc-media'+(t.img?'':' tc-art');
+    cMedia.innerHTML='<span class="tc-num">'+n+'</span>'+(t.img?'<img src="img/card-'+t.img+'.jpg" alt="'+t.n+' in Trove" width="640" height="360">':ART[t.art]);
+    t.w.forEach(function(x){h+='<span>'+x+'</span>';});cTags.innerHTML=h;
+    cCount.textContent=(i+1)+' / '+feats.length;
+  }
+  function placeCard(i){                                   /* beside the pin once it has turned to the front; a bottom sheet on phones */
+    if(window.innerWidth<=700){card.style.left=card.style.top='';return;}
+    var r=cv.getBoundingClientRect(),lat=feats[i].lat*DEG,Y=Math.sin(lat)*ct+Math.cos(lat)*st;
+    var px=r.left+r.width/2,py=r.top+(1-Y)/2*r.height,W=window.innerWidth,H=window.innerHeight,cw=card.offsetWidth||300,ch=card.offsetHeight||320;
+    var left=px+36;if(left+cw>W-16)left=px-36-cw;
+    card.style.left=Math.max(16,left)+'px';card.style.top=Math.max(84,Math.min(H-ch-16,py-24))+'px';
+  }
+  function select(i){
+    var base=spin0-auto-sy*.0012+off,d=feats[i].lon*DEG-base;
+    d=Math.atan2(Math.sin(d),Math.cos(d));                 /* shortest way round */
+    sel=i;fillCard(i);document.body.classList.add('has-card');
+    clearTimeout(showT);
+    if(reduce){off+=d;tw=null;placeCard(i);card.classList.add('on');card.setAttribute('aria-hidden','false');redraw();return;}
+    tw={from:off,to:off+d,t0:performance.now(),d:Math.min(1400,550+Math.abs(d)*420)};
+    card.classList.remove('on');
+    showT=setTimeout(function(){if(sel===i){placeCard(i);card.classList.add('on');card.setAttribute('aria-hidden','false');}},Math.min(700,tw.d*.55));
+  }
+  function closeCard(){
+    if(sel<0)return;
+    sel=-1;clearTimeout(showT);card.classList.remove('on');card.setAttribute('aria-hidden','true');
+    document.body.classList.remove('has-card');redraw();
+  }
+  cv.addEventListener('pointermove',function(e){
+    var h=pinAt(e.clientX,e.clientY);
+    if(h!==hover){hover=h;cv.style.cursor=h>=0?'pointer':'';redraw();}
+  });
+  cv.addEventListener('pointerleave',function(){if(hover>=0){hover=-1;cv.style.cursor='';redraw();}});
+  cv.addEventListener('click',function(e){var h=pinAt(e.clientX,e.clientY);if(h>=0)select(h);else closeCard();});
+  document.addEventListener('click',function(e){if(sel>=0&&!card.contains(e.target)&&e.target!==cv&&!(e.target.closest&&e.target.closest('.sr-pins')))closeCard();});
+  document.addEventListener('keydown',function(e){
+    if(sel<0)return;
+    if(e.key==='Escape')closeCard();
+    else if(e.key==='ArrowRight')select((sel+1)%feats.length);
+    else if(e.key==='ArrowLeft')select((sel+feats.length-1)%feats.length);
+  });
+  document.getElementById('tcClose').addEventListener('click',closeCard);
+  document.getElementById('tcPrev').addEventListener('click',function(){select((sel+feats.length-1)%feats.length);});
+  document.getElementById('tcNext').addEventListener('click',function(){select((sel+1)%feats.length);});
+  card.addEventListener('click',function(e){
+    if(sel<0||e.target.closest('.tc-x,.tc-nav button,.tc-cta'))return;
+    var i=sel;closeCard();showDetails(i);
+  });
+  window.addEventListener('resize',function(){if(sel>=0&&card.classList.contains('on'))placeCard(sel);});
+  /* keyboard and screen-reader route to the same cards */
+  (function(){var nav=document.createElement('nav'),h='';nav.className='sr sr-pins';nav.setAttribute('aria-label','What Trove does, pinned on the globe');
+    feats.forEach(function(t,i){h+='<button type="button" data-i="'+i+'">'+t.s+'</button>';});
+    nav.innerHTML=h;nav.addEventListener('click',function(e){var b=e.target.closest('button');if(b)select(+b.getAttribute('data-i'));});
+    document.body.appendChild(nav);})();
+
+  var img=new Image();
+  img.onload=function(){
+    var oc=document.createElement('canvas');TW=oc.width=img.naturalWidth;TH=oc.height=img.naturalHeight;
+    var oc2=oc.getContext('2d');oc2.drawImage(img,0,0);
+    try{tex=oc2.getImageData(0,0,TW,TH).data;}catch(e){return;}
+    build();frame(performance.now());
+    if(reduce)return;
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){var v=es[0].isIntersecting;if(v&&!running){running=true;requestAnimationFrame(loop);}else if(!v)running=false;}).observe(cv);
+    }else{running=true;requestAnimationFrame(loop);}
+  };
+  img.src='img/earth.jpg';
+})();
+</script>
+</body>
+</html>
