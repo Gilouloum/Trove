@@ -20,10 +20,7 @@
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Trove","alternateName":"Trove photo organizer","applicationCategory":"PhotoApplication","operatingSystem":"Windows 10, Windows 11, macOS (Apple Silicon)","description":"Free, open-source, local-first photo and video organizer for Windows and macOS. Never uploads, copies or moves your files.","url":"https://trovesort.com/","license":"https://www.gnu.org/licenses/gpl-3.0.html","isAccessibleForFree":true,"codeRepository":"https://github.com/Gilouloum/Trove","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
 </script>
 <style>
-/* Font 1: Cubao (display). Put the font file in site/fonts/ as Cubao.woff2 (or .woff / .ttf / .otf).
-   Until it is there, headings fall back to DM Sans Black. */
-@font-face{font-family:'Cubao';font-weight:100 900;font-style:normal;font-display:swap;
-  src:local('Cubao'),local('Cubao Free'),url(fonts/Cubao.woff2) format('woff2'),url(fonts/Cubao.woff) format('woff'),url(fonts/Cubao.ttf) format('truetype'),url(fonts/Cubao.otf) format('opentype')}
+/* Font 1: DM Sans Black (display) */
 @font-face{font-family:'DM Sans';font-weight:100 1000;font-display:swap;src:url(fonts/dmsans-latin-var.woff2) format('woff2')}
 /* Font 2: Poppins (text) */
 @font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url(fonts/poppins-400.woff2) format('woff2')}
@@ -33,7 +30,7 @@
   --charcoal:#18181C;--charcoal2:#202026;--charcoal3:#2a2a33;--border:#35353f;
   --violet:#723BFA;--violet-soft:#a98bff;--lime:#B9F500;
   --text:#f4f3f8;--text2:#b0afbf;
-  --display:'Cubao','DM Sans',system-ui,sans-serif;
+  --display:'DM Sans',system-ui,sans-serif;
   --body:'Poppins',system-ui,sans-serif;
   --G:min(104vw,94vh);                 /* diameter of the globe */
   --lift:calc(var(--G) * .21);         /* room above the globe for the arched word */
@@ -96,12 +93,21 @@ main{position:relative;z-index:2;pointer-events:none}
 .tc-nav span{font-size:13px;color:var(--text2)}
 @media (max-width:700px){.tcard{left:12px!important;right:12px;top:auto!important;bottom:12px;width:auto;max-height:calc(100svh - 24px);overflow:auto}.tc-media{aspect-ratio:21/9}}
 .word svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.word text{font-family:var(--display);font-weight:900;text-transform:uppercase}
+.word text{font-family:var(--display);font-weight:900}   /* the word is typed in capitals: Safari measures SVG text before text-transform, which cut the first and last letters off the arc */
 .arc-m{display:none}
 @media (max-aspect-ratio:4/5){.arc-d{display:none}.arc-m{display:block}.word{top:.5%}}   /* on phones the word sits lower, so the globe covers the bottom of the letters */
 .orb canvas{position:relative;z-index:1;display:block;width:100%;height:100%}
 .orb .scrim{position:absolute;z-index:2;inset:0;border-radius:50%;pointer-events:none;
   background:radial-gradient(closest-side at 50% 36%,rgba(24,24,28,.72) 0%,rgba(24,24,28,.5) 55%,rgba(24,24,28,0) 100%)}
+/* the label a pin opens into now and then, as a hint that it can be clicked (placed and sized by the script) */
+.pk{position:absolute;z-index:3;left:0;top:0;width:0;height:0;margin:0;padding:0;display:flex;align-items:center;overflow:hidden;white-space:nowrap;opacity:0;pointer-events:none;cursor:pointer;
+  border:.11em solid rgba(185,245,0,.8);border-radius:99px;background:rgba(24,24,28,.97);color:#fff;font:600 14px var(--body);box-shadow:0 .4em 1.4em rgba(0,0,0,.45)}
+.pk-dot{flex:none;position:relative;width:2.143em;height:2.143em}
+.pk-dot::before{content:"";position:absolute;left:50%;top:50%;width:1.15em;height:1.15em;margin:-.575em 0 0 -.575em;border-radius:50%;background:var(--lime);box-shadow:0 0 0 .2em var(--charcoal)}
+.pk-t{order:1;padding-left:.1em;opacity:var(--ta,0)}
+.pk-a{order:2;flex:none;width:.7em;height:1em;margin:0 .6em 0 .5em;fill:none;stroke:var(--lime);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:var(--ta,0)}
+.pk.l{justify-content:flex-end}
+.pk.l .pk-dot{order:2}.pk.l .pk-t{order:0;padding:0 0 0 .85em}.pk.l .pk-a{order:1}
 .intro{position:absolute;z-index:3;left:50%;top:calc(var(--lift) + 56px + var(--G) * .31);transform:translateX(-50%);width:min(40em,calc(100vw - 40px));text-align:center}
 .intro .lead{font:600 clamp(24px,3.4vw,42px)/1.18 var(--body);letter-spacing:-.01em;text-wrap:balance;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.65)}
 .intro .lead b{color:var(--lime);font-weight:600}
@@ -179,6 +185,56 @@ section p.lead{text-wrap:balance;color:var(--text2);text-align:center;max-width:
 .card b{display:block;font:900 20px var(--display);margin-bottom:6px;color:var(--lime)}
 .card span{color:var(--text2);font-size:15px}
 
+/* trip cards: the app's globe carousel, which scrolls into the three pitch cards.
+   Everything inside a card is sized in em, so it looks the same at any size (236px native, scaled up in the row, flat on phones). */
+.pitch{padding:24px 0 0}
+.gt-card{position:relative;display:flex;flex-direction:column;overflow:hidden;font-size:13px;line-height:1.4;text-align:left;color:var(--text);
+  background:var(--charcoal2);border:1px solid var(--border);border-radius:1.25em;box-shadow:0 .9em 2.6em rgba(0,0,0,.45);transition:border-color .2s}
+.gt-photo{position:relative;flex:none;aspect-ratio:236/140;background:var(--charcoal3);overflow:hidden}
+.gt-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.gt-chip{position:absolute;left:.75em;bottom:.7em;padding:.22em .85em;border-radius:99px;background:rgba(24,24,28,.74);color:#fff;font:600 .88em/1.45 var(--body)}
+.gt-dots{position:absolute;left:0;right:0;bottom:.6em;display:flex;justify-content:center;gap:.42em;pointer-events:none}
+.gt-dot{width:.45em;height:.45em;border-radius:50%;background:rgba(255,255,255,.45);box-shadow:0 0 2px rgba(0,0,0,.6);transition:background .15s}
+.gt-dot.on{background:#fff}
+.gt-body{position:relative;flex:1;border-top:3px solid var(--gt-color,var(--violet))}
+.gt-trip{padding:.77em 1em 1em}
+.gt-name{font:600 1.115em/1.3 var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gt-count{margin-top:.25em;font:400 .885em/1.4 var(--body);color:var(--text2)}
+.gt-pitch{padding:1.1em 1.2em 1.35em}
+.gt-pitch h3{margin:0 0 .5em;font-size:1.2em;line-height:1.2;color:#fff;text-wrap:balance}
+.gt-pitch p{margin:0;font:400 .92em/1.5 var(--body);color:#d7d6e2}
+
+/* flat layout: what you get on phones, small windows, with reduced motion, or without JavaScript */
+.gt-flat{list-style:none;padding:0;margin:0 auto;max-width:1000px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.gt-cell{display:flex;min-width:0;container-type:inline-size}
+.gt-flat .gt-card{flex:1;width:100%;font-size:15px;font-size:clamp(13px,calc(100cqw / 18.1538 * .92),17px)}
+.gt-flat .gt-card:hover{border-color:rgba(185,245,0,.4)}
+@media(max-width:820px){.gt-flat{grid-template-columns:minmax(0,1fr);max-width:440px;gap:18px}}
+
+/* carousel layout (wide screens): the cards live in .gt-layer and are placed by the script */
+.gt-layer{display:none}
+.is-morph .gt-flat{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}   /* still there for screen readers and search engines */
+.is-morph .gt-layer{display:block;position:relative;font-size:13px;pointer-events:none;transition:opacity .25s}
+.gt-layer .gt-card{position:absolute;left:0;top:0;width:18.1538em;transform-origin:50% 50%;pointer-events:auto;cursor:pointer}
+.gt-layer .gt-card::after{content:"";position:absolute;inset:0;border-radius:inherit;background:#000;opacity:var(--dim,0);pointer-events:none;transition:opacity .2s}
+.gt-layer .gt-card:hover{border-color:rgba(185,245,0,.4)}
+.gt-layer .gt-card:hover::after{opacity:calc(var(--dim,0) * .45)}
+.gt-layer.is-row .gt-card{cursor:default}
+.gt-layer .gt-photo img{opacity:0;transition:opacity .55s ease}
+.gt-layer .gt-photo img.on{opacity:1}
+.gt-layer .gt-trip{opacity:var(--tf,1)}
+.gt-layer .gt-pitch{position:absolute;left:0;right:0;top:0;opacity:var(--pf,0)}
+.gt-layer .gt-chip{opacity:var(--pf,0)}
+.gt-layer .gt-meas{visibility:hidden;pointer-events:none;z-index:-1}                 /* measures the two natural heights: compact (trip) and full (pitch) */
+.gt-layer .m-compact .gt-pitch{display:none}
+.gt-layer .m-full .gt-trip{display:none}
+.gt-layer .m-full .gt-pitch{position:relative;opacity:1}
+.gt-arrow{position:absolute;left:0;top:0;width:32px;height:32px;padding:0;border-radius:50%;border:1px solid var(--border);background:rgba(20,20,26,.78);color:var(--text2);font:17px/1 var(--body);cursor:pointer;pointer-events:auto;
+  display:flex;align-items:center;justify-content:center;transition:background .12s,color .12s,border-color .12s}
+.gt-arrow:hover{background:var(--lime);border-color:var(--lime);color:var(--charcoal)}
+.has-card .gt-layer{opacity:0}
+.has-card .gt-layer .gt-card,.has-card .gt-layer .gt-arrow{pointer-events:none}
+
 .faq details{border-bottom:1px solid var(--border);padding:18px 0;max-width:720px;margin:0 auto}
 .faq summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center}
 .faq summary::-webkit-details-marker{display:none}
@@ -213,13 +269,13 @@ footer a:hover{color:var(--lime)}
       <svg class="arc-d" viewBox="0 0 1000 1000" aria-hidden="true">
         <defs><linearGradient id="vgd" gradientUnits="userSpaceOnUse" x1="0" y1="-150" x2="0" y2="210"><stop offset="0" stop-color="#9d73ff"/><stop offset=".55" stop-color="#723BFA"/><stop offset="1" stop-color="#4a22b4"/></linearGradient></defs>
         <path id="pd" d="M102.5 177.1 A733.3 733.3 0 0 1 897.5 177.1" fill="none"/>
-        <text fill="url(#vgd)" font-size="300" data-len="840"><textPath href="#pd" startOffset="50%" text-anchor="middle">Trove</textPath></text>
+        <text fill="url(#vgd)" font-size="267" data-len="840"><textPath href="#pd" startOffset="50%" text-anchor="middle">TROVE</textPath></text>
       </svg>
       <!-- portrait phones: tighter arc so the word fits the screen -->
       <svg class="arc-m" viewBox="0 0 1000 1000" aria-hidden="true">
         <defs><linearGradient id="vgm" gradientUnits="userSpaceOnUse" x1="0" y1="-110" x2="0" y2="120"><stop offset="0" stop-color="#9d73ff"/><stop offset=".55" stop-color="#723BFA"/><stop offset="1" stop-color="#4a22b4"/></linearGradient></defs>
         <path id="pm" d="M225.5 63 A808.3 808.3 0 0 1 774.5 63" fill="none"/>
-        <text fill="url(#vgm)" font-size="190" data-len="520"><textPath href="#pm" startOffset="50%" text-anchor="middle">Trove</textPath></text>
+        <text fill="url(#vgm)" font-size="165" data-len="520"><textPath href="#pm" startOffset="50%" text-anchor="middle">TROVE</textPath></text>
       </svg>
       <span class="sr">Trove: free photo organizer for Windows and Mac</span>
     </h1>
@@ -249,6 +305,27 @@ footer a:hover{color:var(--lime)}
 </div>
 
 <div class="content" id="content">
+<!-- Three cards. On a wide screen they start as the app's trip carousel beside the globe and fly into this row as you scroll
+     (see "trip cards" in the script). Everywhere else this list is simply what you see. -->
+<section class="pitch" id="pitch" aria-labelledby="pitchH"><div class="wrap">
+  <h2 class="sr" id="pitchH">Why Trove</h2>
+  <ul class="gt-flat" id="gtFlat">
+    <li class="gt-cell"><article class="gt-card" style="--gt-color:#06b6d4">
+      <div class="gt-photo"><img src="img/trips/lofoten-1.webp" alt="" width="472" height="280" loading="lazy" decoding="async"><span class="gt-chip">Lofoten 2025</span></div>
+      <div class="gt-body"><div class="gt-pitch"><h3>A hard drive full of photos you never look at?</h3><p>Years of memories, buried in folders you never open. Trove is the solution: everything in one place, ready to scroll.</p></div></div>
+    </article></li>
+    <li class="gt-cell"><article class="gt-card" style="--gt-color:#10b981">
+      <div class="gt-photo"><img src="img/trips/iceland-1.webp" alt="" width="472" height="280" loading="lazy" decoding="async"><span class="gt-chip">Iceland 2025</span></div>
+      <div class="gt-body"><div class="gt-pitch"><h3>Sort them in as many folders as you like</h3><p>Put the same photo or video in a trip, a person, a place and a camera at once. Nothing is copied or moved, and any file is easy to find.</p></div></div>
+    </article></li>
+    <li class="gt-cell"><article class="gt-card" style="--gt-color:#ec4899">
+      <div class="gt-photo"><img src="img/trips/bali-1.webp" alt="" width="472" height="280" loading="lazy" decoding="async"><span class="gt-chip">Bali 2022</span></div>
+      <div class="gt-body"><div class="gt-pitch"><h3>Relive your trips and edit your photos</h3><p>Step through a trip day by day on a 3D globe, touch up a shot in the built-in editor, and keep it all in one safe place on your own computer.</p></div></div>
+    </article></li>
+  </ul>
+  <div class="gt-layer" id="gtLayer" role="group" aria-label="Example trips"></div>
+</div></section>
+
 <section id="features"><div class="wrap">
   <h2>Make watching your photos <em>fun again</em></h2>
   <p class="lead">Stop wasting your time scrolling through other people's stories. Scroll through yours.</p>
@@ -340,14 +417,16 @@ footer a:hover{color:var(--lime)}
   var mail=document.getElementById('mail');
   if(mail)mail.href='mailto:?subject='+encodeURIComponent(text)+'&body='+encodeURIComponent('Install Trove on my computer: '+url);
 
-  /* ---- fit the arched word to its arc whatever font ends up loaded (Cubao or the fallback) ---- */
+  /* ---- fit the arched word to its arc whatever font ends up loaded ---- */
   function fitWord(){
     var ts=document.querySelectorAll('.word text');
     for(var i=0;i<ts.length;i++){
-      var t=ts[i],L=+t.getAttribute('data-len'),fs=300;
+      /* measure small: Safari only counts the letters that fit on the path, so a big test size reads too short
+         and the word then comes out too big for the arc (first and last letters cut off) */
+      var t=ts[i],L=+t.getAttribute('data-len'),fs=100,prev=t.getAttribute('font-size');
       t.setAttribute('font-size',fs);
       var len=0;try{len=t.getComputedTextLength();}catch(e){}
-      if(len>0)t.setAttribute('font-size',(fs*L/len).toFixed(1));
+      t.setAttribute('font-size',len>0?(fs*L/len).toFixed(1):prev);   /* a hidden arc can't be measured: keep its size */
     }
   }
   fitWord();
@@ -420,14 +499,194 @@ footer a:hover{color:var(--lime)}
     for(i=0;i<=n;i++)cum[i]/=tot;return cum;})();
   function rush(x){x=Math.min(1,Math.max(0,x));var f=x*240,i=Math.floor(f);if(i>=240)return 1;return gTab[i]+(gTab[i+1]-gTab[i])*(f-i);}
   function measure(){
+    if(gt)gt.layout();
     geo.H=window.innerHeight;geo.c0=orb.offsetTop+orb.offsetHeight/2;
     contentEl.style.marginTop='0px';contentEl.style.transform='none';
-    var hOrig=headEl.getBoundingClientRect().top+(window.scrollY||0);   /* where the section heading naturally sits */
+    var hOrig=(gt?gt.ref():headEl).getBoundingClientRect().top+(window.scrollY||0);   /* where the first thing after the hero (the three cards) naturally sits */
     geo.S=geo.H*.5;                                                      /* scroll distance of the rush */
     geo.D=calm?0:Math.max(0,hOrig-geo.S-110);                            /* extra travel so the heading ends up near the top */
     contentEl.style.marginTop=(-geo.D)+'px';
   }
   function ease(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;}
+
+  /* ---- trip cards ----
+     On a wide screen the three cards start as the app's trip carousel beside the globe (centre card full size, a dimmed, tilted
+     neighbour above and below, arrows to page through the trips). Scrolling flies the same three cards into one row and swaps their
+     trip details for the three pitch cards. Elsewhere (phones, small windows, reduced motion, no JavaScript) the plain list is shown. */
+  var gt=(function(){
+    var sec=document.getElementById('pitch'),flat=document.getElementById('gtFlat'),layer=document.getElementById('gtLayer');
+    if(!sec||!flat||!layer)return null;
+    /* made-up trips: each has three pictures (img/trips/<slug>-1..3.webp) that the centre card cycles through, like the app */
+    var TRIPS=[
+      {s:'lofoten',n:'Lofoten 2025',c:312,col:'#06b6d4'},{s:'iceland',n:'Iceland 2025',c:540,col:'#10b981'},
+      {s:'bali',n:'Bali 2022',c:174,col:'#ec4899'},{s:'morocco',n:'Morocco 2024',c:187,col:'#f97316'},
+      {s:'banff',n:'Banff 2023',c:203,col:'#8b5cf6'},{s:'amalfi',n:'Amalfi 2024',c:256,col:'#22c55e'},{s:'lisbon',n:'Lisbon 2023',c:428,col:'#eab308'}];
+    var PITCH=[].map.call(flat.querySelectorAll('.gt-pitch'),function(el){return{t:el.querySelector('h3').textContent,d:el.querySelector('p').textContent};});
+    var NW=236,SLOT={left:0,center:1,right:2};
+    var POSE={                                                 /* the same poses as the app: top neighbour, centre, bottom neighbour, and the two off-stage spots */
+      center:{x:0,y:0,rot:0,sc:1,op:1,br:1},
+      left:{x:-8,y:-232,rot:-9,sc:.8,op:.55,br:.72},right:{x:-8,y:232,rot:9,sc:.8,op:.55,br:.72},   /* a bit more air above and below than the app has */
+      'hidden-left':{x:-24,y:-390,rot:-17,sc:.6,op:0,br:.72},'hidden-right':{x:-24,y:390,rot:17,sc:.6,op:0,br:.72}};
+    var morph=false,q=0,lastQ=-1,rowish=false,dirty=true,centerIdx=1,cards={left:null,center:null,right:null},live=[],meas=null,arrUp=null,arrDn=null,raf=0;
+    var Hc=205,Hf=330,sRow=1.34,slotX=[0,0,0],k=1,hm=86;   /* hm: gap between the centre card and the right edge of the screen */
+    function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+    function lerp(a,b,t){return a+(b-a)*t;}
+    function ez(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}          /* the app's cubic-bezier(.65,0,.35,1) */
+    function sm(x){x=clamp(x,0,1);return x*x*(3-2*x);}
+    function copy(o){var r={};for(var p in o)r[p]=o[p];return r;}
+    function src(t,i){return 'img/trips/'+t.s+'-'+(i+1)+'.webp';}
+
+    /* one card: a photo (three frames, cross-faded), the trip details, and the pitch text that replaces them in the row */
+    function makeCard(t){
+      var el=document.createElement('article'),dots='';
+      for(var i=0;i<3;i++)dots+='<span class="gt-dot'+(i?'':' on')+'"></span>';
+      el.className='gt-card';el.setAttribute('aria-hidden','true');el.style.setProperty('--gt-color',t.col);
+      el.innerHTML='<div class="gt-photo"><img class="on" src="'+src(t,0)+'" alt="" width="472" height="280" decoding="async"><img alt="" width="472" height="280" decoding="async">'
+        +'<span class="gt-chip">'+t.n+'</span><span class="gt-dots">'+dots+'</span></div>'
+        +'<div class="gt-body"><div class="gt-trip"><div class="gt-name">'+t.n+'</div><div class="gt-count">'+t.c+' photos</div></div>'
+        +'<div class="gt-pitch"><h3></h3><p></p></div></div>';
+      el._t=t;el._i=0;el._front=0;el._ps=-2;el._slot=-1;
+      el._imgs=el.querySelectorAll('.gt-photo img');el._dots=el.querySelectorAll('.gt-dot');el._h3=el.querySelector('.gt-pitch h3');el._p=el.querySelector('.gt-pitch p');
+      el.addEventListener('click',function(){cardClick(el);});
+      layer.appendChild(el);return el;
+    }
+    function showFrame(el,i){
+      var back=el._front?0:1,im=el._imgs[back],pre=new Image();
+      pre.onload=function(){
+        if(!el.parentNode)return;
+        im.src=pre.src;el._imgs[el._front].classList.remove('on');im.classList.add('on');el._front=back;
+        for(var j=0;j<el._dots.length;j++)el._dots[j].classList.toggle('on',j===i);
+      };
+      pre.src=src(el._t,i);
+    }
+    function startCycle(el,delay){
+      if(el._cy)return;
+      el._cy=setTimeout(function loop(){el._i=(el._i+1)%3;showFrame(el,el._i);el._cy=setTimeout(loop,2400);},delay);
+    }
+    function stopCycle(el){if(el._cy){clearTimeout(el._cy);el._cy=0;}}
+    function syncCycles(){                                      /* the centre card cycles; the other two join in once they are in the row */
+      ['left','center','right'].forEach(function(r){
+        var el=cards[r];if(!el)return;
+        if(r==='center'||rowish)startCycle(el,r==='center'?2200:r==='left'?2900:3600);else stopCycle(el);
+      });
+    }
+
+    /* placing the three roles (top, centre, bottom), as the app's gtclReconcile does */
+    function startPose(el,name,snap){
+      var to=POSE[name];
+      if(snap||!el._pose){el._pose=copy(to);el._from=null;return;}
+      el._from=copy(el._pose);el._to=to;el._t0=performance.now();
+    }
+    function assignRole(el,r,snap){
+      el._slot=SLOT[r];el.style.zIndex=r==='center'?3:2;startPose(el,r,snap);
+      if(el._ps!==el._slot){el._ps=el._slot;var p=PITCH[el._slot];if(p){el._h3.textContent=p.t;el._p.textContent=p.d;}}
+    }
+    function retire(el,hidden){
+      startPose(el,hidden,false);el._slot=-1;el.style.zIndex=1;stopCycle(el);
+      setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);var i=live.indexOf(el);if(i>=0)live.splice(i,1);},780);
+    }
+    function reconcile(initial){
+      var n=TRIPS.length,want={left:TRIPS[(centerIdx+n-1)%n],center:TRIPS[centerIdx],right:TRIPS[(centerIdx+1)%n]},roles=['left','center','right'],have={},next={left:null,center:null,right:null};
+      roles.forEach(function(r){if(cards[r])have[cards[r]._t.s]=cards[r];});
+      roles.forEach(function(r){if(have[want[r].s])next[r]=have[want[r].s];});
+      roles.forEach(function(r){var el=cards[r];if(el&&el!==next.left&&el!==next.center&&el!==next.right)retire(el,r==='left'?'hidden-left':'hidden-right');});
+      roles.forEach(function(r){
+        var el=next[r];
+        if(!el){el=makeCard(want[r]);live.push(el);startPose(el,r==='left'?'hidden-left':'hidden-right',true);}
+        next[r]=el;assignRole(el,r,initial);
+      });
+      cards=next;syncCycles();dirty=true;kick();
+    }
+    function page(d){if(q>.04)return;centerIdx=(centerIdx+d+TRIPS.length)%TRIPS.length;reconcile(false);}
+    function cardClick(el){
+      if(q>.04)return;                                          /* in the row there is nothing to page */
+      if(el===cards.left)page(-1);else if(el===cards.right)page(1);
+      else window.scrollTo({top:Math.round(geo.S*1.04),behavior:'smooth'});   /* the centre card: carry on down to the row */
+    }
+    function mkArrow(label,glyph,d){
+      var b=document.createElement('button');b.type='button';b.className='gt-arrow';b.setAttribute('aria-label',label);b.textContent=glyph;
+      b.addEventListener('click',function(){page(d);});layer.appendChild(b);return b;
+    }
+
+    /* the paging animation (and any other pose change) */
+    function step(now){
+      raf=0;var busy=false;
+      for(var i=0;i<live.length;i++){
+        var el=live[i];if(!el._from)continue;
+        var t=(now-el._t0)/700;
+        if(t>=1){el._pose=copy(el._to);el._from=null;continue;}
+        var e=ez(t),f=el._from,to=el._to,p=el._pose;
+        for(var key in to)p[key]=lerp(f[key],to[key],e);
+        busy=true;
+      }
+      dirty=true;render();
+      if(busy)raf=requestAnimationFrame(step);
+    }
+    function kick(){if(!raf)raf=requestAnimationFrame(step);}
+
+    /* every frame: where each card is, between its carousel pose (q=0) and its place in the row (q=1) */
+    function render(){
+      if(!morph||(q===lastQ&&!dirty))return;
+      lastQ=q;dirty=false;
+      var lr=layer.getBoundingClientRect(),W=window.innerWidth,H=window.innerHeight;
+      var hcx=W-hm-118*k,hcy=H/2+10,m=ez(q),tf=1-sm((q-.12)/.24),pf=sm((q-.27)/.3),h=lerp(Hc,Hf,sm((q-.1)/.5)),rowY=lr.top+Hf*sRow/2;   /* trip text out, pitch text in, card grows to fit it */
+      for(var i=0;i<live.length;i++){
+        var el=live[i],p=el._pose,sl=el._slot,hx=hcx+p.x*k,hy=hcy+p.y*k,hs=p.sc*k,hd=1-p.br,X,Y,S,R,O,D;
+        if(sl>=0){X=lerp(hx,lr.left+slotX[sl],m);Y=lerp(hy,rowY,m);S=lerp(hs,sRow,m);R=lerp(p.rot,0,m);O=lerp(p.op,1,m);D=lerp(hd,0,m);}
+        else{X=hx;Y=hy;S=hs;R=p.rot;O=lerp(p.op,0,m);D=hd;}
+        el.style.transform='translate('+(X-lr.left-NW/2).toFixed(2)+'px,'+(Y-lr.top-h/2).toFixed(2)+'px) rotate('+R.toFixed(2)+'deg) scale('+S.toFixed(4)+')';
+        el.style.height=h.toFixed(1)+'px';
+        el.style.opacity=O.toFixed(3);el.style.visibility=O<.01?'hidden':'';
+        el.style.setProperty('--dim',D.toFixed(3));el.style.setProperty('--tf',tf.toFixed(3));el.style.setProperty('--pf',pf.toFixed(3));
+      }
+      var ao=clamp(1-q/.12,0,1);
+      [[arrUp,-350],[arrDn,350]].forEach(function(a){
+        var b=a[0];if(!b)return;
+        b.style.transform='translate('+(hcx-lr.left-16).toFixed(1)+'px,'+(hcy+a[1]*k-lr.top-16).toFixed(1)+'px)';
+        b.style.opacity=ao.toFixed(3);b.style.visibility=ao<.02?'hidden':'';b.disabled=ao<.5;
+      });
+    }
+    function update(sy){
+      if(!morph)return;
+      q=clamp((sy-geo.S*.03)/(geo.S*.97),0,1);
+      var rw=q>=.97;if(rw!==rowish){rowish=rw;syncCycles();}
+      layer.classList.toggle('is-row',q>.04);
+      render();
+    }
+
+    /* switching between the carousel layout and the plain list, and measuring the cards */
+    function build(){
+      layer.innerHTML='';live=[];cards={left:null,center:null,right:null};
+      meas=makeCard(TRIPS[0]);meas.className='gt-card gt-meas';meas.style.height='auto';
+      arrUp=mkArrow('Previous trip','▲',1);arrDn=mkArrow('Next trip','▼',-1);
+      reconcile(true);
+    }
+    function teardown(){
+      live.forEach(stopCycle);cancelAnimationFrame(raf);raf=0;layer.innerHTML='';layer.style.height='';
+      live=[];cards={left:null,center:null,right:null};meas=arrUp=arrDn=null;rowish=false;lastQ=-1;
+    }
+    function layout(){
+      /* the carousel needs room: clear of the header above and below, and clear of the arched word, which is about .48 globes wide each side of the centre */
+      var Wd=window.innerWidth,Hd=window.innerHeight,G=Math.min(1.04*Wd,.94*Hd);
+      hm=clamp(Wd*.06,60,120);
+      var kk=Math.min(1,(Hd-164)/726,(Wd/2-hm-16-.48*G)/220);   /* height: header above, room below; width: the column's left edge against the word */
+      var on=!calm&&Wd>=1100&&kk>=.75;
+      if(on!==morph){morph=on;sec.classList.toggle('is-morph',on);if(on)build();else teardown();}
+      if(!morph)return;
+      meas.className='gt-card gt-meas m-compact';meas.style.height='auto';Hc=meas.offsetHeight;
+      meas.className='gt-card gt-meas m-full';var mx=0;
+      PITCH.forEach(function(p){meas._h3.textContent=p.t;meas._p.textContent=p.d;mx=Math.max(mx,meas.offsetHeight);});
+      Hf=mx||Hf;
+      var lw=layer.clientWidth,gap=24;sRow=clamp(((lw-2*gap)/3)/NW,.85,1.45);
+      var sw=NW*sRow,x0=(lw-(3*sw+2*gap))/2;slotX=[x0+sw/2,x0+sw*1.5+gap,x0+sw*2.5+gap*2];
+      layer.style.height=(Math.ceil(Hf*sRow)+8)+'px';
+      k=kk;
+      dirty=true;
+    }
+    return{layout:layout,update:update,ref:function(){return morph?layer:flat;},
+      box:function(){return morph&&q<.05?{l:window.innerWidth-hm-236*k-14}:null;}};   /* left edge of the carousel column while it is beside the globe */
+  })();
+
   function applyScroll(){
     tick=false;sy=window.scrollY||0;
     if(sy>40&&sel>=0)closeCard();                                      /* scrolling away closes an open trip card */
@@ -436,6 +695,7 @@ footer a:hover{color:var(--lime)}
         ef=Math.min(1,Math.max(0,(tt-geo.H*.2)/(geo.H*.45)));         /* 1 above it, 0 once it reaches the upper part of the screen */
     earthVis=ef;orb.style.opacity=ef.toFixed(3);                       /* from there down the page is plain dark with stars */
     contentEl.style.transform=geo.D?'translate3d(0,'+(geo.D*(1-rush(sy/geo.S))).toFixed(1)+'px,0)':'none';
+    if(gt)gt.update(sy);                                              /* the trip cards follow the content they sit in */
     wordEl.style.opacity=(1-Math.min(1,P*2.2)).toFixed(3);
     var fade=1-Math.min(1,sy/(geo.S*.5));                              /* the intro is gone before the content arrives */
     introEl.style.opacity=fade.toFixed(3);introEl.style.pointerEvents=fade<.3?'none':'';
@@ -514,9 +774,74 @@ footer a:hover{color:var(--lime)}
     }
   }
 
+  /* ---- a hint that the pins can be clicked: from time to time one stretches into a small label, then shrinks back ----
+     It keeps out of the way: only while the top of the page is showing, never over the headline or the card column,
+     not while the pointer is on the globe or a card is open, and it stops for good after the first click on a pin. */
+  var peek={k:-1,t0:0,a:0,dir:1,next:0,n:0,last:-1,off:false,inside:false,rect:null},PEEK_MS=3400,PEEK_GAP=6200;
+  function peekGeom(k,dir){                                /* the open label in canvas units, growing out of the pin to the right (dir 1) or left (-1) */
+    var p=pinPos[k],u=S/720,h=30*u;
+    ctx.font='600 '+(14*u)+'px Poppins,system-ui,sans-serif';
+    var tx=ctx.measureText(feats[k].s).width,full=h+4*u+tx+24*u;
+    return dir>0?{x:p.x-h/2,y:p.y-h/2,w:full,h:h,tx:tx}:{x:p.x+h/2-full,y:p.y-h/2,w:full,h:h,tx:tx};
+  }
+  function peekFree(k,dir){                                /* does the open label stay on screen, clear of the headline and the card column? */
+    var g=peekGeom(k,dir),r=cv.getBoundingClientRect(),sc=r.width/S,u=S/720,W=window.innerWidth;
+    if(g.x<4*u||g.x+g.w>S-4*u)return false;
+    var L=r.left+g.x*sc,R=L+g.w*sc,T=r.top+g.y*sc,B=T+g.h*sc;
+    if(L<12||R>W-12)return false;
+    var ir=introEl.getBoundingClientRect();
+    if(R>ir.left-12&&L<ir.right+12&&B>ir.top-12&&T<ir.bottom+12)return false;
+    var bx=gt&&gt.box();if(bx&&R>bx.l)return false;
+    return true;
+  }
+  function pickPeek(now){
+    var c=[],k,i,p,dirs;
+    for(k=0;k<feats.length;k++){
+      p=pinPos[k];if(!p||p.f<.98||k===peek.last)continue;
+      dirs=p.x<S/2?[1,-1]:[-1,1];
+      for(i=0;i<2;i++)if(peekFree(k,dirs[i])){c.push({k:k,dir:dirs[i],d:Math.hypot(p.x-S/2,p.y-.36*S)});break;}
+    }
+    if(!c.length){peek.next=now+1500;return;}
+    c.sort(function(a,b){return b.d-a.d;});                /* the pins out near the edge of the globe stand out most */
+    var w=c[Math.floor(Math.random()*Math.min(2,c.length))];
+    peek.k=w.k;peek.dir=w.dir;peek.t0=now;peek.a=0;
+  }
+  function peekStep(now){
+    if(peek.off||reduce)return;
+    if(!peek.next)peek.next=now+3500;
+    var busy=sel>=0||tw||sy>30||pinVis<.95||earthVis<.9;
+    if(peek.k<0){if(!busy&&!peek.inside&&now>=peek.next)pickPeek(now);return;}
+    var t=now-peek.t0;
+    if(busy||t>PEEK_MS||!pinPos[peek.k]||pinPos[peek.k].f<.9){   /* done, or something else needs the globe */
+      peek.last=peek.k;peek.k=-1;peek.rect=null;peek.n++;peek.next=now+PEEK_GAP;if(peek.n>=10)peek.off=true;return;
+    }
+    var z=(t-(PEEK_MS-450))/450;
+    peek.a=t<520?1-Math.pow(1-t/520,3):z>0?1-z*z*(3-2*z):1;     /* quick open, hold, soft close */
+  }
+  /* The open label is a small element on the globe (above the dark gradient that sits over its middle, so it stays bright and sharp).
+     Each frame it is placed on its pin; "a" (0..1) is how far it has opened. */
+  var pkEl=null;
+  function pkMake(){
+    if(pkEl)return pkEl;
+    pkEl=document.createElement('button');pkEl.type='button';pkEl.className='pk';pkEl.tabIndex=-1;pkEl.setAttribute('aria-hidden','true');
+    pkEl.innerHTML='<i class="pk-dot"></i><span class="pk-t"></span><svg class="pk-a" viewBox="0 0 10 14" aria-hidden="true"><path d="M2 2l5 5-5 5"/></svg>';
+    pkEl.addEventListener('click',function(){if(peek.k>=0)select(peek.k);});
+    orb.appendChild(pkEl);return pkEl;
+  }
+  function drawPeek(){
+    var k=peek.k;
+    if(k<0||!pinPos[k]){if(pkEl&&pkEl.style.opacity!=='0'){pkEl.style.opacity='0';pkEl.style.pointerEvents='none';}return;}
+    var el=pkMake(),st=el.style,p=pinPos[k],u=S/720,scl=cv.offsetWidth/S,g=peekGeom(k,peek.dir),a=peek.a,w=g.h+(g.w-g.h)*a,x=peek.dir>0?g.x:g.x+g.w-w;
+    if(el._k!==k||el._dir!==peek.dir){el._k=k;el._dir=peek.dir;el.querySelector('.pk-t').textContent=feats[k].s;el.classList.toggle('l',peek.dir<0);}
+    st.left=(x*scl).toFixed(1)+'px';st.top=(g.y*scl).toFixed(1)+'px';st.width=(w*scl).toFixed(1)+'px';st.height=(g.h*scl).toFixed(1)+'px';
+    st.fontSize=(14*u*scl).toFixed(2)+'px';st.opacity=(p.f*pinVis).toFixed(2);st.pointerEvents=a>.5?'auto':'none';
+    st.setProperty('--ta',Math.max(0,Math.min(1,(a-.5)/.4)).toFixed(2));
+  }
+
   var spin0=14*DEG,last=0;
   function frame(now){
     var dt=lastNow===null?0:Math.min(.1,(now-lastNow)/1000);lastNow=now;
+    peekStep(now);
     if(sel<0&&!tw)auto+=dt*.10;                       /* turns west to east, one turn per ~63 s; paused while a card is open */
     if(tw){var kk=Math.min(1,(now-tw.t0)/tw.d);off=tw.from+(tw.to-tw.from)*(1-Math.pow(1-kk,3));if(kk>=1)tw=null;}
     var spin=spin0-auto-sy*.0012+off;                 /* faster while you scroll */
@@ -543,6 +868,7 @@ footer a:hover{color:var(--lime)}
       ctx.beginPath();ctx.arc(px,py,(isSel?11:isHov?10:8.5)*u,0,7);ctx.fillStyle='#B9F500';ctx.fill();
       ctx.lineWidth=3*u;ctx.strokeStyle='#18181C';ctx.stroke();
     }
+    drawPeek();
     ctx.globalAlpha=1;
   }
   var running=false,reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -592,6 +918,7 @@ footer a:hover{color:var(--lime)}
     var base=spin0-auto-sy*.0012+off,d=feats[i].lon*DEG-base;
     d=Math.atan2(Math.sin(d),Math.cos(d));                 /* shortest way round */
     sel=i;fillCard(i);document.body.classList.add('has-card');
+    peek.off=true;peek.k=-1;peek.rect=null;                /* they found out the pins open: no more hints */
     clearTimeout(showT);
     if(reduce){off+=d;tw=null;placeCard(i);card.classList.add('on');card.setAttribute('aria-hidden','false');redraw();return;}
     tw={from:off,to:off+d,t0:performance.now(),d:Math.min(1400,550+Math.abs(d)*420)};
@@ -607,9 +934,10 @@ footer a:hover{color:var(--lime)}
     var h=pinAt(e.clientX,e.clientY);
     if(h!==hover){hover=h;cv.style.cursor=h>=0?'pointer':'';redraw();}
   });
-  cv.addEventListener('pointerleave',function(){if(hover>=0){hover=-1;cv.style.cursor='';redraw();}});
+  cv.addEventListener('pointerleave',function(){peek.inside=false;if(hover>=0){hover=-1;cv.style.cursor='';redraw();}});
+  cv.addEventListener('pointerenter',function(){peek.inside=true;});     /* someone is on the globe: leave them to it */
   cv.addEventListener('click',function(e){var h=pinAt(e.clientX,e.clientY);if(h>=0)select(h);else closeCard();});
-  document.addEventListener('click',function(e){if(sel>=0&&!card.contains(e.target)&&e.target!==cv&&!(e.target.closest&&e.target.closest('.sr-pins')))closeCard();});
+  document.addEventListener('click',function(e){if(sel>=0&&!card.contains(e.target)&&e.target!==cv&&!(e.target.closest&&e.target.closest('.sr-pins,.pk')))closeCard();});
   document.addEventListener('keydown',function(e){
     if(sel<0)return;
     if(e.key==='Escape')closeCard();
