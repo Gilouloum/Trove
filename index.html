@@ -620,10 +620,11 @@ textarea.text-input{resize:vertical}
 #legModePopup.open{display:block}
 
 /* PHOTO POPUP */
-#photoPopup{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+#photoPopup{position:fixed;inset:0;z-index:400;background:rgba(12,12,14,.5);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);display:none}
+body.win-chrome #photoPopup{top:32px}
 #photoPopup.open{display:flex}
-.photo-inner{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;width:min(96vw,1600px);height:min(94vh,1000px);box-shadow:0 32px 100px rgba(0,0,0,.6);position:relative;display:flex;flex-direction:column}
-.photo-img-wrap{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000;position:relative;cursor:zoom-in}
+.photo-inner{background:transparent;width:100%;height:100%;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.photo-img-wrap{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:transparent;position:relative;cursor:default}
 .photo-img-wrap.zoomed{cursor:grab}
 /* Unzoomed, the photo itself can be dragged out of the preview (popupWatchFileDrag) */
 .photo-img-wrap:not(.zoomed):not(.video-mode) #photoPopupImg{cursor:grab}
@@ -631,14 +632,13 @@ textarea.text-input{resize:vertical}
 .photo-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;visibility:hidden;opacity:0;transition:opacity .2s,visibility .2s}
 .photo-loading.show{visibility:visible;opacity:1}
 .photo-loading .v360-spinner{box-shadow:0 0 0 10px rgba(0,0,0,.4)}
-.photo-zoom-hint{position:absolute;bottom:8px;right:10px;font-size:10.5px;color:rgba(255,255,255,.6);background:rgba(0,0,0,.4);padding:3px 8px;border-radius:20px;pointer-events:none}
+.photo-zoom-hint{position:absolute;top:14px;left:16px;font-size:11px;color:rgba(255,255,255,.55);pointer-events:none;max-width:40%;opacity:1;transition:opacity .6s}
+.photo-zoom-hint.fade{opacity:0}
 .photo-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;user-select:none;-webkit-user-drag:none}
 .photo-img-wrap.video-mode{cursor:default}
 /* Folder bubbles over the bottom of the preview - left of the zoom hint, and lifted clear of
    the video controls / the 360 player's control bar */
-.photo-folder-chips{position:absolute;left:12px;right:230px;bottom:10px;z-index:3;display:flex;flex-wrap:wrap-reverse;gap:6px;pointer-events:none}
-.photo-img-wrap.video-mode .photo-folder-chips{bottom:64px;right:12px}
-.v360.open ~ .photo-folder-chips{bottom:112px}
+.photo-folder-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .pfc{pointer-events:auto;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px 0 5px;border-radius:14px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:12.5px;font-family:inherit;cursor:pointer;white-space:nowrap;transition:background .12s,border-color .12s}
 .pfc:hover{background:rgba(0,0,0,.78);border-color:rgba(255,255,255,.32)}
 .pfc img{vertical-align:middle !important}
@@ -652,15 +652,50 @@ textarea.text-input{resize:vertical}
 .si-face img{vertical-align:0 !important}
 .photo-speed-badge{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);backdrop-filter:blur(4px);color:#fff;padding:5px 12px;border-radius:16px;font-size:13px;font-weight:600;letter-spacing:.3px;opacity:0;transition:opacity .15s;pointer-events:none;z-index:3}
 .photo-speed-badge.show{opacity:1}
-.photo-video-fallback{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.75);font-size:13px;text-align:center;align-self:stretch;width:100%;background-size:contain;background-position:center;background-repeat:no-repeat}
-.photo-body{padding:14px 16px;flex:0 0 auto;user-select:text}
-.photo-name{font-size:13.5px;font-weight:600;margin-bottom:4px;cursor:text}
+.photo-video-fallback{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.85);font-size:13px;text-align:center;align-self:stretch;width:100%;pointer-events:none;background-size:contain;background-position:center;background-repeat:no-repeat}
+.photo-name{font-size:14px;font-weight:600;margin-bottom:3px;cursor:text;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.85)}
 .photo-name:hover{text-decoration:underline dotted;text-underline-offset:2px}
-.photo-meta{font-size:11.5px;color:var(--text2);line-height:1.6}
-.photo-actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
-.photo-close{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.45);border:none;color:#fff;font-size:16px;cursor:pointer;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;z-index:5}
-.photo-close:hover{background:rgba(0,0,0,.7)}
-.photo-linkage{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:10px}
+.photo-meta{font-size:11.5px;color:rgba(255,255,255,.78);line-height:1.55;text-shadow:0 1px 6px rgba(0,0,0,.85)}
+.photo-close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);border:none;color:#fff;font-size:15px;cursor:pointer;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;z-index:8}
+.photo-close:hover{background:rgba(255,255,255,.28)}
+.photo-linkage{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+/* Full-screen viewer: scroll to move, Like / Edit / More beside the photo, no banner */
+.pp-counter{position:absolute;top:20px;left:50%;transform:translateX(-50%);z-index:8;font:12.5px 'DM Mono',monospace;color:rgba(255,255,255,.7);text-shadow:0 1px 6px rgba(0,0,0,.8);pointer-events:none}
+.pp-caption{position:absolute;z-index:6;left:16px;bottom:16px;max-width:min(520px,60vw);user-select:text}
+.pp-rail{position:absolute;z-index:7;display:flex;flex-direction:column;align-items:center;gap:16px;right:16px;bottom:28px}
+.pp-rail.h{flex-direction:row;gap:26px}
+.pp-btn{background:none;border:none;color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit;padding:0;text-shadow:0 1px 5px rgba(0,0,0,.7)}
+.pp-btn .ic{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);display:grid;place-items:center;transition:background .12s,transform .12s}
+.pp-btn svg{width:24px;height:24px}
+.pp-btn:hover .ic{background:rgba(255,255,255,.28)}.pp-btn:active .ic{transform:scale(.92)}
+.pp-btn .lb{font-size:11px;font-weight:600}
+.pp-btn.on .ic{background:rgba(236,79,127,.92)}.pp-btn.on svg{fill:#fff}
+.pp-menu{position:fixed;z-index:9;display:none;flex-direction:column;min-width:200px;padding:6px;border-radius:12px;background:rgba(28,27,26,.96);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 40px rgba(0,0,0,.55)}
+.pp-menu.open{display:flex}
+.pp-mi{display:flex;align-items:center;gap:11px;padding:9px 12px;border:none;border-radius:8px;background:none;color:#ece7df;font:inherit;font-size:13px;cursor:pointer;text-align:left}
+.pp-mi svg{width:17px;height:17px;flex-shrink:0;opacity:.85}
+.pp-mi:hover{background:rgba(255,255,255,.1)}.pp-mi.danger{color:#ff8a7a}
+/* Over a bright part of the photo: dark icons and text instead of white */
+.tone-d.pp-btn{color:#121212;text-shadow:0 1px 4px rgba(255,255,255,.55)}
+.tone-d.pp-btn .ic{background:rgba(255,255,255,.55);box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+.tone-d.pp-btn:hover .ic{background:rgba(255,255,255,.8)}
+.tone-d.pp-btn.on .ic{background:rgba(236,79,127,.95);color:#fff}
+.tone-d.pp-btn.on .lb{color:#121212}
+.tone-d.pp-counter,.tone-d.photo-zoom-hint{color:rgba(0,0,0,.72);text-shadow:0 1px 5px rgba(255,255,255,.6)}
+.tone-d.photo-close{background:rgba(255,255,255,.55);color:#121212}
+.tone-d .photo-name{color:#121212;text-shadow:0 1px 5px rgba(255,255,255,.6)}
+.tone-d .photo-meta{color:rgba(0,0,0,.78);text-shadow:0 1px 5px rgba(255,255,255,.6)}
+.pp-sep{height:1px;background:rgba(255,255,255,.1);margin:4px 6px}
+.pp-heart-pop{position:absolute;left:50%;top:50%;width:120px;height:120px;pointer-events:none;opacity:0;z-index:5;transform:translate(-50%,-50%) scale(.2);filter:drop-shadow(0 6px 24px rgba(0,0,0,.5))}
+.pp-heart-pop svg{width:100%;height:100%;fill:#ec4f7f}
+.pp-heart-pop.go{animation:pp-pop .75s ease-out}
+@keyframes pp-pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.15)}}
+.pp-bin-label{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);padding:10px 22px;border-radius:12px;background:rgba(201,74,58,.92);color:#fff;font-size:20px;font-weight:700;opacity:0;pointer-events:none;z-index:5}
+.pp-in-up #photoPopupImg,.pp-in-up #photoPopupVideo{animation:pp-in-up .22s ease-out}
+.pp-in-down #photoPopupImg,.pp-in-down #photoPopupVideo{animation:pp-in-down .22s ease-out}
+@keyframes pp-in-up{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes pp-in-down{from{opacity:0;transform:translateY(-60px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pp-in-up #photoPopupImg,.pp-in-down #photoPopupImg,.pp-in-up #photoPopupVideo,.pp-in-down #photoPopupVideo,.pp-heart-pop.go{animation:none}}
 .pl-chip{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 12px 4px 4px;cursor:pointer;transition:border-color .12s,background .12s;max-width:220px}
 .pl-chip:hover{border-color:var(--accent);background:var(--bg4)}
 .pl-chip-thumb{width:26px;height:26px;border-radius:50%;overflow:hidden;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
@@ -1317,22 +1352,23 @@ body.win-chrome #flickMode{top:32px}
 /* XP, LEVELS, BADGES (rewards.js) */
 .journey-chip{-webkit-app-region:no-drag;margin-left:auto;display:flex;align-items:center;gap:6px;padding:3px 8px 3px 5px;border-radius:999px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font:inherit;cursor:pointer;position:relative;overflow:hidden;min-width:0}
 .journey-chip:hover{border-color:var(--accent)}
-.jc-icon{font-size:15px}.jc-text{display:flex;flex-direction:column;line-height:1.1;text-align:left;min-width:0}
+.rw-ico{width:1em;height:1em;display:block}
+.jc-icon{font-size:22px;display:flex}.jc-text{display:flex;flex-direction:column;line-height:1.1;text-align:left;min-width:0}
 .jc-rank{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.jc-level{font-size:10px;color:var(--text3)}
 .jc-bar{position:absolute;left:0;right:0;bottom:0;height:2px;background:transparent}.jc-bar span{display:block;height:100%;background:var(--accent);transition:width .6s ease}
-.sound-toggle{-webkit-app-region:no-drag;background:none;border:none;font-size:13px;cursor:pointer;padding:2px;opacity:.75}.sound-toggle:hover{opacity:1}
+.sound-toggle{-webkit-app-region:no-drag;background:none;border:none;color:var(--text2);font-size:15px;display:flex;cursor:pointer;padding:2px;opacity:.75}.sound-toggle:hover{opacity:1}
 .rw-float{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);z-index:400;pointer-events:none;background:var(--accent);color:#fff;font-weight:700;font-size:13px;padding:4px 12px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);animation:rw-float 1.4s ease forwards}
 @keyframes rw-float{0%{opacity:0;transform:translate(-50%,8px)}15%{opacity:1;transform:translate(-50%,0)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-26px)}}
 .rw-card{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:410;display:flex;align-items:center;gap:14px;min-width:300px;max-width:440px;padding:14px 20px 14px 16px;border-radius:14px;background:var(--bg2);color:var(--text);border:1px solid var(--border2);box-shadow:0 14px 40px rgba(0,0,0,.4);cursor:pointer;animation:rw-card-in .45s cubic-bezier(.2,1.4,.4,1)}
 @keyframes rw-card-in{from{opacity:0;transform:translate(-50%,-20px) scale(.92)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
-.rw-card-icon{font-size:34px;line-height:1}
+.rw-card-icon{font-size:48px;line-height:1}
 .rw-card-kicker{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
 .rw-card-title{font-size:17px;font-weight:700;margin-top:1px}.rw-card-sub{font-size:12.5px;color:var(--text2);margin-top:2px}
 .rw-finale .fl-done-heart{animation:rw-bow 1.4s cubic-bezier(.3,1.5,.5,1)}
 @keyframes rw-bow{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.35) rotate(-8deg)}55%{transform:scale(1.2) rotate(6deg)}100%{transform:scale(1) rotate(0)}}
 @media (prefers-reduced-motion:reduce){.rw-float,.rw-card,.rw-finale .fl-done-heart{animation:none}.jc-bar span{transition:none}}
 .jr-head{display:flex;align-items:center;gap:14px}
-.jr-rank-icon{font-size:42px}.jr-rank{font-size:17px;font-weight:700}
+.jr-rank-icon{font-size:56px}.jr-rank{font-size:17px;font-weight:700}
 .jr-bar{height:8px;border-radius:4px;background:var(--bg3);margin:8px 0 6px;overflow:hidden}.jr-bar span{display:block;height:100%;background:var(--accent);border-radius:4px}
 .jr-sub{font-size:12px;color:var(--text2)}
 .jr-ways{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
@@ -1340,7 +1376,18 @@ body.win-chrome #flickMode{top:32px}
 .jr-badges{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .jr-badge{text-align:center;padding:8px 4px;border-radius:var(--rs);background:var(--bg3);opacity:.5;filter:grayscale(1)}
 .jr-badge.got{opacity:1;filter:none;background:var(--aglow);border:1px solid var(--accent)}
-.jr-badge-icon{font-size:22px}.jr-badge-name{font-size:11px;font-weight:600;margin-top:3px}.jr-badge-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.jr-badge-icon{font-size:36px;display:flex;justify-content:center}.jr-badge-name{font-size:11px;font-weight:600;margin-top:3px}.jr-badge-sub{font-size:10px;color:var(--text3);margin-top:2px}
+/* World explored: the share of the world's countries in the photos' places (rewards.js) */
+.jr-world{margin-top:16px;padding:12px 14px;border-radius:var(--rs);background:var(--bg3);border:1px solid var(--border)}
+.jr-world-top{display:flex;align-items:center;gap:12px}
+.jr-world-pct{font-size:30px;font-weight:800;line-height:1;color:var(--accent);min-width:78px;font-variant-numeric:tabular-nums}
+.jr-world-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}.jr-world-text b{font-size:14px}.jr-world-text span{font-size:12px;color:var(--text2)}
+.jr-world-copy{flex:none;padding:5px 11px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--bg2);color:var(--text);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer}.jr-world-copy:hover{border-color:var(--accent);color:var(--accent)}
+.jr-world .jr-bar{margin:10px 0 6px;background:var(--bg2)}
+.jr-world-list{margin-top:8px}.jr-world-list summary{cursor:pointer;font-size:12px;font-weight:600;color:var(--text2)}.jr-world-list summary:hover{color:var(--text)}
+.jr-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;max-height:134px;overflow:auto}
+.jr-chip{font-size:11.5px;padding:2px 9px;border-radius:999px;background:var(--bg2);border:1px solid var(--border);color:var(--text)}
+.jr-world-how{margin-top:8px;font-size:11px;color:var(--text3);line-height:1.45}
 /* Find Duplicates & Edits: edits to link on top, duplicates to clear below */
 .eg-section{margin-bottom:26px}
 .eg-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:12px}
@@ -1572,7 +1619,7 @@ body.win-chrome #flickMode{top:32px}
     <div class="logo-icon"><img src="assets/icon-256.png" alt="Trove"/></div>
     <span class="logo-text">Trove</span>
     <button class="journey-chip" id="journeyChip" onclick="openJourney()"></button>
-    <button class="sound-toggle" id="soundToggle" onclick="toggleSounds()">🔊</button>
+    <button class="sound-toggle" id="soundToggle" onclick="toggleSounds()"></button>
   </div>
   <div class="sidebar-scroll">
     <div class="sb-sec">
@@ -1638,7 +1685,7 @@ body.win-chrome #flickMode{top:32px}
       <button class="view-btn" id="tlBtn" onclick="setView('timeline')" title="Timeline">🖼️</button>
     </div>
     <button class="globe-btn sort-menu-btn" id="sortMenuBtn" onclick="toggleSortMenu(event)" title="Tidy up your library: find new people, sort the To Sort pile, find duplicates and edited photos">Sort<span class="sort-menu-count" id="sortMenuBadge" style="display:none"></span> ▾</button>
-    <button class="globe-btn" id="globeToggle" onclick="toggleGlobe()">🌍<span class="tb-hide-sm"> Globe</span></button>
+    <button class="globe-btn" id="globeToggle" onclick="toggleGlobe()">Globe</button>
     <button class="add-btn" onclick="addFiles()" title="Add Files"><span style="font-size:14px;line-height:1">+</span><span class="tb-hide-sm"> <span data-i18n="tbAddFiles">Add Files</span></span></button>
   </div>
 
@@ -1714,8 +1761,8 @@ body.win-chrome #flickMode{top:32px}
     <div class="globe-topbar">
       <span class="globe-title" id="globeTitle"></span>
       <span class="globe-hint" id="globeHint"></span>
-      <button class="globe-close globe-filter-btn" id="globeFilterBtn" onclick="openGlobeFilterMenu(this)" title="Choose which photos show on the map">🌍 All photos ▾</button>
-      <button class="globe-close" id="terrainToggleBtn" title="Real elevation data (mountains, valleys) instead of a flat globe. Costs extra GPU/network - turn off if the globe feels laggy." onclick="toggle3dTerrain()">🏔️ 3D Terrain: Off</button>
+      <button class="globe-close globe-filter-btn" id="globeFilterBtn" onclick="openGlobeFilterMenu(this)" title="Choose which photos show on the map">All photos ▾</button>
+      <button class="globe-close" id="terrainToggleBtn" title="Real elevation data (mountains, valleys) instead of a flat globe. Costs extra GPU and network, so turn it off if the globe feels laggy." onclick="toggle3dTerrain()">3D Terrain: Off</button>
       <button class="globe-close" id="globeConfirmBtn" style="display:none;background:var(--accent);border-color:var(--accent);color:#fff" onclick="confirmLocatePick()">✓ Set Location</button>
       <button class="globe-close" onclick="toggleGlobe()">✕ Close</button>
     </div>
@@ -1739,7 +1786,6 @@ body.win-chrome #flickMode{top:32px}
           <button id="gtclArrowNext" class="gtcl-arrow" type="button" onclick="gtclArrowClick(1)" aria-label="Next trip">▼</button>
         </div>
         <div class="globe-no-gps" id="globeNoGps" style="display:none">
-          <div style="font-size:36px;margin-bottom:8px">🌐</div>
           No GPS data found.<br>Add photos/videos with location enabled.
         </div>
       </div>
@@ -1754,7 +1800,7 @@ body.win-chrome #flickMode{top:32px}
         <button class="relive-nav-btn" id="reliveNextBtn" onclick="reliveNext()" title="Next day">›</button>
         <button class="relive-close-btn" onclick="exitRelive()">✕ Exit</button>
       </div>
-      <!-- One pill per leg that day, e.g. "🚗 Paris → Troyes" - click to relabel
+      <!-- One pill per leg that day, e.g. "Paris → Troyes", click to relabel
            (drive/walk/ferry/train/flight) or, for a walk, import a real GPX track -->
       <div id="reliveLegChips"></div>
       <div id="reliveDayCards"></div>
@@ -1768,7 +1814,7 @@ body.win-chrome #flickMode{top:32px}
   <div id="tripMarkerPopup">
     <div class="tmp-header"><span class="tmp-name" id="tmpName"></span></div>
     <div class="tmp-count" id="tmpCount"></div>
-    <button class="tmp-relive" onclick="reliveTripClick()">🔄 Relive Trip</button>
+    <button class="tmp-relive" onclick="reliveTripClick()">Relive Trip</button>
   </div>
 
   <!-- Duplicates & Edits: copies to delete and edits to link, one screen (renderDupMode in renderer.js) -->
@@ -2057,7 +2103,7 @@ body.win-chrome #flickMode{top:32px}
       <div class="photo-video-fallback" id="photoVideoFallback" style="display:none">
         <div style="font-size:36px">🎬</div>
         <div>This video format can't be previewed in-app.</div>
-        <button class="empty-btn" onclick="openPopupFile()">▶ Open in default player</button>
+        <button class="empty-btn" style="pointer-events:auto" onclick="openPopupFile()">▶ Open in default player</button>
       </div>
       <div class="photo-loading" id="photoPopupLoading" role="status" aria-label="Loading photo"><div class="v360-spinner"></div></div>
       <div class="photo-speed-badge" id="photoSpeedBadge">2× ▶▶</div>
@@ -2101,30 +2147,33 @@ body.win-chrome #flickMode{top:32px}
           <button class="v360-menu-item" onclick="v360GrabSphere()"><b>Full 360 photo</b><span>The whole sphere, full resolution, opens as 360 in Trove, Google Photos, Facebook · Shift+G</span></button>
         </div>
       </div>
-      <div class="photo-zoom-hint" id="photoZoomHint" data-i18n="popupZoomHint">🔍 Scroll to zoom · Drag the photo out to another app · Zoomed in, drag to pan</div>
-      <!-- Where this file is filed: trips, people, categories, tags (renderPopupFolderChips) -->
-      <div class="photo-folder-chips" id="photoFolderChips" style="display:none"></div>
+      <div class="pp-heart-pop" id="ppHeartPop"><svg viewBox="0 0 24 24"><path d="M12 21S3.5 15 3.5 9A4.7 4.7 0 0 1 12 6.6 4.7 4.7 0 0 1 20.5 9C20.5 15 12 21 12 21z"/></svg></div>
+      <div class="pp-bin-label" id="ppBinLabel"></div>
+      <div class="photo-zoom-hint" id="photoZoomHint" data-i18n="popupZoomHint">Scroll for the next photo · Double-click to like · Drag sideways to bin · Ctrl+scroll to zoom · Alt+drag to take the file to another app</div>
     </div>
-    <div class="photo-body">
+    <div class="pp-counter" id="photoClusterNav" style="display:none"><span id="photoClusterCount"></span></div>
+    <div class="pp-caption" id="ppCaption">
       <div class="photo-name" id="photoPopupName" title="Click to rename" onclick="renamePopupFile()"></div>
       <div class="photo-meta" id="photoPopupMeta"></div>
-      <div class="photo-cluster-nav" id="photoClusterNav" style="display:none;align-items:center;gap:8px;margin-top:8px">
-        <button class="btn-cancel" style="padding:4px 10px" onclick="popupPrev()">‹ Prev</button>
-        <span id="photoClusterCount" style="font-size:11.5px;color:var(--accent2)"></span>
-        <button class="btn-cancel" style="padding:4px 10px" onclick="popupNext()">Next ›</button>
-      </div>
-      <div class="photo-actions">
-        <button class="btn-save" onclick="openPopupFile()">Open File</button>
-        <button class="btn-cancel" id="popupBestOfBtn" onclick="togglePopupBestOf()">♡ Like</button>
-        <button class="btn-cancel" onclick="revealPopupFile()">Reveal</button>
-        <button class="btn-cancel" onclick="editPopupFile()">Edit Props</button>
-        <button class="btn-cancel" id="popupEditPhotoBtn" onclick="editPopupPhoto()">✏️ Edit Photo</button>
-        <button class="btn-cancel" id="popupRotateBtn" onclick="rotatePopupFile()" title="Rotate 90° clockwise - only how Trove shows it, the file itself isn't changed (R)">↻ Rotate</button>
-        <button class="btn-cancel" id="popupGrabBtn" style="display:none" onclick="grabPopupVideoFrame()" title="Save the current frame as a full-resolution photo, dated to this exact moment (G)">📸 Grab frame</button>
-        <button class="btn-cancel" id="popupThumbBtn" style="display:none" onclick="togglePopupThumbMenu(event)" title="Change this video's thumbnail in the library: use the frame on screen, or import an image (the video file isn't changed)">🖼 Thumbnail ▾</button>
-        <button class="btn-save" style="background:var(--danger)" onclick="deletePopupFile(event)" title="Remove from Trove, or delete from your computer (Ctrl+click: delete permanently, no confirmation)">🗑 Remove…</button>
-      </div>
+      <!-- Where this file is filed: trips, people, categories, tags (renderPopupFolderChips) -->
+      <div class="photo-folder-chips" id="photoFolderChips" style="display:none"></div>
       <div class="photo-linkage" id="photoLinkage" style="display:none"></div>
+    </div>
+    <!-- Like, Edit and More sit beside the photo and move with its shape (popupLayout in renderer.js) -->
+    <div class="pp-rail" id="ppRail">
+      <button class="pp-btn" id="popupBestOfBtn" onclick="togglePopupBestOf()"></button>
+      <button class="pp-btn" id="popupEditPhotoBtn" onclick="editPopupPhoto()" title="Edit this photo"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19z"/><path d="M14.5 6.5l3 3"/></svg></span><span class="lb" data-i18n="ppEdit">Edit</span></button>
+      <button class="pp-btn" id="ppMoreBtn" onclick="togglePopupMenu(event)"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="19" cy="12" r="1.3" fill="currentColor"/></svg></span><span class="lb" data-i18n="ppMore">More</span></button>
+    </div>
+    <div class="pp-menu" id="ppMenu" onclick="popupMenuClicked(event)">
+      <button class="pp-mi" onclick="openPopupFile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span data-i18n="ppOpenFile">Open file</span></button>
+      <button class="pp-mi" onclick="revealPopupFile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span data-i18n="ppReveal">Show in folder</span></button>
+      <button class="pp-mi" onclick="editPopupFile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l9 9-8 8z"/><circle cx="7.5" cy="8.5" r="1" fill="currentColor"/></svg><span data-i18n="ppEditProps">Edit properties</span></button>
+      <button class="pp-mi" id="popupRotateBtn" onclick="rotatePopupFile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span data-i18n="ppRotate">Rotate</span></button>
+      <button class="pp-mi" id="popupGrabBtn" onclick="grabPopupVideoFrame()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span data-i18n="ppGrab">Grab frame</span></button>
+      <button class="pp-mi keep" id="popupThumbBtn" onclick="togglePopupThumbMenu(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 16l5-5 4 4 3-3 6 6"/></svg><span data-i18n="ppThumb">Thumbnail…</span></button>
+      <div class="pp-sep"></div>
+      <button class="pp-mi danger" onclick="deletePopupFile(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg><span data-i18n="ppRemove">Remove…</span></button>
     </div>
   </div>
 </div>
@@ -2303,7 +2352,7 @@ body.win-chrome #flickMode{top:32px}
 <!-- Journey: level, rank and badges (rewards.js) -->
 <div class="modal-backdrop" id="journeyModal" style="z-index:300" onclick="if(event.target===this)closeJourney()">
   <div class="modal-box" style="width:520px">
-    <div class="modal-head"><div class="modal-title" data-i18n="rwJourneyTitle">🧭 Your journey</div></div>
+    <div class="modal-head"><div class="modal-title" data-i18n="rwJourneyTitle">Your journey</div></div>
     <div class="modal-body" id="journeyBody"></div>
     <div class="modal-foot"><button class="btn-cancel" onclick="closeJourney()" data-i18n="flClose">Close</button></div>
   </div>

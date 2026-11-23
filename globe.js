@@ -456,9 +456,19 @@ const MODE_ROUTE_STYLE = {
   ferry:  { dash: true, dashLength: 14, dashPattern: 0x00FF },
   train:  { dash: true, dashLength: 4,  dashPattern: 0xF0F0 }
 };
-const MODE_ROUTE_EMOJI = { drive: '🚗', flight: '✈️', walk: '🥾', ferry: '⛴️', train: '🚆' };
+// Line glyphs for each transport mode (24x24 grid), drawn on the canvas badge and inlined as SVG in the Relive UI.
+const MODE_ICON_PATHS = {
+  drive: 'M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2M9 17h6M7 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4M17 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4',
+  flight: 'M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z',
+  walk: 'M12 4m-1 0a1 1 0 1 0 2 0 1 1 0 1 0-2 0M9 20l3-6 3 6M6 8l6 2 6-2M12 10v4',
+  ferry: 'M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M19.4 18A11.6 11.6 0 0 0 21 12l-9-4-9 4c0 2.3.5 4.4 1.6 6M19 11V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v5M12 8v4M12 2v2',
+  train: 'M6 3h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM4 11h16M12 3v8M8 19l-2 3M18 22l-2-3M8 15h.01M16 15h.01'
+};
+function modeIconSvg(mode) {
+  return `<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.14em"><path d="${MODE_ICON_PATHS[mode] || MODE_ICON_PATHS.drive}"/></svg>`;
+}
 
-// Small round badge with the transport emoji - floats over the midpoint of each
+// Small round badge with the transport glyph, floating over the midpoint of each
 // route line so a glance says how that leg was traveled, without clicking anything.
 const modeIconCache = new Map();
 function modeIconCanvas(mode) {
@@ -474,9 +484,11 @@ function modeIconCanvas(mode) {
   ctx.shadowBlur = 0;
   ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.arc(cx, cy, size * 0.42, 0, Math.PI * 2); ctx.stroke();
-  ctx.font = '22px sans-serif';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(MODE_ROUTE_EMOJI[mode] || '🚗', cx, cy + 1);
+  ctx.save();
+  ctx.translate(cx - 11, cy - 11); ctx.scale(22 / 24, 22 / 24);
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.stroke(new Path2D(MODE_ICON_PATHS[mode] || MODE_ICON_PATHS.drive));
+  ctx.restore();
   modeIconCache.set(mode, c);
   return c;
 }
@@ -501,7 +513,7 @@ function buildFlightArcPositions(startLat, startLng, endLat, endLng, segments = 
 }
 
 function buildGlobe(canvas, gpsFiles, opts = {}) {
-  if (typeof Cesium === 'undefined') { toast('⚠️ 3D library failed to load'); return { cleanup(){} }; }
+  if (typeof Cesium === 'undefined') { toast('3D library failed to load'); return { cleanup(){} }; }
 
   // Esri World Imagery is served in Web Mercator, which is mathematically undefined
   // past ±85.05° latitude - so with it as the only layer, the globe surface above/
@@ -690,7 +702,7 @@ function buildGlobe(canvas, gpsFiles, opts = {}) {
     arcgisTerrain().then(p => {
       if (!terrainOn || widget.isDestroyed()) return; // toggled off (or closed) again before this resolved
       scene.terrainProvider = p;
-    }).catch(() => { terrainOn = false; toast('⚠️ Terrain relief unavailable - showing flat globe'); });
+    }).catch(() => { terrainOn = false; toast('Terrain relief unavailable, showing the flat globe'); });
   }
   if (terrainOn) setTerrainEnabled(true);
 

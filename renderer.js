@@ -634,7 +634,7 @@ const I18N = {
   rwChipTitle: { en: v => `${v.xp} XP · ${v.next} to the next level. Click to see your journey.`, fr: v => `${v.xp} XP · encore ${v.next} pour le niveau suivant. Cliquez pour voir votre parcours.`, de: v => `${v.xp} XP · noch ${v.next} bis zur nächsten Stufe. Klicken für Ihre Reise.`, es: v => `${v.xp} XP · faltan ${v.next} para el siguiente nivel. Haz clic para ver tu viaje.`, zh: v => `${v.xp} XP · 距下一级还差 ${v.next}。点击查看你的旅程。` },
   rwMute: { en: 'Mute sounds', fr: 'Couper les sons', de: 'Töne aus', es: 'Silenciar sonidos', zh: '静音' },
   rwUnmute: { en: 'Turn sounds on', fr: 'Activer les sons', de: 'Töne an', es: 'Activar sonidos', zh: '开启声音' },
-  rwJourneyTitle: { en: '🧭 Your journey', fr: '🧭 Votre parcours', de: '🧭 Ihre Reise', es: '🧭 Tu viaje', zh: '🧭 你的旅程' },
+  rwJourneyTitle: { en: 'Your journey', fr: 'Votre parcours', de: 'Ihre Reise', es: 'Tu viaje', zh: '你的旅程' },
   rwToNext: { en: v => `${v.xp} XP · ${v.next} more to level ${v.level}`, fr: v => `${v.xp} XP · encore ${v.next} pour le niveau ${v.level}`, de: v => `${v.xp} XP · noch ${v.next} bis Stufe ${v.level}`, es: v => `${v.xp} XP · faltan ${v.next} para el nivel ${v.level}`, zh: v => `${v.xp} XP · 距第 ${v.level} 级还差 ${v.next}` },
   rwNextRank: { en: v => `${v.rank} at level ${v.level}`, fr: v => `${v.rank} au niveau ${v.level}`, de: v => `${v.rank} ab Stufe ${v.level}`, es: v => `${v.rank} en el nivel ${v.level}`, zh: v => `第 ${v.level} 级成为${v.rank}` },
   rwWaysTitle: { en: 'How to earn XP', fr: 'Comment gagner des XP', de: 'So sammeln Sie XP', es: 'Cómo ganar XP', zh: '如何获得 XP' },
@@ -664,7 +664,16 @@ const I18N = {
   peCropDone: { en: '✓ Done', fr: '✓ Terminé', de: '✓ Fertig', es: '✓ Listo', zh: '✓ 完成' },
 
   // Photo preview: dragging the file out
-  popupZoomHint: { en: '🔍 Scroll to zoom · Drag the photo out to another app · Zoomed in, drag to pan', fr: "🔍 Molette pour zoomer · Glissez la photo vers une autre application · En zoom, glissez pour vous déplacer", de: '🔍 Scrollen zum Zoomen · Foto in eine andere App ziehen · Gezoomt: ziehen zum Verschieben', es: '🔍 Rueda para hacer zoom · Arrastra la foto a otra aplicación · Con zoom, arrastra para moverte', zh: '🔍 滚动缩放 · 将照片拖到其他应用 · 放大后拖动可平移' },
+  ppEdit: { en: "Edit", fr: "Modifier", de: "Bearbeiten", es: "Editar", zh: "编辑" },
+  ppMore: { en: "More", fr: "Plus", de: "Mehr", es: "Más", zh: "更多" },
+  ppOpenFile: { en: "Open file", fr: "Ouvrir le fichier", de: "Datei öffnen", es: "Abrir archivo", zh: "打开文件" },
+  ppReveal: { en: "Show in folder", fr: "Afficher dans le dossier", de: "Im Ordner zeigen", es: "Mostrar en la carpeta", zh: "在文件夹中显示" },
+  ppEditProps: { en: "Edit properties", fr: "Modifier les propriétés", de: "Eigenschaften bearbeiten", es: "Editar propiedades", zh: "编辑属性" },
+  ppRotate: { en: "Rotate", fr: "Pivoter", de: "Drehen", es: "Girar", zh: "旋转" },
+  ppGrab: { en: "Grab frame", fr: "Capturer l'image", de: "Bild erfassen", es: "Capturar fotograma", zh: "截取画面" },
+  ppThumb: { en: "Thumbnail…", fr: "Miniature…", de: "Vorschaubild…", es: "Miniatura…", zh: "缩略图…" },
+  ppRemove: { en: "Remove…", fr: "Retirer…", de: "Entfernen…", es: "Quitar…", zh: "移除…" },
+  popupZoomHint: { en: 'Scroll for the next photo · Double-click to like · Drag sideways to bin · Ctrl+scroll to zoom · Alt+drag to take the file to another app', fr: "Molette pour changer de photo · Double-clic pour aimer · Glissez sur le côté pour mettre à la corbeille · Ctrl+molette pour zoomer · Alt+glisser pour emporter le fichier", de: 'Scrollen für das nächste Foto · Doppelklick zum Liken · Zur Seite ziehen für den Papierkorb · Strg+Scrollen zum Zoomen · Alt+Ziehen nimmt die Datei in eine andere App mit', es: 'Rueda para pasar de foto · Doble clic para dar me gusta · Arrastra a un lado para la papelera · Ctrl+rueda para hacer zoom · Alt+arrastrar lleva el archivo a otra app', zh: '滚动切换照片 · 双击喜欢 · 向两侧拖动放入回收站 · Ctrl+滚动缩放 · Alt+拖动把文件带到其他应用' },
 
   // Flick through (flick.js)
   flBannerLiked: { en: v => `${v.liked} liked of ${v.n} (${v.pct}%)`, fr: v => `${v.liked} coups de cœur sur ${v.n} (${v.pct} %)`, de: v => `${v.liked} von ${v.n} mit Gefällt mir (${v.pct} %)`, es: v => `${v.liked} de ${v.n} te gustan (${v.pct} %)`, zh: v => `${v.n} 个中喜欢 ${v.liked} 个(${v.pct}%)` },
@@ -736,7 +745,20 @@ const I18N = {
   rwBadge_explorer: { en: 'Explorer', fr: 'Explorateur', de: 'Entdecker', es: 'Explorador', zh: '探险家' },
   rwBadgeHow_explorer: { en: 'Flick through 5 whole folders', fr: 'Parcourez 5 dossiers entiers', de: 'Blättern Sie 5 ganze Ordner durch', es: 'Recorre 5 carpetas enteras', zh: '浏览完 5 个文件夹' },
   rwBadge_tidyUp: { en: 'Tidy up', fr: 'Rangement', de: 'Aufgeräumt', es: 'Ordenado', zh: '整理达人' },
-  rwBadgeHow_tidyUp: { en: 'Send 100 files to the Bin', fr: 'Mettez 100 fichiers dans la Corbeille', de: 'Legen Sie 100 Dateien in den Papierkorb', es: 'Manda 100 archivos a la Papelera', zh: '把 100 个文件放入回收站' }
+  rwBadgeHow_tidyUp: { en: 'Send 100 files to the Bin', fr: 'Mettez 100 fichiers dans la Corbeille', de: 'Legen Sie 100 Dateien in den Papierkorb', es: 'Manda 100 archivos a la Papelera', zh: '把 100 个文件放入回收站' },
+  // World explored (rewards.js): the share of the world's countries that appear in the photos' places
+  rwWorldTitle: { en: 'World explored', fr: 'Monde exploré', de: 'Welt erkundet', es: 'Mundo explorado', zh: '已探索的世界' },
+  rwWorldOf: { en: v => `${v.n} of ${v.total} countries`, fr: v => `${v.n} pays sur ${v.total}`, de: v => `${v.n} von ${v.total} Ländern`, es: v => `${v.n} de ${v.total} países`, zh: v => `${v.total} 个国家中的 ${v.n} 个` },
+  rwWorldNext: { en: v => `${v.more} more to reach ${v.goal} countries`, fr: v => `Encore ${v.more} pour atteindre ${v.goal} pays`, de: v => `Noch ${v.more} bis ${v.goal} Länder`, es: v => `Faltan ${v.more} para llegar a ${v.goal} países`, zh: v => `再去 ${v.more} 个国家,就达到 ${v.goal} 个` },
+  rwWorldAll: { en: 'Every country on the list. Incredible.', fr: 'Tous les pays de la liste. Incroyable.', de: 'Jedes Land der Liste. Unglaublich.', es: 'Todos los países de la lista. Increíble.', zh: '名单上的每个国家你都去过了。太了不起了。' },
+  rwWorldNone: { en: 'No countries yet. Photos with a location fill this in: place them on the Globe, or add photos that carry GPS.', fr: 'Aucun pays pour l\'instant. Les photos avec un lieu le remplissent : placez-les sur le Globe, ou ajoutez des photos avec GPS.', de: 'Noch keine Länder. Fotos mit Standort füllen das aus: Platzieren Sie sie auf dem Globus oder fügen Sie Fotos mit GPS hinzu.', es: 'Aún no hay países. Las fotos con ubicación lo rellenan: colócalas en el Globo o añade fotos con GPS.', zh: '还没有国家。带位置的照片会自动填充:在地球上标注位置,或添加带 GPS 的照片。' },
+  rwWorldList: { en: v => `Countries (${v.n})`, fr: v => `Pays (${v.n})`, de: v => `Länder (${v.n})`, es: v => `Países (${v.n})`, zh: v => `国家(${v.n})` },
+  rwWorldOther: { en: v => `Also been to, not counted in the percentage: ${v.names}`, fr: v => `Aussi visités, non comptés dans le pourcentage : ${v.names}`, de: v => `Außerdem besucht, nicht im Prozentwert enthalten: ${v.names}`, es: v => `También visitados, sin contar en el porcentaje: ${v.names}`, zh: v => `也去过,但不计入百分比:${v.names}` },
+  rwWorldHow: { en: v => `Counted from where your photos were taken (their location data), out of the ${v.total} countries the UN recognizes: its 193 member states plus the Vatican and Palestine. Other places, such as Taiwan, Kosovo, Hong Kong or Puerto Rico, are listed but not counted.`, fr: v => `Calculé d'après le lieu où vos photos ont été prises (leurs données de localisation), sur les ${v.total} pays reconnus par l'ONU : ses 193 États membres plus le Vatican et la Palestine. Les autres lieux, comme Taïwan, le Kosovo, Hong Kong ou Porto Rico, sont listés mais non comptés.`, de: v => `Berechnet nach dem Ort, an dem Ihre Fotos entstanden sind (ihre Standortdaten), von den ${v.total} Ländern, die die UN anerkennt: ihren 193 Mitgliedstaaten plus Vatikan und Palästina. Andere Orte wie Taiwan, Kosovo, Hongkong oder Puerto Rico werden aufgeführt, aber nicht mitgezählt.`, es: v => `Calculado según el lugar donde se tomaron tus fotos (sus datos de ubicación), sobre los ${v.total} países que reconoce la ONU: sus 193 Estados miembros más el Vaticano y Palestina. Otros lugares, como Taiwán, Kosovo, Hong Kong o Puerto Rico, aparecen en la lista pero no cuentan.`, zh: v => `根据照片的拍摄地点(位置数据)统计,以联合国承认的 ${v.total} 个国家为基数:193 个会员国,加上梵蒂冈和巴勒斯坦。台湾、科索沃、香港、波多黎各等其他地区会列出,但不计入百分比。` },
+  rwWorldCopy: { en: 'Copy my stats', fr: 'Copier mes stats', de: 'Meine Statistik kopieren', es: 'Copiar mis estadísticas', zh: '复制我的统计' },
+  rwWorldCopyTitle: { en: 'Copy a sentence with your numbers to share and compare', fr: 'Copier une phrase avec vos chiffres, à partager pour comparer', de: 'Einen Satz mit Ihren Zahlen kopieren, zum Teilen und Vergleichen', es: 'Copiar una frase con tus cifras para compartir y comparar', zh: '复制一句带有你的数据的话,方便分享和比较' },
+  rwWorldCopied: { en: 'Copied. Paste it to compare with a friend.', fr: 'Copié. Collez-le pour comparer avec un ami.', de: 'Kopiert. Fügen Sie es ein, um mit Freunden zu vergleichen.', es: 'Copiado. Pégalo para compararlo con un amigo.', zh: '已复制。粘贴给朋友,比一比吧。' },
+  rwWorldShare: { en: v => `I have explored ${v.n} of ${v.total} countries (${v.pct} of the world) with Trove.`, fr: v => `J'ai exploré ${v.n} pays sur ${v.total} (${v.pct} du monde) avec Trove.`, de: v => `Ich habe mit Trove ${v.n} von ${v.total} Ländern erkundet (${v.pct} der Welt).`, es: v => `He explorado ${v.n} de ${v.total} países (${v.pct} del mundo) con Trove.`, zh: v => `我用 Trove 探索了 ${v.total} 个国家中的 ${v.n} 个(占世界的 ${v.pct})。` }
 };
 
 // A folder's icon is normally an emoji string, but folder.iconImage (a data URL, set via the
@@ -790,7 +812,7 @@ function pathBasename(p) { const i = Math.max(p.lastIndexOf('/'), p.lastIndexOf(
 function pathExtname(p) { const b = pathBasename(p); const i = b.lastIndexOf('.'); return i <= 0 ? '' : b.slice(i); }
 
 function countryFlag(code) {
-  if (!code || code.length !== 2) return '🌍';
+  if (!code || code.length !== 2) return '';
   const off = 0x1F1E6 - 65;
   return String.fromCodePoint(off + code.charCodeAt(0)) + String.fromCodePoint(off + code.charCodeAt(1));
 }
@@ -1786,33 +1808,17 @@ async function backfillAllDimensions() {
 }
 
 // ── SIDEBAR SECTIONS (draggable) ─────────────────────────────────────────────
-// Line icons for the built-in sections, same 24px grid/stroke as PE_ICON_PATHS, tinted with
-// each section's folder colour. Emoji looked different on every OS and clashed with the rest
-// of the sidebar; these stay crisp and on-palette.
-const SECTION_ICON_PATHS = {
-  trips:      '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>',
-  adventures: '<circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z" fill="currentColor" fill-opacity=".25"/>',
-  people:     '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
-  categories: '<path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r="1.5" fill="currentColor"/>',
-  cameras:    '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/>',
-  locations:  '<path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>'
-};
-const SECTION_ICON_COLORS = { trips: '#06b6d4', adventures: '#f97316', people: '#ec4899', categories: '#10b981', cameras: '#6b9bc3', locations: '#8b5cf6' };
-function sectionIcon(key) {
-  return `<svg class="sb-sec-icon" style="color:${SECTION_ICON_COLORS[key]}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SECTION_ICON_PATHS[key]}</svg>`;
-}
-
-// `label` is HTML (icon + name) for the header and Settings; `name` is the plain text for toasts.
+// `label` is the header and Settings text; `name` is the plain text for toasts.
 const SIDEBAR_SECTIONS = {
-  trips:      { name: 'Trips',      label: `${sectionIcon('trips')} Trips`,           add: () => addVacation(),          render: renderTripsList },
-  adventures: { name: 'Adventures', label: `${sectionIcon('adventures')} Adventures`, add: () => addAdventure(),         render: renderAdventuresList },
-  people:     { name: 'People',     label: `${sectionIcon('people')} People`,         add: () => addPersonManual(),      render: renderPeopleList },
-  categories: { name: 'Categories', label: `${sectionIcon('categories')} Categories`, add: () => openCategoryQuickAdd(), render: renderCategoriesList },
-  cameras:    { name: 'Cameras',    label: `${sectionIcon('cameras')} Cameras`,       add: () => addCameraManual(),      render: renderCamerasList },
+  trips:      { name: 'Trips',      label: `Trips`,           add: () => addVacation(),          render: renderTripsList },
+  adventures: { name: 'Adventures', label: `Adventures`, add: () => addAdventure(),         render: renderAdventuresList },
+  people:     { name: 'People',     label: `People`,         add: () => addPersonManual(),      render: renderPeopleList },
+  categories: { name: 'Categories', label: `Categories`, add: () => openCategoryQuickAdd(), render: renderCategoriesList },
+  cameras:    { name: 'Cameras',    label: `Cameras`,       add: () => addCameraManual(),      render: renderCamerasList },
   // No `add` - Location is auto-generated from each photo's GPS data, so creating one
   // manually isn't a real action; renderSidebarSections() skips the "+ New…" button below
   // for any section with noAdd set instead of giving it a button that can't do anything.
-  locations:  { name: 'Location',   label: `${sectionIcon('locations')} Location`,    noAdd: true, render: renderLocationsList },
+  locations:  { name: 'Location',   label: `Location`,    noAdd: true, render: renderLocationsList },
   // No generic "Folders" catch-all anymore - every folder already lives under one of the
   // sections above or a custom section, so a leftover uncategorized-folders bucket was never
   // actually useful. Removing the key here is enough on its own: renderSidebarSections()'s
@@ -2249,7 +2255,7 @@ function renderLocationsList(list) {
     // than just looking empty/broken while it catches up.
     const pending = appData.files.filter(f => f.gps && !f.noGeocode && !f.country).length;
     list.innerHTML = pending
-      ? `<div class="sb-empty">🌍 Locating ${pending} photo${pending!==1?'s':''}… already on the Globe, this list catches up shortly</div>`
+      ? `<div class="sb-empty">Locating ${pending} photo${pending!==1?'s':''}… already on the Globe, this list catches up shortly</div>`
       : '<div class="sb-empty">No GPS locations yet</div>';
     return;
   }
@@ -5700,7 +5706,7 @@ function toggleGlobe() {
     if (window.Cesium) {
       initGlobe();
     } else {
-      toast('🌍 Loading globe…');
+      toast('Loading globe…');
       ensureCesiumLoaded()
         .then(() => { if (globeOpen) initGlobe(); })
         .catch(() => toast('⚠️ 3D library failed to load'));
@@ -5748,12 +5754,12 @@ function initGlobe() {
   document.getElementById('globeConfirmBtn').style.display = 'none';
   document.getElementById('globeNoGps').style.display = (gpsFiles.length===0 && !pickMode) ? '' : 'none';
   if (gsPickMode) {
-    document.getElementById('globeTitle').textContent = '📍 Set Location';
+    document.getElementById('globeTitle').textContent = 'Set Location';
     document.getElementById('globeHint').textContent = 'Select photos on the left, then click the globe to drop a pin for them';
   } else if (pickMode) {
     const ids = locateModeFileIds;
     const label = ids.length > 1 ? `${ids.length} files` : (appData.files.find(f=>f.id===ids[0])?.name || '1 file');
-    document.getElementById('globeTitle').textContent = `📍 Set Location - ${esc(label)}`;
+    document.getElementById('globeTitle').textContent = `Set Location: ${esc(label)}`;
     document.getElementById('globeHint').textContent = 'Click anywhere on the globe to place the marker, then confirm';
   } else {
     document.getElementById('globeTitle').textContent = '';
@@ -5795,10 +5801,10 @@ function initGlobe() {
 // never show, and don't count toward their trip's dot, bounds or Relive route either.
 let globeTrips = [];
 const GLOBE_FILTERS = {
-  all: { label: 'All photos', icon: '🌍' },
-  trips: { label: 'Trips only', icon: '✈️' },
-  adventures: { label: 'Adventures only', icon: '🧭' },
-  both: { label: 'Trips & adventures', icon: '✈️🧭' }
+  all: { label: 'All photos' },
+  trips: { label: 'Trips only' },
+  adventures: { label: 'Adventures only' },
+  both: { label: 'Trips & adventures' }
 };
 function globeFilterMode() { return GLOBE_FILTERS[appData.settings.globeFilter] ? appData.settings.globeFilter : 'all'; }
 function globeFilteredFiles(files) {
@@ -5833,10 +5839,10 @@ function openGlobeFilterMenu(anchor) {
   menu.className = 'gs-menu globe-filter-menu';
   menu.id = 'globeFilterMenu';
   menu.innerHTML = `<div class="gs-menu-label">Show on the map</div>
-    ${Object.entries(GLOBE_FILTERS).map(([key, f]) => `<button class="gs-menu-item${key === mode ? ' active' : ''}" onclick="setGlobeFilter('${key}')"><span>${f.icon} ${f.label}</span>${key === mode ? '<small>✓</small>' : ''}</button>`).join('')}
+    ${Object.entries(GLOBE_FILTERS).map(([key, f]) => `<button class="gs-menu-item${key === mode ? ' active' : ''}" onclick="setGlobeFilter('${key}')"><span>${f.label}</span>${key === mode ? '<small>✓</small>' : ''}</button>`).join('')}
     <div class="gs-menu-sep"></div>
     ${hidden.length
-      ? `<div class="gs-menu-label">Hidden from the map</div><button class="gs-menu-item" onclick="unhideAllFromMap()"><span>🙈 ${hidden.length} photo${hidden.length !== 1 ? 's' : ''} hidden</span><small>Show all again</small></button>`
+      ? `<div class="gs-menu-label">Hidden from the map</div><button class="gs-menu-item" onclick="unhideAllFromMap()"><span>${hidden.length} photo${hidden.length !== 1 ? 's' : ''} hidden</span><small>Show all again</small></button>`
       : '<div class="globe-filter-note">Right-click a photo on the map to hide it - handy for a stray photo far from the rest of its trip.</div>'}`;
   document.body.appendChild(menu);
   const r = anchor.getBoundingClientRect();
@@ -5880,7 +5886,7 @@ async function unhideAllFromMap() {
   appData.files.forEach(f => { delete f.hideOnMap; });
   await saveData();
   refreshGlobeData();
-  toast(`👁 ${n} photo${n !== 1 ? 's are' : ' is'} back on the map`);
+  toast(`${n} photo${n !== 1 ? 's are' : ' is'} back on the map`);
 }
 // Right-click on a globe pin: the library's own context menu. A stacked pin selects every
 // photo in the stack first, so Hide from Map / Move to Folder / Best Of apply to all of them.
@@ -5901,8 +5907,8 @@ async function ctxToggleHideOnMap() {
   await saveData();
   refreshGlobeData();
   toast(hide
-    ? `🙈 ${files.length === 1 ? files[0].name : files.length + ' photos'} hidden from the map - right-click in the library, or use the map's Show menu, to bring ${files.length === 1 ? 'it' : 'them'} back`
-    : `👁 ${files.length === 1 ? files[0].name : files.length + ' photos'} back on the map`, 5000);
+    ? `${files.length === 1 ? files[0].name : files.length + ' photos'} hidden from the map. Right-click in the library, or use the map's Show menu, to bring ${files.length === 1 ? 'it' : 'them'} back`
+    : `${files.length === 1 ? files[0].name : files.length + ' photos'} back on the map`, 5000);
 }
 
 // Which trip (direct child of the Vacations root) a file is filed under, if any -
@@ -5963,7 +5969,7 @@ function showTripMarkerPopup(trip, x, y) {
   tripPopupSuppressNextDismiss = true;
   setTimeout(() => { tripPopupSuppressNextDismiss = false; }, 0);
   const reliveBtn = document.querySelector('#tripMarkerPopup .tmp-relive');
-  if (reliveBtn) reliveBtn.textContent = trip.kind === 'adventure' ? '🔄 Relive Adventure' : '🔄 Relive Trip';
+  if (reliveBtn) reliveBtn.textContent = trip.kind === 'adventure' ? 'Relive Adventure' : 'Relive Trip';
   document.getElementById('tmpName').textContent = trip.name;
   document.getElementById('tmpCount').textContent = `${trip.count} geotagged file${trip.count !== 1 ? 's' : ''}`;
   const el = document.getElementById('tripMarkerPopup');
@@ -6293,8 +6299,7 @@ const LEG_FLIGHT_MIN_KM = 80;
 const LEG_WALK_MAX_KMH = 7;
 const LEG_MIN_STEP_KM = 1.5;      // simplified-fallback point thinning (same idea as the earlier removed buildTripRoutes)
 const LEG_MIN_STEP_MS = 15 * 60 * 1000;
-const MODE_LABELS = { drive: '🚗 Drive', walk: '🥾 Walk', ferry: '⛴️ Ferry', train: '🚆 Train', flight: '✈️ Flight' };
-const MODE_EMOJI = { drive: '🚗', walk: '🥾', ferry: '⛴️', train: '🚆', flight: '✈️' };
+const MODE_LABELS = { drive: 'Drive', walk: 'Walk', ferry: 'Ferry', train: 'Train', flight: 'Flight' };
 
 function legsForDay(day) {
   return reliveLegs.filter(leg => dateKeyOf(leg.startTime) === day.dateKey || dateKeyOf(leg.endTime) === day.dateKey);
@@ -6416,7 +6421,7 @@ function showLegModePopup(e, leg) {
   legModePopupLeg = leg;
   const el = document.getElementById('legModePopup');
   el.innerHTML = Object.keys(MODE_LABELS).map(m =>
-    `<div class="ctx-item" onclick="relabelLeg(legModePopupLeg,'${m}')">${MODE_LABELS[m]}</div>`
+    `<div class="ctx-item" onclick="relabelLeg(legModePopupLeg,'${m}')">${modeIconSvg(m)} ${MODE_LABELS[m]}</div>`
   ).join('') + (leg.mode === 'walk'
     ? `<div class="ctx-sep"></div><div class="ctx-item" onclick="importGpxForLeg(legModePopupLeg)"><span class="ctx-icon">📥</span> Import GPX Track…</div>`
     : '');
@@ -6911,13 +6916,13 @@ function toggle3dTerrain() {
   saveData();
   updateTerrainToggleBtn();
   globeCtrl?.setTerrainEnabled(appData.settings.use3dTerrain);
-  toast(appData.settings.use3dTerrain ? '🏔️ 3D Terrain: On' : '🏔️ 3D Terrain: Off - back to the flat globe');
+  toast(appData.settings.use3dTerrain ? '3D Terrain: On' : '3D Terrain: Off, back to the flat globe');
 }
 function updateTerrainToggleBtn() {
   const btn = document.getElementById('terrainToggleBtn');
   if (!btn) return;
   const on = !!appData.settings?.use3dTerrain;
-  btn.textContent = on ? '🏔️ 3D Terrain: On' : '🏔️ 3D Terrain: Off';
+  btn.textContent = on ? '3D Terrain: On' : '3D Terrain: Off';
   btn.classList.toggle('active', on);
 }
 
@@ -6931,7 +6936,7 @@ function startRelive(tripId) {
   hideTripMarkerPopup();
   document.getElementById('gsLocatePanel')?.classList.remove('open');
   const days = buildTripDays(tripId);
-  if (!days.length) { toast(`📍 No geotagged photos in this ${isAdventureFolder(appData.folders.find(f => f.id === tripId)) ? 'adventure' : 'trip'} yet`); return; }
+  if (!days.length) { toast(`No geotagged photos in this ${isAdventureFolder(appData.folders.find(f => f.id === tripId)) ? 'adventure' : 'trip'} yet`); return; }
   reliveTripId = tripId;
   reliveDays = days;
   reliveLegs = buildTripLegs(tripId);
@@ -6939,7 +6944,7 @@ function startRelive(tripId) {
   const hasRoutableLeg = reliveLegs.some(leg => MODE_ROUTING_PROFILE[leg.mode]);
   if (MAPBOX_ENABLED && !mapboxHintShownThisSession && hasRoutableLeg && s?.useMapboxRouting && !s.mapboxToken) {
     mapboxHintShownThisSession = true;
-    toast('🛣️ Add a free Mapbox token in Settings to snap these routes to real roads');
+    toast('Add a free Mapbox token in Settings to snap these routes to real roads');
   }
   const trip = appData.folders.find(f => f.id === tripId);
   document.getElementById('reliveTitle').textContent = trip?.name || 'Trip';
@@ -7025,7 +7030,7 @@ function renderReliveDayCards() {
   overviewCard.onclick = () => showReliveOverview();
   const totalPhotos = reliveDays.reduce((n, d) => n + d.count, 0);
   overviewCard.innerHTML = `
-    <div class="relive-day-thumb">🧭</div>
+    <div class="relive-day-thumb"></div>
     <div class="relive-day-body">
       <div class="relive-day-num">Entire Trip</div>
       <div class="relive-day-place">${reliveDays.length} day${reliveDays.length !== 1 ? 's' : ''}</div>
@@ -7036,14 +7041,14 @@ function renderReliveDayCards() {
   reliveDays.forEach((day, i) => {
     const cover = appData.files.find(f => f.id === day.coverFileId);
     const modeBadges = LEG_ROUTES_ENABLED
-      ? [...new Set(legsForDay(day).map(l => l.mode))].map(m => `<span class="relive-mode-badge" title="${MODE_LABELS[m]}">${MODE_EMOJI[m]}</span>`).join('')
+      ? [...new Set(legsForDay(day).map(l => l.mode))].map(m => `<span class="relive-mode-badge" title="${MODE_LABELS[m]}">${modeIconSvg(m)}</span>`).join('')
       : '';
     const card = document.createElement('div');
     card.className = 'relive-day-card';
     card.dataset.dayIndex = i;
     card.onclick = () => showReliveDay(i);
     card.innerHTML = `
-      <div class="relive-day-thumb thumb-loading" data-thumb-for="${day.coverFileId}">${cover && isVid(cover.ext) ? '🎬' : '🖼️'}</div>
+      <div class="relive-day-thumb thumb-loading" data-thumb-for="${day.coverFileId}"></div>
       <div class="relive-day-body">
         <div class="relive-day-num">Day ${day.dayIndex} ${modeBadges}</div>
         <div class="relive-day-place">${esc(day.label)}</div>
@@ -7134,7 +7139,7 @@ function renderDayLegChips(legs) {
     const chip = document.createElement('button');
     chip.className = 'relive-leg-chip';
     const places = (leg.startPlace && leg.endPlace && leg.startPlace !== leg.endPlace) ? `${leg.startPlace} → ${leg.endPlace}` : (leg.startPlace || '');
-    chip.textContent = `${MODE_EMOJI[leg.mode]} ${places}`;
+    chip.innerHTML = `${modeIconSvg(leg.mode)} ${esc(places)}`;
     chip.onclick = e => showLegModePopup(e, leg);
     host.appendChild(chip);
   });
@@ -8614,8 +8619,9 @@ function openMediaCluster(file) {
   openMediaPopup({ files: pool, index: index >= 0 ? index : 0 });
 }
 
-function popupPrev() { popupClusterIndex = (popupClusterIndex - 1 + popupClusterFiles.length) % popupClusterFiles.length; renderPopupFile(); }
-function popupNext() { popupClusterIndex = (popupClusterIndex + 1) % popupClusterFiles.length; renderPopupFile(); }
+let popupNavDir = 0; // 1 moving on, -1 going back: which way the next photo slides in from
+function popupPrev() { popupNavDir = -1; popupClusterIndex = (popupClusterIndex - 1 + popupClusterFiles.length) % popupClusterFiles.length; renderPopupFile(); }
+function popupNext() { popupNavDir = 1; popupClusterIndex = (popupClusterIndex + 1) % popupClusterFiles.length; renderPopupFile(); }
 
 // Turns a local disk path into a file:// URL a <video>/<img> src can load directly -
 // unlike thumbnails, videos are streamed straight off disk rather than routed through
@@ -8632,6 +8638,16 @@ async function renderPopupFile() {
   const file = popupClusterFiles[popupClusterIndex];
   if (!file) return;
   popupFileId = file.id;
+  hidePopupMenu();
+  {
+    const w = document.getElementById('photoImgWrap');
+    w.classList.remove('pp-in-up', 'pp-in-down');
+    if (popupNavDir) { void w.offsetWidth; w.classList.add(popupNavDir > 0 ? 'pp-in-up' : 'pp-in-down'); }
+    popupNavDir = 0;
+    document.getElementById('photoZoomHint').classList.remove('fade');
+    clearTimeout(popupHintTimer);
+    popupHintTimer = setTimeout(() => document.getElementById('photoZoomHint')?.classList.add('fade'), 5000);
+  }
   setPopupLoading(false); // a spinner left by the photo navigated away from
   const is360 = is360File(file);
   if (!is360 && v360.open) close360Viewer();
@@ -8650,7 +8666,7 @@ async function renderPopupFile() {
   const nav = document.getElementById('photoClusterNav');
   if (popupClusterFiles.length > 1) {
     nav.style.display = 'flex';
-    document.getElementById('photoClusterCount').textContent = `${isVid(file.ext)?'🎬':'🖼'} ${popupClusterIndex+1} of ${popupClusterFiles.length}`;
+    document.getElementById('photoClusterCount').textContent = `${popupClusterIndex+1} / ${popupClusterFiles.length}`;
   } else {
     nav.style.display = 'none';
   }
@@ -8670,6 +8686,7 @@ async function renderPopupFile() {
   renderPopupFolderChips(file);
   updatePopupBestOfBtn(file);
   document.getElementById('photoPopup').classList.add('open');
+  popupLayout();
 
   // 360 footage plays in the interactive player that sits inside this same picture area
   // (viewer360.js) - drag to look around, angle lock, grabs - with everything else about the
@@ -8682,6 +8699,7 @@ async function renderPopupFile() {
     document.getElementById('photoZoomHint').style.display = 'none';
     applyVideoRotation(0);
     open360Viewer(file);
+    setTimeout(popupLayout, 150);
     return;
   }
 
@@ -8985,10 +9003,37 @@ function popupResetZoom() {
   document.getElementById('photoImgWrap')?.classList.remove('panning');
 }
 
+// Scrolling is how you move through the photos: one step per scroll gesture (a mouse notch, or one
+// trackpad swipe including its coasting), stopping at the first and last photo. Zooming moved to
+// Ctrl+scroll (which is also what a trackpad pinch sends) and double-click; while zoomed in,
+// plain scroll zooms back out first, so you can't scroll away from a photo by accident.
+let popupWheelAcc = 0, popupWheelLast = 0, popupWheelStepAt = 0;
 function popupOnWheel(e) {
   const file = popupClusterFiles[popupClusterIndex];
-  if (file && (isVid(file.ext) || is360File(file))) return; // let native video controls handle input instead of zooming
+  if (file && is360File(file)) return; // the 360 player uses the wheel to zoom its own view
+  const now = performance.now();
+  const pv = document.getElementById('photoPopupVideo');
+  if (file && isVid(file.ext) && pv.style.display !== 'none') {
+    const r = pv.getBoundingClientRect();
+    if (e.clientY > r.bottom - 70) return; // over the video's own controls (volume, seeking)
+  }
   e.preventDefault();
+  const gap = now - popupWheelLast;
+  popupWheelLast = now;
+  if (!e.ctrlKey && popupZoom <= 1) {
+    if (gap > 150) popupWheelAcc = 0;
+    popupWheelAcc += e.deltaY;
+    if (Math.abs(popupWheelAcc) < 50 || now - popupWheelStepAt < 260) return;
+    const to = popupClusterIndex + (popupWheelAcc > 0 ? 1 : -1);
+    popupWheelAcc = 0;
+    if (to < 0 || to >= popupClusterFiles.length) return;
+    popupWheelStepAt = now;
+    popupNavDir = to > popupClusterIndex ? 1 : -1;
+    popupClusterIndex = to;
+    renderPopupFile();
+    return;
+  }
+  popupWheelStepAt = now; // zooming out must not also count as a step to the next photo
   const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
   popupZoom = Math.min(5, Math.max(1, popupZoom * factor));
   if (popupZoom <= 1.02) { popupZoom = 1; popupPanX = 0; popupPanY = 0; }
@@ -8996,14 +9041,15 @@ function popupOnWheel(e) {
   popupMaybeLoadHires();
 }
 
-function popupOnDblClick(e) {
+// Double-click likes (it never un-likes, like a double-tap). Zoomed in, it zooms back out instead.
+async function popupOnDblClick(e) {
   const file = popupClusterFiles[popupClusterIndex];
-  if (file && (isVid(file.ext) || is360File(file))) return;
+  if (!file || isVid(file.ext) || is360File(file)) return;
   e.stopPropagation();
-  if (popupZoom > 1) { popupZoom = 1; popupPanX = 0; popupPanY = 0; }
-  else { popupZoom = 2.5; }
-  popupApplyTransform();
-  popupMaybeLoadHires();
+  if (popupZoom > 1) { popupZoom = 1; popupPanX = 0; popupPanY = 0; popupApplyTransform(); return; }
+  const pop = document.getElementById('ppHeartPop');
+  pop.classList.remove('go'); void pop.offsetWidth; pop.classList.add('go');
+  if (!file.bestOf) { setLiked(file, true); await saveData(); updatePopupBestOfBtn(file); }
 }
 
 // Past this zoom level the 1800px preview starts showing its limits - fetch the ~4000px
@@ -9040,8 +9086,12 @@ function popupWatchFileDrag(e) {
 function popupOnMouseDown(e) {
   const file = popupClusterFiles[popupClusterIndex];
   if (file && (isVid(file.ext) || is360File(file))) return; // don't hijack clicks on the native video controls
-  // Unzoomed, pressing on the photo itself starts a file drag; zoomed in, a drag pans instead.
-  if (popupZoom <= 1 && e.target.id === 'photoPopupImg' && popupWatchFileDrag(e)) return;
+  // Unzoomed, dragging the photo sideways sends it to the Bin (Alt+drag takes the file to another
+  // app instead); zoomed in, a drag pans.
+  if (popupZoom <= 1 && e.target.id === 'photoPopupImg' && e.button === 0) {
+    if (e.altKey) { if (popupWatchFileDrag(e)) return; }
+    else { popupSwipe = { x: e.clientX, y: e.clientY, dx: 0, dy: 0 }; e.preventDefault(); return; }
+  }
   if (popupZoom <= 1 || (e.button !== 0 && e.button !== 1)) return; // left- or middle-drag pans
   popupDragging = true;
   popupDragStart = { x: e.clientX, y: e.clientY, panX: popupPanX, panY: popupPanY };
@@ -9050,6 +9100,23 @@ function popupOnMouseDown(e) {
 }
 
 function popupOnMouseMove(e) {
+  if (popupSwipe) {
+    if (!(e.buttons & 1)) { popupSwipeEnd(e); return; }
+    popupSwipe.dx = e.clientX - popupSwipe.x;
+    popupSwipe.dy = e.clientY - popupSwipe.y;
+    // The pointer has left the window with the button down: that's taking the file to another app
+    // (Explorer, an editor, a chat), so hand it to the OS drag and bin nothing.
+    if (e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth - 1 || e.clientY >= window.innerHeight - 1) {
+      popupSwipeToOsDrag();
+      return;
+    }
+    const img = document.getElementById('photoPopupImg');
+    img.style.transform = `translateX(${popupSwipe.dx}px) rotate(${popupSwipe.dx / 40}deg)`;
+    const lab = document.getElementById('ppBinLabel');
+    lab.textContent = t('flToBin');
+    lab.style.opacity = String(Math.min(1, Math.abs(popupSwipe.dx) / Math.max(120, window.innerWidth * 0.22)));
+    return;
+  }
   const start = popupFileDragStart;
   if (start) {
     if (!(e.buttons & 1)) { popupFileDragStart = null; return; } // released outside the window
@@ -9064,7 +9131,70 @@ function popupOnMouseMove(e) {
   popupApplyTransform();
 }
 
-function popupOnMouseUp() {
+let popupSwipe = null; // { x, dx } while the photo is being dragged sideways
+function popupSwipeToOsDrag() {
+  const file = popupClusterFiles[popupClusterIndex];
+  popupSwipe = null;
+  document.getElementById('ppBinLabel').style.opacity = '0';
+  const img = document.getElementById('photoPopupImg');
+  popupApplyTransform();
+  img.style.transition = '';
+  if (file && !file._missing) window.api.startFileDrag([file.path], file.id);
+}
+function popupSwipeEnd(e) {
+  const s = popupSwipe;
+  popupSwipe = null;
+  if (!s) return;
+  document.getElementById('ppBinLabel').style.opacity = '0';
+  // Let go outside the window (or the pointer position is unknown): never a delete.
+  const outside = e && (e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth - 1 || e.clientY >= window.innerHeight - 1);
+  const sideways = Math.abs(s.dx) > Math.abs(s.dy || 0) * 1.2;
+  if (!outside && sideways && Math.abs(s.dx) > Math.max(120, window.innerWidth * 0.22)) { popupBinCurrent(Math.sign(s.dx)); return; }
+  const img = document.getElementById('photoPopupImg');
+  img.style.transition = 'transform .18s ease-out';
+  popupApplyTransform();
+  setTimeout(() => { img.style.transition = ''; }, 200);
+}
+
+// To the Bin (30 days to change your mind, Ctrl+Z undoes it), then on to the photo that slides into its place.
+let popupUndo = [];
+let popupBinning = false;
+function popupBinCurrent(dir) {
+  const file = popupClusterFiles[popupClusterIndex];
+  if (!file || popupBinning) return;
+  popupBinning = true;
+  const img = document.getElementById('photoPopupImg');
+  const finish = async () => {
+    const index = popupClusterIndex;
+    const { moved, receipt } = binAndReward([file.id]);
+    popupUndo.push({ file, index, moved, receipt });
+    if (receipt.xp) rewardsFloat(`+${receipt.xp} XP`);
+    popupBinning = false;
+    img.style.transition = ''; img.style.opacity = '';
+    syncPopupClusterAfterRemoval();
+    await saveData();
+    toast(`${t('binMovedN', { n: 1 })} (Ctrl+Z)`, 3500);
+  };
+  if (!dir || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) { finish(); return; }
+  img.style.transition = 'transform .26s ease-in, opacity .26s ease-in';
+  img.style.transform = `translateX(${dir * 120}vw) rotate(${dir * 18}deg)`;
+  img.style.opacity = '0';
+  setTimeout(finish, 240);
+}
+async function popupUndoBin() {
+  const last = popupUndo.pop();
+  if (!last) return false;
+  restoreFromBin(last.moved);
+  rewardsRevoke(last.receipt);
+  popupClusterFiles.splice(Math.min(last.index, popupClusterFiles.length), 0, last.file);
+  popupClusterIndex = Math.min(last.index, popupClusterFiles.length - 1);
+  await saveData();
+  renderPopupFile();
+  return true;
+}
+
+function popupOnMouseUp(e) {
+  if (popupSwipe) { popupSwipeEnd(e); return; }
   popupFileDragStart = null;
   if (!popupDragging) return;
   popupDragging = false;
@@ -9074,7 +9204,119 @@ function popupOnMouseUp() {
 // Keep backward compat for globe
 const openGlobePopup = openMediaPopup;
 
+// ── VIEWER LAYOUT ────────────────────────────────────────────────────────────
+// The Like / Edit / More buttons and the caption sit against the photo itself, so they follow
+// its shape: beside a tall photo (a column, TikTok-style, in the free space to its right), under
+// a wide one (a row, centred). Where there's no free space they float over the photo's edge.
+let popupHintTimer = null;
+function popupLayout() {
+  const pop = document.getElementById('photoPopup');
+  if (!pop?.classList.contains('open') || popupZoom > 1 || popupSwipe) return;
+  const inner = pop.querySelector('.photo-inner');
+  const wrap = document.getElementById('photoImgWrap');
+  const rail = document.getElementById('ppRail'), cap = document.getElementById('ppCaption');
+  const img = document.getElementById('photoPopupImg'), vid = document.getElementById('photoPopupVideo');
+  const ir = inner.getBoundingClientRect();
+  let m = wrap.getBoundingClientRect(), isVideo = false;
+  if (v360.open) isVideo = true;
+  else if (vid.style.display !== 'none' && vid.videoWidth) { m = vid.getBoundingClientRect(); isVideo = true; }
+  else if (img.style.display !== 'none' && img.naturalWidth) m = img.getBoundingClientRect();
+  const lift = isVideo ? 64 : 0; // keeps the caption clear of the video's own controls
+  // Like / Edit / More stay put between photos: a column pinned to the right edge of the window,
+  // the same spot for every photo and video (never read off the current photo, so it can't jump).
+  rail.classList.remove('h');
+  rail.style.top = rail.style.left = rail.style.transform = '';
+  rail.style.right = '28px';
+  rail.style.bottom = '96px';
+  cap.style.left = Math.max(16, m.left - ir.left + 16) + 'px';
+  cap.style.bottom = (Math.max(0, ir.bottom - m.bottom) + 16 + lift) + 'px';
+  cap.style.maxWidth = Math.max(220, Math.min(520, m.width - 130)) + 'px';
+  popupTone(m, isVideo);
+}
+
+// ── ADAPTIVE COLOURS ─────────────────────────────────────────────────────────
+// The buttons and text float over the photo, so each one looks at the pixels right behind it and
+// goes dark on a bright spot, light on a dark one (the way TikTok's do), so they can always be read.
+let popupToneCanvas = null;
+function popupTone(m, isVideo) {
+  const els = [...document.querySelectorAll('#ppRail .pp-btn, #ppCaption, #photoClusterNav, .photo-close, #photoZoomHint')];
+  let data = null, cw = 0, ch = 0;
+  const img = document.getElementById('photoPopupImg');
+  if (!isVideo && img.style.display !== 'none' && img.naturalWidth && m.width > 0 && m.height > 0) {
+    try {
+      cw = 96; ch = Math.max(1, Math.round(96 * m.height / m.width));
+      popupToneCanvas = popupToneCanvas || document.createElement('canvas');
+      popupToneCanvas.width = cw; popupToneCanvas.height = ch;
+      const ctx = popupToneCanvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0, cw, ch);
+      data = ctx.getImageData(0, 0, cw, ch).data;
+    } catch (e) { data = null; } // a file:// source can't be read back: stay light
+  }
+  for (const el of els) {
+    let dark = false;
+    if (data) {
+      const r = el.getBoundingClientRect();
+      const x0 = Math.max(r.left, m.left), x1 = Math.min(r.right, m.right), y0 = Math.max(r.top, m.top), y1 = Math.min(r.bottom, m.bottom);
+      if (x1 > x0 && y1 > y0 && r.width > 0 && r.height > 0) {
+        const sx = cw / m.width, sy = ch / m.height;
+        const px0 = Math.floor((x0 - m.left) * sx), px1 = Math.max(px0 + 1, Math.ceil((x1 - m.left) * sx));
+        const py0 = Math.floor((y0 - m.top) * sy), py1 = Math.max(py0 + 1, Math.ceil((y1 - m.top) * sy));
+        let sum = 0, n = 0;
+        for (let y = py0; y < Math.min(py1, ch); y++) for (let x = px0; x < Math.min(px1, cw); x++) {
+          const i = (y * cw + x) * 4;
+          sum += 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]; n++;
+        }
+        const covered = ((x1 - x0) * (y1 - y0)) / (r.width * r.height); // the rest of the element is over black
+        dark = n > 0 && (sum / n / 255) * covered > 0.58;
+      }
+    }
+    el.classList.toggle('tone-d', dark);
+  }
+}
+window.addEventListener('resize', () => popupLayout());
+
+// The three-dots menu: everything that isn't Like or Edit.
+function togglePopupMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('ppMenu');
+  if (menu.classList.contains('open')) { hidePopupMenu(); return; }
+  menu.classList.add('open');
+  const b = document.getElementById('ppMoreBtn').getBoundingClientRect();
+  const horizontal = document.getElementById('ppRail').classList.contains('h');
+  const w = menu.offsetWidth, h = menu.offsetHeight;
+  let left = horizontal ? b.left + b.width / 2 - w / 2 : b.left - w - 10;
+  let top = horizontal ? b.top - h - 10 : b.bottom - h;
+  left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
+  top = Math.max(8, Math.min(top, window.innerHeight - h - 8));
+  menu.style.left = left + 'px'; menu.style.top = top + 'px';
+}
+function hidePopupMenu() { document.getElementById('ppMenu')?.classList.remove('open'); }
+function popupMenuClicked(e) {
+  if (!e.target.closest('.pp-mi.keep')) hidePopupMenu(); // Thumbnail opens its own menu next to this one
+}
+document.addEventListener('click', e => { if (!e.target.closest('#ppMenu, #ppMoreBtn')) hidePopupMenu(); });
+document.documentElement.addEventListener('mouseleave', e => { if (popupSwipe && (e.buttons & 1)) popupSwipeToOsDrag(); });
+
+// Brings the library grid back to a photo (the one the viewer was on when it closed). The grid
+// loads its cards a page at a time, so a photo far down may not exist yet: keep scrolling to the
+// bottom, which loads the next page, until it does.
+async function scrollGridToFile(fileId) {
+  const area = document.getElementById('fileArea');
+  const find = () => area?.querySelector(`[data-file-id="${CSS.escape(fileId)}"]`);
+  for (let i = 0; i < 60 && area; i++) {
+    const card = find();
+    if (card) { card.scrollIntoView({ block: 'center' }); return; }
+    const scroller = area.closest('.main, .content') || area.parentElement;
+    const target = [area, scroller].find(el => el && el.scrollHeight > el.clientHeight + 1) || document.scrollingElement;
+    target.scrollTop = target.scrollHeight;
+    await new Promise(r => setTimeout(r, 60));
+  }
+}
+
 function closePhotoPopup() {
+  const lastId = popupFileId;
+  hidePopupMenu(); popupUndo = []; popupSwipe = null;
+  if (lastId && !globeOpen && currentViewImages.some(f => f.id === lastId)) setTimeout(() => scrollGridToFile(lastId), 0);
   hideThumbMenu();
   if (v360.open) close360Viewer();
   document.getElementById('photoPopup').classList.remove('open');
@@ -9121,9 +9363,9 @@ async function togglePopupBestOf() {
 function updatePopupBestOfBtn(file) {
   const btn = document.getElementById('popupBestOfBtn');
   if (!btn) return;
-  btn.textContent = file.bestOf ? `❤️ ${t('lkLiked')}` : `♡ ${t('lkLike')}`;
+  btn.innerHTML = `<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21S3.5 15 3.5 9A4.7 4.7 0 0 1 12 6.6 4.7 4.7 0 0 1 20.5 9C20.5 15 12 21 12 21z"/></svg></span><span class="lb">${esc(file.bestOf ? t('lkLiked') : t('lkLike'))}</span>`;
   btn.title = t('lkShortcutTitle');
-  btn.style.color = file.bestOf ? 'var(--heart)' : '';
+  btn.classList.toggle('on', !!file.bestOf);
 }
 
 // Deletes the currently-viewed popup photo from the actual hard drive (reusing the
@@ -11055,7 +11297,7 @@ function gsCoachForStep() {
 // nudge instead - one a day at most, "Show me" opens it - and after two it's left alone for good.
 // Smart search isn't in the list yet: its model only understands English descriptions.
 const DISCOVER_FEATURES = [
-  { key: 'globe', icon: '🌍', afterDays: 1, target: '#globeToggle', topRight: true, open: () => { if (!globeOpen) toggleGlobe(); } },
+  { key: 'globe', icon: rwIcon('globe'), afterDays: 1, target: '#globeToggle', topRight: true, open: () => { if (!globeOpen) toggleGlobe(); } },
   { key: 'editor', icon: '✏️', afterDays: 3, target: null, open: () => discoverOpenEditor() },
   { key: 'dups', icon: '🔁', afterDays: 5, target: '#sortMenuBtn', open: () => enterDupDetection() }
 ];
@@ -17818,9 +18060,13 @@ document.addEventListener('keydown', e=>{
      && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) && !e.target.isContentEditable){
     e.preventDefault(); rotatePopupFile();
   }
+  if(document.getElementById('photoPopup').classList.contains('open') && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '')){
+    if((e.ctrlKey||e.metaKey) && (e.key==='z'||e.key==='Z') && popupUndo.length){ e.preventDefault(); popupUndoBin(); return; }
+    if(e.key==='Delete' && !e.ctrlKey && !e.metaKey){ e.preventDefault(); popupBinCurrent(1); return; }
+  }
   if(document.getElementById('photoPopup').classList.contains('open') && popupClusterFiles.length > 1){
-    if(e.key==='ArrowLeft'){e.preventDefault();popupPrev();}
-    else if(e.key==='ArrowRight'){e.preventDefault();popupNext();}
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();popupPrev();}
+    else if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();popupNext();}
   }
   if((e.metaKey||e.ctrlKey)&&e.key==='o'){e.preventDefault();addFiles();}
   if(e.key==='a'&&(e.metaKey||e.ctrlKey)){e.preventDefault();getVisibleFiles().forEach(f=>selectedIds.add(f.id));updateSelectionUI();}
@@ -17863,6 +18109,8 @@ document.getElementById('versionCompareModal').addEventListener('click',e=>{if(e
   piw.addEventListener('wheel', popupOnWheel, { passive: false });
   piw.addEventListener('mousedown', popupOnMouseDown);
   piw.addEventListener('dblclick', popupOnDblClick);
+  document.getElementById('photoPopupImg').addEventListener('load', () => popupLayout());
+  document.getElementById('photoPopupVideo').addEventListener('loadedmetadata', () => popupLayout());
   document.addEventListener('mousemove', popupOnMouseMove);
   document.addEventListener('mouseup', popupOnMouseUp);
 }
