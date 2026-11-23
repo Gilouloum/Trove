@@ -57,6 +57,23 @@ header nav a:hover{color:var(--lime)}
 .stars{position:absolute;left:0;top:0;width:100%;pointer-events:none;will-change:transform}
 .orb{position:absolute;left:50%;top:calc(var(--lift) + 56px + var(--G) * .05);width:var(--G);aspect-ratio:1;transform:translateX(-50%);will-change:transform,filter}
 .shade{position:absolute;inset:0;background:var(--charcoal);opacity:0}
+/* little surprises in the sky for a visitor who has stopped moving: shooting stars, the space station, a flying camera (script at the end of the page) */
+.eggs{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.egg-star{position:absolute;left:0;top:0;height:2px;border-radius:2px;opacity:0;transform-origin:100% 50%;will-change:transform,opacity;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(205,222,255,.5) 65%,#fff)}
+.egg-star::after{content:"";position:absolute;right:-1px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:#fff;box-shadow:0 0 9px 2px rgba(190,210,255,.75)}
+.egg-iss,.egg-cam{position:absolute;left:0;top:0;will-change:transform}
+.egg-iss svg,.egg-cam svg{display:block;width:100%;height:100%;overflow:visible}
+.egg-beacon{animation:egg-blink 1.7s linear infinite}
+@keyframes egg-blink{0%,68%{opacity:.12}78%,90%{opacity:1}100%{opacity:.12}}
+.egg-bob{position:relative;width:100%;height:100%}
+.egg-wl,.egg-wr{transform-box:fill-box;animation:egg-flap .2s ease-in-out infinite alternate}
+.egg-wl{transform-origin:100% 85%}
+.egg-wr{transform-origin:0 85%;animation-name:egg-flap-r}
+@keyframes egg-flap{from{transform:rotate(-24deg)}to{transform:rotate(14deg)}}
+@keyframes egg-flap-r{from{transform:rotate(24deg)}to{transform:rotate(-14deg)}}
+.egg-flash{position:absolute;left:35.6%;top:37.5%;width:260%;aspect-ratio:1;margin:-130% 0 0 -130%;border-radius:50%;opacity:0;pointer-events:none;
+  background:radial-gradient(circle,#fff 0,rgba(255,255,255,.75) 14%,rgba(255,255,255,.18) 40%,rgba(255,255,255,0) 68%)}
 main{position:relative;z-index:2;pointer-events:none}
 .content{pointer-events:auto}
 .stage{position:relative;height:100svh;min-height:620px;pointer-events:none}   /* clicks fall through to the globe's pins */
@@ -283,6 +300,7 @@ footer a:hover{color:var(--lime)}
     <div class="scrim"></div>
   </div>
   <div class="shade" id="shade"></div>
+  <div class="eggs" id="eggs" aria-hidden="true"></div>
 </div>
 
 <main>
@@ -488,7 +506,7 @@ footer a:hover{color:var(--lime)}
   var st2;window.addEventListener('resize',function(){clearTimeout(st2);st2=setTimeout(drawStars,200);});
 
   /* ---- scroll: the globe grows into the page background and stays lightly blurred ---- */
-  var earthVis=1,pinVis=1,sy=window.scrollY||0,orb=document.getElementById('orb'),shadeEl=document.getElementById('shade'),
+  var earthVis=1,pinVis=1,sy=window.scrollY||0,scrollV=0,vAt=0,orb=document.getElementById('orb'),shadeEl=document.getElementById('shade'),
       introEl=document.querySelector('.intro'),wordEl=document.querySelector('.word'),
       contentEl=document.getElementById('content'),headEl=document.querySelector('#features h2'),trustEl=document.querySelector('.trust'),
       calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,geo={H:window.innerHeight,c0:0,S:1,D:0},tick=false;
@@ -688,7 +706,9 @@ footer a:hover{color:var(--lime)}
   })();
 
   function applyScroll(){
-    tick=false;sy=window.scrollY||0;
+    var tn=performance.now(),y=window.scrollY||0;
+    if(tn-vAt>8){scrollV=Math.abs(y-sy)/(tn-vAt)*1000;vAt=tn;}              /* how fast the page is moving, px/s: only ever feeds the globe's speed, never its angle */
+    tick=false;sy=y;
     if(sy>40&&sel>=0)closeCard();                                      /* scrolling away closes an open trip card */
     var P=Math.min(1,Math.max(0,sy/(geo.H*.75))),e=ease(P),es=ease(Math.min(1,sy/geo.S));
     var tt=trustEl.getBoundingClientRect().top,                        /* where the "Your photos stay yours" banner is on screen */
@@ -842,9 +862,9 @@ footer a:hover{color:var(--lime)}
   function frame(now){
     var dt=lastNow===null?0:Math.min(.1,(now-lastNow)/1000);lastNow=now;
     peekStep(now);
-    if(sel<0&&!tw)auto+=dt*.10;                       /* turns west to east, one turn per ~63 s; paused while a card is open */
+    if(sel<0&&!tw)auto+=dt*.10*turn;                  /* turns west to east, one turn per ~63 s; paused while a card is open */
     if(tw){var kk=Math.min(1,(now-tw.t0)/tw.d);off=tw.from+(tw.to-tw.from)*(1-Math.pow(1-kk,3));if(kk>=1)tw=null;}
-    var spin=spin0-auto-sy*.0012+off;                 /* faster while you scroll */
+    var spin=spin0-auto+off;                          /* never tied to the scroll position: a jump in the page must not jump the globe */
     var sc=((spin/(2*Math.PI))%1+1)%1*TW;
     for(var p=0;p<N;p++){
       var a=alpha[p],q=p*4;
@@ -872,9 +892,17 @@ footer a:hover{color:var(--lime)}
     ctx.globalAlpha=1;
   }
   var running=false,reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Scrolling gives the globe a small push: its turning speed (never its angle) rises gently with how fast the page moves,
+     up to about 2.5x, then eases back down once the page is still. Both the rise and the fall are exponential smoothing,
+     so the speed changes a little every frame and the picture never lurches. The frame rate stays the same throughout. */
+  var boost=0,turn=1,loopAt=0;
   function loop(now){
     if(!running)return;
-    if(earthVis>.01&&now-last>(sy>geo.H?64:32)){last=now;frame(now);}   /* nothing to draw once the Earth has faded out */
+    var dtl=Math.min(.1,Math.max(0,(now-loopAt)/1000));loopAt=now;
+    var v=now-vAt<130?scrollV:0,tgt=Math.min(1,v/2500);                      /* 0 = page still, 1 = scrolling fast */
+    boost+=(tgt-boost)*(1-Math.exp(-dtl/(tgt>boost?.4:1.4)));                 /* slow to build, slower to fade */
+    turn=1+1.5*boost;
+    if(earthVis>.01&&now-last>28){last=now;frame(now);}                       /* ~30 fps; nothing to draw once the Earth has faded out */
     requestAnimationFrame(loop);
   }
 
@@ -915,7 +943,7 @@ footer a:hover{color:var(--lime)}
     card.style.left=Math.max(16,left)+'px';card.style.top=Math.max(84,Math.min(H-ch-16,py-24))+'px';
   }
   function select(i){
-    var base=spin0-auto-sy*.0012+off,d=feats[i].lon*DEG-base;
+    var base=spin0-auto+off,d=feats[i].lon*DEG-base;
     d=Math.atan2(Math.sin(d),Math.cos(d));                 /* shortest way round */
     sel=i;fillCard(i);document.body.classList.add('has-card');
     peek.off=true;peek.k=-1;peek.rect=null;                /* they found out the pins open: no more hints */
@@ -970,6 +998,99 @@ footer a:hover{color:var(--lime)}
     }else{running=true;requestAnimationFrame(loop);}
   };
   img.src='img/earth.jpg';
+})();
+
+/* ---- little surprises for a visitor who has stopped moving: shooting stars, the space station, a flying camera ----
+   Nothing starts while the page is being used (pointer, keys, touch or scroll in the last few seconds), nothing starts in a hidden tab,
+   and nothing runs at all when the system asks for reduced motion. Everything is a small element moved by the compositor (Web Animations),
+   so it costs the page next to nothing, and it sits in the backdrop behind the page content. */
+(function(){
+  var layer=document.getElementById('eggs');
+  if(!layer||!layer.animate||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+  /* seconds of idle time: [first one after, shortest gap, longest gap] */
+  var CFG={idle:5,star:[1,7,16],iss:[30,100,160],cam:[55,120,200]};
+  var lastAct=performance.now(),prev=lastAct,idleT=0,uid=0,big=false,next={star:CFG.star[0],iss:CFG.iss[0],cam:CFG.cam[0]};
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  function gap(c){return rnd(c[1],c[2]);}
+  function act(){lastAct=performance.now();}
+  ['pointermove','pointerdown','keydown','wheel','touchstart','touchmove','scroll'].forEach(function(t){window.addEventListener(t,act,{passive:true,capture:true});});
+
+  /* a shooting star: a thin streak with a bright head, a little way across the upper sky */
+  function star(){
+    var W=window.innerWidth,H=window.innerHeight,el=document.createElement('i'),dir=Math.random()<.5?1:-1,
+        ang=rnd(16,40)*Math.PI/180,len=Math.min(W,1100)*rnd(.4,.7)+160,
+        x0=dir>0?W*rnd(.04,.6):W*rnd(.4,.96),y0=H*rnd(.04,.4),dx=Math.cos(ang)*len*dir,dy=Math.sin(ang)*len,
+        rot=Math.atan2(dy,dx)*180/Math.PI,from='translate('+x0.toFixed(1)+'px,'+y0.toFixed(1)+'px) rotate('+rot.toFixed(1)+'deg)';
+    el.className='egg-star';el.style.width=rnd(90,170).toFixed(0)+'px';
+    layer.appendChild(el);
+    var a=el.animate([
+      {transform:from,opacity:0},
+      {transform:from,opacity:1,offset:.1},
+      {opacity:1,offset:.6},
+      {transform:'translate('+(x0+dx).toFixed(1)+'px,'+(y0+dy).toFixed(1)+'px) rotate('+rot.toFixed(1)+'deg)',opacity:0}
+    ],{duration:rnd(650,1150),easing:'cubic-bezier(.25,.1,.6,1)',fill:'forwards'});
+    a.onfinish=a.oncancel=function(){el.remove();};
+  }
+
+  /* the space station: a slow, small pass across the top of the sky, with a blinking light */
+  function iss(){
+    var W=window.innerWidth,H=window.innerHeight,w=Math.max(54,Math.min(100,W*.07)),h=w/2,u=++uid,dir=Math.random()<.5?1:-1,
+        y0=H*rnd(.07,.22),y1=y0+H*rnd(-.04,.04),xa=dir>0?-w-24:W+24,xb=dir>0?W+24:-w-24,
+        tilt=Math.atan2(y1-y0,Math.abs(xb-xa))*180/Math.PI*dir,el=document.createElement('div'),
+        panel='<rect width="22" height="31" fill="url(#egP'+u+')"/>';
+    el.className='egg-iss';el.style.width=w.toFixed(0)+'px';el.style.height=h.toFixed(0)+'px';
+    el.innerHTML='<svg viewBox="0 0 160 80" aria-hidden="true"><defs><pattern id="egP'+u+'" width="4" height="4" patternUnits="userSpaceOnUse">'
+      +'<rect width="4" height="4" fill="#27449a"/><path d="M0 0H4M0 0V4" stroke="#e3b64d" stroke-width=".7" opacity=".75"/></pattern></defs>'
+      +'<g stroke="#cdd5ff" stroke-width=".6" stroke-opacity=".45">'
+      +'<g transform="translate(8 4)">'+panel+'</g><g transform="translate(8 45)">'+panel+'</g><g transform="translate(130 4)">'+panel+'</g><g transform="translate(130 45)">'+panel+'</g>'
+      +'<g transform="translate(42 12) scale(.64 .74)">'+panel+'</g><g transform="translate(42 45) scale(.64 .74)">'+panel+'</g>'
+      +'<g transform="translate(104 12) scale(.64 .74)">'+panel+'</g><g transform="translate(104 45) scale(.64 .74)">'+panel+'</g></g>'
+      +'<rect x="6" y="38.5" width="148" height="3" fill="#cfd3de"/>'
+      +'<rect x="17" y="34" width="4" height="12" fill="#aeb4c6"/><rect x="139" y="34" width="4" height="12" fill="#aeb4c6"/>'
+      +'<rect x="47" y="35" width="3" height="10" fill="#aeb4c6"/><rect x="110" y="35" width="3" height="10" fill="#aeb4c6"/>'
+      +'<rect x="74" y="22" width="12" height="36" rx="3" fill="#e9ebf3"/><rect x="65" y="35" width="30" height="10" rx="3" fill="#bfc4d4"/>'
+      +'<rect x="77" y="15" width="6" height="9" rx="1.5" fill="#aeb4c6"/><rect x="77" y="56" width="6" height="9" rx="1.5" fill="#aeb4c6"/>'
+      +'<circle class="egg-beacon" cx="80" cy="40" r="2" fill="#ff5252"/></svg>';
+    layer.appendChild(el);big=true;
+    var pose=function(x,y){return 'translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) rotate('+tilt.toFixed(2)+'deg)';};
+    var a=el.animate([{transform:pose(xa,y0)},{transform:pose(xb,y1)}],{duration:rnd(34000,44000),easing:'linear',fill:'forwards'});
+    a.onfinish=a.oncancel=function(){el.remove();big=false;};
+  }
+
+  /* a little camera with tiny wings: it bobs across the sky, takes one photo on the way (a soft flash), and leaves */
+  function camera(){
+    var W=window.innerWidth,H=window.innerHeight,w=Math.max(38,Math.min(56,W*.04)),h=w*.75,dir=Math.random()<.5?1:-1,
+        y0=H*rnd(.1,.34),y1=y0+H*rnd(-.06,.06),xa=dir>0?-w-30:W+30,xb=dir>0?W+30:-w-30,dur=rnd(14000,19000),   /* the open sky above the globe, clear of the headline */
+        el=document.createElement('div');
+    el.className='egg-cam';el.style.width=w.toFixed(0)+'px';el.style.height=h.toFixed(0)+'px';
+    el.innerHTML='<div class="egg-bob"><svg viewBox="-8 -2 80 60" aria-hidden="true">'
+      +'<g class="egg-wl"><path d="M12 27C8 16 0 10-6 12C-6 20-2 28 12 31Z" fill="#fff" fill-opacity=".92"/></g>'
+      +'<g class="egg-wr"><path d="M52 27C56 16 64 10 70 12C70 20 66 28 52 31Z" fill="#fff" fill-opacity=".92"/></g>'
+      +'<rect x="23" y="8" width="14" height="8" rx="2.5" fill="#8fc300"/><rect x="41" y="9" width="7" height="6" rx="2" fill="#723BFA"/>'
+      +'<rect x="11" y="14" width="42" height="31" rx="9" fill="#B9F500"/>'
+      +'<path d="M11 24a9 9 0 0 1 9-10h24a9 9 0 0 1 9 10v1H11z" fill="#d6ff5e"/>'
+      +'<rect x="16" y="18" width="9" height="5" rx="1.5" fill="#fff"/>'
+      +'<circle cx="32" cy="32" r="11.5" fill="#18181C" stroke="#723BFA" stroke-width="2.4"/>'
+      +'<circle cx="32" cy="32" r="6.6" fill="#2a2a33" stroke="#B9F500" stroke-width="1.2"/>'
+      +'<circle cx="29.5" cy="29.5" r="2" fill="#fff" fill-opacity=".85"/></svg><i class="egg-flash"></i></div>';
+    layer.appendChild(el);big=true;
+    var bob=el.firstChild;
+    bob.animate([{transform:'translateY(-8px) rotate(-5deg)'},{transform:'translateY(8px) rotate(5deg)'}],{duration:1150,easing:'ease-in-out',direction:'alternate',iterations:Infinity});
+    bob.lastChild.animate([{opacity:0,transform:'scale(.25)'},{opacity:.8,transform:'scale(1)',offset:.3},{opacity:0,transform:'scale(1.25)'}],{duration:480,delay:dur*rnd(.38,.62),easing:'ease-out',fill:'none'});
+    var a=el.animate([{transform:'translate('+xa.toFixed(1)+'px,'+y0.toFixed(1)+'px)'},{transform:'translate('+xb.toFixed(1)+'px,'+y1.toFixed(1)+'px)'}],{duration:dur,easing:'linear',fill:'forwards'});
+    a.onfinish=a.oncancel=function(){el.remove();big=false;};
+  }
+
+  setInterval(function(){
+    var now=performance.now(),dt=Math.min(1.5,(now-prev)/1000);prev=now;
+    if(document.hidden||now-lastAct<CFG.idle*1000)return;
+    idleT+=dt;                                                  /* only time spent idle counts towards the next surprise */
+    if(idleT>=next.star){star();if(Math.random()<.3)setTimeout(star,rnd(150,500));next.star=idleT+gap(CFG.star);}
+    if(!big){
+      if(idleT>=next.iss){iss();next.iss=idleT+gap(CFG.iss);}
+      else if(idleT>=next.cam){camera();next.cam=idleT+gap(CFG.cam);}
+    }
+  },1000);
 })();
 </script>
 </body>
